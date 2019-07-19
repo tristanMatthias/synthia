@@ -1,9 +1,17 @@
 import './components';
+import { SElement } from './types';
 
 (async() => {
-  document.addEventListener('click', () => {
-    alert
-    const oscillator = document.createElement('synthia-oscillator');
-    document.body.appendChild(document.createElement('synthia-oscillator'));
+  const canvas = document.querySelector(SElement.canvas)!;
+
+  document.addEventListener('click', (e) => {
+    let { x, y } = canvas.getBoundingClientRect() as DOMRect;
+    x = Math.abs(x) + e.clientX;
+    y = Math.abs(y) + e.clientY;
+
+    const oscillator = document.createElement(SElement.oscillator);
+    oscillator.x = x;
+    oscillator.y = y;
+    canvas.appendChild(oscillator);
   })
 })()

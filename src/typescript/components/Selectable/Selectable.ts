@@ -38,12 +38,12 @@ export const SelectableMixin = (superclass: new () => LitElement) =>
 
     connectedCallback() {
       super.connectedCallback();
-      this.addEventListener('mouseup', this._selectableClick);
+      this.addEventListener('click', this._selectableClick);
     }
 
     disconnectedCallback() {
       super.disconnectedCallback();
-      this.removeEventListener('mouseup', this._selectableClick);
+      this.removeEventListener('click', this._selectableClick);
       this.removeEventListener('keydown', this._selectableKeyDown);
     }
 
@@ -51,6 +51,7 @@ export const SelectableMixin = (superclass: new () => LitElement) =>
       this.selected = true;
       window.addEventListener('keydown', this._selectableKeyDown);
       window.addEventListener('mousedown', this._selectableMouseDown);
+      e.stopPropagation();
     }
 
     private _selectableKeyDown(e: KeyboardEvent) {

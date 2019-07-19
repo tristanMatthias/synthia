@@ -58,9 +58,6 @@ export const DraggableMixin = (superclass: new () => LitElement) =>
     }
 
     private _dragStart(e: MouseEvent) {
-      console.log(this.tagName);
-      console.log(this);
-
       e.stopPropagation();
       this._dragging = true;
       window.addEventListener('mouseup', this._dragEnd);
@@ -78,8 +75,6 @@ export const DraggableMixin = (superclass: new () => LitElement) =>
     }
 
     private _drag(e: MouseEvent) {
-      console.log(this._initialPosition);
-
       // TODO: Prevent off screen dragging
       let x = e.clientX - this._dragStartPosition!.x;
       let y = e.clientY - this._dragStartPosition!.y;

@@ -1,3 +1,60 @@
 :host {
+  position: absolute;
 
+  display: block;
+  width: 12rem;
+  height: 12rem;
+
+  svg {
+    overflow: visible;
+    width: 100%;
+    --color: var(--color-main);
+    // animation: rotate 10s linear infinite;
+
+    // .center {
+    //   animation: rotateBackwards 10s linear infinite;
+    //   transform-origin: center;
+    // }
+
+    // .outside-circle {
+    //   animation: outsideRotate 10s linear infinite;
+    //   // transform-origin: 10px 10px;
+    //   transform-origin: center;
+    // }
+  }
+
+  .icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 4rem;
+    transform: translate(-50%, -50%);
+  }
 }
+
+// @keyframes rotate {
+//   from {
+//     transform: rotate(0);
+//   }
+//   to {
+//     transform: rotate(360deg);
+//   }
+// }
+
+// @keyframes rotateBackwards {
+//   from {
+//     transform: rotate(720deg);
+//   }
+//   to {
+//     transform: rotate(0);
+//   }
+// }
+
+// @keyframes outsideRotate {
+//   from {
+//     transform: rotate(720deg) translate(15px, 15px);
+//   }
+//   to {
+//     transform: rotate(0) translate(15px, 15px);
+//   }
+// }
