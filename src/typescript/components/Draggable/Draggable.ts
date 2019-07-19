@@ -54,7 +54,9 @@ export const DraggableMixin = (superclass: new () => LitElement) =>
         this._offset.x + this._dragOffsetPosition.x
         }px), calc(${this._initialPosition!.y} + ${
         this._offset.y + this._dragOffsetPosition.y
-        }px))`
+        }px))`;
+
+      this.requestUpdate()
     }
 
     private _dragStart(e: MouseEvent) {

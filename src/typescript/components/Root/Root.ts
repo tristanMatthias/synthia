@@ -5,13 +5,17 @@ import { SelectableMixin } from '../Selectable/Selectable';
 import styles from './root.styles';
 
 
-class Root extends LitElement {
+export class Root extends LitElement {
   static get styles() {
     return [styles]
   }
 
   context = new AudioContext();
   selected = false;
+
+  get waveform() {
+    return document.querySelector(SElement.waveform)!;
+  }
 
   render() {
     return html`
@@ -26,6 +30,11 @@ class Root extends LitElement {
           <path d="M12.49.662C5.922.662.598 5.986.598 12.554M12.49 24.446c6.568 0 11.892-5.325 11.892-11.892"/>
         </g>
       </svg>`;
+  }
+
+
+  connect(node: AudioNode) {
+    node.connect(this.waveform.analyser);
   }
 
 }

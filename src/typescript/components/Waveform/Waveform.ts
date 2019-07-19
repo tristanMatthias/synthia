@@ -1,16 +1,13 @@
-import { html, LitElement, query } from 'lit-element';
+import { html, LitElement, query, property } from 'lit-element';
 
 import { SElement } from '../../types';
 import styles from './Waveform.styles';
 
 
-class Waveform extends LitElement {
+export class Waveform extends LitElement {
   static get styles() {
     return [styles]
   }
-
-  width: number = 400;
-  height: number = 100;
 
   private _root = document.querySelector(SElement.root)!
   private _ctx = this._root.context
@@ -29,19 +26,30 @@ class Waveform extends LitElement {
     this._dataArray = new Uint8Array(this._bufferLength);
 
     this._draw = this._draw.bind(this);
-    this.analyser.connect(this._ctx.destination);
   }
 
   @query('canvas')
   canvas?: HTMLCanvasElement;
 
+
+  @property({reflect: true})
+  width: number = 400;
+
+  @property({reflect: true})
+  height: number = 60;
+
   render() {
-    return html`<canvas></canvas>`;
+    return html`<canvas width="${this.width}px" height="${this.height}px"></canvas>`;
   }
 
   firstUpdated() {
     this._canvasCtx = this.canvas!.getContext('2d')!;
     this._draw();
+  }
+
+
+  connect(node: AudioNode) {
+    this.analyser.connect(node);
   }
 
 

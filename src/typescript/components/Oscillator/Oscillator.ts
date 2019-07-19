@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit-element';
+import { html, LitElement, property, query } from 'lit-element';
 
 import { oscillator2 } from '../../icons/oscillator2';
 import { waveSawtooth } from '../../icons/waveSawtooth';
@@ -8,6 +8,8 @@ import { SElement } from '../../types';
 import styles from './oscillator.styles';
 import { SelectableMixin } from '../Selectable/Selectable';
 import { DraggableMixin } from '../Draggable/Draggable';
+import { Waveform } from '../Waveform/Waveform';
+import { Root } from '../Root/Root';
 
 
 const icons = {
@@ -25,14 +27,20 @@ export class Oscillator extends LitElement {
 
   root = document.querySelector(SElement.root)!
   ctx = this.root.context
-  osc = this.ctx.createOscillator();
+
+  osc?: OscillatorNode;
+
+
+  @property()
+  playing: boolean = false;
+
+  @property()
+  private _connectedTo?: Root;
 
 
   constructor() {
     super();
-    this.osc.connect(document.querySelector(SElement.waveform)!.analyser);
-    this.frequency = 100;
-    this.osc.type = 'sawtooth';
+    this.toggle = this.toggle.bind(this);
   }
 
 
@@ -44,37 +52,77 @@ export class Oscillator extends LitElement {
   }
 
 
+  private _frequency: number = 100;
   get frequency() {
-    return this.osc.frequency.value;
+    return this._frequency;
   }
   set frequency(v: number) {
-    this.osc.frequency.value = v;
-  }
-
-  get type() {
-    return this.osc.type;
-  }
-  set type(v: OscillatorType) {
-    this.osc.type = v;
+    this._frequency = v;
+    if (this.osc) this.osc.frequency.value = v;
     this.requestUpdate();
   }
 
 
-  play() {
-    this.osc.start();
+  private _type: OscillatorType = 'sine';
+  get type() {
+    return this._type;
   }
+  set type(v: OscillatorType) {
+    this._type = v;
+    if (this.osc) this.osc.type = v;
+    this.requestUpdate();
+  }
+
+
+  connectTo(item: Root) {
+    item.connect(this.waveform!.analyser);
+    this._connectedTo = item;
+  }
+
+
+  toggle() {
+    if (this.playing) this.pause();
+    else this.play();
+  }
+
+
+  play() {
+    if (!this.playing) {
+      this.osc = this.ctx.createOscillator();
+      this.osc.connect(this.waveform!.analyser);
+      this.frequency = this.frequency;
+      this.osc.type = this.type;
+      this.osc.start();
+      this.playing = true;
+    }
+  }
+
   pause() {
-    this.osc.stop();
+    if (this.playing) {
+      console.log('stopping');
+
+      this.osc!.stop();
+      this.playing = false;
+    }
   }
 
   get icon() {
     // @ts-ignore
-    return icons[this.osc.type];
+    return icons[this.type];
   }
+
+  @query('.background')
+  background?: HTMLElement;
+
+  @query('synthia-waveform')
+  waveform?: Waveform
 
   render() {
     return html`
-      ${oscillator2}
+      <div class="background">
+        ${oscillator2}
+      </div>
+      <synthia-waveform></synthia-waveform>
       <div class="icon">${this.icon}</div>
     `;
   }
@@ -82,7 +130,35 @@ export class Oscillator extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    this.addEventListener('click', this.play.bind(this));
+    this.addEventListener('click', this.toggle);
+  }
+
+  firstUpdated() {
+    this.connectTo(this.root);
+  }
+
+  updated() {
+    if (this._connectedTo) {
+      const connectedBox = this._connectedTo.getBoundingClientRect() as DOMRect;
+      const thisBox = this.getBoundingClientRect() as DOMRect;
+
+      const thisX = thisBox.x + thisBox.width / 2;
+      const thisY = thisBox.y + thisBox.height / 2;
+      const connectedX = connectedBox.x + connectedBox.width / 2;
+      const connectedY = connectedBox.y + connectedBox.height / 2;
+
+      const angleRad = Math.atan((thisY - connectedY) / (thisX - connectedX));
+      let angleDeg = angleRad * 180 / Math.PI;
+
+      const distance = Math.sqrt(((thisX - connectedX) ** 2) + ((thisY - connectedY) ** 2)) - 120;
+
+      if (thisX > connectedX) angleDeg += 180;
+
+
+      this.waveform!.style.transform = `translateY(-50%) rotate(${angleDeg}deg) translateX(60px)`
+      this.waveform!.width = distance;
+      this.background!.style.transform = `rotate(${angleDeg + 90}deg)`
+    }
   }
 }
 

@@ -30,6 +30,14 @@
     width: 4rem;
     transform: translate(-50%, -50%);
   }
+
+  synthia-waveform {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-origin: left center;
+    transform: translateY(-50%);
+  }
 }
 
 // @keyframes rotate {
