@@ -1,9 +1,8 @@
 import { html, LitElement } from 'lit-element';
 
 import { SElement } from '../../types';
-import { DraggableMixin } from '../Draggable/Draggable';
-import styles from './root.styles';
 import { SelectableMixin } from '../Selectable/Selectable';
+import styles from './root.styles';
 
 
 class Root extends LitElement {
@@ -12,7 +11,6 @@ class Root extends LitElement {
   }
 
   context = new AudioContext();
-  private _initialPosition = {x: '-50%', y: '-50%'}
   selected = false;
 
   render() {
@@ -32,8 +30,7 @@ class Root extends LitElement {
 
 }
 
-let root = DraggableMixin(Root);
-let selectable = SelectableMixin(root);
+let selectable = SelectableMixin(Root);
 
 window.customElements.define(SElement.root, selectable);
 
