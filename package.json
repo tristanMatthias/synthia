@@ -1,0 +1,27 @@
+{
+  "name": "synthia",
+  "version": "0.0.0",
+  "description": "Web Synthesizer",
+  "main": "index.js",
+  "author": "Tristan Matthias <hello@tristanmatthias.com>",
+  "license": "MIT",
+  "dependencies": {
+    "typescript": "^3.5.3",
+    "webpack": "^4.36.1"
+  },
+  "scripts": {
+    "build": "webpack-cli",
+    "dev": "webpack-dev-server"
+  },
+  "devDependencies": {
+    "@types/html-webpack-plugin": "^3.2.1",
+    "@types/node": "^12.6.8",
+    "@types/webpack": "^4.4.35",
+    "html-webpack-plugin": "^3.2.0",
+    "ts-node": "^8.3.0",
+    "tslint": "^5.18.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-server": "^3.7.2"
+  }
+}
