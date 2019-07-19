@@ -1,0 +1,99 @@
+:host {
+  --color: var(--color-main);
+  transform-origin: center;
+  transform: translate(-50%, -50%);
+
+  svg {
+    position: relative;
+    width: 12rem;
+    transition: all 0.2s;
+
+    &, * {
+      transition: all 0.2s;
+    }
+
+    * {
+      fill: none;
+      transform-origin: center;
+    }
+  }
+
+  .border {
+    stroke: var(--color);
+  }
+
+  .center {
+    stroke: var(--color);
+    opacity: 0.2;
+  }
+
+  .shape {
+    stroke: var(--color);
+    transform-origin: center;
+  }
+
+  .selected {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    animation: select-in 0.1s ease-out;
+
+    span {
+      position: absolute;
+
+      &:before, &:after {
+        content: '';
+        position: absolute;
+        display: block;
+        width: 1px;
+        height: 1rem;
+        background: var(--color-main);
+      }
+      &:after {
+        transform-origin: top left;
+        transform: rotate(-90deg);
+      }
+
+      &:nth-child(2) {
+        top: 0;
+        right: 0;
+        transform: scaleX(-1);
+      }
+      &:nth-child(3) {
+        bottom: 0;
+        right: 0;
+        transform: scale(-1, -1);
+      }
+      &:nth-child(4) {
+        bottom: 0;
+        left: 0;
+        transform: scaleY(-1);
+      }
+    }
+  }
+}
+
+:host(:hover) {
+  svg {
+    transform: scale(1.2);
+  }
+  .center {
+    transform: rotate(-30deg) scale(1.5);
+    fill: var(--color-hover);
+  }
+  .shape {
+    // transform: rotate(45deg)
+  }
+}
+
+
+@keyframes select-in {
+  from {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

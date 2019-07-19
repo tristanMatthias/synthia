@@ -1,0 +1,3 @@
+import { css } from 'lit-element';
+export default css`:host .selected{position:absolute;height:100%;width:100%;transform:scale(1.2);opacity:0;transition:all 0.1s ease-out}:host .selected span{position:absolute}:host .selected span:before,:host .selected span:after{content:'';position:absolute;display:block;width:1px;height:1rem;background:var(--color-main)}:host .selected span:after{transform-origin:top left;transform:rotate(-90deg)}:host .selected span:nth-child(2){top:0;right:0;transform:scaleX(-1)}:host .selected span:nth-child(3){bottom:0;right:0;transform:scale(-1, -1)}:host .selected span:nth-child(4){bottom:0;left:0;transform:scaleY(-1)}:host .selected.on{transform:scale(1);opacity:1}
+`;

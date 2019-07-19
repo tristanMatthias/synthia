@@ -5,19 +5,27 @@
   "main": "index.js",
   "author": "Tristan Matthias <hello@tristanmatthias.com>",
   "license": "MIT",
-  "dependencies": {
-    "typescript": "^3.5.3",
-    "webpack": "^4.36.1"
-  },
   "scripts": {
+    "prebuild": "sass-render src/typescript/**/*.scss --template ./sass-template.ts --suffix '.styles.ts'",
     "build": "webpack-cli",
-    "dev": "webpack-dev-server"
+    "dev": "webpack-dev-server -w"
   },
   "devDependencies": {
+    "@types/extract-text-webpack-plugin": "^3.0.4",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "sass-loader": "^7.1.0",
+    "typescript": "^3.5.3",
+    "url-loader": "^2.1.0",
+    "wc-sass-render": "^1.2.1",
+    "webpack": "^4.36.1",
     "@types/html-webpack-plugin": "^3.2.1",
     "@types/node": "^12.6.8",
     "@types/webpack": "^4.4.35",
+    "css-loader": "^3.1.0",
     "html-webpack-plugin": "^3.2.0",
+    "lit-element": "^2.2.0",
+    "lit-html": "^1.1.1",
+    "ts-loader": "^6.0.4",
     "ts-node": "^8.3.0",
     "tslint": "^5.18.0",
     "tslint-config-airbnb": "^5.11.1",

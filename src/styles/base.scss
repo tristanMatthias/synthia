@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css?family=Space+Mono:400,400i,700,700i&display=swap');
+
+@import './reset.scss';
+
+:root {
+  --color-main: white;
+  --color-hover: #{rgba(white, 0.2)};
+  --color-bg: #0a0b25;
+  --color-bg-2: #{rgba(#252a7a, 0.3)};
+
+  --color-text: #a5a8d1;
+}
+
+html {
+  color: var(--color-text);
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  overflow: hidden;
+}
+
+body {
+  font-size: 1.8rem;
+}
+
+synthia-canvas {
+  background:var(--color-bg) url('../images/background.svg') center;
+  background-size: 5rem;
+}
+
+synthia-root {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 8rem;
+  background: var(--color-bg-2);
+}
