@@ -33,6 +33,9 @@ export class Waveform extends LitElement {
 
 
   @property({reflect: true})
+  color: string = "#7d83df";
+
+  @property({reflect: true})
   width: number = 400;
 
   @property({reflect: true})
@@ -64,8 +67,8 @@ export class Waveform extends LitElement {
     ctx.fillStyle = 'transparent';
     ctx.fillRect(0, 0, this.width, this.height);
 
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = this.color;
     ctx.beginPath();
 
     const sliceWidth = this.width * 1.0 / this._bufferLength;

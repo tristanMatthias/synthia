@@ -10,6 +10,7 @@ import { SelectableMixin } from '../Selectable/Selectable';
 import { DraggableMixin } from '../Draggable/Draggable';
 import { Waveform } from '../Waveform/Waveform';
 import { Root } from '../Root/Root';
+import { DeletableMixin } from '../Deletable/Deletable';
 
 
 const icons = {
@@ -133,6 +134,11 @@ export class Oscillator extends LitElement {
     this.addEventListener('click', this.toggle);
   }
 
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.pause();
+  }
+
   firstUpdated() {
     this.connectTo(this.root);
   }
@@ -165,8 +171,9 @@ export class Oscillator extends LitElement {
 
 let oscillator = DraggableMixin(Oscillator);
 let selectable = SelectableMixin(oscillator);
+let deletable = DeletableMixin(selectable);
 
-window.customElements.define(SElement.oscillator, selectable);
+window.customElements.define(SElement.oscillator, deletable);
 
 declare global {
   interface HTMLElementTagNameMap {
