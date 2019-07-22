@@ -3,6 +3,7 @@ import { html, LitElement } from 'lit-element';
 import { SElement } from '../../types';
 import { DraggableMixin, InitialPosition } from '../../mixins/Draggable/Draggable';
 import styles from './canvas.styles';
+import { mix } from '../../mixins/mix';
 
 
 export class Canvas extends LitElement {
@@ -25,9 +26,12 @@ export class Canvas extends LitElement {
   }
 }
 
-let root = DraggableMixin(Canvas);
-
-window.customElements.define(SElement.canvas, root);
+window.customElements.define(
+  SElement. canvas,
+  mix(Canvas, [
+    DraggableMixin
+  ])
+);
 
 
 declare global {

@@ -6,6 +6,7 @@ import { waveSawtooth } from '../../icons/waveSawtooth';
 import { waveSine } from '../../icons/waveSine';
 import { waveSquare } from '../../icons/waveSquare';
 import { Connectable, ConnectableMixin, ConnectableEvents } from '../../mixins/Connectable/Connectable';
+import { mix } from '../../mixins/mix';
 import { DeletableMixin } from '../../mixins/Deletable/Deletable';
 import { DraggableMixin } from '../../mixins/Draggable/Draggable';
 import { Receivable } from '../../mixins/Receivable/Receivable';
@@ -13,6 +14,7 @@ import { SelectableMixin } from '../../mixins/Selectable/Selectable';
 import { SElement } from '../../types';
 import { Waveform } from '../Waveform/Waveform';
 import styles from './oscillator.styles';
+import { HasCircleMenu, CircleMenuButton, HasCircleMenuMixin } from '../../mixins/HasCircleMenu/HasCircleMenu';
 
 
 const icons = {
@@ -21,7 +23,7 @@ const icons = {
   square: waveSquare,
 }
 
-export class Oscillator extends LitElement implements Connectable {
+export class Oscillator extends LitElement implements Connectable, HasCircleMenu {
 
   static get styles() {
     return [styles]
@@ -33,6 +35,8 @@ export class Oscillator extends LitElement implements Connectable {
   connectTo(node: Receivable): void { }
   // Connectable
   protected _startConnect() { }
+  // Circle menu
+  private _menuOpen: boolean = false;
 
 
 
@@ -59,17 +63,26 @@ export class Oscillator extends LitElement implements Connectable {
   }
 
 
+  get buttons() {
+    const buttons: CircleMenuButton[] = Object.entries(icons).map(([type, icon], i) => {
+      let t = type as OscillatorType;
+      return {
+        icon,
+        action: () => this.type = t
+      };
+    })
+
+    buttons.push({ action: this._startConnect, icon: connect });
+
+    return buttons;
+  }
+
+
   @queryAll(SElement.waveform)
   waveforms?: Waveform[];
 
   @query('.background')
   background?: HTMLElement;
-
-
-  @property()
-  private _menuOpen: boolean = false;
-
-
 
 
   constructor() {
@@ -124,41 +137,23 @@ export class Oscillator extends LitElement implements Connectable {
   pause() {
     if (this.playing) {
       this.osc!.stop();
+      this.osc!.disconnect();
       this.playing = false;
     }
   }
 
 
   render() {
-    // @ts-ignore
-    const buttons = Object.entries(icons).map(([type, icon], i) => {
-      let t = type as OscillatorType;
-      return html`
-        <synthia-button slot="button-${i}" @click=${() => this.type = t}>${icon}</synthia-button>
-      `})
-
-    buttons.push(html`<synthia-button slot="button-${3}" @click=${this._startConnect}>${
-      connect
-    }</synthia-button>`);
-
     return html`
-      <div class="background">
-        ${oscillator2}
-      </div>
-
+      <div class="background"> ${oscillator2} </div>
       <div class="icon">${this.icon}</div>
-
-      <synthia-circle-menu open=${this._menuOpen && !this._app.isDragging}>
-        ${buttons}
-      </synthia-circle-menu>
     `;
   }
+
 
   connectedCallback() {
     super.connectedCallback();
     window.addEventListener('keydown', this._keyDown);
-    this.addEventListener('mouseover', () => this._menuOpen = true);
-    this.addEventListener('mouseout', () => this._menuOpen = false);
   }
 
   disconnectedCallback() {
@@ -170,17 +165,18 @@ export class Oscillator extends LitElement implements Connectable {
   private _keyDown(e: KeyboardEvent) {
     if (this.selected && e.code === 'Space') this.toggle();
   }
-
-
 }
 
-
-let oscillator = DraggableMixin(Oscillator);
-let selectable = SelectableMixin(oscillator);
-let deletable = DeletableMixin(selectable);
-let connectable = ConnectableMixin(deletable);
-
-window.customElements.define(SElement.oscillator, connectable);
+window.customElements.define(
+  SElement.oscillator,
+  mix(Oscillator, [
+    DraggableMixin,
+    SelectableMixin,
+    DeletableMixin,
+    ConnectableMixin,
+    HasCircleMenuMixin
+  ])
+);
 
 declare global {
   interface HTMLElementTagNameMap {
