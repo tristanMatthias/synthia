@@ -7,8 +7,8 @@
   "license": "MIT",
   "scripts": {
     "start": "http-server dist",
-    "prebuild": "sass-render src/typescript/**/*.scss --template ./sass-template.ts --suffix '.styles.ts'",
-    "build": "webpack-cli",
+    "build:sass": "sass-render src/typescript/**/*.scss --template ./sass-template.ts --suffix '.styles.ts'",
+    "build": "yarn build:sass; webpack-cli",
     "dev": "webpack-dev-server -w & yarn prebuild --watch"
   },
   "devDependencies": {

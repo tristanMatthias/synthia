@@ -1,7 +1,7 @@
 import { html, LitElement, query, property } from 'lit-element';
 
 import { SElement } from '../../types';
-import styles from './Waveform.styles';
+import styles from './waveform.styles';
 
 
 export class Waveform extends LitElement {
