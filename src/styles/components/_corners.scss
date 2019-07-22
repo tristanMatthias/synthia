@@ -1,0 +1,38 @@
+.corners {
+  position: fixed;
+  right:  var(--margin);
+  left:  var(--margin);
+  top: calc( var(--margin) * 2 + 2rem);
+  bottom: calc( var(--margin) * 2 + 2rem);
+  pointer-events: none;
+  opacity: 0.3;
+
+  border-left: 1px solid var(--color-main);
+  border-right: 1px solid var(--color-main);
+
+  svg {
+    position: absolute;
+  }
+
+  svg.corner-top-left {
+    top: -4rem;;
+    left: -2px;
+
+  }
+  svg.corner-bottom-left {
+    bottom: -4rem;
+    left: -2px;
+    transform: scaleY(-1);
+  }
+
+  svg.corner-top-right {
+    top: -4rem;
+    right: -2px;
+    transform: scaleX(-1);
+  }
+  svg.corner-bottom-right {
+    bottom: -4rem;
+    right: -2px;
+    transform: scale(-1, -1);
+  }
+}

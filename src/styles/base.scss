@@ -2,6 +2,10 @@
 
 @import './reset.scss';
 
+
+@import './components/footer';
+@import './components/corners';
+
 :root.dark {
   --color-bg: #0a0b25;
   --color-main: white;
@@ -31,6 +35,7 @@
 
 :root {
   --node-size: 12rem;
+  --margin: 4rem;
 }
 
 html {
@@ -57,19 +62,8 @@ synthia-root {
 }
 
 
-
-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 8rem;
-  background: var(--color-bg-2);
-}
-
-
 synthia-waveform {
   position: fixed;
-  left: 10rem;
-  bottom: 10rem;
+  left: 8rem;
+  bottom: 8rem;
 }

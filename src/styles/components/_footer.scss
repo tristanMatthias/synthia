@@ -1,0 +1,26 @@
+footer {
+  --margin: 4rem;
+  position: fixed;
+  bottom: var(--margin);
+  left: var(--margin);
+  right: var(--margin);
+
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    border-top: 2px solid var(--color-main);
+    width: 8rem;
+    height: 0.5rem;
+    opacity: 0.3;
+  }
+
+  &:before {
+    border-left: 3rem solid var(--color-main);
+    left: 0;
+  }
+  &:after {
+    border-right: 3rem solid var(--color-main);
+    right: 0;
+  }
+}
