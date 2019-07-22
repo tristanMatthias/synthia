@@ -11,10 +11,16 @@
     --color: var(--color-main);
   }
 
+  .background {
+    width: 12rem;
+    height: 12rem;
+  }
+
   .icon {
     position: absolute;
     left: 50%;
     top: 50%;
+    height: 4rem;
     width: 4rem;
     transform: translate(-50%, -50%);
     svg * {
@@ -47,5 +53,9 @@
       fill: none;
       stroke: var(--color-bg);
     }
+  }
+
+  synthia-waveform {
+    height: 6rem;
   }
 }
