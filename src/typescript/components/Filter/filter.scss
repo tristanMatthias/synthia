@@ -2,18 +2,15 @@
   position: absolute;
 
   display: block;
-  width: 12rem;
-  height: 12rem;
+  &, .background, svg {
+    width: var(--node-size);
+    height: var(--node-size);
+  }
 
   svg {
     overflow: visible;
     width: 100%;
     --color: var(--color-main);
-  }
-
-  .background {
-    width: 12rem;
-    height: 12rem;
   }
 
   .icon {

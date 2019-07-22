@@ -28,6 +28,10 @@
   --color-feature: #FF9D00;
 }
 
+:root {
+  --node-size: 12rem;
+}
+
 html {
   color: var(--color-text);
   font-family: 'Space Mono', monospace;

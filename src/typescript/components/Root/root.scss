@@ -3,9 +3,13 @@
   transform-origin: center;
   transform: translate(-50%, -50%);
 
+  &, svg {
+    width: var(--node-size);
+    height: var(--node-size);
+  }
+
   svg {
     position: relative;
-    width: 12rem;
     transition: all 0.2s;
 
     &, * {
