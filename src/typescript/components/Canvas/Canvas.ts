@@ -11,8 +11,6 @@ export class Canvas extends LitElement {
 
   constructor() {
     super();
-    console.log('after');
-
     this._initialPosition = {x: '-50%', y: '-50%'}
   }
 

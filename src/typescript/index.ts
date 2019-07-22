@@ -13,6 +13,5 @@ import { SElement } from './types';
     oscillator.x = x;
     oscillator.y = y;
     canvas.appendChild(oscillator);
-    oscillator.startConnect();
   })
 })()

@@ -3,6 +3,7 @@ import { html, LitElement } from 'lit-element';
 import { SElement } from '../../types';
 import { SelectableMixin } from '../../mixins/Selectable/Selectable';
 import styles from './root.styles';
+import { ReceivableMixin } from '../../mixins/Receivable/Receivable';
 
 
 export class Root extends LitElement {
@@ -36,8 +37,9 @@ export class Root extends LitElement {
 }
 
 let selectable = SelectableMixin(Root);
+let receivable = ReceivableMixin(selectable);
 
-window.customElements.define(SElement.root, selectable);
+window.customElements.define(SElement.root, receivable);
 
 
 declare global {

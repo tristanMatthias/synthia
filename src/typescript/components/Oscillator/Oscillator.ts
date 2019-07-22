@@ -1,17 +1,18 @@
-import { html, LitElement, property, query } from 'lit-element';
+import { html, LitElement, property, query, queryAll } from 'lit-element';
 
+import { connect } from '../../icons/connect';
 import { oscillator2 } from '../../icons/oscillator2';
 import { waveSawtooth } from '../../icons/waveSawtooth';
 import { waveSine } from '../../icons/waveSine';
 import { waveSquare } from '../../icons/waveSquare';
-import { SElement } from '../../types';
-import styles from './oscillator.styles';
-import { SelectableMixin } from '../../mixins/Selectable/Selectable';
-import { DraggableMixin, Position } from '../../mixins/Draggable/Draggable';
-import { Waveform } from '../Waveform/Waveform';
-import { Root } from '../Root/Root';
+import { Connectable, ConnectableMixin, ConnectableEvents } from '../../mixins/Connectable/Connectable';
 import { DeletableMixin } from '../../mixins/Deletable/Deletable';
-import { connect } from '../../icons/connect';
+import { DraggableMixin } from '../../mixins/Draggable/Draggable';
+import { Receivable } from '../../mixins/Receivable/Receivable';
+import { SelectableMixin } from '../../mixins/Selectable/Selectable';
+import { SElement } from '../../types';
+import { Waveform } from '../Waveform/Waveform';
+import styles from './oscillator.styles';
 
 
 const icons = {
@@ -20,11 +21,20 @@ const icons = {
   square: waveSquare,
 }
 
-export class Oscillator extends LitElement {
+export class Oscillator extends LitElement implements Connectable {
 
   static get styles() {
     return [styles]
   }
+
+  // ---------------------------------------------------------- Mixin properties
+  // Selectable
+  selected?: boolean;
+  connectTo(node: Receivable): void { }
+  // Connectable
+  protected _startConnect() { }
+
+
 
 
   private _app = document.querySelector(SElement.app)!;
@@ -32,39 +42,43 @@ export class Oscillator extends LitElement {
 
   osc?: OscillatorNode;
 
-  // Inherited
-  selected?: boolean;
 
   @property()
   playing: boolean = false;
-
-  @property()
-  private _connectedTo: Root | null = null;
-
-  @property()
-  private _menuOpen: boolean = false;
-
-  @property()
-  connecting: boolean = false;
-
-  @property()
-  private _mousePos: Position | null = null;
-
-
-  constructor() {
-    super();
-    this.toggle = this.toggle.bind(this);
-    this._keyDown = this._keyDown.bind(this);
-    this._updateConnect = this._updateConnect.bind(this);
-    this.endConnect = this.endConnect.bind(this);
-  }
-
 
   set x(x: number) {
     this.style.left = `${x}px`;
   }
   set y(y: number) {
     this.style.top = `${y}px`;
+  }
+
+  get icon() {
+    // @ts-ignore
+    return icons[this.type];
+  }
+
+
+  @queryAll(SElement.waveform)
+  waveforms?: Waveform[];
+
+  @query('.background')
+  background?: HTMLElement;
+
+
+  @property()
+  private _menuOpen: boolean = false;
+
+
+
+
+  constructor() {
+    super();
+    this.toggle = this.toggle.bind(this);
+    this._keyDown = this._keyDown.bind(this);
+    this.addEventListener(ConnectableEvents.connectingRotate, (e: CustomEventInit) => {
+      this.background!.style.transform = `rotate(${e.detail.angle + 90}deg)`
+    })
   }
 
 
@@ -90,15 +104,6 @@ export class Oscillator extends LitElement {
   }
 
 
-  connectTo(item: Root) {
-    item.connect(this.waveform!.analyser);
-    this._connectedTo = item;
-    if (this.connecting) {
-      this.connecting = false;
-    }
-  }
-
-
   toggle() {
     if (this.playing) this.pause();
     else this.play();
@@ -108,7 +113,7 @@ export class Oscillator extends LitElement {
   play() {
     if (!this.playing) {
       this.osc = this.ctx.createOscillator();
-      this.osc.connect(this.waveform!.analyser);
+      this.waveforms!.forEach(wf => this.osc!.connect(wf.analyser))
       this.frequency = this.frequency;
       this.osc.type = this.type;
       this.osc.start();
@@ -123,16 +128,6 @@ export class Oscillator extends LitElement {
     }
   }
 
-  get icon() {
-    // @ts-ignore
-    return icons[this.type];
-  }
-
-  @query('.background')
-  background?: HTMLElement;
-
-  @query('synthia-waveform')
-  waveform?: Waveform
 
   render() {
     // @ts-ignore
@@ -142,16 +137,14 @@ export class Oscillator extends LitElement {
         <synthia-button slot="button-${i}" @click=${() => this.type = t}>${icon}</synthia-button>
       `})
 
-    buttons.push(html`<synthia-button slot="button-${3}" @click=${this.startConnect}>${connect}</synthia-button>`);
+    buttons.push(html`<synthia-button slot="button-${3}" @click=${this._startConnect}>${
+      connect
+    }</synthia-button>`);
 
     return html`
       <div class="background">
         ${oscillator2}
       </div>
-      ${this._connectedTo || (this.connecting && this._mousePos)
-        ? html`<synthia-waveform class="${this.playing ? 'playing' : ''}"></synthia-waveform>`
-        : null
-      }
 
       <div class="icon">${this.icon}</div>
 
@@ -160,7 +153,6 @@ export class Oscillator extends LitElement {
       </synthia-circle-menu>
     `;
   }
-
 
   connectedCallback() {
     super.connectedCallback();
@@ -175,81 +167,20 @@ export class Oscillator extends LitElement {
     this.pause();
   }
 
-
-  updated() {
-    if (this._connectedTo || this.connecting) {
-      const thisBox = this.getBoundingClientRect() as DOMRect;
-
-      const thisX = thisBox.x + thisBox.width / 2;
-      const thisY = thisBox.y + thisBox.height / 2;
-
-      let destX: number;
-      let destY: number;
-
-      if (this._connectedTo) {
-        const connectedBox = this._connectedTo.getBoundingClientRect() as DOMRect;
-        destX = connectedBox.x + connectedBox.width / 2;
-        destY = connectedBox.y + connectedBox.height / 2;
-      } else {
-        destX = this._mousePos!.x;
-        destY = this._mousePos!.y;
-      }
-
-      const angleRad = Math.atan((thisY - destY) / (thisX - destX));
-      let angleDeg = angleRad * 180 / Math.PI;
-
-      let distance = Math.sqrt(((thisX - destX) ** 2) + ((thisY - destY) ** 2));
-      if (!this.connecting) distance -= 120;
-      else distance -= 60;
-
-      if (thisX >= destX) angleDeg += 180;
-
-      if (distance < 0) distance = 0;
-
-
-      this.waveform!.style.transform = `translateY(-50%) rotate(${angleDeg}deg) translateX(60px)`
-      this.waveform!.width = distance;
-      this.background!.style.transform = `rotate(${angleDeg + 90}deg)`
-    }
-  }
-
   private _keyDown(e: KeyboardEvent) {
     if (this.selected && e.code === 'Space') this.toggle();
-    if (this.connecting && e.code == 'Escape') this.endConnect();
   }
 
 
-  startConnect() {
-    this.connecting = true;
-    this._connectedTo = null;
-    this._mousePos = null;
-    window.addEventListener('mousemove', this._updateConnect);
-    setTimeout(() => {
-      window.addEventListener('click', this.endConnect);
-    }, 100)
-  }
-
-  private _updateConnect(e: MouseEvent) {
-    this._mousePos = {x: e.clientX, y: e.clientY}
-  }
-
-  endConnect(e?: MouseEvent) {
-    this.connecting = false;
-    window.removeEventListener('mousemove', this._updateConnect);
-    window.removeEventListener('click', this.endConnect);
-
-    if (e && e.target instanceof Root) {
-      this.connectTo(e.target);
-    }
-  }
 }
 
 
 let oscillator = DraggableMixin(Oscillator);
 let selectable = SelectableMixin(oscillator);
 let deletable = DeletableMixin(selectable);
+let connectable = ConnectableMixin(deletable);
 
-window.customElements.define(SElement.oscillator, deletable);
+window.customElements.define(SElement.oscillator, connectable);
 
 declare global {
   interface HTMLElementTagNameMap {
