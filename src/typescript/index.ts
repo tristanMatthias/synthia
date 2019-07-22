@@ -10,7 +10,7 @@ import { SElement } from './types';
     y = Math.abs(y) + e.clientY;
 
     let object;
-    if (e.metaKey) object = document.createElement(SElement.filter);
+    if (e.shiftKey) object = document.createElement(SElement.filter);
     else object = document.createElement(SElement.oscillator);
 
     object.x = x;
