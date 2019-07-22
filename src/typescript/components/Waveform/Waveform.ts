@@ -64,9 +64,6 @@ export class Waveform extends LitElement {
     ctx.clearRect(0, 0, this.width, this.height);
     this.analyser.getByteTimeDomainData(this._dataArray);
 
-    ctx.fillStyle = 'transparent';
-    ctx.fillRect(0, 0, this.width, this.height);
-
     ctx.lineWidth = 2;
     ctx.strokeStyle = this.color || getComputedStyle(document.documentElement).getPropertyValue('--color-text');
     ctx.beginPath();

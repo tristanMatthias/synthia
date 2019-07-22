@@ -6,6 +6,8 @@ import './Canvas/Canvas';
 import './Waveform/Waveform';
 import './CircleMenu/CircleMenu';
 import './Button/Button';
+import './Slider/Slider';
+import './ExpoSlider/ExpoSlider';
 import { SElement } from '../types';
 
 

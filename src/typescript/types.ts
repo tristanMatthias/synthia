@@ -6,5 +6,7 @@ export enum SElement {
   filter = 'synthia-filter',
   waveform = 'synthia-waveform',
   circleMenu = 'synthia-circle-menu',
-  button = 'synthia-button'
+  button = 'synthia-button',
+  slider = 'synthia-slider',
+  expoSlider = 'synthia-expo-slider'
 }
