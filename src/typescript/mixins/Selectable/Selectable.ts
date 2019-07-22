@@ -18,12 +18,13 @@ export const SelectableMixin = (superclass: new () => LitElement) =>
     }
 
 
-    private _selected: Boolean = false;
-    private get selected(): Boolean {
+    private _selected: boolean = false;
+    private get selected(): boolean {
       return this._selected;
     }
-    private set selected(v: Boolean) {
+    private set selected(v: boolean) {
       this._selected = v;
+      this.toggleAttribute('selected', v);
       this.requestUpdate();
     }
 
@@ -51,7 +52,7 @@ export const SelectableMixin = (superclass: new () => LitElement) =>
       this.selected = true;
       window.addEventListener('keydown', this._selectableKeyDown);
       window.addEventListener('mousedown', this._selectableMouseDown);
-      e.stopPropagation();
+      // e.stopPropagation();
     }
 
     private _selectableKeyDown(e: KeyboardEvent) {

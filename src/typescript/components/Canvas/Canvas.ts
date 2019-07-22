@@ -1,7 +1,7 @@
 import { html, LitElement } from 'lit-element';
 
 import { SElement } from '../../types';
-import { DraggableMixin, InitialPosition } from '../Draggable/Draggable';
+import { DraggableMixin, InitialPosition } from '../../mixins/Draggable/Draggable';
 import styles from './canvas.styles';
 
 

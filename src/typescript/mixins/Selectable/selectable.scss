@@ -4,7 +4,7 @@
   &:before {
     content: '';
     border-radius: 50%;
-    background: var(--color-main);
+    background: var(--color-hover);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -33,7 +33,7 @@
         display: block;
         width: 1px;
         height: 1rem;
-        background: var(--color-main);
+        background: var(--color-alt);
       }
       &:after {
         transform-origin: top left;
@@ -65,6 +65,6 @@
 }
 
 :host(:hover):before {
-  opacity: 0.05;
+  opacity: 1;
   transform: translate(-50%, -50%) scale(1.2);
 }

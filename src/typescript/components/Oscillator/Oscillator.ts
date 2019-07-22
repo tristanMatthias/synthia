@@ -6,11 +6,12 @@ import { waveSine } from '../../icons/waveSine';
 import { waveSquare } from '../../icons/waveSquare';
 import { SElement } from '../../types';
 import styles from './oscillator.styles';
-import { SelectableMixin } from '../Selectable/Selectable';
-import { DraggableMixin } from '../Draggable/Draggable';
+import { SelectableMixin } from '../../mixins/Selectable/Selectable';
+import { DraggableMixin, Position } from '../../mixins/Draggable/Draggable';
 import { Waveform } from '../Waveform/Waveform';
 import { Root } from '../Root/Root';
-import { DeletableMixin } from '../Deletable/Deletable';
+import { DeletableMixin } from '../../mixins/Deletable/Deletable';
+import { connect } from '../../icons/connect';
 
 
 const icons = {
@@ -26,22 +27,36 @@ export class Oscillator extends LitElement {
   }
 
 
-  root = document.querySelector(SElement.root)!
-  ctx = this.root.context
+  private _app = document.querySelector(SElement.app)!;
+  ctx = this._app.context
 
   osc?: OscillatorNode;
 
+  // Inherited
+  selected?: boolean;
 
   @property()
   playing: boolean = false;
 
   @property()
-  private _connectedTo?: Root;
+  private _connectedTo: Root | null = null;
+
+  @property()
+  private _menuOpen: boolean = false;
+
+  @property()
+  connecting: boolean = false;
+
+  @property()
+  private _mousePos: Position | null = null;
 
 
   constructor() {
     super();
     this.toggle = this.toggle.bind(this);
+    this._keyDown = this._keyDown.bind(this);
+    this._updateConnect = this._updateConnect.bind(this);
+    this.endConnect = this.endConnect.bind(this);
   }
 
 
@@ -78,6 +93,9 @@ export class Oscillator extends LitElement {
   connectTo(item: Root) {
     item.connect(this.waveform!.analyser);
     this._connectedTo = item;
+    if (this.connecting) {
+      this.connecting = false;
+    }
   }
 
 
@@ -100,8 +118,6 @@ export class Oscillator extends LitElement {
 
   pause() {
     if (this.playing) {
-      console.log('stopping');
-
       this.osc!.stop();
       this.playing = false;
     }
@@ -119,51 +135,111 @@ export class Oscillator extends LitElement {
   waveform?: Waveform
 
   render() {
+    // @ts-ignore
+    const buttons = Object.entries(icons).map(([type, icon], i) => {
+      let t = type as OscillatorType;
+      return html`
+        <synthia-button slot="button-${i}" @click=${() => this.type = t}>${icon}</synthia-button>
+      `})
+
+    buttons.push(html`<synthia-button slot="button-${3}" @click=${this.startConnect}>${connect}</synthia-button>`);
+
     return html`
       <div class="background">
         ${oscillator2}
       </div>
-      <synthia-waveform></synthia-waveform>
+      ${this._connectedTo || (this.connecting && this._mousePos)
+        ? html`<synthia-waveform class="${this.playing ? 'playing' : ''}"></synthia-waveform>`
+        : null
+      }
+
       <div class="icon">${this.icon}</div>
+
+      <synthia-circle-menu open=${this._menuOpen && !this._app.isDragging}>
+        ${buttons}
+      </synthia-circle-menu>
     `;
   }
 
 
   connectedCallback() {
     super.connectedCallback();
-    this.addEventListener('click', this.toggle);
+    window.addEventListener('keydown', this._keyDown);
+    this.addEventListener('mouseover', () => this._menuOpen = true);
+    this.addEventListener('mouseout', () => this._menuOpen = false);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
+    window.removeEventListener('keydown', this._keyDown);
     this.pause();
   }
 
-  firstUpdated() {
-    this.connectTo(this.root);
-  }
 
   updated() {
-    if (this._connectedTo) {
-      const connectedBox = this._connectedTo.getBoundingClientRect() as DOMRect;
+    if (this._connectedTo || this.connecting) {
       const thisBox = this.getBoundingClientRect() as DOMRect;
 
       const thisX = thisBox.x + thisBox.width / 2;
       const thisY = thisBox.y + thisBox.height / 2;
-      const connectedX = connectedBox.x + connectedBox.width / 2;
-      const connectedY = connectedBox.y + connectedBox.height / 2;
 
-      const angleRad = Math.atan((thisY - connectedY) / (thisX - connectedX));
+      let destX: number;
+      let destY: number;
+
+      if (this._connectedTo) {
+        const connectedBox = this._connectedTo.getBoundingClientRect() as DOMRect;
+        destX = connectedBox.x + connectedBox.width / 2;
+        destY = connectedBox.y + connectedBox.height / 2;
+      } else {
+        destX = this._mousePos!.x;
+        destY = this._mousePos!.y;
+      }
+
+      const angleRad = Math.atan((thisY - destY) / (thisX - destX));
       let angleDeg = angleRad * 180 / Math.PI;
 
-      const distance = Math.sqrt(((thisX - connectedX) ** 2) + ((thisY - connectedY) ** 2)) - 120;
+      let distance = Math.sqrt(((thisX - destX) ** 2) + ((thisY - destY) ** 2));
+      if (!this.connecting) distance -= 120;
+      else distance -= 60;
 
-      if (thisX > connectedX) angleDeg += 180;
+      if (thisX >= destX) angleDeg += 180;
+
+      if (distance < 0) distance = 0;
 
 
       this.waveform!.style.transform = `translateY(-50%) rotate(${angleDeg}deg) translateX(60px)`
       this.waveform!.width = distance;
       this.background!.style.transform = `rotate(${angleDeg + 90}deg)`
+    }
+  }
+
+  private _keyDown(e: KeyboardEvent) {
+    if (this.selected && e.code === 'Space') this.toggle();
+    if (this.connecting && e.code == 'Escape') this.endConnect();
+  }
+
+
+  startConnect() {
+    this.connecting = true;
+    this._connectedTo = null;
+    this._mousePos = null;
+    window.addEventListener('mousemove', this._updateConnect);
+    setTimeout(() => {
+      window.addEventListener('click', this.endConnect);
+    }, 100)
+  }
+
+  private _updateConnect(e: MouseEvent) {
+    this._mousePos = {x: e.clientX, y: e.clientY}
+  }
+
+  endConnect(e?: MouseEvent) {
+    this.connecting = false;
+    window.removeEventListener('mousemove', this._updateConnect);
+    window.removeEventListener('click', this.endConnect);
+
+    if (e && e.target instanceof Root) {
+      this.connectTo(e.target);
     }
   }
 }

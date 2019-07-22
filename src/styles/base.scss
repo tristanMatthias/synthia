@@ -2,14 +2,30 @@
 
 @import './reset.scss';
 
-:root {
+:root.dark {
+  --color-bg: #0a0b25;
   --color-main: white;
   --color-alt: #7d83df;
   --color-hover: #{rgba(white, 0.2)};
-  --color-bg: #0a0b25;
-  --color-bg-2: #{rgba(#252a7a, 0.3)};
-
   --color-text: #a5a8d1;
+}
+
+:root.light {
+  --color-bg: #bfc0d1;
+  --color-main: #252a7a;
+  --color-alt: ##252a7a;
+  --color-hover: #{rgba(#252a7a, 0.2)};
+  --color-text: #0a0b25;
+}
+
+:root.purple {
+  --color-bg: #1E1E3F;
+  --color-main: #A599E9;
+  --color-alt: #FAD000;
+  --color-hover: #{rgba(#4D21FC, 0.2)};
+  --color-text: #9EFFFF;
+  --color-text-alt: #A5FF90;
+  --color-feature: #FF9D00;
 }
 
 html {

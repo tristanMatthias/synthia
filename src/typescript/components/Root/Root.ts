@@ -1,7 +1,7 @@
 import { html, LitElement } from 'lit-element';
 
 import { SElement } from '../../types';
-import { SelectableMixin } from '../Selectable/Selectable';
+import { SelectableMixin } from '../../mixins/Selectable/Selectable';
 import styles from './root.styles';
 
 
@@ -10,12 +10,7 @@ export class Root extends LitElement {
     return [styles]
   }
 
-  context = new AudioContext();
-  selected = false;
-
-  get waveform() {
-    return document.querySelector(SElement.waveform)!;
-  }
+  private _app = document.querySelector(SElement.app)!;
 
   render() {
     return html`
@@ -34,8 +29,9 @@ export class Root extends LitElement {
 
 
   connect(node: AudioNode) {
-    node.connect(this.waveform.analyser);
+    node.connect(this._app.mainWaveform.analyser);
   }
+
 
 }
 

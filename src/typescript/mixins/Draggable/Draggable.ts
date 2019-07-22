@@ -1,10 +1,11 @@
 import { LitElement } from 'lit-element';
+import { SElement } from '../../types';
 
 export interface InitialPosition {
   x: number | string,
   y: number | string
 }
-interface Position {
+export interface Position {
   x: number,
   y: number
 }
@@ -13,11 +14,10 @@ interface Position {
 export const DraggableMixin = (superclass: new () => LitElement) =>
   class Draggable extends superclass {
 
-    context = new AudioContext();
+    private _app = document.querySelector(SElement.app)!;
 
     protected _initialPosition?: InitialPosition;
     private _offset: Position = { x: 0, y: 0 };
-    private _dragging = false;
     private _dragStartPosition: null | Position = null;
     private _dragOffsetPosition: Position = { x: 0, y: 0 };
 
@@ -49,7 +49,6 @@ export const DraggableMixin = (superclass: new () => LitElement) =>
     }
 
     private updatePosition() {
-
       this.style.transform = `translate(calc(${this._initialPosition!.x} + ${
         this._offset.x + this._dragOffsetPosition.x
         }px), calc(${this._initialPosition!.y} + ${
@@ -61,14 +60,15 @@ export const DraggableMixin = (superclass: new () => LitElement) =>
 
     private _dragStart(e: MouseEvent) {
       e.stopPropagation();
-      this._dragging = true;
+      this._app.isDragging = true;
+
       window.addEventListener('mouseup', this._dragEnd);
       window.addEventListener('mousemove', this._drag);
       this._dragStartPosition = { x: e.clientX, y: e.clientY };
     }
 
     private _dragEnd(e: MouseEvent) {
-      this._dragging = true;
+      this._app.isDragging = false;
       this._offset.x += this._dragOffsetPosition.x;
       this._offset.y += this._dragOffsetPosition.y;
       this._dragOffsetPosition = { x: 0, y: 0 };

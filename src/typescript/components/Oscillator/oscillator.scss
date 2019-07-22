@@ -29,6 +29,10 @@
     top: 50%;
     width: 4rem;
     transform: translate(-50%, -50%);
+    svg * {
+      fill: none;
+      stroke: var(--color-text);
+    }
   }
 
   synthia-waveform {
@@ -37,6 +41,24 @@
     left: 50%;
     transform-origin: left center;
     transform: translateY(-50%);
+
+    pointer-events: none;
+
+    opacity: 0.2;
+    &.playing {
+      opacity: 1;
+    }
+  }
+
+  synthia-button {
+    width: 3rem;
+    height: 3rem;
+    line-height: 3rem;
+
+    svg, svg * {
+      fill: none;
+      stroke: var(--color-bg);
+    }
   }
 }
 
