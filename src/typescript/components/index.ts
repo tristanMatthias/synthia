@@ -4,6 +4,7 @@ import './Oscillator/Oscillator';
 import './Filter/Filter';
 import './Canvas/Canvas';
 import './Waveform/Waveform';
+import './FrequencyResponse/FrequencyResponse';
 import './CircleMenu/CircleMenu';
 import './Button/Button';
 import './Slider/Slider';

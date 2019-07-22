@@ -1,0 +1,9 @@
+:host {
+  display: block;
+  width: 800px;
+  height: 600px;
+
+  canvas {
+    transform-origin: top left;
+  }
+}
