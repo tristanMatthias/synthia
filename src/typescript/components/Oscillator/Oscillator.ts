@@ -14,7 +14,8 @@ import { SelectableMixin } from '../../mixins/Selectable/Selectable';
 import { SElement } from '../../types';
 import { Waveform } from '../Waveform/Waveform';
 import styles from './oscillator.styles';
-import { HasCircleMenu, CircleMenuButton, HasCircleMenuMixin } from '../../mixins/HasCircleMenu/HasCircleMenu';
+import { HasCircleMenu, HasCircleMenuMixin } from '../../mixins/HasCircleMenu/HasCircleMenu';
+import { CircleMenuButton } from '../CircleMenu/CircleMenu';
 
 
 const icons = {
@@ -63,18 +64,14 @@ export class Oscillator extends LitElement implements Connectable, HasCircleMenu
   }
 
 
-  get buttons() {
-    const buttons: CircleMenuButton[] = Object.entries(icons).map(([type, icon], i) => {
-      let t = type as OscillatorType;
-      return {
-        icon,
-        action: () => this.type = t
-      };
-    })
-
-    buttons.push({ action: this._startConnect, icon: connect });
-
-    return buttons;
+  get buttons(): CircleMenuButton[] {
+    const action = (type: OscillatorType) => () => this.type = type;
+    return [
+      {text: 'Square wave', icon: icons.square, action: action('square')},
+      {text: 'Sine wave', icon: icons.sine, action: action('sine')},
+      {text: 'Sawtooth wave', icon: icons.sawtooth, action: action('sawtooth')},
+      {text: 'Connect', icon: connect, action: () => this._startConnect() }
+    ]
   }
 
 

@@ -7,11 +7,12 @@ import { filterLowPass } from '../../icons/filterLowPass';
 import { Connectable, ConnectableEvents, ConnectableMixin } from '../../mixins/Connectable/Connectable';
 import { DeletableMixin } from '../../mixins/Deletable/Deletable';
 import { DraggableMixin } from '../../mixins/Draggable/Draggable';
-import { CircleMenuButton, HasCircleMenu, HasCircleMenuMixin } from '../../mixins/HasCircleMenu/HasCircleMenu';
+import { HasCircleMenu, HasCircleMenuMixin } from '../../mixins/HasCircleMenu/HasCircleMenu';
 import { mix } from '../../mixins/mix';
 import { ReceivableMixin } from '../../mixins/Receivable/Receivable';
 import { SelectableMixin } from '../../mixins/Selectable/Selectable';
 import { SElement } from '../../types';
+import { CircleMenuButton } from '../CircleMenu/CircleMenu';
 import { Waveform } from '../Waveform/Waveform';
 import styles from './filter.styles';
 
@@ -58,18 +59,13 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu {
   }
 
 
-  get buttons() {
-    const buttons: CircleMenuButton[] = Object.entries(icons).map(([type, icon], i) => {
-      let t = type as BiquadFilterType;
-      return {
-        icon,
-        action: () => this.type = t
-      };
-    })
-
-    buttons.push({ action: this._startConnect, icon: connect });
-
-    return buttons;
+  get buttons(): CircleMenuButton[] {
+    const action = (type: BiquadFilterType) => () => this.type = type;
+    return [
+      { text: 'High pass', icon: icons.highpass, action: action('highpass') },
+      { text: 'Low pass', icon: icons.lowpass, action: action('lowpass') },
+      { text: 'Connect', icon: connect, action: () => this._startConnect() }
+    ];
   }
 
 

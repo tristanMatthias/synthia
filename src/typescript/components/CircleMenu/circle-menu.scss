@@ -13,7 +13,7 @@
     transform-origin: right center;
   }
 
-  span {
+  span:not(.label) {
     display: inline-block;
     // visibility: hidden;
     transition: all 0.15s ease-out;
@@ -22,23 +22,47 @@
     opacity: 0;
     transform: scale(0.5);
   }
+
+  synthia-button {
+    width: 3rem;
+    height: 3rem;
+    line-height: 3rem;
+
+    svg, svg * {
+      fill: none;
+      stroke: var(--color-bg);
+    }
+  }
+
+  span.label {
+    position: absolute;
+    display: block;
+    top: -8rem;
+    left: 50%;
+    height: 3rem;
+    max-width: 150%;
+    line-height: 3rem;
+    padding: 0 1rem;
+
+    transform: translateX(-50%);
+
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    background: var(--color-hover);
+    // color: var(--color-alt);
+    border-radius: 1.5rem;
+  }
 }
 
 :host([open="true"]) {
-  span {
-    // visibility: visible;
+  span:not(.label) {
     margin-left: 0;
     visibility: visible;
     opacity: 1;
     transform: scale(1);
     transition: all 0.25s ease-out;
-  }
-}
-
-
-@keyframes showButton {
-  from {
-  }
-  to{
   }
 }

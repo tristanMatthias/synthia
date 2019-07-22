@@ -44,17 +44,6 @@
     }
   }
 
-  synthia-button {
-    width: 3rem;
-    height: 3rem;
-    line-height: 3rem;
-
-    svg, svg * {
-      fill: none;
-      stroke: var(--color-bg);
-    }
-  }
-
   synthia-waveform {
     height: 6rem;
   }
