@@ -1,6 +1,7 @@
 import './App/App';
 import './Root/Root';
 import './Oscillator/Oscillator';
+import './Filter/Filter';
 import './Canvas/Canvas';
 import './Waveform/Waveform';
 import './CircleMenu/CircleMenu';

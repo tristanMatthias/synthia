@@ -9,9 +9,12 @@ import { SElement } from './types';
     x = Math.abs(x) + e.clientX;
     y = Math.abs(y) + e.clientY;
 
-    const oscillator = document.createElement(SElement.oscillator);
-    oscillator.x = x;
-    oscillator.y = y;
-    canvas.appendChild(oscillator);
+    let object;
+    if (e.metaKey) object = document.createElement(SElement.filter);
+    else object = document.createElement(SElement.oscillator);
+
+    object.x = x;
+    object.y = y;
+    canvas.appendChild(object);
   })
 })()
