@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit-element';
 import { Receivable } from '../Receivable/Receivable';
 import { Waveform } from '../../components/Waveform/Waveform';
 import { SElement } from '../../types';
-import { Position } from '../Draggable/Draggable';
+import { Position, DraggableEvents } from '../Draggable/Draggable';
 
 
 export enum ConnectableEvents {
@@ -36,6 +36,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
       this._updateConnect = this._updateConnect.bind(this);
       this._endConnect = this._endConnect.bind(this);
       this._connectableKeyDown = this._connectableKeyDown.bind(this)
+      this._updateWaveforms = this._updateWaveforms.bind(this)
     }
 
 
@@ -81,6 +82,8 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
         this.dispatchEvent(new CustomEvent(ConnectableEvents.newConnection, {
           detail: wf
         }));
+
+        item.addEventListener(DraggableEvents.dragged, this._updateWaveforms)
       }
 
 

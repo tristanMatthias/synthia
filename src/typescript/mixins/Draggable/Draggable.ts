@@ -11,6 +11,11 @@ export interface Position {
 }
 
 
+export enum DraggableEvents {
+  dragged = 'dragged'
+}
+
+
 export const DraggableMixin = (superclass: new () => LitElement) =>
   class Draggable extends superclass {
 
@@ -55,7 +60,9 @@ export const DraggableMixin = (superclass: new () => LitElement) =>
         this._offset.y + this._dragOffsetPosition.y
         }px))`;
 
-      this.requestUpdate()
+      this.requestUpdate();
+
+      this.dispatchEvent(new CustomEvent(DraggableEvents.dragged))
     }
 
     private _dragStart(e: MouseEvent) {
