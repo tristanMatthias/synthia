@@ -29,6 +29,8 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
     multipleConnections?: boolean;
     output?: AudioNode;
 
+    private _app = document.querySelector(SElement.app)!;
+
     get waveform() {
       return this.shadowRoot!.querySelector(SElement.waveform)!;
     }
@@ -122,6 +124,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
 
     protected _startConnect() {
       this._connecting = true;
+      this._app.isConnecting = true;
       this._mousePos = null;
       window.addEventListener('mousemove', this._updateConnect);
       setTimeout(() => {
@@ -138,6 +141,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
 
     private async _endConnect(e?: MouseEvent) {
       this._connecting = false;
+      this._app.isConnecting = false;
       await this.requestUpdate();
       window.removeEventListener('mousemove', this._updateConnect);
       window.removeEventListener('click', this._endConnect);

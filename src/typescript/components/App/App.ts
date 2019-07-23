@@ -2,6 +2,10 @@ import { LitElement, html, customElement, property } from "lit-element";
 import { SElement } from "../../types";
 import { Selectable } from "../../mixins/Selectable/Selectable";
 
+export enum AppEvents {
+  connecting = 'connecting'
+}
+
 @customElement(SElement.app)
 export class App extends LitElement {
 
@@ -10,12 +14,26 @@ export class App extends LitElement {
 
   private _selected: Selectable[] = [];
 
-
-  @property()
-  isConnecting: boolean = false;
-
   @property()
   isDragging: boolean = false;
+
+
+  private _isConnecting : boolean = false;
+  public get isConnecting() : boolean {
+    return this._isConnecting;
+  }
+  public set isConnecting(v : boolean) {
+
+    this._isConnecting = v;
+    (Array.from(this.querySelectorAll(`${SElement.canvas} > *`)) as HTMLElement[])
+      // @ts-ignore
+      .filter(e => !e.canReceive && !e._connecting)
+      .forEach(e => e.style.opacity = v ? '0.2' : '1')
+
+
+    this.requestUpdate();
+  }
+
 
 
   render() { return html`<slot></slot>`; }
