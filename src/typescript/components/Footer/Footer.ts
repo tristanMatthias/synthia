@@ -1,13 +1,13 @@
 import { customElement, html, LitElement, TemplateResult } from 'lit-element';
 
-import { filter } from '../../icons/filter';
-import { oscillator2 } from '../../icons/oscillator2';
+import { iconFilter } from '../../icons/filter';
+import { iconOscillator } from '../../icons/oscillator';
 import { SElement } from '../../types';
 import styles from './footer.styles';
 import { footerBackground } from '../../images/footerBackground';
-import { filterSmall } from '../../icons/filter-small';
+import { iconFilterSmall } from '../../icons/filterSmall';
 import { Filter } from '../Filter/Filter';
-import { oscillatorSmall } from '../../icons/oscillatorSmall';
+import { iconOscillatorSmall } from '../../icons/oscillatorSmall';
 import { Oscillator } from '../Oscillator/Oscillator';
 
 
@@ -31,8 +31,8 @@ export class ComponentToolbar extends LitElement {
 
   get nodes(): FooterNode[] {
     return [
-      {icon: filterSmall, text: 'Filter', type: SElement.filter},
-      {icon: oscillatorSmall, text: 'Oscillator', type: SElement.oscillator}
+      {icon: iconFilterSmall, text: 'Filter', type: SElement.filter},
+      {icon: iconOscillatorSmall, text: 'Oscillator', type: SElement.oscillator}
     ]
   }
 

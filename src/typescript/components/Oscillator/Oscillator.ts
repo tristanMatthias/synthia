@@ -1,10 +1,10 @@
 import { html, LitElement, property, query, queryAll } from 'lit-element';
 
-import { connect } from '../../icons/connect';
-import { oscillator2 } from '../../icons/oscillator2';
-import { waveSawtooth } from '../../icons/waveSawtooth';
-import { waveSine } from '../../icons/waveSine';
-import { waveSquare } from '../../icons/waveSquare';
+import { iconConnect } from '../../icons/connect';
+import { iconOscillator } from '../../icons/oscillator';
+import { iconWaveSawtooth } from '../../icons/waveSawtooth';
+import { iconWaveSine } from '../../icons/waveSine';
+import { iconWaveSquare } from '../../icons/waveSquare';
 import { Connectable, ConnectableEvents, ConnectableMixin } from '../../mixins/Connectable/Connectable';
 import { DeletableMixin } from '../../mixins/Deletable/Deletable';
 import { DraggableMixin } from '../../mixins/Draggable/Draggable';
@@ -15,14 +15,14 @@ import { SElement } from '../../types';
 import { CircleMenuButton } from '../CircleMenu/CircleMenu';
 import { Waveform } from '../Waveform/Waveform';
 import styles from './oscillator.styles';
-import { play } from '../../icons/play';
-import { pause } from '../../icons/pause';
+import { iconPlay } from '../../icons/play';
+import { iconPause } from '../../icons/pause';
 
 
 const icons = {
-  sine: waveSine,
-  sawtooth: waveSawtooth,
-  square: waveSquare,
+  sine: iconWaveSine,
+  sawtooth: iconWaveSawtooth,
+  square: iconWaveSquare,
 }
 
 export class Oscillator extends LitElement implements Connectable, HasCircleMenu {
@@ -74,10 +74,10 @@ export class Oscillator extends LitElement implements Connectable, HasCircleMenu
       { text: 'Square wave', icon: icons.square, action: action('square'), active: this.type === 'square' },
       { text: 'Sine wave', icon: icons.sine, action: action('sine'), active: this.type === 'sine' },
       { text: 'Sawtooth wave', icon: icons.sawtooth, action: action('sawtooth'), active: this.type === 'sawtooth' },
-      { text: 'Connect', icon: connect, action: () => this._startConnect(), color: 'text' },
+      { text: 'Connect', icon: iconConnect, action: () => this._startConnect(), color: 'text' },
       {
         text: this.playing ? 'Pause' : 'Play',
-        icon: this.playing ? pause : play,
+        icon: this.playing ? iconPause : iconPlay,
         action: this.toggle,
         color: 'text'
       },
@@ -153,7 +153,7 @@ export class Oscillator extends LitElement implements Connectable, HasCircleMenu
 
   render() {
     return html`
-      <div class="background"> ${oscillator2} </div>
+      <div class="background"> ${iconOscillator} </div>
       <div class="icon">${this.icon}</div>
     `;
   }

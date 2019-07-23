@@ -1,9 +1,9 @@
 import { html, LitElement, query, queryAll } from 'lit-element';
 
-import { connect } from '../../icons/connect';
-import { filter } from '../../icons/filter';
-import { filterHighPass } from '../../icons/filterHighPass';
-import { filterLowPass } from '../../icons/filterLowPass';
+import { iconConnect } from '../../icons/connect';
+import { iconFilter } from '../../icons/filter';
+import { iconFilterHighPass } from '../../icons/filterHighPass';
+import { iconFilterLowPass } from '../../icons/filterLowPass';
 import { Connectable, ConnectableEvents, ConnectableMixin } from '../../mixins/Connectable/Connectable';
 import { DeletableMixin } from '../../mixins/Deletable/Deletable';
 import { DraggableMixin } from '../../mixins/Draggable/Draggable';
@@ -18,8 +18,8 @@ import styles from './filter.styles';
 
 
 const icons = {
-  lowpass: filterLowPass,
-  highpass: filterHighPass
+  lowpass: iconFilterLowPass,
+  highpass: iconFilterHighPass
 }
 
 export class Filter extends LitElement implements Connectable, HasCircleMenu, Receivable {
@@ -71,7 +71,7 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
     return [
       { text: 'High pass', icon: icons.highpass, action: action('highpass'), active: this.type ===  'highpass' },
       { text: 'Low pass', icon: icons.lowpass, action: action('lowpass'), active: this.type ===  'lowpass' },
-      { text: 'Connect', icon: connect, action: () => this._startConnect(), color: 'text' }
+      { text: 'Connect', icon: iconConnect, action: () => this._startConnect(), color: 'text' }
     ];
   }
 
@@ -116,7 +116,7 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
 
   render() {
     return html`
-      <div class="background"> ${filter} </div>
+      <div class="background"> ${iconFilter} </div>
       <div class="icon">${this.icon}</div>
     `;
   }

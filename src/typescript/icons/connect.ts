@@ -1,6 +1,6 @@
 import { html } from 'lit-html';
 
-export const connect = html`
+export const iconConnect = html`
 <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 40 40">
   <g stroke="var(--color)" stroke-width="4">
       <path d="M14.97 28.405h9.952l4.976-8.618-1.722-2.983H17.903"/>
