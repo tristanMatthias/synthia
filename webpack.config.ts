@@ -1,5 +1,7 @@
 import {Configuration} from 'webpack';
 import HTMLWebpack from 'html-webpack-plugin';
+import Copy from 'copy-webpack-plugin';
+const Favicon = require('favicons-webpack-plugin');
 import ExtractText from 'extract-text-webpack-plugin';
 
 const CSS = new ExtractText('app.css');
@@ -15,7 +17,12 @@ const config: Configuration = {
     rules: [
       {test: /\.ts/, loader: 'ts-loader'},
       {test: /\.scss/, loader: CSS.extract(['css-loader', 'sass-loader'])},
-      {test: /\.html/, loader: 'html-loader'},
+      {test: /\.html/, use: {
+        loader: 'html-loader',
+        options: {
+          // attrs: ['meta:content']
+        }
+      }},
       {test: /\.svg/, loader: 'url-loader'}
     ]
   },
@@ -24,7 +31,11 @@ const config: Configuration = {
     new HTMLWebpack({
       template: './src/index.html'
     }),
-    CSS
+    CSS,
+    new Favicon('./src/images/favicon.png'),
+    new Copy([
+      {from: './src/images/social', to: 'social'}
+    ])
   ],
 
 }
