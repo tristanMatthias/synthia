@@ -1,5 +1,5 @@
 import { LitElement, html, TemplateResult } from 'lit-element';
-import { Receivable } from '../Receivable/Receivable';
+import { Receivable, ReceivableEvents } from '../Receivable/Receivable';
 import { Waveform } from '../../components/Waveform/Waveform';
 import { SElement } from '../../types';
 import { Position, DraggableEvents } from '../Draggable/Draggable';
@@ -84,8 +84,9 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
     }
 
     disconnectedCallback() {
-      super.disconnectedCallback();
+      if (this.output) this._connectedTo.forEach(this.disconnectFrom.bind(this));
       window.removeEventListener('keydown', this._connectableKeyDown);
+      super.disconnectedCallback();
     }
 
 
@@ -105,7 +106,8 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
           detail: wf
         }));
 
-        item.addEventListener(DraggableEvents.dragged, this._updateWaveforms)
+        item.addEventListener(DraggableEvents.dragged, this._updateWaveforms);
+        item.addEventListener(ReceivableEvents.removed, () => this.disconnectFrom(item))
         return true;
       }
 
@@ -115,9 +117,11 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
 
 
     async disconnectFrom(item: Receivable) {
-      if (!this.output) throw new Error('No output audio node');
-      if (!this._connectedTo.includes(item)) return false;
-      item.disconnect(this.output);
+      const index = this._connectedTo.indexOf(item);
+      if (index < 0) return false;
+      if (this.output) item.disconnect(this.output);
+      this._connectedTo.splice(index, 1);
+      this.requestUpdate();
     }
 
 
@@ -144,9 +148,10 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
       window.removeEventListener('click', this._endConnect);
 
       if (!e || !e.target) return;
-      // @ts-ignore
       const receivable = e.target as Receivable;
-      if (!receivable.canReceive) return false;
+
+      // @ts-ignore
+      if (!receivable.canReceive || receivable === this) return false;
       this.connectTo(receivable);
     }
 

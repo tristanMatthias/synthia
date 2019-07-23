@@ -9,6 +9,10 @@ export interface Receivable extends LitElement {
 }
 
 
+export enum ReceivableEvents {
+  removed = 'removed'
+}
+
 
 export const ReceivableMixin = (superclass: new () => LitElement) =>
   class Receivable extends superclass implements Receivable {
@@ -23,7 +27,19 @@ export const ReceivableMixin = (superclass: new () => LitElement) =>
 
     disconnect(node: AudioNode) {
       if (!this.input) throw new Error('No input audio node');
-      node.disconnect(this.input);
-      return true;
+
+      try {
+        node.disconnect(this.input);
+        return true;
+      } catch (e) {
+        // Not connected
+        return false;
+      }
+    }
+
+    disconnectedCallback() {
+      this.dispatchEvent(new CustomEvent(ReceivableEvents.removed));
+      if (this.input) this.input.disconnect();
+      super.disconnectedCallback();
     }
   }
