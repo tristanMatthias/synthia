@@ -34,7 +34,8 @@ const config: Configuration = {
     CSS,
     new Favicon('./src/images/favicon.png'),
     new Copy([
-      {from: './src/images/social', to: 'social'}
+      {from: './src/images/social', to: 'social'},
+      { from: './src/googled8112ee85b009eda.html', to: 'googled8112ee85b009eda.html'}
     ])
   ],
 
