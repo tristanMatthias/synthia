@@ -9,6 +9,7 @@ import './CircleMenu/CircleMenu';
 import './Button/Button';
 import './Slider/Slider';
 import './ExpoSlider/ExpoSlider';
+import './Footer/Footer';
 import { SElement } from '../types';
 
 

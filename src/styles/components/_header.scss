@@ -1,15 +1,17 @@
-footer {
-  --margin: 4rem;
+header {
+  --margin: 3rem;
   position: fixed;
-  bottom: var(--margin);
+  top: 2rem;
   left: var(--margin);
   right: var(--margin);
+  z-index: 10;
+  display: grid;
 
   &:before, &:after {
     content: '';
     position: absolute;
     top: 0;
-    border-top: 2px solid var(--color-main);
+    border-bottom: 2px solid var(--color-main);
     width: 8rem;
     height: 0.5rem;
     opacity: 0.3;
@@ -22,5 +24,11 @@ footer {
   &:after {
     border-right: 3rem solid var(--color-main);
     right: 0;
+  }
+
+  .logo {
+    margin: auto;
+    height: 5rem;
+    margin-top: -1rem;
   }
 }

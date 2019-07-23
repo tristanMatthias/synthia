@@ -3,7 +3,7 @@
 @import './reset.scss';
 
 
-@import './components/footer';
+@import './components/header';
 @import './components/corners';
 
 :root.dark {
@@ -35,7 +35,7 @@
 
 :root {
   --node-size: 12rem;
-  --margin: 4rem;
+  --margin: 3rem;
 }
 
 html {
@@ -65,5 +65,5 @@ synthia-root {
 synthia-waveform {
   position: fixed;
   left: 8rem;
-  bottom: 8rem;
+  bottom: 5rem;
 }

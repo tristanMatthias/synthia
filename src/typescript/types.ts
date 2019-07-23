@@ -9,5 +9,6 @@ export enum SElement {
   circleMenu = 'synthia-circle-menu',
   button = 'synthia-button',
   slider = 'synthia-slider',
-  expoSlider = 'synthia-expo-slider'
+  expoSlider = 'synthia-expo-slider',
+  footer = 'synthia-footer'
 }

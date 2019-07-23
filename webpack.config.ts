@@ -15,6 +15,7 @@ const config: Configuration = {
     rules: [
       {test: /\.ts/, loader: 'ts-loader'},
       {test: /\.scss/, loader: CSS.extract(['css-loader', 'sass-loader'])},
+      {test: /\.html/, loader: 'html-loader'},
       {test: /\.svg/, loader: 'url-loader'}
     ]
   },
