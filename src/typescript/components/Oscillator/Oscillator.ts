@@ -15,6 +15,8 @@ import { SElement } from '../../types';
 import { CircleMenuButton } from '../CircleMenu/CircleMenu';
 import { Waveform } from '../Waveform/Waveform';
 import styles from './oscillator.styles';
+import { play } from '../../icons/play';
+import { pause } from '../../icons/pause';
 
 
 const icons = {
@@ -73,6 +75,13 @@ export class Oscillator extends LitElement implements Connectable, HasCircleMenu
       { text: 'Sine wave', icon: icons.sine, action: action('sine'), active: this.type === 'sine' },
       { text: 'Sawtooth wave', icon: icons.sawtooth, action: action('sawtooth'), active: this.type === 'sawtooth' },
       { text: 'Connect', icon: connect, action: () => this._startConnect(), color: 'text' },
+      {
+        text: this.playing ? 'Pause' : 'Play',
+        icon: this.playing ? pause : play,
+        action: this.toggle,
+        color: 'text'
+      },
+
     ]
   }
 
