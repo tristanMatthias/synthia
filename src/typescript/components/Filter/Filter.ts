@@ -9,7 +9,7 @@ import { DeletableMixin } from '../../mixins/Deletable/Deletable';
 import { DraggableMixin } from '../../mixins/Draggable/Draggable';
 import { HasCircleMenu, HasCircleMenuMixin } from '../../mixins/HasCircleMenu/HasCircleMenu';
 import { mix } from '../../mixins/mix';
-import { ReceivableMixin } from '../../mixins/Receivable/Receivable';
+import { ReceivableMixin, Receivable } from '../../mixins/Receivable/Receivable';
 import { SelectableMixin } from '../../mixins/Selectable/Selectable';
 import { SElement } from '../../types';
 import { CircleMenuButton } from '../CircleMenu/CircleMenu';
@@ -22,7 +22,7 @@ const icons = {
   highpass: filterHighPass
 }
 
-export class Filter extends LitElement implements Connectable, HasCircleMenu {
+export class Filter extends LitElement implements Connectable, HasCircleMenu, Receivable {
 
   static get styles() {
     return [styles]
@@ -31,19 +31,26 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu {
   // ---------------------------------------------------------- Mixin properties
   // Selectable
   selected?: boolean;
-  connectTo(): void { }
+  connectTo(): boolean { return true }
+  // Receiveable
+  canReceive = true
   // Connectable
   protected _startConnect() { }
   // Circle menu
   private _menuOpen: boolean = false;
 
 
-
-
   private _app = document.querySelector(SElement.app)!;
   ctx = this._app.context
 
   filter: BiquadFilterNode = this.ctx.createBiquadFilter();
+  multipleConnections = false;
+  get input() {
+    return this.shadowRoot!.querySelector(SElement.waveform)!.analyser;
+  }
+  output = this.filter;
+  connect() { return true };
+  disconnect() { return true }
 
 
   set x(x: number) {
@@ -107,18 +114,17 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu {
   }
 
 
-
-  connect(node: AudioNode) {
-    node.connect(this.filter);
-    this.filter.connect(this.waveforms![0].analyser)
-  }
-
-
   render() {
     return html`
       <div class="background"> ${filter} </div>
       <div class="icon">${this.icon}</div>
     `;
+  }
+
+
+  firstUpdated(props: Map<keyof Filter, any>) {
+    super.firstUpdated(props);
+    this.filter.connect(this.output);
   }
 }
 

@@ -59,8 +59,6 @@ export const SelectableMixin = (superclass: new () => LitElement) =>
 
     private _selectableClick(e: MouseEvent) {
       if (e.shiftKey) {
-        console.log(this.selected);
-
         if (this.selected) this._app.deselect(this);
         else this._app.select(this, true);
       } else this._app.select(this);

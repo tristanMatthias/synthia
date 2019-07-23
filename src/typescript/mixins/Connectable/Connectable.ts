@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit-element';
+import { LitElement, html, TemplateResult } from 'lit-element';
 import { Receivable } from '../Receivable/Receivable';
 import { Waveform } from '../../components/Waveform/Waveform';
 import { SElement } from '../../types';
@@ -11,16 +11,23 @@ export enum ConnectableEvents {
 }
 
 export interface Connectable {
-  connectTo(item: Receivable): void;
+  connectTo(item: Receivable): boolean;
+  output?: AudioNode;
+
+  multipleConnections: boolean;
 }
 
 
 export const ConnectableMixin = (superclass: new () => LitElement) =>
-  class Connectable extends superclass {
+  class Connectable extends superclass implements Connectable {
 
     // From superclass
     playing?: boolean;
     selected?: boolean;
+
+
+    multipleConnections?: boolean;
+    output?: AudioNode;
 
     get waveform() {
       return this.shadowRoot!.querySelector(SElement.waveform)!;
@@ -42,17 +49,31 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
 
     render() {
       const playingClass = this.playing ? 'playing' : '';
-      const waveforms = this._connectedTo.map(() =>
-        html`<synthia-waveform class=${playingClass}></synthia-waveform>`
-      );
 
-      if (this._connecting && this._mousePos) waveforms.push(
-        html`<synthia-waveform class="connecting"></synthia-waveform>`
-      );
+      let waveforms;
+      // If there are multiple connections, don't create any waveforms initially
+      if (this.multipleConnections) {
+        waveforms = this._connectedTo.map(() =>
+          html`<synthia-waveform class=${playingClass}></synthia-waveform>`
+        );
+      } else {
+        // Otherwise, if there is only one connection allowed, there will always
+        // only be one waveform, so always create it
+        const hideBeforeConnected = this._connectedTo.length ? '' : 'display: none';
+        waveforms = html`<synthia-waveform
+          class=${playingClass}
+          style=${hideBeforeConnected}
+        ></synthia-waveform>`;
+      }
+
+      let connecting: TemplateResult | null = null;
+      if (this._connecting && this._mousePos) {
+        connecting = html`<synthia-waveform class="connecting"></synthia-waveform>`
+      }
 
 
       const root = super.render();
-      return html`${root}${waveforms}`;
+      return html`${root}${waveforms}${connecting}`;
     }
 
 
@@ -69,6 +90,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
 
 
     async connectTo(item: Receivable) {
+      if (!this.multipleConnections && this._connectedTo.length) return false;
 
       if (!this._connectedTo.includes(item)) {
         this._connectedTo.push(item);
@@ -77,17 +99,25 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
           `${SElement.waveform}:nth-of-type(${this._connectedTo.length})`
         ) as Waveform;
 
-        item.connect(wf.analyser);
+        if (!item.connect(wf.analyser)) return false;
 
         this.dispatchEvent(new CustomEvent(ConnectableEvents.newConnection, {
           detail: wf
         }));
 
         item.addEventListener(DraggableEvents.dragged, this._updateWaveforms)
+        return true;
       }
 
 
       if (this._connecting) this._connecting = false;
+    }
+
+
+    async disconnectFrom(item: Receivable) {
+      if (!this.output) throw new Error('No output audio node');
+      if (!this._connectedTo.includes(item)) return false;
+      item.disconnect(this.output);
     }
 
 

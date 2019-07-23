@@ -3,16 +3,26 @@ import { html, LitElement } from 'lit-element';
 import { SElement } from '../../types';
 import { SelectableMixin } from '../../mixins/Selectable/Selectable';
 import styles from './root.styles';
-import { ReceivableMixin } from '../../mixins/Receivable/Receivable';
+import { ReceivableMixin, Receivable } from '../../mixins/Receivable/Receivable';
 import { mix } from '../../mixins/mix';
 
 
-export class Root extends LitElement {
+export class Root extends LitElement implements Receivable {
   static get styles() {
     return [styles]
   }
 
+
   private _app = document.querySelector(SElement.app)!;
+
+
+  // Inherited from Receivable
+  canReceive = true;
+  get input() {
+    return this._app.mainWaveform.analyser;
+  }
+  connect() { return true };
+  disconnect() { return true }
 
   render() {
     return html`
@@ -28,13 +38,6 @@ export class Root extends LitElement {
         </g>
       </svg>`;
   }
-
-
-  connect(node: AudioNode) {
-    node.connect(this._app.mainWaveform.analyser);
-  }
-
-
 }
 
 window.customElements.define(

@@ -5,17 +5,16 @@ import { oscillator2 } from '../../icons/oscillator2';
 import { waveSawtooth } from '../../icons/waveSawtooth';
 import { waveSine } from '../../icons/waveSine';
 import { waveSquare } from '../../icons/waveSquare';
-import { Connectable, ConnectableMixin, ConnectableEvents } from '../../mixins/Connectable/Connectable';
-import { mix } from '../../mixins/mix';
+import { Connectable, ConnectableEvents, ConnectableMixin } from '../../mixins/Connectable/Connectable';
 import { DeletableMixin } from '../../mixins/Deletable/Deletable';
 import { DraggableMixin } from '../../mixins/Draggable/Draggable';
-import { Receivable } from '../../mixins/Receivable/Receivable';
+import { HasCircleMenu, HasCircleMenuMixin } from '../../mixins/HasCircleMenu/HasCircleMenu';
+import { mix } from '../../mixins/mix';
 import { SelectableMixin } from '../../mixins/Selectable/Selectable';
 import { SElement } from '../../types';
+import { CircleMenuButton } from '../CircleMenu/CircleMenu';
 import { Waveform } from '../Waveform/Waveform';
 import styles from './oscillator.styles';
-import { HasCircleMenu, HasCircleMenuMixin } from '../../mixins/HasCircleMenu/HasCircleMenu';
-import { CircleMenuButton } from '../CircleMenu/CircleMenu';
 
 
 const icons = {
@@ -33,19 +32,22 @@ export class Oscillator extends LitElement implements Connectable, HasCircleMenu
   // ---------------------------------------------------------- Mixin properties
   // Selectable
   selected?: boolean;
-  connectTo(node: Receivable): void { }
+  connectTo(): boolean { return true }
   // Connectable
   protected _startConnect() { }
   // Circle menu
   private _menuOpen: boolean = false;
 
 
-
+  multipleConnections = true;
 
   private _app = document.querySelector(SElement.app)!;
   ctx = this._app.context
 
   osc?: OscillatorNode;
+  get output() {
+    return this.osc;
+  }
 
 
   @property()
