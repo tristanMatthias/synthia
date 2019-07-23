@@ -48,6 +48,8 @@
     text-align: center;
     line-height: 6rem;
     transition: all 0.2s;
+    cursor: grab;
+    user-select: none;
 
     svg {
       width: 4rem;

@@ -11,7 +11,7 @@ export const footerBackground = html`
       d="M44.1 28.902a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM38.756 32.698l3.344 3.344v9.247l-3.344 3.344" opacity=".5" />
     <path fill="var(--color-main)"
       d="M426.705 39.979V21.967l1.588-1.588v39.2l-1.588-1.589V39.98zM424.55 39.979v18.42l2.155 2.156v7.179l-7.01 7.01h-3.555v-3.456l3.554-3.554v-55.51L416.14 8.67V5.214h3.554l7.01 7.01v7.179l-2.155 2.155v18.42z" />
-    <path stroke="var(--color-main)" stroke-linecap="square" d="M264.924 73.524H409.91" opacity=".3" />
+    <path stroke="var(--color-main)" stroke-linecap="square" d="M264.924 73.524H409.91" opacity=".5" />
     <g fill="var(--color-main)" fill-opacity=".5">
       <path
         d="M432.14 12.902h7v2h-7zM432.14 58.402h7v2h-7zM432.14 62.402h2.493v2h-2.493zM432.14 16.902h5.26v2h-5.26zM432.14 20.902h8.374v2h-8.374zM440.514 12.902h3.062v2h-3.062z" />

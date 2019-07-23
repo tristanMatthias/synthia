@@ -14,7 +14,7 @@ import { Oscillator } from '../Oscillator/Oscillator';
 interface FooterNode {
   icon: TemplateResult,
   text: string,
-  node: any
+  type: SElement
 }
 
 
@@ -24,18 +24,32 @@ export class ComponentToolbar extends LitElement {
     return [styles]
   }
 
+  constructor() {
+    super();
+    this._handleDragStart = this._handleDragStart.bind(this);
+  }
+
   get nodes(): FooterNode[] {
     return [
-      {icon: filterSmall, text: 'Filter', node: Filter},
-      {icon: oscillatorSmall, text: 'Oscillator', node: Oscillator}
+      {icon: filterSmall, text: 'Filter', type: SElement.filter},
+      {icon: oscillatorSmall, text: 'Oscillator', type: SElement.oscillator}
     ]
   }
 
   render() {
     return html`
       ${footerBackground}
-      ${this.nodes.map(n => html`<div>${n.icon}<span>${n.text}</div>`)}
+      ${this.nodes.map(n => html`<div>
+        <div draggable="true" @dragstart=${this._handleDragStart(n.type)}>${n.icon}</div>
+        <span>${n.text}
+      </div>`)}
     `;
+  }
+
+  _handleDragStart(type: string) {
+    return (e: DragEvent) => {
+      e.dataTransfer!.setData('type', type);
+    }
   }
 }
 

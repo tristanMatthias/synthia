@@ -12,6 +12,7 @@ export class Canvas extends LitElement {
 
   constructor() {
     super();
+    this._handleDrop = this._handleDrop.bind(this);
     this._initialPosition = {x: '-50%', y: '-50%'}
   }
 
@@ -23,6 +24,27 @@ export class Canvas extends LitElement {
     return html`
       <slot></slot>
     `;
+  }
+
+  connectedCallback() {
+    super.connectedCallback()
+    this.addEventListener('drop', this._handleDrop);
+    this.addEventListener('dragover', (e) => e.preventDefault());
+  }
+
+  private _handleDrop(e: DragEvent) {
+    let { x, y } = this.getBoundingClientRect() as DOMRect;
+    x = Math.abs(x) + e.clientX - 60;
+    y = Math.abs(y) + e.clientY - 60;
+
+    const type = e.dataTransfer!.getData('type')!;
+    const object = document.createElement(type);
+
+    // @ts-ignore
+    object.x = x;
+    // @ts-ignore
+    object.y = y;
+    this.appendChild(object);
   }
 }
 
