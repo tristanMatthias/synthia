@@ -31,8 +31,8 @@
     background: var(--color);
 
     svg, svg * {
-      fill: none;
-      stroke: var(--color-bg);
+      --color: var(--color-bg);
+      // stroke: var(--color-bg);
     }
   }
 

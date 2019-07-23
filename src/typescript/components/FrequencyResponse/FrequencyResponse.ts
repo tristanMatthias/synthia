@@ -14,6 +14,24 @@ export class FrequencyResponse extends LitElement {
 
   filter?: BiquadFilterNode;
 
+
+  @property({ reflect: true })
+  color?: string;
+
+  @property({ reflect: true })
+  width: number = 800;
+
+  @property({ reflect: true })
+  height: number = 600;
+
+  @property({ reflect: true, type: Boolean })
+  frequencies: boolean = false;
+
+  @property({ reflect: true, type: Boolean })
+  decibels: boolean = false;
+
+
+
   private _canvasCtx?: CanvasRenderingContext2D;
   private _dbScale: number = 60;
   private _ocavtes: number = 11;
@@ -21,30 +39,10 @@ export class FrequencyResponse extends LitElement {
   constructor() {
     super();
     this._draw = this._draw.bind(this);
-    this.filter = this._ctx.createBiquadFilter();
-    this.filter.Q.value = 5;
-    this.filter.frequency.value = 2000;
-    this.filter.gain.value = 0.4;
-    this.filter.connect(this._ctx.destination);
-
-    const osc = this._ctx.createOscillator();
-    osc.type = 'square';
-    osc.connect(this.filter);
-    osc.start();
   }
 
   @query('canvas')
   canvas?: HTMLCanvasElement;
-
-
-  @property({reflect: true})
-  color?: string;
-
-  @property({reflect: true})
-  width: number = 800;
-
-  @property({reflect: true})
-  height: number = 600;
 
 
   private _frequency: number = 100;
@@ -62,12 +60,7 @@ export class FrequencyResponse extends LitElement {
   }
 
   render() {
-    return html`
-      <canvas width="${this.width}px" height="${this.height}px"></canvas>
-      <synthia-expo-slider type="range" value="0" max="24000" @change=${(e: any) => this.frequency = e.target.value} />
-      </synthia-expo-slider>
-      ${this.frequency}
-    `;
+    return html`<canvas width="${this.width}px" height="${this.height}px"></canvas>`;
   }
 
   firstUpdated() {
@@ -82,6 +75,11 @@ export class FrequencyResponse extends LitElement {
     this._canvasCtx.font = '1.2rem Space Mono';
     this._canvasCtx.scale(dpr, dpr);
     this._draw();
+  }
+
+  updated() {
+    this.style.width = `${this.width}px`;
+    this.style.height = `${this.height}px`;
   }
 
   private _draw() {
@@ -107,42 +105,15 @@ export class FrequencyResponse extends LitElement {
     const phaseResponse = new Float32Array(width);
     const nyquist = 0.5 * this._ctx.sampleRate;
 
-    // First get response.
-    for (let i = 0; i < width; ++i) {
-      let f = i / width;
-      // Convert to log frequency scale (octaves).
-      f = nyquist * Math.pow(2.0, this._ocavtes * (f - 1.0));
-      frequencyHz[i] = f;
-    }
-
-    this.filter.getFrequencyResponse(frequencyHz, magResponse, phaseResponse);
-    ctx.strokeStyle = highlightColor;
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-
-    for (var i = 0; i < width; ++i) {
-      // const f = magResponse[i];
-      const response = magResponse[i];
-      const dbResponse = 20.0 * Math.log(response) / Math.LN10;
-
-      const x = Math.floor(i);
-      const y = this._dbToY(dbResponse);
-
-
-      if (i == 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-
-    ctx.stroke();
-    ctx.beginPath();
 
     // Draw frequency scale.
+    ctx.beginPath();
     for (var octave = 0; octave <= this._ocavtes; octave++) {
       var x = Math.floor(octave * width / this._ocavtes);
 
       ctx.strokeStyle = gridColor;
       ctx.lineWidth = 2;
-      ctx.moveTo(x, 30);
+      ctx.moveTo(x, this.frequencies ? 30 : 0);
       ctx.lineTo(x, height);
       ctx.stroke();
 
@@ -153,27 +124,33 @@ export class FrequencyResponse extends LitElement {
         unit = 'KHz';
         value = (f / 1000).toFixed(1);
       }
-      if (octave == 0) ctx.textAlign = 'start';
-      else if (octave == this._ocavtes) ctx.textAlign = 'end';
-      else ctx.textAlign = "center";
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = textColor;
-      ctx.fillStyle = textColor;
-      ctx.fillText(value + unit, x, 20);
+      if (this.frequencies)  {
+        if (octave == 0) ctx.textAlign = 'start';
+        else if (octave == this._ocavtes) ctx.textAlign = 'end';
+        else ctx.textAlign = "center";
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = textColor;
+        ctx.fillStyle = textColor;
+        ctx.fillText(value + unit, x, 20);
+      }
     }
 
 
     // Draw decibel scale.
     for (var db = -this._dbScale; db < this._dbScale - 10; db += 10) {
       var y = this._dbToY(db);
-      ctx.strokeStyle = textColor;
-      ctx.fillStyle = textColor;
-      ctx.fillText(db.toFixed(0) + "dB", width - 4, y - 8);
+
       ctx.strokeStyle = gridColor;
       ctx.beginPath();
       ctx.moveTo(0, y);
       ctx.lineTo(width, y);
       ctx.stroke();
+
+      if (this.decibels) {
+        ctx.fillStyle = textColor;
+        ctx.textAlign = 'end';
+        ctx.fillText(db.toFixed(0) + "dB", width - 4, y - 7);
+      }
     }
 
     // Draw 0dB line.
@@ -181,6 +158,34 @@ export class FrequencyResponse extends LitElement {
     ctx.beginPath();
     ctx.moveTo(0, 0.5 * height);
     ctx.lineTo(width, 0.5 * height);
+    ctx.stroke();
+
+
+    // Get response
+    for (let i = 0; i < width; ++i) {
+      let f = i / width;
+      // Convert to log frequency scale (octaves).
+      f = nyquist * Math.pow(2.0, this._ocavtes * (f - 1.0));
+      frequencyHz[i] = f;
+    }
+
+    // Draw response.
+    this.filter.getFrequencyResponse(frequencyHz, magResponse, phaseResponse);
+    ctx.strokeStyle = highlightColor;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+
+    for (var i = 0; i < width; ++i) {
+      const response = magResponse[i];
+      const dbResponse = 20.0 * Math.log(response) / Math.LN10;
+
+      const x = Math.floor(i);
+      const y = this._dbToY(dbResponse);
+
+
+      if (i == 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
     ctx.stroke();
   }
 

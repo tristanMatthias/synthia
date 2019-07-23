@@ -10,6 +10,7 @@ import './Button/Button';
 import './Slider/Slider';
 import './ExpoSlider/ExpoSlider';
 import './Footer/Footer';
+import './Sidebar/Sidebar';
 import { SElement } from '../types';
 
 

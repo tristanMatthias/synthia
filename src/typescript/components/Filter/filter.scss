@@ -20,10 +20,6 @@
     height: 4rem;
     width: 4rem;
     transform: translate(-50%, -50%);
-    svg * {
-      fill: none;
-      stroke: var(--color-text);
-    }
   }
 
   synthia-waveform {
@@ -40,11 +36,6 @@
     width: 3rem;
     height: 3rem;
     line-height: 3rem;
-
-    svg, svg * {
-      fill: none;
-      stroke: var(--color-bg);
-    }
   }
 
   synthia-waveform {

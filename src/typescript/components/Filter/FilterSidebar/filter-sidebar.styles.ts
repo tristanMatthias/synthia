@@ -1,0 +1,3 @@
+import { css } from 'lit-element';
+export default css`:host *{box-sizing:border-box}:host synthia-frequency-response{margin-left:calc(-1 * var(--margin))}:host form{margin-top:var(--margin)}:host form .form-row{display:flex;flex-wrap:wrap;align-items:center}:host form .form-row label{flex:1;flex-basis:100%}:host form .form-row synthia-slider,:host form .form-row synthia-expo-slider{flex-grow:1}:host form .form-row .value{flex-grow:0;display:inline-block;height:4rem;line-height:4rem;width:8rem;padding:0 1rem;margin-left:var(--margin);text-align:center;border-radius:0.4rem;color:var(--color-alt);background:var(--color-bg);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+`;

@@ -1,25 +1,40 @@
 import { html, LitElement, query, queryAll } from 'lit-element';
-
 import { iconConnect } from '../../icons/connect';
 import { iconFilter } from '../../icons/filter';
+import { iconFilterAllPass } from '../../icons/filterAllPass';
+import { iconFilterBandPass } from '../../icons/filterBandPass';
 import { iconFilterHighPass } from '../../icons/filterHighPass';
+import { iconFilterHighShelf } from '../../icons/filterHighShelf';
 import { iconFilterLowPass } from '../../icons/filterLowPass';
+import { iconFilterLowShelf } from '../../icons/filterLowShelf';
+import { iconFilterNotch } from '../../icons/filterNotch';
+import { iconFilterPeaking } from '../../icons/filterPeaking';
 import { Connectable, ConnectableEvents, ConnectableMixin } from '../../mixins/Connectable/Connectable';
 import { DeletableMixin } from '../../mixins/Deletable/Deletable';
 import { DraggableMixin } from '../../mixins/Draggable/Draggable';
 import { HasCircleMenu, HasCircleMenuMixin } from '../../mixins/HasCircleMenu/HasCircleMenu';
 import { mix } from '../../mixins/mix';
-import { ReceivableMixin, Receivable } from '../../mixins/Receivable/Receivable';
+import { Receivable, ReceivableMixin } from '../../mixins/Receivable/Receivable';
 import { SelectableMixin } from '../../mixins/Selectable/Selectable';
 import { SElement } from '../../types';
 import { CircleMenuButton } from '../CircleMenu/CircleMenu';
+import { SidebarEvents } from '../Sidebar/Sidebar';
 import { Waveform } from '../Waveform/Waveform';
 import styles from './filter.styles';
+import { FilterSidebar } from './FilterSidebar/FilterSidebar';
+import { iconSettings } from '../../icons/settings';
+
 
 
 const icons = {
+  allpass: iconFilterAllPass,
+  bandpass: iconFilterBandPass,
+  highpass: iconFilterHighPass,
+  highshelf: iconFilterHighShelf,
   lowpass: iconFilterLowPass,
-  highpass: iconFilterHighPass
+  lowshelf: iconFilterLowShelf,
+  notch: iconFilterNotch,
+  peaking: iconFilterPeaking,
 }
 
 export class Filter extends LitElement implements Connectable, HasCircleMenu, Receivable {
@@ -45,12 +60,17 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
 
   filter: BiquadFilterNode = this.ctx.createBiquadFilter();
   multipleConnections = false;
-  get input() {
+  get output() {
     return this.shadowRoot!.querySelector(SElement.waveform)!.analyser;
   }
-  output = this.filter;
+  get input() {
+    return this.filter;
+  }
   connect() { return true };
   disconnect() { return true }
+
+
+  private _sidebar: FilterSidebar | null = null;
 
 
   set x(x: number) {
@@ -71,7 +91,8 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
     return [
       { text: 'High pass', icon: icons.highpass, action: action('highpass'), active: this.type ===  'highpass' },
       { text: 'Low pass', icon: icons.lowpass, action: action('lowpass'), active: this.type ===  'lowpass' },
-      { text: 'Connect', icon: iconConnect, action: () => this._startConnect(), color: 'text' }
+      { text: 'Connect', icon: iconConnect, action: () => this._startConnect(), color: 'text' },
+      { text: 'Settings', icon: iconSettings, action: () => this.toggleSidebar(), color: 'text' }
     ];
   }
 
@@ -85,10 +106,14 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
 
   constructor() {
     super();
+    this.toggleSidebar = this.toggleSidebar.bind(this);
     this.addEventListener(ConnectableEvents.connectingRotate, (e: CustomEventInit) => {
       this.background!.style.transform = `rotate(${e.detail.angle + 90}deg)`
     });
-    this.filter.type = 'allpass';
+    this.filter.type = 'highpass';
+    this.filter.Q.value = 5;
+    this.filter.frequency.value = 2000;
+    this.filter.gain.value = 0.1;
   }
 
 
@@ -114,6 +139,27 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
   }
 
 
+  private _gain: number = 0;
+  get gain() {
+    return this._gain;
+  }
+  set gain(v: number) {
+    this._gain = v;
+    if (this.filter) this.filter.gain.value = v;
+    this.requestUpdate();
+  }
+
+  private _q: number = 0;
+  get q() {
+    return this._q;
+  }
+  set q(v: number) {
+    this._q = v;
+    if (this.filter) this.filter.Q.value = v;
+    this.requestUpdate();
+  }
+
+
   render() {
     return html`
       <div class="background"> ${iconFilter} </div>
@@ -121,10 +167,30 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
     `;
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener('dblclick', () => this.toggleSidebar());
+  }
 
   firstUpdated(props: Map<keyof Filter, any>) {
     super.firstUpdated(props);
     this.filter.connect(this.output);
+  }
+
+
+  toggleSidebar(force?: boolean) {
+    if (this._sidebar || force) {
+      if (this._sidebar) this._sidebar.remove();
+      this._sidebar = null;
+    } else {
+      const sidebar = new FilterSidebar();
+      sidebar.filter = this;
+      sidebar.addEventListener(SidebarEvents.closed, () => {
+        this.toggleSidebar(true);
+      });
+      this._app.appendChild(sidebar);
+      this._sidebar = sidebar;
+    }
   }
 }
 

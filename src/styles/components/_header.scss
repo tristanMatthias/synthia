@@ -1,7 +1,6 @@
 header {
-  --margin: 3rem;
   position: fixed;
-  top: 2rem;
+  top: calc(1/3 * var(--margin));
   left: var(--margin);
   right: var(--margin);
   z-index: 10;

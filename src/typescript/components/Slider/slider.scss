@@ -15,7 +15,8 @@
     height: 0.5rem;
     top: 50%;
     transform: translateY(-50%);
-    background-color: var(--color-dark);
+    background-color: var(--color-main);
+    opacity: 0.3;
   }
 
   span {

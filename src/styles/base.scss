@@ -35,7 +35,7 @@
 
 :root {
   --node-size: 12rem;
-  --margin: 3rem;
+  --margin: 2rem;
 }
 
 html {
@@ -64,6 +64,6 @@ synthia-root {
 
 synthia-waveform {
   position: fixed;
-  left: 8rem;
-  bottom: 5rem;
+  left: calc(var(--margin) * 2.5);
+  bottom: calc(var(--margin) * 4);
 }
