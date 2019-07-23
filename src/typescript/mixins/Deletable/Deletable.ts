@@ -20,6 +20,7 @@ export const DeletableMixin = (superclass: new () => LitElement) =>
 
     private _deleteableKeyDown(e: KeyboardEvent) {
       if (e.code === 'Backspace' && this.selected) {
+        e.preventDefault();
         this.remove();
         window.removeEventListener('keydown', this._deleteableKeyDown);
       }
