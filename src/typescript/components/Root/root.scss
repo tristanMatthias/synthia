@@ -35,46 +35,6 @@
     stroke: var(--color);
     transform-origin: center;
   }
-
-  .selected {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    animation: select-in 0.1s ease-out;
-
-    span {
-      position: absolute;
-
-      &:before, &:after {
-        content: '';
-        position: absolute;
-        display: block;
-        width: 1px;
-        height: 1rem;
-        background: var(--color-main);
-      }
-      &:after {
-        transform-origin: top left;
-        transform: rotate(-90deg);
-      }
-
-      &:nth-child(2) {
-        top: 0;
-        right: 0;
-        transform: scaleX(-1);
-      }
-      &:nth-child(3) {
-        bottom: 0;
-        right: 0;
-        transform: scale(-1, -1);
-      }
-      &:nth-child(4) {
-        bottom: 0;
-        left: 0;
-        transform: scaleY(-1);
-      }
-    }
-  }
 }
 
 :host(:hover) {
