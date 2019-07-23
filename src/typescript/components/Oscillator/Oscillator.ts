@@ -69,10 +69,10 @@ export class Oscillator extends LitElement implements Connectable, HasCircleMenu
   get buttons(): CircleMenuButton[] {
     const action = (type: OscillatorType) => () => this.type = type;
     return [
-      {text: 'Square wave', icon: icons.square, action: action('square')},
-      {text: 'Sine wave', icon: icons.sine, action: action('sine')},
-      {text: 'Sawtooth wave', icon: icons.sawtooth, action: action('sawtooth')},
-      {text: 'Connect', icon: connect, action: () => this._startConnect() }
+      { text: 'Square wave', icon: icons.square, action: action('square'), active: this.type === 'square' },
+      { text: 'Sine wave', icon: icons.sine, action: action('sine'), active: this.type === 'sine' },
+      { text: 'Sawtooth wave', icon: icons.sawtooth, action: action('sawtooth'), active: this.type === 'sawtooth' },
+      { text: 'Connect', icon: connect, action: () => this._startConnect(), color: 'text' },
     ]
   }
 

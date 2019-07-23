@@ -69,9 +69,9 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
   get buttons(): CircleMenuButton[] {
     const action = (type: BiquadFilterType) => () => this.type = type;
     return [
-      { text: 'High pass', icon: icons.highpass, action: action('highpass') },
-      { text: 'Low pass', icon: icons.lowpass, action: action('lowpass') },
-      { text: 'Connect', icon: connect, action: () => this._startConnect() }
+      { text: 'High pass', icon: icons.highpass, action: action('highpass'), active: this.type ===  'highpass' },
+      { text: 'Low pass', icon: icons.lowpass, action: action('lowpass'), active: this.type ===  'lowpass' },
+      { text: 'Connect', icon: connect, action: () => this._startConnect(), color: 'text' }
     ];
   }
 

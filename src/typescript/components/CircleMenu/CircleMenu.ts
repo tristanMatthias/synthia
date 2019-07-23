@@ -7,7 +7,9 @@ import styles from './circle-menu.styles';
 export interface CircleMenuButton {
   icon: TemplateResult,
   action(e: MouseEvent): void,
-  text?: string
+  text?: string,
+  color?: 'alt' | 'text' | 'feature' | 'main',
+  active?: boolean
 }
 
 export class CircleMenu extends LitElement {
@@ -28,7 +30,7 @@ export class CircleMenu extends LitElement {
   private _label: string | null = null;
 
   render() {
-    const buttons = this.buttons!.map(({ icon, action, text }, i) =>
+    const buttons = this.buttons!.map(({ icon, action, text, color, active }, i) =>
       html`
         <div style="transform: translateY(-50%) rotate(${i * this.interval}deg)">
           <span style="transform: rotate(${i * -1 * this.interval}deg); transition-delay: ${i / 2.1 * 100}ms">
@@ -36,6 +38,7 @@ export class CircleMenu extends LitElement {
               @click=${action}
               @mouseover=${() => this._label = text || null}
               @mouseout=${() => this._label = null}
+              style='--color: var(--color-${color || 'alt'}); opacity: ${active === false ? 0.5 : 1}'
             >${icon}</synthia-button>
           </span>
         </div>`
@@ -45,14 +48,6 @@ export class CircleMenu extends LitElement {
       ? html`<span class="label">${this._label}</span>`
       : null
     }${buttons}`;
-
-    // return html`${options.map((o, i) => html`
-    //   <div style="transform: translateY(-50%) rotate(${i * this.interval}deg)">
-    //     <span style="transform: rotate(${i * -1 * this.interval}deg); transition-delay: ${i / 2.1 * 100}ms">
-    //       <slot name="button-${i}"></slot>
-    //     </span>
-    //   </div>
-    // `)}`;
   }
 
 }
