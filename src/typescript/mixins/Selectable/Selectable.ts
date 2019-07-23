@@ -1,14 +1,22 @@
 import { html, LitElement, property } from 'lit-element';
 
 import styles from './selectable.styles';
+import { SElement } from '../../types';
+
+
+export interface Selectable {
+  selected: boolean;
+}
 
 
 export const SelectableMixin = (superclass: new () => LitElement) =>
-  class Selectable extends superclass {
+  class Selectable extends superclass implements Selectable {
     static get styles() {
       // @ts-ignore
       return [styles, superclass.styles]
     }
+
+    private _app = document.querySelector(SElement.app)!;
 
     constructor() {
       super();
@@ -19,10 +27,10 @@ export const SelectableMixin = (superclass: new () => LitElement) =>
 
 
     private _selected: boolean = false;
-    private get selected(): boolean {
+    get selected(): boolean {
       return this._selected;
     }
-    private set selected(v: boolean) {
+    set selected(v: boolean) {
       this._selected = v;
       this.toggleAttribute('selected', v);
       this.requestUpdate();
@@ -46,13 +54,19 @@ export const SelectableMixin = (superclass: new () => LitElement) =>
       super.disconnectedCallback();
       this.removeEventListener('click', this._selectableClick);
       this.removeEventListener('keydown', this._selectableKeyDown);
+      this._app.deselect(this);
     }
 
     private _selectableClick(e: MouseEvent) {
-      this.selected = true;
+      if (e.shiftKey) {
+        console.log(this.selected);
+
+        if (this.selected) this._app.deselect(this);
+        else this._app.select(this, true);
+      } else this._app.select(this);
+
       window.addEventListener('keydown', this._selectableKeyDown);
       window.addEventListener('mousedown', this._selectableMouseDown);
-      // e.stopPropagation();
     }
 
     private _selectableKeyDown(e: KeyboardEvent) {
