@@ -18,6 +18,17 @@ export class Waveform extends LitElement {
   private _dataArray: Uint8Array;
   private _canvasCtx?: CanvasRenderingContext2D;
 
+
+
+  get inactive() {
+    const len = this._dataArray.length;
+    if (!len) return false;
+
+
+    return this._dataArray[0] == 128 &&
+      this._dataArray[len - 1] == 128;
+  }
+
   constructor() {
     super();
     this.analyser.fftSize = 2048;
@@ -65,6 +76,15 @@ export class Waveform extends LitElement {
     this.analyser.getByteTimeDomainData(this._dataArray);
 
     ctx.lineWidth = 2;
+
+    if (!this.inactive) {
+      ctx.setLineDash([1, 0]);
+      ctx.globalAlpha = 1;
+    } else {
+      ctx.setLineDash([4, 4]);
+      ctx.globalAlpha = 0.2;
+    }
+
     ctx.strokeStyle = this.color || getComputedStyle(document.documentElement).getPropertyValue('--color-text');
     ctx.beginPath();
 
@@ -74,6 +94,7 @@ export class Waveform extends LitElement {
     for (var i = 0; i < this._bufferLength; i++) {
 
       var v = this._dataArray[i] / 128.0;
+
       var y = (v * (this.height - 2) / 2);
 
       if (i === 0) ctx.moveTo(x, y);

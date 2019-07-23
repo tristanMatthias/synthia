@@ -34,11 +34,6 @@
     transform: translateY(-50%);
 
     pointer-events: none;
-
-    opacity: 0.2;
-    &.playing {
-      opacity: 1;
-    }
   }
 
   synthia-button {
