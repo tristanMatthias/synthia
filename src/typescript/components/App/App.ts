@@ -1,6 +1,7 @@
 import { LitElement, html, customElement, property } from "lit-element";
 import { SElement } from "../../types";
 import { Selectable } from "../../mixins/Selectable/Selectable";
+import { StorageKey, Storage } from "../../lib/storage";
 
 export enum AppEvents {
   connecting = 'connecting'
@@ -16,6 +17,8 @@ export class App extends LitElement {
 
   @property()
   isDragging: boolean = false;
+
+  private _toaster = document.querySelector(SElement.toaster)!;
 
 
   private _isConnecting: boolean = false;
@@ -60,6 +63,13 @@ export class App extends LitElement {
       const index = this._selected.indexOf(element);
       if (index > -1) this._selected.splice(index, 1);
       element.selected = false;
+    }
+  }
+
+  firstUpdated() {
+    if (!Storage.get(StorageKey.notifiedIntro)) {
+      this._toaster.info('Welcome to Synthia! Find your sound by dragging a node onto the canvas');
+      Storage.set(StorageKey.notifiedIntro, true)
     }
   }
 }

@@ -1,4 +1,5 @@
 export enum StorageKey {
+  notifiedIntro = 'notifiedIntro',
   notifiedOscillatorPlay = 'notifiedOscillatorPlay',
   notifiedFilterSidebar = 'notifiedFilterSidebar'
 }
