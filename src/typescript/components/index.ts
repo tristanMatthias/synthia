@@ -11,6 +11,7 @@ import './Slider/Slider';
 import './ExpoSlider/ExpoSlider';
 import './Footer/Footer';
 import './Sidebar/Sidebar';
+import './Toaster/Toaster';
 import { SElement } from '../types';
 
 

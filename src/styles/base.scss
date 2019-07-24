@@ -32,6 +32,10 @@
   --color-text: #9EFFFF;
   --color-text-alt: #A5FF90;
   --color-feature: #FF9D00;
+
+  --color-info: #4D21FC;
+  --color-warning: #FF9D00;
+  --color-error: #FF628C;
 }
 
 :root {
@@ -68,4 +72,11 @@ synthia-waveform {
   position: fixed;
   left: calc(var(--margin) * 2.5);
   bottom: calc(var(--margin) * 4);
+}
+
+synthia-toaster {
+  position: fixed;
+  right: calc(var(--margin) * 2.5);
+  bottom: calc(var(--margin) * 4);
+  z-index: 100;
 }

@@ -12,5 +12,6 @@ export enum SElement {
   slider = 'synthia-slider',
   expoSlider = 'synthia-expo-slider',
   footer = 'synthia-footer',
-  sidebar = 'synthia-sidebar'
+  sidebar = 'synthia-sidebar',
+  toaster = 'synthia-toaster'
 }

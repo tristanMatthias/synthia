@@ -1,4 +1,5 @@
-import { html, LitElement, query, queryAll, supportsAdoptingStyleSheets } from 'lit-element';
+import { html, LitElement, query, queryAll } from 'lit-element';
+
 import { iconConnect } from '../../icons/connect';
 import { iconFilter } from '../../icons/filter';
 import { iconFilterAllPass } from '../../icons/filterAllPass';
@@ -9,20 +10,21 @@ import { iconFilterLowPass } from '../../icons/filterLowPass';
 import { iconFilterLowShelf } from '../../icons/filterLowShelf';
 import { iconFilterNotch } from '../../icons/filterNotch';
 import { iconFilterPeaking } from '../../icons/filterPeaking';
+import { iconSettings } from '../../icons/settings';
 import { Connectable, ConnectableEvents, ConnectableMixin } from '../../mixins/Connectable/Connectable';
 import { DeletableMixin } from '../../mixins/Deletable/Deletable';
 import { DraggableMixin } from '../../mixins/Draggable/Draggable';
 import { HasCircleMenu, HasCircleMenuMixin } from '../../mixins/HasCircleMenu/HasCircleMenu';
 import { mix } from '../../mixins/mix';
 import { Receivable, ReceivableMixin } from '../../mixins/Receivable/Receivable';
-import { SelectableMixin, SelectableEvents } from '../../mixins/Selectable/Selectable';
+import { SelectableEvents, SelectableMixin } from '../../mixins/Selectable/Selectable';
 import { SElement } from '../../types';
 import { CircleMenuButton } from '../CircleMenu/CircleMenu';
 import { SidebarEvents } from '../Sidebar/Sidebar';
 import { Waveform } from '../Waveform/Waveform';
 import styles from './filter.styles';
 import { FilterSidebar } from './FilterSidebar/FilterSidebar';
-import { iconSettings } from '../../icons/settings';
+import { Storage, StorageKey } from '../../lib/storage';
 
 
 
@@ -57,6 +59,8 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
 
   private _app = document.querySelector(SElement.app)!;
   ctx = this._app.context
+
+  private _toaster = document.querySelector(SElement.toaster)!;
 
   filter: BiquadFilterNode = this.ctx.createBiquadFilter();
   multipleConnections = false;
@@ -202,6 +206,11 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
       });
       this._app.appendChild(sidebar);
       this._sidebar = sidebar;
+
+      if (!Storage.get(StorageKey.notifiedFilterSidebar)) {
+        this._toaster.info('Pro tip: You can open the Filter settings by double clicking on the filter');
+        Storage.set(StorageKey.notifiedFilterSidebar, true)
+      }
     }
   }
 }

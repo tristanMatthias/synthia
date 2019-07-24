@@ -1,0 +1,97 @@
+:host {
+  display: block;
+  font-size: 0;
+  text-align: right;
+
+  div {
+    position: relative;
+    display: inline-flex;
+    max-width: 32rem;
+    border-radius: 0.4rem;
+    border: 1px solid var(--color);
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    transition: all 0.2s;
+    opacity: 0;
+    animation: intro 0.2s forwards ease-out;
+    text-align: left;
+
+    --color-text: white;
+    --color: var(--color-text);
+    color: white;
+    font-size: 1.4rem;
+
+    .icon {
+      flex-grow: 0;
+      margin-right: -1rem;
+      opacity: 0.8;
+      transition: all 0.2s;
+
+      &, svg {
+        width: 4rem;
+        height: 4rem;
+      }
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    span {
+      flex-grow: 1;
+
+      svg {
+        --color: var(--color-text);
+        display: inline-block;
+        vertical-align: text-bottom;
+        width: 2rem;
+        height: 2rem;
+      }
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+
+      background: var(--color);
+      opacity: 0.3;
+      z-index: -1;
+    }
+
+    &.info { --color: var(--color-info); }
+    &.warning { --color: var(--color-warning); }
+    &.error { --color: var(--color-error); }
+
+
+    &.closing {
+      animation: exit 0.2s forwards ease-in;
+    }
+  }
+}
+
+
+@keyframes intro {
+  from {
+    transform: translateY(2rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes exit {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-2rem);
+    opacity: 0;
+  }
+}

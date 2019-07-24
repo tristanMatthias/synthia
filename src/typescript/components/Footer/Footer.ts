@@ -24,9 +24,13 @@ export class ComponentToolbar extends LitElement {
     return [styles]
   }
 
+  private _toaster = document.querySelector(SElement.toaster)!;
+  private _lastNotified = Date.now();
+
   constructor() {
     super();
     this._handleDragStart = this._handleDragStart.bind(this);
+    this._instruct = this._instruct.bind(this);
   }
 
   get nodes(): FooterNode[] {
@@ -40,15 +44,26 @@ export class ComponentToolbar extends LitElement {
     return html`
       ${footerBackground}
       ${this.nodes.map(n => html`<div>
-        <div draggable="true" @dragstart=${this._handleDragStart(n.type)}>${n.icon}</div>
+        <div
+          draggable="true"
+          @click=${this._instruct}
+          @dragstart=${this._handleDragStart(n.type)}
+        >${n.icon}</div>
         <span>${n.text}
       </div>`)}
     `;
   }
 
-  _handleDragStart(type: string) {
+  private _handleDragStart(type: string) {
     return (e: DragEvent) => {
       e.dataTransfer!.setData('type', type);
+    }
+  }
+
+  private _instruct() {
+    if ((Date.now() - this._lastNotified) / 1000 > 3) {
+      this._toaster.info('Try dragging the items onto the canvas instead');
+      this._lastNotified = Date.now();
     }
   }
 }

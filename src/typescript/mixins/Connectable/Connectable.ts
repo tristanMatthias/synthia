@@ -31,6 +31,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
     output?: AudioNode;
 
     private _app = document.querySelector(SElement.app)!;
+    private _toaster = document.querySelector(SElement.toaster)!;
 
     get waveform() {
       return this.shadowRoot!.querySelector(SElement.waveform)!;
@@ -153,7 +154,12 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
       const receivable = e.target as Receivable;
 
       // @ts-ignore
-      if (!receivable.canReceive || receivable === this) return false;
+      if (!receivable.canReceive || receivable === this) {
+        if (receivable.tagName.toLowerCase() != SElement.canvas) {
+          this._toaster.error('Cannot connect to this type of node');
+        }
+        return false;
+      }
       this.connectTo(receivable);
 
       this._app.select(this as Selectable);
