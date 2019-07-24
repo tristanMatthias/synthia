@@ -17,6 +17,7 @@ import { Waveform } from '../Waveform/Waveform';
 import styles from './oscillator.styles';
 import { iconPlay } from '../../icons/play';
 import { iconPause } from '../../icons/pause';
+import { StorageKey, Storage } from '../../lib/storage';
 
 
 const icons = {
@@ -43,6 +44,7 @@ export class Oscillator extends LitElement implements Connectable, HasCircleMenu
 
   multipleConnections = true;
 
+  private _toaster = document.querySelector(SElement.toaster)!;
   private _app = document.querySelector(SElement.app)!;
   ctx = this._app.context
 
@@ -139,6 +141,11 @@ export class Oscillator extends LitElement implements Connectable, HasCircleMenu
       this.osc.type = this.type;
       this.osc.start();
       this.playing = true;
+
+      if (!Storage.get(StorageKey.notifiedOscillatorPlay)) {
+        this._toaster.info('Pro tip: You can play an oscillator by selecting it and pressing the space bar');
+        Storage.set(StorageKey.notifiedOscillatorPlay, true)
+      }
     }
   }
 
