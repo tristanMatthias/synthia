@@ -224,7 +224,7 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
     ctx.clearRect(0, 0, size, size);
     ctx.beginPath();
     ctx.arc(size / 2, size / 2, (size - 2 - lineWidth) / 2, 0, 2 * Math.PI);
-    ctx.globalAlpha = 0.3;
+    ctx.globalAlpha = 0.2;
     ctx.setLineDash([5, 8]);
     ctx.lineWidth = lineWidth;
 
@@ -233,7 +233,8 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
 
 
     ctx.beginPath();
-    ctx.globalAlpha = 1;
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-alt');;
+    ctx.globalAlpha = 0.4;
     ctx.arc(size / 2, size / 2, (size - 2 - lineWidth) / 2, 0, perc * 2 * Math.PI);
     ctx.stroke();
   }
