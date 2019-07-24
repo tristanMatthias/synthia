@@ -3,6 +3,7 @@ import { Receivable, ReceivableEvents } from '../Receivable/Receivable';
 import { Waveform } from '../../components/Waveform/Waveform';
 import { SElement } from '../../types';
 import { Position, DraggableEvents } from '../Draggable/Draggable';
+import { Selectable } from '../Selectable/Selectable';
 
 
 export enum ConnectableEvents {
@@ -140,6 +141,8 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
 
 
     private async _endConnect(e?: MouseEvent) {
+      if (e) e.stopPropagation();
+
       this._connecting = false;
       this._app.isConnecting = false;
       await this.requestUpdate();
@@ -152,6 +155,8 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
       // @ts-ignore
       if (!receivable.canReceive || receivable === this) return false;
       this.connectTo(receivable);
+
+      this._app.select(this as Selectable);
     }
 
 

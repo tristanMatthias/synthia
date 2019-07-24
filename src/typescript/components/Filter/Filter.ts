@@ -1,4 +1,4 @@
-import { html, LitElement, query, queryAll } from 'lit-element';
+import { html, LitElement, query, queryAll, supportsAdoptingStyleSheets } from 'lit-element';
 import { iconConnect } from '../../icons/connect';
 import { iconFilter } from '../../icons/filter';
 import { iconFilterAllPass } from '../../icons/filterAllPass';
@@ -15,7 +15,7 @@ import { DraggableMixin } from '../../mixins/Draggable/Draggable';
 import { HasCircleMenu, HasCircleMenuMixin } from '../../mixins/HasCircleMenu/HasCircleMenu';
 import { mix } from '../../mixins/mix';
 import { Receivable, ReceivableMixin } from '../../mixins/Receivable/Receivable';
-import { SelectableMixin } from '../../mixins/Selectable/Selectable';
+import { SelectableMixin, SelectableEvents } from '../../mixins/Selectable/Selectable';
 import { SElement } from '../../types';
 import { CircleMenuButton } from '../CircleMenu/CircleMenu';
 import { SidebarEvents } from '../Sidebar/Sidebar';
@@ -89,8 +89,14 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
   get buttons(): CircleMenuButton[] {
     const action = (type: BiquadFilterType) => () => this.type = type;
     return [
-      { text: 'High pass', icon: icons.highpass, action: action('highpass'), active: this.type ===  'highpass' },
-      { text: 'Low pass', icon: icons.lowpass, action: action('lowpass'), active: this.type ===  'lowpass' },
+      { text: 'All Pass', icon: icons.allpass, action: action('allpass'), active: this.type == 'allpass'},
+      { text: 'Band Pass', icon: icons.bandpass, action: action('bandpass'), active: this.type == 'bandpass'},
+      { text: 'High Pass', icon: icons.highpass, action: action('highpass'), active: this.type == 'highpass'},
+      { text: 'High Shelf', icon: icons.highshelf, action: action('highshelf'), active: this.type == 'highshelf'},
+      { text: 'Low Pass', icon: icons.lowpass, action: action('lowpass'), active: this.type == 'lowpass'},
+      { text: 'Low Shelf', icon: icons.lowshelf, action: action('lowshelf'), active: this.type == 'lowshelf'},
+      { text: 'Notch', icon: icons.notch, action: action('notch'), active: this.type == 'notch'},
+      { text: 'Peaking', icon: icons.peaking, action: action('peaking'), active: this.type == 'peaking'},
       { text: 'Connect', icon: iconConnect, action: () => this._startConnect(), color: 'text' },
       { text: 'Settings', icon: iconSettings, action: () => this.toggleSidebar(), color: 'text' }
     ];
@@ -170,6 +176,12 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener('dblclick', () => this.toggleSidebar());
+    this.addEventListener(SelectableEvents.deselected, () => this.toggleSidebar(true));
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.toggleSidebar(true);
   }
 
   firstUpdated(props: Map<keyof Filter, any>) {
@@ -178,8 +190,8 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
   }
 
 
-  toggleSidebar(force?: boolean) {
-    if (this._sidebar || force) {
+  toggleSidebar(forceRemove?: boolean) {
+    if (this._sidebar || forceRemove) {
       if (this._sidebar) this._sidebar.remove();
       this._sidebar = null;
     } else {

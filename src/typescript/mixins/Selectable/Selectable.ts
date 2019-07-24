@@ -9,6 +9,11 @@ export interface Selectable {
 }
 
 
+export enum SelectableEvents {
+  selected = 'selected',
+  deselected = 'deselected'
+}
+
 export const SelectableMixin = (superclass: new () => LitElement) =>
   class Selectable extends superclass implements Selectable {
     static get styles() {
@@ -22,7 +27,7 @@ export const SelectableMixin = (superclass: new () => LitElement) =>
       super();
       this._selectableClick = this._selectableClick.bind(this);
       this._selectableKeyDown = this._selectableKeyDown.bind(this);
-      this._selectableMouseDown = this._selectableMouseDown.bind(this);
+      // this._selectableMouseDown = this._selectableMouseDown.bind(this);
     }
 
 
@@ -33,6 +38,9 @@ export const SelectableMixin = (superclass: new () => LitElement) =>
     set selected(v: boolean) {
       this._selected = v;
       this.toggleAttribute('selected', v);
+      this.dispatchEvent(new CustomEvent(
+        v ? SelectableEvents.selected : SelectableEvents.deselected
+      ));
       this.requestUpdate();
     }
 
@@ -61,10 +69,10 @@ export const SelectableMixin = (superclass: new () => LitElement) =>
       if (e.shiftKey) {
         if (this.selected) this._app.deselect(this);
         else this._app.select(this, true);
-      } else this._app.select(this);
+      } else if (!this._selected) this._app.select(this);
 
       window.addEventListener('keydown', this._selectableKeyDown);
-      window.addEventListener('mousedown', this._selectableMouseDown);
+      // window.addEventListener('mousedown', this._selectableMouseDown);
     }
 
     private _selectableKeyDown(e: KeyboardEvent) {
@@ -74,10 +82,10 @@ export const SelectableMixin = (superclass: new () => LitElement) =>
       }
     }
 
-    private _selectableMouseDown(e: MouseEvent) {
-      if (e.target !== this) {
-        this.selected = false;
-        window.removeEventListener('mousedown', this._selectableMouseDown);
-      }
-    }
+    // private _selectableMouseDown(e: MouseEvent) {
+    //   if (e.target !== this) {
+    //     this.selected = false;
+    //     window.removeEventListener('mousedown', this._selectableMouseDown);
+    //   }
+    // }
   }

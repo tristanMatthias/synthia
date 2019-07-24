@@ -10,6 +10,8 @@ export class Canvas extends LitElement {
 
   _initialPosition: InitialPosition;
 
+  private _app = document.querySelector(SElement.app)!;
+
   constructor() {
     super();
     this._handleDrop = this._handleDrop.bind(this);
@@ -30,6 +32,10 @@ export class Canvas extends LitElement {
     super.connectedCallback()
     this.addEventListener('drop', this._handleDrop);
     this.addEventListener('dragover', (e) => e.preventDefault());
+    this.addEventListener('mouseup', (e) => {
+      // @ts-ignore
+      if (!this._app.isDragging && e.target === this) this._app.deselect()
+    });
   }
 
   private _handleDrop(e: DragEvent) {

@@ -33,7 +33,7 @@ export class CircleMenu extends LitElement {
     const buttons = this.buttons!.map(({ icon, action, text, color, active }, i) =>
       html`
         <div style="transform: translateY(-50%) rotate(${i * this.interval}deg)">
-          <span style="transform: rotate(${i * -1 * this.interval}deg); transition-delay: ${i / 2.1 * 100}ms">
+          <span style="transform: rotate(${i * -1 * this.interval}deg); transition-delay: ${Math.log(i + 1) / 0.02}ms">
             <synthia-button
               @click=${action}
               @mouseover=${() => this._label = text || null}

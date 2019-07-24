@@ -18,11 +18,11 @@ export class App extends LitElement {
   isDragging: boolean = false;
 
 
-  private _isConnecting : boolean = false;
-  public get isConnecting() : boolean {
+  private _isConnecting: boolean = false;
+  public get isConnecting(): boolean {
     return this._isConnecting;
   }
-  public set isConnecting(v : boolean) {
+  public set isConnecting(v: boolean) {
 
     this._isConnecting = v;
     (Array.from(this.querySelectorAll(`${SElement.canvas} > *`)) as HTMLElement[])
@@ -51,10 +51,16 @@ export class App extends LitElement {
     }
   }
 
-  deselect(element: Selectable) {
-    const index = this._selected.indexOf(element);
-    if (index > -1) this._selected.splice(index, 1);
-    element.selected = false;
+
+  deselect(element?: Selectable) {
+    if (!element) {
+      this._selected.forEach(e => e.selected = false);
+      this._selected = [];
+    } else {
+      const index = this._selected.indexOf(element);
+      if (index > -1) this._selected.splice(index, 1);
+      element.selected = false;
+    }
   }
 }
 

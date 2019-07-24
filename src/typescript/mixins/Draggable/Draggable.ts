@@ -67,7 +67,6 @@ export const DraggableMixin = (superclass: new () => LitElement) =>
 
     private _dragStart(e: MouseEvent) {
       e.stopPropagation();
-      this._app.isDragging = true;
 
       window.addEventListener('mouseup', this._dragEnd);
       window.addEventListener('mousemove', this._drag);
@@ -88,6 +87,13 @@ export const DraggableMixin = (superclass: new () => LitElement) =>
       let x = e.clientX - this._dragStartPosition!.x;
       let y = e.clientY - this._dragStartPosition!.y;
       this._dragOffsetPosition = { x, y };
+
+      // Only start drag if moved more than 10 pixels
+      if (!this._app.isDragging) {
+        const distanceDragged = Math.sqrt(Math.abs((this._dragOffsetPosition.y ** 2) - (this._dragOffsetPosition.x ** 2)));
+        if (distanceDragged > 10) this._app.isDragging = true;
+      }
+
       this.updatePosition();
     }
   }
