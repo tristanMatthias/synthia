@@ -56,6 +56,7 @@
     background: var(--color-hover);
     // color: var(--color-alt);
     border-radius: 1.5rem;
+    animation: label-intro 0.2s ease-out forwards;
   }
 }
 
@@ -66,5 +67,17 @@
     opacity: 1;
     transform: scale(1);
     transition: all 0.25s ease-out;
+  }
+}
+
+
+@keyframes label-intro {
+  from {
+    top: -7.5rem;
+    opacity: 0;
+  }
+  to {
+    top: -8rem;
+    opacity: 1;
   }
 }
