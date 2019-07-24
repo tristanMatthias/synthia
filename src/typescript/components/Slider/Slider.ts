@@ -17,7 +17,7 @@ export class Slider extends LitElement {
   max: number = 100;
 
   @property()
-  value: number = 50;
+  value?: number;
 
   private _active: boolean = false;
 
@@ -28,7 +28,7 @@ export class Slider extends LitElement {
   }
 
   render() {
-    const left = `${(this.value / (this.max)) * 100}%`;
+    const left = `${((this.value || 0) / (this.max)) * 100}%`;
     return html`<span class="slide" style="left: ${left}"></span>`;
   }
 
@@ -56,9 +56,11 @@ export class Slider extends LitElement {
 
   updated(props: Map<keyof Slider, any>) {
     super.updated(props);
-    if (props.has('value')) this.dispatchEvent(new CustomEvent('change', {
-      detail: this.value
-    }))
+    if (props.has('value')) {
+      this.dispatchEvent(new CustomEvent('change', {
+        detail: this.value
+      }))
+    }
   }
 }
 

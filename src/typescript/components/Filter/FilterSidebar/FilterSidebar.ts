@@ -49,8 +49,9 @@ export class FilterSidebar extends LitElement {
           <label>Frequency</label>
           <synthia-expo-slider
             type="range"
-            value="0"
+            min="0"
             max="24000"
+            value=${this.filter.frequency}
             @change=${this._updateValue('frequency')}
           /></synthia-expo-slider>
           <span class="value">${Math.floor(this.filter.frequency)}hz</span>
@@ -60,8 +61,9 @@ export class FilterSidebar extends LitElement {
           <label>Quality (Q)</label>
           <synthia-slider
             type="range"
-            value="0"
+            min="0"
             max="20"
+            value=${this.filter.q}
             @change=${this._updateValue('q')}
           /></synthia-slider>
           <span class="value">${Math.floor(this.filter.q)}db</span>
@@ -72,8 +74,9 @@ export class FilterSidebar extends LitElement {
           <label>Gain</label>
           <synthia-slider
             type="range"
-            value="0"
+            min="0"
             max="5"
+            value=${this.filter.gain}
             @change=${this._updateValue('gain')}
           /></synthia-slider>
           <span class="value">${Math.floor(this.filter.gain)}</span>

@@ -127,7 +127,7 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
   }
 
 
-  private _frequency: number = 100;
+  private _frequency: number = this.filter.frequency.value;
   get frequency() {
     return this._frequency;
   }
@@ -138,33 +138,27 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
   }
 
 
-  private _type: BiquadFilterType = 'highpass';
   get type() {
-    return this._type;
+    return this.filter.type;
   }
   set type(v: BiquadFilterType) {
-    this._type = v;
     if (this.filter) this.filter.type = v;
     this.requestUpdate();
   }
 
 
-  private _gain: number = 0;
   get gain() {
-    return this._gain;
+    return this.filter.gain.value;
   }
   set gain(v: number) {
-    this._gain = v;
     if (this.filter) this.filter.gain.value = v;
     this.requestUpdate();
   }
 
-  private _q: number = 0;
   get q() {
-    return this._q;
+    return this.filter.Q.value;
   }
   set q(v: number) {
-    this._q = v;
     if (this.filter) this.filter.Q.value = v;
     this.requestUpdate();
   }
