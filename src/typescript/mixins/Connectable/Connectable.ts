@@ -57,13 +57,13 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
       // If there are multiple connections, don't create any waveforms initially
       if (this.multipleConnections) {
         waveforms = this._connectedTo.map(() =>
-          html`<synthia-waveform></synthia-waveform>`
+          html`<synthia-waveform removable></synthia-waveform>`
         );
       } else {
         // Otherwise, if there is only one connection allowed, there will always
         // only be one waveform, so always create it
         const hideBeforeConnected = this._connectedTo.length ? '' : 'display: none';
-        waveforms = html`<synthia-waveform style=${hideBeforeConnected}></synthia-waveform>`;
+        waveforms = html`<synthia-waveform removable style=${hideBeforeConnected}></synthia-waveform>`;
       }
 
       let connecting: TemplateResult | null = null;

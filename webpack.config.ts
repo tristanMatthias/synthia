@@ -1,4 +1,5 @@
 import {Configuration} from 'webpack';
+import 'webpack-dev-server';
 import HTMLWebpack from 'html-webpack-plugin';
 import Copy from 'copy-webpack-plugin';
 const Favicon = require('favicons-webpack-plugin');
@@ -17,12 +18,7 @@ const config: Configuration = {
     rules: [
       {test: /\.ts/, loader: 'ts-loader'},
       {test: /\.scss/, loader: CSS.extract(['css-loader', 'sass-loader'])},
-      {test: /\.html/, use: {
-        loader: 'html-loader',
-        options: {
-          // attrs: ['meta:content']
-        }
-      }},
+      {test: /\.html/, loader: 'html-loader'},
       {test: /\.svg/, loader: 'url-loader'}
     ]
   },
@@ -35,6 +31,7 @@ const config: Configuration = {
     new Favicon('./src/images/favicon.png'),
     new Copy([
       {from: './src/images/social', to: 'social'},
+      {from: './src/images/', to: 'images'},
       { from: './src/googled8112ee85b009eda.html', to: 'googled8112ee85b009eda.html'}
     ])
   ],

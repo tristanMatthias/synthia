@@ -1,8 +1,37 @@
 :host {
   display: block;
-  transition: background 0.2s;
+  position: relative;
+
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: all 0.2s ease-out;
+  }
+
+  &:before {
+    background: linear-gradient(to right, transparent, var(--color-hover), transparent);
+  }
+  &:after {
+    background: url(/images/cut.svg) no-repeat center center;
+    background-size: 3rem;
+    margin-left: -2rem;
+  }
 }
 
-:host(:hover) {
-  background: linear-gradient(to right, transparent, var(--color-hover), transparent);
+:host(:hover):before {
+  opacity: 1;
+}
+:host(:hover):after {
+  opacity: 1;
+  margin-left: 0;
+  cursor: pointer;
+}
+
+:host(:not([removable])) {
+  pointer-events: none;
 }

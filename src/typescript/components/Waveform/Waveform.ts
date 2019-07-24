@@ -18,9 +18,15 @@ export class Waveform extends LitElement {
   connectedTo?: Receivable;
   connectedFrom?: Connectable;
 
+  @property({ reflect: true, type: Boolean })
+  removable: boolean = false;
+  private _removing: boolean = false;
+
   private _bufferLength: number;
   private _dataArray: Uint8Array;
   private _canvasCtx?: CanvasRenderingContext2D;
+  private _toaster = document.querySelector(SElement.toaster)!;
+  private _lastNotified = Date.now();
 
 
 
@@ -74,14 +80,27 @@ export class Waveform extends LitElement {
   disconnect() {
     if (!this.connectedFrom || !this.connectedTo) throw new Error('Waveform is not connected');
     this.connectedFrom.disconnectFrom(this.connectedTo);
+    this._removing = false;
   }
 
   connectedCallback() {
     super.connectedCallback()
-    this.addEventListener('dblclick', (e) => {
-      e.stopPropagation();
-      this.disconnect()
-    });
+
+    // If single clicked, instruct the user to double click\
+    if (this.removable) {
+
+      this.addEventListener('click', (e) => {
+        setTimeout(() => {
+          if (!this._removing && this.style.display !== 'none') this._instruct();
+        }, 500);
+      });
+
+      this.addEventListener('dblclick', (e) => {
+        e.stopPropagation();
+        this._removing = true;
+        this.disconnect();
+      });
+    }
   }
 
 
@@ -123,6 +142,14 @@ export class Waveform extends LitElement {
 
     ctx.lineTo(canvas.width, canvas.height / 2);
     ctx.stroke();
+  }
+
+
+  private _instruct() {
+    if ((Date.now() - this._lastNotified) / 1000 > 3) {
+      this._toaster.info('Double click a connection to remove it');
+      this._lastNotified = Date.now();
+    }
   }
 
 }
