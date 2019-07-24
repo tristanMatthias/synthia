@@ -40,4 +40,26 @@
       }
     }
   }
+
+  select {
+    height: 4rem;
+    border: 1px solid var(--color-main);
+    background: none;
+    border-radius: 0.4rem;
+    width: 100%;
+    margin: var(--margin) 0;
+    outline: none;
+    transition: all 0.2s;
+
+    &, option {
+      color: var(--color-text);
+      font-family: var(--font-family);
+      font-size: 1.4rem;
+    }
+
+    &:focus {
+      border-color: var(--color-alt);
+      background: var(--color-dark);
+    }
+  }
 }

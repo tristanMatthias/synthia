@@ -1,14 +1,15 @@
 :host {
   display: block;
   position: fixed;
+  box-sizing: content-box;
 
   top: calc(var(--margin) * 2);
   right: calc(var(--margin) * 2);
   bottom: calc(var(--margin) * 2);
   width: 32rem;
 
-  background-color: var(--color-dark);
-  // border: 1px solid var(--color-main);
+  background-color: var(--color-bg-off);
+  border: 1px solid var(--color-main);
 
   &:before, &:after {
     --size: 0.5rem;

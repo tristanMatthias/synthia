@@ -24,6 +24,7 @@
 
 :root.purple {
   --color-bg: #1E1E3F;
+  --color-bg-off: #224;
   --color-dark: #2D2B55;
   --color-main: #A599E9;
   --color-alt: #FAD000;
@@ -36,11 +37,12 @@
 :root {
   --node-size: 12rem;
   --margin: 2rem;
+  --font-family: 'Space Mono', monospace;
 }
 
 html {
   color: var(--color-text);
-  font-family: 'Space Mono', monospace;
+  font-family:  var(--font-family);
   font-size: 10px;
   overflow: hidden;
 }

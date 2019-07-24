@@ -25,7 +25,7 @@ export class FilterSidebar extends LitElement {
       <span slot="header">Filter settings</span>
       <synthia-frequency-response
         .filter=${filter}
-        width="320"
+        width="318"
         height="200"
         decibels
       ></synthia-frequency-response>
