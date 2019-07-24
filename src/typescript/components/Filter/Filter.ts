@@ -48,13 +48,16 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
   // ---------------------------------------------------------- Mixin properties
   // Selectable
   selected?: boolean;
-  connectTo(): boolean { return true }
+  connectTo() { return Promise.resolve(true) }
+  disconnectFrom() { return Promise.resolve(true) }
   // Receiveable
   canReceive = true
   // Connectable
   protected _startConnect() { }
   // Circle menu
   private _menuOpen: boolean = false;
+  @query('.background')
+  _menuHoverItem?: HTMLElement;
 
 
   private _app = document.querySelector(SElement.app)!;

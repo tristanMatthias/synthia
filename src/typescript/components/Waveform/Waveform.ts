@@ -2,6 +2,8 @@ import { html, LitElement, query, property } from 'lit-element';
 
 import { SElement } from '../../types';
 import styles from './waveform.styles';
+import { Receivable } from '../../mixins/Receivable/Receivable';
+import { Connectable } from '../../mixins/Connectable/Connectable';
 
 
 export class Waveform extends LitElement {
@@ -13,6 +15,8 @@ export class Waveform extends LitElement {
   private _ctx = this._app.context;
 
   analyser = this._ctx.createAnalyser();
+  connectedTo?: Receivable;
+  connectedFrom?: Connectable;
 
   private _bufferLength: number;
   private _dataArray: Uint8Array;
@@ -37,6 +41,7 @@ export class Waveform extends LitElement {
     this._dataArray = new Uint8Array(this._bufferLength);
 
     this._draw = this._draw.bind(this);
+    this.disconnect = this.disconnect.bind(this);
   }
 
   @query('canvas')
@@ -64,6 +69,19 @@ export class Waveform extends LitElement {
 
   connect(node: AudioNode) {
     this.analyser.connect(node);
+  }
+
+  disconnect() {
+    if (!this.connectedFrom || !this.connectedTo) throw new Error('Waveform is not connected');
+    this.connectedFrom.disconnectFrom(this.connectedTo);
+  }
+
+  connectedCallback() {
+    super.connectedCallback()
+    this.addEventListener('dblclick', (e) => {
+      e.stopPropagation();
+      this.disconnect()
+    });
   }
 
 

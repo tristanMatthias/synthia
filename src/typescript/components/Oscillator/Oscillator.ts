@@ -35,7 +35,8 @@ export class Oscillator extends LitElement implements Connectable, HasCircleMenu
   // ---------------------------------------------------------- Mixin properties
   // Selectable
   selected?: boolean;
-  connectTo(): boolean { return true }
+  connectTo() { return Promise.resolve(true) }
+  disconnectFrom() { return Promise.resolve(true) }
   // Connectable
   protected _startConnect() { }
   // Circle menu

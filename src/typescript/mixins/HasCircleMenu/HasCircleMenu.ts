@@ -1,18 +1,20 @@
-import { html, LitElement, TemplateResult } from 'lit-element';
+import { html, LitElement } from 'lit-element';
 
-import { SElement } from '../../types';
 import { CircleMenuButton } from '../../components/CircleMenu/CircleMenu';
+import { SElement } from '../../types';
 
 
 
 export interface HasCircleMenu {
   buttons: CircleMenuButton[]
+  _menuHoverItem?: HTMLElement
 }
 
 
 export const HasCircleMenuMixin = (superclass: new () => LitElement) =>
   class HasCircleMenu extends superclass implements HasCircleMenu {
     buttons?: CircleMenuButton[]
+    get _menuHoverItem() { return this }
 
 
     private _app = document.querySelector(SElement.app)!;
@@ -29,8 +31,8 @@ export const HasCircleMenuMixin = (superclass: new () => LitElement) =>
 
     connectedCallback() {
       super.connectedCallback();
-      this.addEventListener('mouseover', () => this._menuOpen = true);
-      this.addEventListener('mouseout', () => this._menuOpen = false);
+      this._menuHoverItem.addEventListener('mouseover', () => this._menuOpen = true);
+      this._menuHoverItem.addEventListener('mouseout', () => this._menuOpen = false);
     }
 
 

@@ -12,7 +12,8 @@ export enum ConnectableEvents {
 }
 
 export interface Connectable {
-  connectTo(item: Receivable): boolean;
+  connectTo(item: Receivable): Promise<boolean>;
+  disconnectFrom(item: Receivable): Promise<boolean>;
   output?: AudioNode;
 
   multipleConnections: boolean;
@@ -27,7 +28,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
     selected?: boolean;
 
 
-    multipleConnections?: boolean;
+    multipleConnections = false
     output?: AudioNode;
 
     private _app = document.querySelector(SElement.app)!;
@@ -100,6 +101,8 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
         ) as Waveform;
 
         if (!item.connect(wf.analyser)) return false;
+        wf.connectedTo = item;
+        wf.connectedFrom = this as Connectable;
 
         this.dispatchEvent(new CustomEvent(ConnectableEvents.newConnection, {
           detail: wf
@@ -112,6 +115,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
 
 
       if (this._connecting) this._connecting = false;
+      return true;
     }
 
 
@@ -121,6 +125,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
       if (this.output) item.disconnect(this.output);
       this._connectedTo.splice(index, 1);
       this.requestUpdate();
+      return true;
     }
 
 
