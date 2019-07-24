@@ -7,6 +7,12 @@
     height: var(--node-size);
   }
 
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
   svg {
     overflow: visible;
     width: 100%;

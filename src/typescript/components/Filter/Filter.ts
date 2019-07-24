@@ -93,14 +93,14 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
   get buttons(): CircleMenuButton[] {
     const action = (type: BiquadFilterType) => () => this.type = type;
     return [
-      { text: 'All Pass', icon: icons.allpass, action: action('allpass'), active: this.type == 'allpass'},
-      { text: 'Band Pass', icon: icons.bandpass, action: action('bandpass'), active: this.type == 'bandpass'},
-      { text: 'High Pass', icon: icons.highpass, action: action('highpass'), active: this.type == 'highpass'},
-      { text: 'High Shelf', icon: icons.highshelf, action: action('highshelf'), active: this.type == 'highshelf'},
-      { text: 'Low Pass', icon: icons.lowpass, action: action('lowpass'), active: this.type == 'lowpass'},
-      { text: 'Low Shelf', icon: icons.lowshelf, action: action('lowshelf'), active: this.type == 'lowshelf'},
-      { text: 'Notch', icon: icons.notch, action: action('notch'), active: this.type == 'notch'},
-      { text: 'Peaking', icon: icons.peaking, action: action('peaking'), active: this.type == 'peaking'},
+      { text: 'All Pass', icon: icons.allpass, action: action('allpass'), active: this.type == 'allpass' },
+      { text: 'Band Pass', icon: icons.bandpass, action: action('bandpass'), active: this.type == 'bandpass' },
+      { text: 'High Pass', icon: icons.highpass, action: action('highpass'), active: this.type == 'highpass' },
+      { text: 'High Shelf', icon: icons.highshelf, action: action('highshelf'), active: this.type == 'highshelf' },
+      { text: 'Low Pass', icon: icons.lowpass, action: action('lowpass'), active: this.type == 'lowpass' },
+      { text: 'Low Shelf', icon: icons.lowshelf, action: action('lowshelf'), active: this.type == 'lowshelf' },
+      { text: 'Notch', icon: icons.notch, action: action('notch'), active: this.type == 'notch' },
+      { text: 'Peaking', icon: icons.peaking, action: action('peaking'), active: this.type == 'peaking' },
       { text: 'Connect', icon: iconConnect, action: () => this._startConnect(), color: 'text' },
       { text: 'Settings', icon: iconSettings, action: () => this.toggleSidebar(), color: 'text' }
     ];
@@ -135,6 +135,7 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
     this._frequency = v;
     if (this.filter) this.filter.frequency.value = v;
     this.requestUpdate();
+    this._drawFrequencyArc();
   }
 
 
@@ -166,6 +167,7 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
 
   render() {
     return html`
+      <canvas width="120" height="120"></canvas>
       <div class="background"> ${iconFilter} </div>
       <div class="icon">${this.icon}</div>
     `;
@@ -185,6 +187,7 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
   firstUpdated(props: Map<keyof Filter, any>) {
     super.firstUpdated(props);
     this.filter.connect(this.output);
+    this._drawFrequencyArc();
   }
 
 
@@ -206,6 +209,33 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
         Storage.set(StorageKey.notifiedFilterSidebar, true)
       }
     }
+  }
+
+  private _drawFrequencyArc() {
+    const size = 120;
+    const ctx = this.shadowRoot!.querySelector('canvas')!.getContext('2d')!;
+    const maxFreq = 24000;
+    const lineWidth = 6;
+    let perc = this.frequency / maxFreq;
+    perc = Math.log(perc) / Math.log(maxFreq);
+    if (perc == -1) perc = -0.999999;
+
+
+    ctx.clearRect(0, 0, size, size);
+    ctx.beginPath();
+    ctx.arc(size / 2, size / 2, (size - 2 - lineWidth) / 2, 0, 2 * Math.PI);
+    ctx.globalAlpha = 0.3;
+    ctx.setLineDash([5, 8]);
+    ctx.lineWidth = lineWidth;
+
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-main');;
+    ctx.stroke();
+
+
+    ctx.beginPath();
+    ctx.globalAlpha = 1;
+    ctx.arc(size / 2, size / 2, (size - 2 - lineWidth) / 2, 0, perc * 2 * Math.PI);
+    ctx.stroke();
   }
 }
 
