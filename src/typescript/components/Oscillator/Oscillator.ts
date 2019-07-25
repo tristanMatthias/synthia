@@ -17,7 +17,7 @@ import { Waveform } from '../Waveform/Waveform';
 import styles from './oscillator.styles';
 import { iconPlay } from '../../icons/play';
 import { iconPause } from '../../icons/pause';
-import { StorageKey, Storage } from '../../lib/storage';
+import { StorageKey, Storage } from '../../lib/Storage';
 
 
 const icons = {

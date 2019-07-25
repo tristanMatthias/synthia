@@ -24,7 +24,7 @@ import { SidebarEvents } from '../Sidebar/Sidebar';
 import { Waveform } from '../Waveform/Waveform';
 import styles from './filter.styles';
 import { FilterSidebar } from './FilterSidebar/FilterSidebar';
-import { Storage, StorageKey } from '../../lib/storage';
+import { Storage, StorageKey } from '../../lib/Storage';
 
 
 

@@ -1,7 +1,7 @@
 import { LitElement, html, customElement, property } from "lit-element";
 import { SElement } from "../../types";
 import { Selectable } from "../../mixins/Selectable/Selectable";
-import { StorageKey, Storage } from "../../lib/storage";
+import { StorageKey, Storage } from "../../lib/Storage";
 
 export enum AppEvents {
   connecting = 'connecting'
