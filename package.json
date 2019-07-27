@@ -9,6 +9,7 @@
     "start": "http-server dist",
     "build:sass": "sass-render src/typescript/**/*.scss --template ./sass-template.ts --suffix '.styles.ts'",
     "build": "yarn build:sass; webpack-cli",
+    "postbuild": "ts-node scripts/stripComments.ts",
     "dev": "webpack-dev-server -w & yarn build:sass --watch"
   },
   "devDependencies": {
@@ -27,6 +28,7 @@
     "lit-element": "^2.2.0",
     "lit-html": "^1.1.1",
     "sass-loader": "^7.1.0",
+    "strip-comments": "^1.0.2",
     "ts-loader": "^6.0.4",
     "ts-node": "^8.3.0",
     "tslint": "^5.18.0",
