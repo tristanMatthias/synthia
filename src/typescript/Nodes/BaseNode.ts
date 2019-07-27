@@ -8,6 +8,10 @@ export default class CompositeAudioNode {
     return true;
   }
 
+  get gain() {
+    return this._output.gain;
+  }
+
   constructor(
     protected _ctx: AudioContext | OfflineAudioContext
   ) {

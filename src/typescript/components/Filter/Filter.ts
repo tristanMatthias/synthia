@@ -1,4 +1,4 @@
-import { html, LitElement, query, queryAll } from 'lit-element';
+import { html, query } from 'lit-element';
 
 import { iconConnect } from '../../icons/connect';
 import { iconFilter } from '../../icons/filter';
@@ -11,21 +11,20 @@ import { iconFilterLowShelf } from '../../icons/filterLowShelf';
 import { iconFilterNotch } from '../../icons/filterNotch';
 import { iconFilterPeaking } from '../../icons/filterPeaking';
 import { iconSettings } from '../../icons/settings';
-import { Connectable, ConnectableEvents, ConnectableMixin } from '../../mixins/Connectable/Connectable';
+import { Storage, StorageKey } from '../../lib/Storage';
+import { ConnectableEvents, ConnectableMixin } from '../../mixins/Connectable/Connectable';
 import { DeletableMixin } from '../../mixins/Deletable/Deletable';
 import { DraggableMixin } from '../../mixins/Draggable/Draggable';
-import { HasCircleMenu, HasCircleMenuMixin } from '../../mixins/HasCircleMenu/HasCircleMenu';
+import { HasCircleMenuMixin } from '../../mixins/HasCircleMenu/HasCircleMenu';
 import { mix } from '../../mixins/mix';
-import { Receivable, ReceivableMixin } from '../../mixins/Receivable/Receivable';
+import { ReceivableMixin } from '../../mixins/Receivable/Receivable';
 import { SelectableEvents, SelectableMixin } from '../../mixins/Selectable/Selectable';
 import { SElement } from '../../types';
+import { BaseComponent } from '../BaseComponent/BaseComponent';
 import { CircleMenuButton } from '../CircleMenu/CircleMenu';
 import { SidebarEvents } from '../Sidebar/Sidebar';
-import { Waveform } from '../Waveform/Waveform';
 import styles from './filter.styles';
 import { FilterSidebar } from './FilterSidebar/FilterSidebar';
-import { Storage, StorageKey } from '../../lib/Storage';
-
 
 
 const icons = {
@@ -38,52 +37,32 @@ const icons = {
   notch: iconFilterNotch,
   peaking: iconFilterPeaking,
 }
-
-export class Filter extends LitElement implements Connectable, HasCircleMenu, Receivable {
+export class Filter extends BaseComponent {
 
   static get styles() {
     return [styles]
   }
 
-  // ---------------------------------------------------------- Mixin properties
-  // Selectable
-  selected?: boolean;
-  connectTo() { return Promise.resolve(true) }
-  disconnectFrom() { return Promise.resolve(true) }
-  // Receiveable
-  canReceive = true
-  // Connectable
-  protected _startConnect() { }
-  // Circle menu
-  private _menuOpen: boolean = false;
-  @query('.background')
-  _menuHoverItem?: HTMLElement;
+  get type() { return this.filter.type; }
+  set type(v: BiquadFilterType) { this.filter.type = v; }
 
+  get frequency() { return this.filter.frequency.value; }
+  set frequency(v: number) { this.filter.frequency.value = v }
 
-  private _app = document.querySelector(SElement.app)!;
-  ctx = this._app.context
+  get q() { return this.filter.Q.value; }
+  set q(v: number) { this.filter.Q.value = v }
 
-  private _toaster = document.querySelector(SElement.toaster)!;
+  get gain() { return this.filter.gain.value; }
+  set gain(v: number) { this.filter.gain.value = v }
 
-  filter: BiquadFilterNode = this.ctx.createBiquadFilter();
+  filter: BiquadFilterNode = this._ctx.createBiquadFilter();
   multipleConnections = false;
-  get output() {
-    return this.shadowRoot!.querySelector(SElement.waveform)!.analyser;
-  }
-  get input() {
-    return this.filter;
-  }
-  connect() { return true };
-  disconnect() { return true }
+  output = this.filter;
+  input = this.filter;
 
 
   private _sidebar: FilterSidebar | null = null;
-
-
-  get icon() {
-    // @ts-ignore
-    return icons[this.type];
-  }
+  private _startConnect() { return true; }
 
 
   get buttons(): CircleMenuButton[] {
@@ -102,10 +81,6 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
     ];
   }
 
-
-  @queryAll(SElement.waveform)
-  waveforms?: Waveform[];
-
   @query('.background')
   background?: HTMLElement;
 
@@ -123,49 +98,13 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
   }
 
 
-  private _frequency: number = this.filter.frequency.value;
-  get frequency() {
-    return this._frequency;
-  }
-  set frequency(v: number) {
-    this._frequency = v;
-    if (this.filter) this.filter.frequency.value = v;
-    this.requestUpdate();
-    this._drawFrequencyArc();
-  }
-
-
-  get type() {
-    return this.filter.type;
-  }
-  set type(v: BiquadFilterType) {
-    if (this.filter) this.filter.type = v;
-    this.requestUpdate();
-  }
-
-
-  get gain() {
-    return this.filter.gain.value;
-  }
-  set gain(v: number) {
-    if (this.filter) this.filter.gain.value = v;
-    this.requestUpdate();
-  }
-
-  get q() {
-    return this.filter.Q.value;
-  }
-  set q(v: number) {
-    if (this.filter) this.filter.Q.value = v;
-    this.requestUpdate();
-  }
-
-
   render() {
+    // @ts-ignore
+    const icon = icons[this.type];
     return html`
       <canvas width="120" height="120"></canvas>
       <div class="background"> ${iconFilter} </div>
-      <div class="icon">${this.icon}</div>
+      <div class="icon">${icon}</div>
     `;
   }
 
@@ -182,7 +121,6 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
 
   firstUpdated(props: Map<keyof Filter, any>) {
     super.firstUpdated(props);
-    this.filter.connect(this.output);
     this._drawFrequencyArc();
   }
 
@@ -206,6 +144,8 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
       }
     }
   }
+
+
 
   private _drawFrequencyArc() {
     const size = 120;
@@ -236,20 +176,15 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
   }
 }
 
-window.customElements.define(
-  SElement.filter,
-  mix(Filter, [
-    DraggableMixin,
-    SelectableMixin,
-    DeletableMixin,
-    ConnectableMixin,
-    ReceivableMixin,
-    HasCircleMenuMixin
-  ])
-);
 
-declare global {
-  interface HTMLElementTagNameMap {
-    [SElement.filter]: Filter;
-  }
-}
+const filter = mix(Filter, [
+  DraggableMixin,
+  SelectableMixin,
+  DeletableMixin,
+  ConnectableMixin,
+  ReceivableMixin,
+  HasCircleMenuMixin
+])
+
+
+window.customElements.define(SElement.filter, filter);

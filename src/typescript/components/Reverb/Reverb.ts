@@ -2,7 +2,7 @@ import { html, LitElement, query } from 'lit-element';
 
 import { iconEffect } from '../../icons/effect';
 import { iconEffectReverb } from '../../icons/effectReverb';
-import { ReverbEffect } from '../../lib/filters/Reverb';
+import { ReverbEffect } from '../../nodes/Reverb';
 import { Storage, StorageKey } from '../../lib/Storage';
 import { Connectable, ConnectableMixin } from '../../mixins/Connectable/Connectable';
 import { DeletableMixin } from '../../mixins/Deletable/Deletable';
@@ -14,44 +14,20 @@ import { SElement } from '../../types';
 import { SidebarEvents } from '../Sidebar/Sidebar';
 import styles from './reverb.styles';
 import { ReverbSidebar } from './ReverbSidebar/ReverbSidebar';
+import { BaseComponent } from '../BaseComponent/BaseComponent';
 
-export class Reverb extends LitElement implements Connectable, Receivable {
+export class Reverb extends BaseComponent {
 
   static get styles() {
     return [styles]
   }
 
-  // ---------------------------------------------------------- Mixin properties
-  // Selectable
-  selected?: boolean;
-  connectTo() { return Promise.resolve(true) }
-  disconnectFrom() { return Promise.resolve(true) }
-  // Receivable
-  canReceive = true
-  // Connectable
-  protected _startConnect() { }
-  // Circle menu
-  private _menuOpen: boolean = false;
-  @query('.background')
-  _menuHoverItem?: HTMLElement;
-
-
-  private _app = document.querySelector(SElement.app)!;
-  ctx = this._app.context
-
-  reverb: ReverbEffect = this.ctx.createReverb();
+  reverb: ReverbEffect = this._ctx.createReverb();
   multipleConnections = false;
-  get output() {
-    return this.shadowRoot!.querySelector(SElement.waveform)!.analyser;
-  }
-  get input() {
-    return this.reverb;
-  }
-  connect() { return true };
-  disconnect() { return true }
+  output = this.reverb;
+  input = this.reverb;
 
 
-  private _toaster = document.querySelector(SElement.toaster)!;
   private _sidebar: ReverbSidebar | null = null;
 
 
@@ -67,10 +43,10 @@ export class Reverb extends LitElement implements Connectable, Receivable {
     this.addEventListener(SelectableEvents.deselected, () => this.toggleSidebar(true));
   }
 
-  firstUpdated(props: Map<keyof Reverb, any>) {
-    super.firstUpdated(props);
-    this.reverb.connect(this.output);
-  }
+  // firstUpdated(props: Map<keyof Reverb, any>) {
+  //   super.firstUpdated(props);
+  //   this.reverb.connect(this.output);
+  // }
 
 
   toggleSidebar(forceRemove?: boolean) {

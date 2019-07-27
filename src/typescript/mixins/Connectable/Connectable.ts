@@ -1,10 +1,9 @@
-import { LitElement, html, TemplateResult } from 'lit-element';
-import { Receivable, ReceivableEvents } from '../Receivable/Receivable';
+import { html, LitElement, TemplateResult } from 'lit-element';
+
 import { Waveform } from '../../components/Waveform/Waveform';
 import { SElement } from '../../types';
-import { Position, DraggableEvents } from '../Draggable/Draggable';
-import { Selectable } from '../Selectable/Selectable';
-import CompositeAudioNode from '../../lib/CompositeAudioNode';
+import { DraggableEvents, Position } from '../Draggable/Draggable';
+import { Receivable, ReceivableEvents } from '../Receivable/Receivable';
 
 
 export enum ConnectableEvents {
@@ -15,8 +14,6 @@ export enum ConnectableEvents {
 export interface Connectable {
   connectTo(item: Receivable): Promise<boolean>;
   disconnectFrom(item: Receivable): Promise<boolean>;
-  output?: AudioNode | CompositeAudioNode;
-
   multipleConnections?: boolean;
 }
 
@@ -24,20 +21,13 @@ export interface Connectable {
 export const ConnectableMixin = (superclass: new () => LitElement) =>
   class Connectable extends superclass implements Connectable {
 
-    // From superclass
-    playing?: boolean;
-    selected?: boolean;
-
+    // @ts-ignore Defined in superclass
+    output: AudioNode;
 
     multipleConnections?: boolean;
-    output?: AudioNode;
 
     private _app = document.querySelector(SElement.app)!;
     private _toaster = document.querySelector(SElement.toaster)!;
-
-    get waveform() {
-      return this.shadowRoot!.querySelector(SElement.waveform)!;
-    }
 
     private _connectedTo: Receivable[] = [];
     private _connecting: boolean = false;
@@ -49,7 +39,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
       this._updateConnect = this._updateConnect.bind(this);
       this._endConnect = this._endConnect.bind(this);
       this._connectableKeyDown = this._connectableKeyDown.bind(this)
-      this._updateWaveforms = this._updateWaveforms.bind(this)
+      this._updateWaveforms = this._updateWaveforms.bind(this);
     }
 
 
@@ -68,7 +58,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
       }
 
       let connecting: TemplateResult | null = null;
-      console.log('CONNECTING', this._connecting, this._mousePos);
+
 
       if (this._connecting && this._mousePos) {
         connecting = html`<synthia-waveform class="connecting"></synthia-waveform>`
@@ -98,12 +88,20 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
 
       if (!this._connectedTo.includes(item)) {
         this._connectedTo.push(item);
+
+        // Wait for the new waveform to exist
         await this.requestUpdate();
+
         const wf = this.shadowRoot!.querySelector(
           `${SElement.waveform}:nth-of-type(${this._connectedTo.length})`
         ) as Waveform;
 
-        if (!item.connect(wf.analyser)) return false;
+        this.output.connect(wf.input);
+        this.output.connect(item.input as AudioNode);
+        // @ts-ignore
+        wf.connect(item.input);
+
+        // if (!item.connect(wf.analyser)) return false;
         wf.connectedTo = item;
         wf.connectedFrom = this as Connectable;
 
@@ -174,7 +172,8 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
       }
       this.connectTo(receivable);
 
-      this._app.select(this as Selectable);
+      // @ts-ignore
+      this._app.select(this);
     }
 
 

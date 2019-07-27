@@ -29,6 +29,10 @@ export class Waveform extends LitElement {
   private _lastNotified = Date.now();
 
 
+  get input() { return this.analyser; }
+  get output() { return this.analyser; }
+
+
 
   get inactive() {
     const len = this._dataArray.length;

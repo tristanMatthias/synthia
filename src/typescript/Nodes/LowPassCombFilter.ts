@@ -1,4 +1,4 @@
-import CompositeAudioNode from "../CompositeAudioNode";
+import CompositeAudioNode from "./BaseNode";
 
 interface LowPassCombFilterOptions {
   delayTime: number

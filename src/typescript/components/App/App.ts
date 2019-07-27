@@ -1,7 +1,9 @@
-import { LitElement, html, customElement, property } from "lit-element";
-import { SElement } from "../../types";
-import { Selectable } from "../../mixins/Selectable/Selectable";
-import { StorageKey, Storage } from "../../lib/Storage";
+import { customElement, html, LitElement, property } from 'lit-element';
+
+import { Storage, StorageKey } from '../../lib/Storage';
+import { Selectable } from '../../mixins/Selectable/Selectable';
+import { SElement } from '../../types';
+import { Keyboard } from '../../lib/Keyboard';
 
 export enum AppEvents {
   connecting = 'connecting'
@@ -19,6 +21,9 @@ export class App extends LitElement {
   isDragging: boolean = false;
 
   private _toaster = document.querySelector(SElement.toaster)!;
+
+  keyboard = new Keyboard(this.context, this._toaster);
+
 
 
   private _isConnecting: boolean = false;
@@ -40,6 +45,7 @@ export class App extends LitElement {
 
 
   render() { return html`<slot></slot>`; }
+
 
   select(element: Selectable, multiple = false) {
     if (multiple) {

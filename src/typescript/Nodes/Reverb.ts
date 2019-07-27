@@ -1,5 +1,5 @@
-import CompositeAudioNode from "../CompositeAudioNode";
-import { generateImpulseResponse } from "../generateImpulseResponse";
+import CompositeAudioNode from "./BaseNode";
+import { generateImpulseResponse } from "../lib/generateImpulseResponse";
 
 interface ReverbOptions {
   wetGain?: number,
