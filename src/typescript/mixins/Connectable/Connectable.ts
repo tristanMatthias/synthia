@@ -4,6 +4,7 @@ import { Waveform } from '../../components/Waveform/Waveform';
 import { SElement } from '../../types';
 import { Position, DraggableEvents } from '../Draggable/Draggable';
 import { Selectable } from '../Selectable/Selectable';
+import CompositeAudioNode from '../../lib/CompositeAudioNode';
 
 
 export enum ConnectableEvents {
@@ -14,9 +15,9 @@ export enum ConnectableEvents {
 export interface Connectable {
   connectTo(item: Receivable): Promise<boolean>;
   disconnectFrom(item: Receivable): Promise<boolean>;
-  output?: AudioNode;
+  output?: AudioNode | CompositeAudioNode;
 
-  multipleConnections: boolean;
+  multipleConnections?: boolean;
 }
 
 
@@ -28,7 +29,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
     selected?: boolean;
 
 
-    multipleConnections = false
+    multipleConnections?: boolean;
     output?: AudioNode;
 
     private _app = document.querySelector(SElement.app)!;
@@ -67,6 +68,8 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
       }
 
       let connecting: TemplateResult | null = null;
+      console.log('CONNECTING', this._connecting, this._mousePos);
+
       if (this._connecting && this._mousePos) {
         connecting = html`<synthia-waveform class="connecting"></synthia-waveform>`
       }
@@ -142,7 +145,11 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
 
     private _updateConnect(e: MouseEvent) {
       this._mousePos = { x: e.clientX, y: e.clientY }
+      if (!this.shadowRoot!.querySelector('synthia-waveform.connecting')) {
+        this.requestUpdate();
+      }
       this._updateWaveforms();
+
     }
 
 

@@ -1,11 +1,12 @@
 import { LitElement } from "lit-element";
+import CompositeAudioNode from "../../lib/CompositeAudioNode";
 
 export interface Receivable extends LitElement {
   connect(audioNode: AudioNode): boolean;
   disconnect(audioNode: AudioNode): boolean;
 
   canReceive: boolean;
-  input: AudioNode;
+  input: AudioNode | CompositeAudioNode;
 }
 
 
@@ -20,6 +21,8 @@ export const ReceivableMixin = (superclass: new () => LitElement) =>
     input?: AudioNode
 
     connect(node: AudioNode) {
+      console.log(node);
+
       if (!this.input) throw new Error('No input audio node');
       node.connect(this.input);
       return true;

@@ -13,5 +13,8 @@ export enum SElement {
   expoSlider = 'synthia-expo-slider',
   footer = 'synthia-footer',
   sidebar = 'synthia-sidebar',
-  toaster = 'synthia-toaster'
+  toaster = 'synthia-toaster',
+  delay = 'synthia-delay',
+  reverb = 'synthia-reverb',
+  reverbSidebar = 'synthia-reverb-sidebar',
 }

@@ -27,6 +27,14 @@ export const DraggableMixin = (superclass: new () => LitElement) =>
     private _dragOffsetPosition: Position = { x: 0, y: 0 };
 
 
+    set x(x: number) {
+      this.style.left = `${x}px`;
+    }
+    set y(y: number) {
+      this.style.top = `${y}px`;
+    }
+
+
     constructor() {
       super();
       this._dragStart = this._dragStart.bind(this);

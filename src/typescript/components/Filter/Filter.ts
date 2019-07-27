@@ -80,13 +80,6 @@ export class Filter extends LitElement implements Connectable, HasCircleMenu, Re
   private _sidebar: FilterSidebar | null = null;
 
 
-  set x(x: number) {
-    this.style.left = `${x}px`;
-  }
-  set y(y: number) {
-    this.style.top = `${y}px`;
-  }
-
   get icon() {
     // @ts-ignore
     return icons[this.type];

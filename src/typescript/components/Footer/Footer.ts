@@ -1,14 +1,11 @@
 import { customElement, html, LitElement, TemplateResult } from 'lit-element';
 
-import { iconFilter } from '../../icons/filter';
-import { iconOscillator } from '../../icons/oscillator';
+import { iconEffectReverb } from '../../icons/effectReverb';
+import { iconFilterSmall } from '../../icons/filterSmall';
+import { iconOscillatorSmall } from '../../icons/oscillatorSmall';
+import { footerBackground } from '../../images/footerBackground';
 import { SElement } from '../../types';
 import styles from './footer.styles';
-import { footerBackground } from '../../images/footerBackground';
-import { iconFilterSmall } from '../../icons/filterSmall';
-import { Filter } from '../Filter/Filter';
-import { iconOscillatorSmall } from '../../icons/oscillatorSmall';
-import { Oscillator } from '../Oscillator/Oscillator';
 
 
 interface FooterNode {
@@ -35,8 +32,10 @@ export class ComponentToolbar extends LitElement {
 
   get nodes(): FooterNode[] {
     return [
+      {icon: iconOscillatorSmall, text: 'Oscillator', type: SElement.oscillator},
       {icon: iconFilterSmall, text: 'Filter', type: SElement.filter},
-      {icon: iconOscillatorSmall, text: 'Oscillator', type: SElement.oscillator}
+      // {icon: iconEffectDelay, text: 'Delay effect', type: SElement.delay},
+      {icon: iconEffectReverb, text: 'Reverb effect', type: SElement.reverb}
     ]
   }
 

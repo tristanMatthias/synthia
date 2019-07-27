@@ -12,6 +12,8 @@ import './ExpoSlider/ExpoSlider';
 import './Footer/Footer';
 import './Sidebar/Sidebar';
 import './Toaster/Toaster';
+import './Delay/Delay';
+import './Reverb/Reverb';
 import { SElement } from '../types';
 
 

@@ -58,13 +58,6 @@ export class Oscillator extends LitElement implements Connectable, HasCircleMenu
   @property()
   playing: boolean = false;
 
-  set x(x: number) {
-    this.style.left = `${x}px`;
-  }
-  set y(y: number) {
-    this.style.top = `${y}px`;
-  }
-
   get icon() {
     // @ts-ignore
     return icons[this.type];

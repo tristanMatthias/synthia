@@ -1,7 +1,8 @@
 export enum StorageKey {
   notifiedIntro = 'notifiedIntro',
   notifiedOscillatorPlay = 'notifiedOscillatorPlay',
-  notifiedFilterSidebar = 'notifiedFilterSidebar'
+  notifiedFilterSidebar = 'notifiedFilterSidebar',
+  notifiedReverbSidebar = 'notifiedReverbSidebar'
 }
 
 const LS_KEY = 'synthia-storage';
