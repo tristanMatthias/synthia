@@ -1,20 +1,20 @@
-import { html, LitElement, query } from 'lit-element';
+import { html } from 'lit-element';
 
 import { iconEffect } from '../../icons/effect';
 import { iconEffectReverb } from '../../icons/effectReverb';
-import { ReverbEffect } from '../../nodes/Reverb';
 import { Storage, StorageKey } from '../../lib/Storage';
-import { Connectable, ConnectableMixin } from '../../mixins/Connectable/Connectable';
+import { ConnectableMixin } from '../../mixins/Connectable/Connectable';
 import { DeletableMixin } from '../../mixins/Deletable/Deletable';
 import { DraggableMixin } from '../../mixins/Draggable/Draggable';
 import { mix } from '../../mixins/mix';
-import { Receivable, ReceivableMixin } from '../../mixins/Receivable/Receivable';
-import { SelectableMixin, SelectableEvents } from '../../mixins/Selectable/Selectable';
+import { ReceivableMixin } from '../../mixins/Receivable/Receivable';
+import { SelectableEvents, SelectableMixin } from '../../mixins/Selectable/Selectable';
+import { ReverbEffect } from '../../nodes/Reverb';
 import { SElement } from '../../types';
+import { BaseComponent } from '../BaseComponent/BaseComponent';
 import { SidebarEvents } from '../Sidebar/Sidebar';
 import styles from './reverb.styles';
 import { ReverbSidebar } from './ReverbSidebar/ReverbSidebar';
-import { BaseComponent } from '../BaseComponent/BaseComponent';
 
 export class Reverb extends BaseComponent {
 
