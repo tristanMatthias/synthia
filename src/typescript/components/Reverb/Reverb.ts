@@ -9,7 +9,7 @@ import { DraggableMixin } from '../../mixins/Draggable/Draggable';
 import { mix } from '../../mixins/mix';
 import { ReceivableMixin } from '../../mixins/Receivable/Receivable';
 import { SelectableEvents, SelectableMixin } from '../../mixins/Selectable/Selectable';
-import { ReverbEffect } from '../../nodes/Reverb';
+import { ReverbEffect } from '../../Nodes/Reverb2';
 import { SElement } from '../../types';
 import { BaseComponent } from '../BaseComponent/BaseComponent';
 import { SidebarEvents } from '../Sidebar/Sidebar';
