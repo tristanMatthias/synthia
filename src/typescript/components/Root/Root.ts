@@ -1,28 +1,18 @@
-import { html, LitElement } from 'lit-element';
+import { html } from 'lit-element';
 
-import { SElement } from '../../types';
-import { SelectableMixin } from '../../mixins/Selectable/Selectable';
-import styles from './root.styles';
-import { ReceivableMixin, Receivable } from '../../mixins/Receivable/Receivable';
 import { mix } from '../../mixins/mix';
+import { ReceivableMixin } from '../../mixins/Receivable/Receivable';
+import { SelectableMixin } from '../../mixins/Selectable/Selectable';
+import { SElement } from '../../types';
+import { BaseComponent } from '../BaseComponent/BaseComponent';
+import styles from './root.styles';
 
 
-export class Root extends LitElement implements Receivable {
+export class Root extends BaseComponent {
+
   static get styles() {
     return [styles]
   }
-
-
-  private _app = document.querySelector(SElement.app)!;
-
-
-  // Inherited from Receivable
-  canReceive = true;
-  get input() {
-    return this._app.mainWaveform.analyser;
-  }
-  connect() { return true };
-  disconnect() { return true }
 
   render() {
     return html`
@@ -37,6 +27,17 @@ export class Root extends LitElement implements Receivable {
           <path d="M12.49.662C5.922.662.598 5.986.598 12.554M12.49 24.446c6.568 0 11.892-5.325 11.892-11.892"/>
         </g>
       </svg>`;
+  }
+
+  constructor() {
+    super();
+    this.input.connect(this.output as AudioNode);
+    this.output.connect(this._ctx.destination);
+  }
+
+  firstUpdated(props: Map<string, keyof Root>) {
+    super.firstUpdated(props) ;
+    this.input.connect(this._app.mainWaveform.analyser);
   }
 }
 

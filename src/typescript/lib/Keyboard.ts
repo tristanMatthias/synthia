@@ -22,8 +22,6 @@ export class Keyboard {
 
     window.addEventListener('keyup', e => {
       const f = keyToFrequency(e.key, 4);
-      console.log('stopping', f);
-
       if (f) this._dispatch(KeyboardEvent.stop, f);
     });
   }

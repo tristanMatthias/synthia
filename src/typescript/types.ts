@@ -3,6 +3,7 @@ export enum SElement {
   root = 'synthia-root',
   canvas = 'synthia-canvas',
   oscillator = 'synthia-oscillator',
+  oscillatorSidebar = 'synthia-oscillator-sidebar',
   filter = 'synthia-filter',
   filterSidebar = 'synthia-filter-sidebar',
   waveform = 'synthia-waveform',

@@ -1,24 +1,16 @@
 import './App/App';
-import './Root/Root';
-import './Oscillator/Oscillator';
-import './Filter/Filter';
-import './Canvas/Canvas';
-import './Waveform/Waveform';
-import './FrequencyResponse/FrequencyResponse';
-import './CircleMenu/CircleMenu';
 import './Button/Button';
-import './Slider/Slider';
-import './ExpoSlider/ExpoSlider';
-import './Footer/Footer';
-import './Sidebar/Sidebar';
-import './Toaster/Toaster';
+import './Canvas/Canvas';
+import './CircleMenu/CircleMenu';
 import './Delay/Delay';
+import './ExpoSlider/ExpoSlider';
+import './Filter/Filter';
+import './Footer/Footer';
+import './FrequencyResponse/FrequencyResponse';
+import './Oscillator/Oscillator';
 import './Reverb/Reverb';
-import { SElement } from '../types';
-
-
-(() => {
-  const app = document.querySelector(SElement.app)!;
-  const mainWaveform = document.querySelector(SElement.waveform)!;
-  mainWaveform.connect(app.context.destination);
-})();
+import './Root/Root';
+import './Sidebar/Sidebar';
+import './Slider/Slider';
+import './Toaster/Toaster';
+import './Waveform/Waveform';

@@ -11,12 +11,14 @@ import { DeletableMixin } from '../../mixins/Deletable/Deletable';
 import { DraggableMixin } from '../../mixins/Draggable/Draggable';
 import { HasCircleMenuMixin } from '../../mixins/HasCircleMenu/HasCircleMenu';
 import { mix } from '../../mixins/mix';
-import { SelectableMixin } from '../../mixins/Selectable/Selectable';
+import { SelectableEvents, SelectableMixin } from '../../mixins/Selectable/Selectable';
 import { SynthiaOscillator } from '../../Nodes';
 import { SElement } from '../../types';
 import { BaseComponent } from '../BaseComponent/BaseComponent';
 import { CircleMenuButton } from '../CircleMenu/CircleMenu';
+import { SidebarEvents } from '../Sidebar/Sidebar';
 import styles from './oscillator.styles';
+import { OscillatorSidebar } from './OscillatorSidebar/OscillatorSidebar';
 
 
 const icons = {
@@ -37,9 +39,9 @@ export class Oscillator extends BaseComponent {
 
 
   multipleConnections = true;
-
-
   output: SynthiaOscillator;
+
+  private _sidebar: OscillatorSidebar | null = null;
 
 
   get buttons(): CircleMenuButton[] {
@@ -69,9 +71,7 @@ export class Oscillator extends BaseComponent {
   }
 
 
-  get type() {
-    return this.output.type;
-  }
+  get type() { return this.output.type; }
   set type(v: OscillatorType) {
     this.output.type = v;
     this.requestUpdate();
@@ -89,7 +89,8 @@ export class Oscillator extends BaseComponent {
 
   connectedCallback() {
     super.connectedCallback();
-    // window.addEventListener('keydown', this._keyDown);
+    this.addEventListener('dblclick', () => this.toggleSidebar());
+    this.addEventListener(SelectableEvents.deselected, () => this.toggleSidebar(true));
     window.addEventListener(KeyboardEvent.play, this._play);
     window.addEventListener(KeyboardEvent.stop, this._stop);
   }
@@ -98,7 +99,25 @@ export class Oscillator extends BaseComponent {
     super.disconnectedCallback();
     window.removeEventListener(KeyboardEvent.play, this._play);
     window.removeEventListener(KeyboardEvent.stop, this._stop);
+    this.toggleSidebar(true);
   }
+
+
+  toggleSidebar(forceRemove?: boolean) {
+    if (this._sidebar || forceRemove) {
+      if (this._sidebar) this._sidebar.remove();
+      this._sidebar = null;
+    } else {
+      const sidebar = new OscillatorSidebar();
+      sidebar.oscillator = this;
+      sidebar.addEventListener(SidebarEvents.closed, () => {
+        this.toggleSidebar(true);
+      });
+      this._app.appendChild(sidebar);
+      this._sidebar = sidebar;
+    }
+  }
+
 
   private _play(e: CustomEventInit) {
     this.output.play(e.detail)
