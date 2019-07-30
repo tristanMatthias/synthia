@@ -31,8 +31,6 @@ export const ReceivableMixin = (superclass: new () => LitElement) =>
 
       try {
         node.disconnect(this.input);
-        console.log(node, this, this.input);
-
         return true;
       } catch (e) {
         // Not connected

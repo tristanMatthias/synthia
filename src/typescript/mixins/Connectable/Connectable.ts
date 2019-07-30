@@ -123,7 +123,6 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
     async disconnectFrom(item: Receivable) {
       const index = this._connectedTo.indexOf(item);
       if (index < 0) return false;
-      console.log('disconnecting');
       if (this.output) item.disconnect(this.output);
       this._connectedTo.splice(index, 1);
       this.requestUpdate();

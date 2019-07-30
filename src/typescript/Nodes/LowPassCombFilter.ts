@@ -35,7 +35,6 @@ export class LowPassCombFilter extends CompositeAudioNode {
     this._delay = new DelayNode(this._ctx, { delayTime });
     this._gain = this._ctx.createGain();
     this._gain.gain.setValueAtTime(gainValue, this._ctx.currentTime);
-    console.log(delayTime, gainValue, frequency);
 
 
     this._input
