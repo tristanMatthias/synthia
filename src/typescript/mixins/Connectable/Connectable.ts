@@ -77,7 +77,10 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
     }
 
     disconnectedCallback() {
-      if (this.output) this._connectedTo.forEach(this.disconnectFrom.bind(this));
+      if (this.output) {
+        this._connectedTo.forEach(this.disconnectFrom.bind(this));
+        this.output.disconnect();
+      }
       window.removeEventListener('keydown', this._connectableKeyDown);
       super.disconnectedCallback();
     }
@@ -98,10 +101,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
 
         this.output.connect(wf.input);
         this.output.connect(item.input as AudioNode);
-        // @ts-ignore
-        wf.connect(item.input);
 
-        // if (!item.connect(wf.analyser)) return false;
         wf.connectedTo = item;
         wf.connectedFrom = this as Connectable;
 
