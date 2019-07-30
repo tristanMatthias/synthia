@@ -22,7 +22,7 @@
   .icon {
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: calc(50% + 0.75rem);
     height: 4rem;
     width: 4rem;
     transform: translate(-50%, -50%);

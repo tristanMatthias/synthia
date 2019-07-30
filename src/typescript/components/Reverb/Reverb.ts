@@ -15,6 +15,10 @@ import { BaseComponent } from '../BaseComponent/BaseComponent';
 import { SidebarEvents } from '../Sidebar/Sidebar';
 import styles from './reverb.styles';
 import { ReverbSidebar } from './ReverbSidebar/ReverbSidebar';
+import { HasCircleMenuMixin } from '../../mixins/HasCircleMenu/HasCircleMenu';
+import { iconConnect } from '../../icons/connect';
+import { iconSettings } from '../../icons/settings';
+import { CircleMenuButton } from '../CircleMenu/CircleMenu';
 
 export class Reverb extends BaseComponent {
 
@@ -29,7 +33,14 @@ export class Reverb extends BaseComponent {
 
 
   private _sidebar: ReverbSidebar | null = null;
+  private _startConnect() { return true; }
 
+  get buttons(): CircleMenuButton[] {
+    return [
+      { text: 'Connect', icon: iconConnect, action: () => this._startConnect(), color: 'text' },
+      { text: 'Settings', icon: iconSettings, action: () => this.toggleSidebar(), color: 'text' }
+    ];
+  }
 
   render() {
     return html`
@@ -42,11 +53,6 @@ export class Reverb extends BaseComponent {
     this.addEventListener('dblclick', () => this.toggleSidebar());
     this.addEventListener(SelectableEvents.deselected, () => this.toggleSidebar(true));
   }
-
-  // firstUpdated(props: Map<keyof Reverb, any>) {
-  //   super.firstUpdated(props);
-  //   this.reverb.connect(this.output);
-  // }
 
 
   toggleSidebar(forceRemove?: boolean) {
@@ -110,7 +116,7 @@ const reverb = mix(Reverb, [
   DeletableMixin,
   ConnectableMixin,
   ReceivableMixin,
-  // HasCircleMenuMixin
+  HasCircleMenuMixin
 ])
 
 

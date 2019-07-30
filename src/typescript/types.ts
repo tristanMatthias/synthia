@@ -16,6 +16,7 @@ export enum SElement {
   sidebar = 'synthia-sidebar',
   toaster = 'synthia-toaster',
   delay = 'synthia-delay',
+  delaySidebar = 'synthia-delay-sidebar',
   reverb = 'synthia-reverb',
   reverbSidebar = 'synthia-reverb-sidebar',
 }

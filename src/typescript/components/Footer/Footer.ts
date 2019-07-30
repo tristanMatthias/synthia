@@ -1,5 +1,6 @@
 import { customElement, html, LitElement, TemplateResult } from 'lit-element';
 
+import { iconEffectDelay } from '../../icons/effectDelay';
 import { iconEffectReverb } from '../../icons/effectReverb';
 import { iconFilterSmall } from '../../icons/filterSmall';
 import { iconOscillatorSmall } from '../../icons/oscillatorSmall';
@@ -34,7 +35,7 @@ export class ComponentToolbar extends LitElement {
     return [
       {icon: iconOscillatorSmall, text: 'Oscillator', type: SElement.oscillator},
       {icon: iconFilterSmall, text: 'Filter', type: SElement.filter},
-      // {icon: iconEffectDelay, text: 'Delay effect', type: SElement.delay},
+      {icon: iconEffectDelay, text: 'Delay effect', type: SElement.delay},
       {icon: iconEffectReverb, text: 'Reverb effect', type: SElement.reverb}
     ]
   }
