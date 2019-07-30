@@ -36,6 +36,7 @@ export class Envelope extends CompositeAudioNode {
   onend?: () => void;
 
 
+
   private _delay: number = 0;
   get delay() { return this._delay }
   set delay(v: number) {
@@ -132,10 +133,10 @@ export class Envelope extends CompositeAudioNode {
   }
 
 
-  startRelease() {
+  startRelease(time = this.release) {
     this._ending = true;
     this._envelopeGain.gain.cancelAndHoldAtTime(this._ctx.currentTime);
-    this._envelopeGain.gain.linearRampToValueAtTime(ZERO, this._ctx.currentTime + this.release);
+    this._envelopeGain.gain.linearRampToValueAtTime(ZERO, this._ctx.currentTime + time);
   }
 
 

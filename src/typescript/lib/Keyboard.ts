@@ -9,20 +9,27 @@ export enum KeyboardEvent {
 
 export class Keyboard {
   octave = 4;
+  _pressed: Map<string, boolean> = new Map()
 
   constructor(
     public ctx: AudioContext,
     public toaster: Toaster
   ) {
 
-    window.addEventListener('keydown', e => {
+    window.addEventListener('keypress', e => {
       const f = keyToFrequency(e.key, 4);
-      if (f) this._dispatch(KeyboardEvent.play, f);
+      if (f && !this._pressed.get(e.key)) {
+        this._dispatch(KeyboardEvent.play, f);
+        this._pressed.set(e.key, true)
+      }
     });
 
     window.addEventListener('keyup', e => {
       const f = keyToFrequency(e.key, 4);
-      if (f) this._dispatch(KeyboardEvent.stop, f);
+      if (f) {
+        this._dispatch(KeyboardEvent.stop, f);
+        this._pressed.delete(e.key);
+      }
     });
   }
 
