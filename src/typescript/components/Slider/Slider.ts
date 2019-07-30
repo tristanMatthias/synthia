@@ -19,6 +19,9 @@ export class Slider extends LitElement {
   @property()
   value?: number;
 
+  @property()
+  protected _showValue: number = 0;
+
   private _active: boolean = false;
 
   constructor() {
@@ -28,7 +31,7 @@ export class Slider extends LitElement {
   }
 
   render() {
-    const left = `${((this.value || 0) / (this.max)) * 100}%`;
+    const left = `${this._showValue * 100}%`;
     return html`<span class="slide" style="left: ${left}"></span>`;
   }
 
@@ -48,10 +51,12 @@ export class Slider extends LitElement {
   protected _update(e: MouseEvent) {
     const box = this.getBoundingClientRect();
     const relative = e.clientX - box.left;
-    let value = (relative / box.width) * this.max;
-    if (value > this.max) value = this.max;
+    let value = (relative / box.width);
+    if (value > 1) value = 1;
     if (value < 0) value = 0;
-    this.value = value;
+
+    this._showValue = value;
+    this.value = this.min + ((this.max - this.min) * value);
   }
 
   updated(props: Map<keyof Slider, any>) {

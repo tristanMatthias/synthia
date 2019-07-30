@@ -6,9 +6,6 @@ import { Slider } from '../Slider/Slider';
 
 @customElement(SElement.expoSlider)
 export class ExpoSlider extends Slider {
-  @property()
-  private _showValue?: number;
-
   private _minPos = 0;
   private _maxPos = 1;
   private get _minVal() {
