@@ -58,7 +58,7 @@ export class OscillatorSidebar extends LitElement {
         </div>
 
         <div class="form-row">
-          <label> AttackLevel </label>
+          <label> Attack Level </label>
           <synthia-slider
             type="range"
             min="0"
@@ -82,7 +82,7 @@ export class OscillatorSidebar extends LitElement {
         </div>
 
         <div class="form-row">
-          <label> DecayLevel </label>
+          <label> Decay Level </label>
           <synthia-slider
             type="range"
             min="0"
@@ -103,6 +103,18 @@ export class OscillatorSidebar extends LitElement {
             @change=${this._updateValue('release')}
           /></synthia-slider>
           <span class="value">${oscillator.release}s</span>
+        </div>
+
+        <div class="form-row">
+          <label> Pitch </label>
+          <synthia-slider
+            type="range"
+            min="-24"
+            max="24"
+            value=${oscillator.pitch}
+            @change=${this._updateValue('pitch')}
+          /></synthia-slider>
+          <span class="value">${oscillator.pitch}s</span>
         </div>
       </form>
     </synthia-sidebar>

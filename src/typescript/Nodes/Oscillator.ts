@@ -10,11 +10,30 @@ interface OscillatorOptions {
 
 export class SynthiaOscillator extends CompositeAudioNode {
 
-  type: OscillatorType;
+  private _type: OscillatorType = 'sine';
+  get type() {
+    return this._type;
+  }
+  set type(v: OscillatorType) {
+    this._type = v;
+    this._notes.forEach(([, o]) => {
+      o.type = v;
+    })
+  }
 
-  private _notes: Map<number, [Envelope, OscillatorNode]> = new Map();
+  private _pitch: number = 0;
+  get pitch() {
+    return this._pitch;
+  }
+  set pitch(v: number) {
+    this._pitch = v;
 
-
+    Array.from(this._notes.entries())
+      .forEach(([freq, [env, o]]) => {
+        const tuned = this._tuned(freq);
+        o.frequency.setValueAtTime(tuned, this._ctx.currentTime);
+      })
+  }
 
   private _delay: number = 0;
   get delay() { return this._delay; }
@@ -41,6 +60,10 @@ export class SynthiaOscillator extends CompositeAudioNode {
   set release(v: number) { this._release = v; }
 
 
+  private _notes: Map<number, [Envelope, OscillatorNode]> = new Map();
+
+
+
   constructor(
     protected _ctx: AudioContext | OfflineAudioContext,
     options?: OscillatorOptions
@@ -52,19 +75,32 @@ export class SynthiaOscillator extends CompositeAudioNode {
       ...options
     }
     this.type = defaults.type!;
-    this._output.gain.value = 1;
+    this._output.gain.value = 2;
+  }
+
+
+  private _tuned(freq: number) {
+    return Math.floor(freq * Math.pow(2, this.pitch / 12));
   }
 
 
   play(freq: number, duration?: number) {
 
-    // Already playing
-    if (this._notes.get(freq)) return false;
+    const tuned = this._tuned(freq);
+
+    // If already playing, stop it, then restart it
+    const existing = this._notes.get(freq);
+    if (existing) {
+      const e = existing[0];
+      // Prevent clicking
+      e.gain.cancelAndHoldAtTime(this._ctx.currentTime);
+      e.gain.linearRampToValueAtTime(0, this._ctx.currentTime + 0.01)
+      e.onend = undefined;
+    }
+
     const osc = this._ctx.createOscillator();
     osc.type = this.type;
-    osc.frequency.setValueAtTime(freq, this._ctx.currentTime);
-
-    console.log(this.attack);
+    osc.frequency.setValueAtTime(tuned, this._ctx.currentTime);
 
 
     const env = new Envelope(this._ctx, {
@@ -78,9 +114,15 @@ export class SynthiaOscillator extends CompositeAudioNode {
 
     env.onend = () => this.kill(freq);
 
+
+    const comp = new DynamicsCompressorNode(this._ctx, {
+      threshold: -70
+    });
+
     // @ts-ignore
     osc.connect(env as AudioNode);
-    env.connect(this._output)
+    env.connect(comp)
+    comp.connect(this._output)
 
     this._notes.set(freq, [env, osc]);
     osc.start();
@@ -89,14 +131,25 @@ export class SynthiaOscillator extends CompositeAudioNode {
   }
 
 
-  stop(freq: number, when: number = 0) {
+  stop(freq?: number, when: number = 0) {
+    // Stop all frequencies if none supplied
+    if (freq === undefined) {
+      Array.from(this._notes.keys()).forEach(f => this.stop(f));
+      return;
+    }
+
+    const tuned = this._tuned(freq);
+
     const envOsc = this._notes.get(freq);
     // Note is not playing
     if (!envOsc) return false;
     envOsc[0].startRelease();
+    console.log('starting release of', freq);
+
   }
 
   kill(freq: number) {
+    const tuned = this._tuned(freq);
     const envOsc = this._notes.get(freq);
     // Note is not playing
     if (!envOsc) return false;
@@ -116,7 +169,6 @@ declare global {
   }
 }
 
-console.log('before');
 
 
 
