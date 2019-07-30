@@ -93,12 +93,14 @@ export class Oscillator extends BaseComponent {
     this.addEventListener(SelectableEvents.deselected, () => this.toggleSidebar(true));
     window.addEventListener(KeyboardEvent.play, this._play);
     window.addEventListener(KeyboardEvent.stop, this._stop);
+    window.addEventListener('blur', this._stop);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener(KeyboardEvent.play, this._play);
     window.removeEventListener(KeyboardEvent.stop, this._stop);
+    window.removeEventListener('blur', this._stop);
     this.toggleSidebar(true);
   }
 
