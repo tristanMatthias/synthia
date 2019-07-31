@@ -7,6 +7,7 @@ import { iconOscillatorSmall } from '../../icons/oscillatorSmall';
 import { footerBackground } from '../../images/footerBackground';
 import { SElement } from '../../types';
 import styles from './footer.styles';
+import { iconEffectPan } from '../../icons/effectPan';
 
 
 interface FooterNode {
@@ -36,7 +37,8 @@ export class ComponentToolbar extends LitElement {
       {icon: iconOscillatorSmall, text: 'Oscillator', type: SElement.oscillator},
       {icon: iconFilterSmall, text: 'Filter', type: SElement.filter},
       {icon: iconEffectDelay, text: 'Delay effect', type: SElement.delay},
-      {icon: iconEffectReverb, text: 'Reverb effect', type: SElement.reverb}
+      {icon: iconEffectReverb, text: 'Reverb effect', type: SElement.reverb},
+      {icon: iconEffectPan, text: 'Pan effect', type: SElement.pan}
     ]
   }
 

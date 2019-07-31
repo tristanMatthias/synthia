@@ -114,7 +114,19 @@ export class OscillatorSidebar extends LitElement {
             value=${oscillator.pitch}
             @change=${this._updateValue('pitch')}
           /></synthia-slider>
-          <span class="value">${oscillator.pitch}s</span>
+          <span class="value">${oscillator.pitch}</span>
+        </div>
+
+        <div class="form-row">
+          <label> Gain </label>
+          <synthia-slider
+            type="range"
+            min="0"
+            max="1"
+            value=${oscillator.gain.value}
+            @change=${(e: any) => oscillator.gain.linearRampToValueAtTime(e.target.value, this._ctx.currentTime + 0.05)}
+          /></synthia-slider>
+          <span class="value">${oscillator.gain.value}</span>
         </div>
       </form>
     </synthia-sidebar>

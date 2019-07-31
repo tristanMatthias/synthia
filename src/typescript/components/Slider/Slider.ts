@@ -31,7 +31,8 @@ export class Slider extends LitElement {
   }
 
   render() {
-    const left = `${((this.value || this.min) - this.min) / (this.max - this.min) * 100}%`;
+    const v = this.value === undefined ? this.min : this.value;
+    const left = `${(v - this.min) / (this.max - this.min) * 100}%`;
     return html`<span class="slide" style="left: ${left}"></span>`;
   }
 

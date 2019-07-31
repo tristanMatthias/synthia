@@ -62,7 +62,7 @@ export class SynthiaOscillator extends CompositeAudioNode {
 
 
   private _notes: Map<number, [Envelope, OscillatorNode]> = new Map();
-
+  private _comp: DynamicsCompressorNode;
 
 
   constructor(
@@ -76,7 +76,17 @@ export class SynthiaOscillator extends CompositeAudioNode {
       ...options
     }
     this.type = defaults.type!;
-    this._output.gain.value = 2;
+    // this._output.gain.value = 2;
+
+    this._comp = this._ctx.createDynamicsCompressor();
+    this._comp.threshold.value = -32;
+    this._comp.knee.value = 40;
+    this._comp.ratio.value = 20;
+    this._comp.attack.value = 0;
+    this._comp.release.value = 1;
+    this._comp.connect(this._output);
+
+    this._input.connect(this._comp);
   }
 
 
@@ -117,7 +127,7 @@ export class SynthiaOscillator extends CompositeAudioNode {
 
     // @ts-ignore
     osc.connect(env as AudioNode);
-    env.connect(this._output);
+    env.connect(this._input);
 
     this._notes.set(freq, [env, osc]);
     this._setEnvGainOnType();
@@ -158,9 +168,9 @@ export class SynthiaOscillator extends CompositeAudioNode {
   private _setEnvGainOnType() {
     Array.from(this._notes.values()).forEach(([env]) => {
       let gain;
-      if (this.type === 'sine') gain = 0.5;
-      else if (this.type === 'sawtooth') gain = 0.16;
-      else if (this.type === 'square') gain = 0.2;
+      if (this.type === 'sine') gain = 1;
+      else if (this.type === 'sawtooth') gain = 0.32;
+      else if (this.type === 'square') gain = 0.4;
       else gain = 1;
       env.gain.setValueAtTime(gain, this._ctx.currentTime);
     })

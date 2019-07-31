@@ -19,4 +19,6 @@ export enum SElement {
   delaySidebar = 'synthia-delay-sidebar',
   reverb = 'synthia-reverb',
   reverbSidebar = 'synthia-reverb-sidebar',
+  pan = 'synthia-pan',
+  panSidebar = 'synthia-pan-sidebar',
 }
