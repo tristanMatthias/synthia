@@ -1,4 +1,4 @@
-import CompositeAudioNode from "./BaseNode";
+import CompositeAudioNode from './BaseNode';
 
 export interface EnvelopeOptions {
   delay: number;
@@ -40,55 +40,43 @@ export class Envelope extends CompositeAudioNode {
   private _delay: number = 0;
   get delay() { return this._delay }
   set delay(v: number) {
-    const oldProps = this._props();
     this._delay = v;
-    const newProps = this._props();
-    this._update(newProps);
+    this._update();
   }
 
   private _attack: number = 0.3;
   get attack() { return this._attack }
   set attack(v: number) {
-    const oldProps = this._props();
     this._attack = v;
-    const newProps = this._props();
-    this._update(newProps);
+    this._update();
   }
 
   private _attackLevel: number = 1;
   get attackLevel() { return this._attackLevel }
   set attackLevel(v: number) {
-    const oldProps = this._props();
     this._attackLevel = v;
-    const newProps = this._props();
-    this._update(newProps);
+    this._update();
   }
 
   private _decay: number = 1;
   get decay() { return this._decay }
   set decay(v: number) {
-    const oldProps = this._props();
     this._decay = v;
-    const newProps = this._props();
-    this._update(newProps);
+    this._update();
   }
 
   private _decayLevel: number = 0.7;
   get decayLevel() { return this._decayLevel }
   set decayLevel(v: number) {
-    const oldProps = this._props();
     this._decayLevel = v;
-    const newProps = this._props();
-    this._update(newProps);
+    this._update();
   }
 
   private _release: number = 0.2;
   get release() { return this._release }
   set release(v: number) {
-    const oldProps = this._props();
     this._release = v;
-    const newProps = this._props();
-    this._update(newProps);
+    this._update();
   }
 
 
@@ -110,7 +98,6 @@ export class Envelope extends CompositeAudioNode {
       ...options
     }
 
-    const t = this._ctx.currentTime;
     const g = this._envelopeGain.gain;
 
 
@@ -127,7 +114,7 @@ export class Envelope extends CompositeAudioNode {
     this._decayLevel = settings.decayLevel;
     this._release = settings.release;
 
-    this._update(this._props());
+    this._update();
     this._timer();
 
   }
@@ -163,29 +150,11 @@ export class Envelope extends CompositeAudioNode {
   }
 
 
-  private _stage(timings: Timings): Stage {
-    const t = this._ctx.currentTime;
-    if (t < timings.attackStart) return Stage.delay;
-    if (t < timings.decayStart) return Stage.attack;
-    if (this._duration) {
-      if (t < timings.releaseStart!) return Stage.sustain;
-      else if (t < timings.end!) return Stage.release;
-      else return Stage.end;
-    } else return Stage.sustain;
-  }
-
-
-  private _update(
-    newProps: EnvelopeOptions,
-    // oldProps: EnvelopeOptions
-  ) {
+  private _update() {
     const t = this._ctx.currentTime;
     const g = this._envelopeGain.gain;
-    // const oldTimes = this._times(oldProps);
-    const newTimes = this._times(newProps);
-
-    // const oldStage = this._stage(oldTimes);
-    const newStage = this._stage(newTimes);
+    const props = this._props();
+    const newTimes = this._times(props);
 
     g.cancelAndHoldAtTime(t);
 
@@ -193,11 +162,11 @@ export class Envelope extends CompositeAudioNode {
     // const newIncludesAttack
     g.setValueAtTime(ZERO, newTimes.attackStart);
     g.linearRampToValueAtTime(this.attackLevel, newTimes.decayStart);
-    g.exponentialRampToValueAtTime(newProps.decayLevel, newTimes.decayEnd);
+    g.exponentialRampToValueAtTime(props.decayLevel, newTimes.decayEnd);
 
     if (newTimes.releaseStart && newTimes.end) {
       // Hold the decay level until release
-      g.linearRampToValueAtTime(newProps.decayLevel, newTimes.releaseStart);
+      g.linearRampToValueAtTime(props.decayLevel, newTimes.releaseStart);
       g.linearRampToValueAtTime(ZERO, newTimes.end);
     }
   }

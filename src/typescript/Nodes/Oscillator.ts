@@ -19,6 +19,7 @@ export class SynthiaOscillator extends CompositeAudioNode {
     this._notes.forEach(([, o]) => {
       o.type = v;
     })
+    this._setEnvGainOnType();
   }
 
   private _pitch: number = 0;
@@ -114,18 +115,14 @@ export class SynthiaOscillator extends CompositeAudioNode {
 
     env.onend = () => this.kill(freq);
 
-
-    const comp = new DynamicsCompressorNode(this._ctx, {
-      threshold: -70
-    });
-
     // @ts-ignore
     osc.connect(env as AudioNode);
-    env.connect(comp)
-    comp.connect(this._output)
+    env.connect(this._output);
 
     this._notes.set(freq, [env, osc]);
+    this._setEnvGainOnType();
     osc.start();
+
 
     return osc;
   }
@@ -156,6 +153,17 @@ export class SynthiaOscillator extends CompositeAudioNode {
 
     envOsc[1].stop(this._ctx.currentTime);
     this._notes.delete(freq);
+  }
+
+  private _setEnvGainOnType() {
+    Array.from(this._notes.values()).forEach(([env]) => {
+      let gain;
+      if (this.type === 'sine') gain = 0.5;
+      else if (this.type === 'sawtooth') gain = 0.16;
+      else if (this.type === 'square') gain = 0.2;
+      else gain = 1;
+      env.gain.setValueAtTime(gain, this._ctx.currentTime);
+    })
   }
 }
 
