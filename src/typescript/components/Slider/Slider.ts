@@ -16,11 +16,11 @@ export class Slider extends LitElement {
   @property({reflect: true, type: Number})
   max: number = 100;
 
-  @property()
+  @property({type: Number})
   value?: number;
 
   @property()
-  protected _showValue: number = 0;
+  protected _showValue: number = (this.value || this.min) / this.max;
 
   private _active: boolean = false;
 
@@ -31,7 +31,7 @@ export class Slider extends LitElement {
   }
 
   render() {
-    const left = `${this._showValue * 100}%`;
+    const left = `${((this.value || this.min) - this.min) / (this.max - this.min) * 100}%`;
     return html`<span class="slide" style="left: ${left}"></span>`;
   }
 
@@ -54,8 +54,6 @@ export class Slider extends LitElement {
     let value = (relative / box.width);
     if (value > 1) value = 1;
     if (value < 0) value = 0;
-
-    this._showValue = value;
     this.value = this.min + ((this.max - this.min) * value);
   }
 
