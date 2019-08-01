@@ -1,4 +1,4 @@
-import { Toaster } from "../components/Toaster/Toaster";
+import { Toaster } from "../components/ui/Toaster/Toaster";
 import { keyToFrequency } from "./keyToFrequency";
 
 export enum KeyboardEvent {

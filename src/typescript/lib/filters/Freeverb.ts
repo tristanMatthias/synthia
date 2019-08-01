@@ -1,6 +1,6 @@
-import CompositeAudioNode from '../../Nodes/BaseNode';
+import CompositeAudioNode from '../../audioNodes/BaseNode';
 import { mergeParams } from '../mergeParams';
-import { LowPassCombFilter } from '../../Nodes/LowPassCombFilter';
+import { LowPassCombFilter } from '../../audioNodes/LowPassCombFilter';
 
 // Freeverb params defined by Mr. Shroeder
 // const SAMPLE_RATE = 44100;
