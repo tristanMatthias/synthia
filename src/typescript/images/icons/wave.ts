@@ -1,6 +1,6 @@
 import { html } from "lit-html";
 
-export const iconOscillator = html`
+export const iconWave = html`
 <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 120 120">
   <g fill="none" fill-rule="evenodd">
     <circle cx="60.002" cy="60" r="40" stroke="var(--color)" stroke-linecap="square"/>

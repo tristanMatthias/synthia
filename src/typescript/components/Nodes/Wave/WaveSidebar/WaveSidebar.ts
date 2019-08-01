@@ -2,27 +2,27 @@ import { customElement, html } from 'lit-element';
 
 import { SElement } from '../../../../types';
 import { Sidebar } from '../../../layout/Sidebar/Sidebar';
-import { Oscillator } from '../Oscillator';
+import { Wave } from '../Wave';
 
 
-@customElement(SElement.oscillatorSidebar)
-export class OscillatorSidebar extends Sidebar {
+@customElement(SElement.waveSidebar)
+export class WaveSidebar extends Sidebar {
 
-  oscillator?: Oscillator;
+  wave?: Wave;
 
-  heading = 'Oscillator Settings';
+  heading = 'Wave Settings';
 
   private _ctx = document.querySelector(SElement.app)!.context
 
 
   get _contents() {
-    if (!this.oscillator) return null;
-    const oscillator = this.oscillator.output;
+    if (!this.wave) return null;
+    const wave = this.wave.output;
 
     return html`<form>
       <div class="form-row">
         <label>Type</label>
-        <select @change=${(e: any) => this.oscillator!.type = e.target.value}>
+        <select @change=${(e: any) => this.wave!.type = e.target.value}>
           <option value="square">Square</option>
           <option value="sine">Sine</option>
           <option value="sawtooth">Saw Tooth</option>
@@ -34,10 +34,10 @@ export class OscillatorSidebar extends Sidebar {
           type="range"
           min="0"
           max="5"
-          value=${oscillator.delay}
+          value=${wave.delay}
           @change=${this._updateValue('delay')}
         /></synthia-slider>
-        <span class="value">${oscillator.delay}s</span>
+        <span class="value">${wave.delay}s</span>
       </div>
 
       <div class="form-row">
@@ -46,10 +46,10 @@ export class OscillatorSidebar extends Sidebar {
           type="range"
           min="0"
           max="10"
-          value=${oscillator.attack}
+          value=${wave.attack}
           @change=${this._updateValue('attack')}
         /></synthia-slider>
-        <span class="value">${oscillator.attack}s</span>
+        <span class="value">${wave.attack}s</span>
       </div>
 
       <div class="form-row">
@@ -58,10 +58,10 @@ export class OscillatorSidebar extends Sidebar {
           type="range"
           min="0"
           max="1"
-          value=${oscillator.attackLevel}
+          value=${wave.attackLevel}
           @change=${this._updateValue('attackLevel')}
         /></synthia-slider>
-        <span class="value">${oscillator.attackLevel}</span>
+        <span class="value">${wave.attackLevel}</span>
       </div>
 
       <div class="form-row">
@@ -70,10 +70,10 @@ export class OscillatorSidebar extends Sidebar {
           type="range"
           min="0"
           max="20"
-          value=${oscillator.decay}
+          value=${wave.decay}
           @change=${this._updateValue('decay')}
         /></synthia-slider>
-        <span class="value">${oscillator.decay}s</span>
+        <span class="value">${wave.decay}s</span>
       </div>
 
       <div class="form-row">
@@ -82,10 +82,10 @@ export class OscillatorSidebar extends Sidebar {
           type="range"
           min="0"
           max="1"
-          value=${oscillator.decayLevel}
+          value=${wave.decayLevel}
           @change=${this._updateValue('decayLevel')}
         /></synthia-slider>
-        <span class="value">${oscillator.decayLevel}</span>
+        <span class="value">${wave.decayLevel}</span>
       </div>
 
       <div class="form-row">
@@ -94,10 +94,10 @@ export class OscillatorSidebar extends Sidebar {
           type="range"
           min="0"
           max="20"
-          value=${oscillator.release}
+          value=${wave.release}
           @change=${this._updateValue('release')}
         /></synthia-slider>
-        <span class="value">${oscillator.release}s</span>
+        <span class="value">${wave.release}s</span>
       </div>
 
       <div class="form-row">
@@ -106,10 +106,10 @@ export class OscillatorSidebar extends Sidebar {
           type="range"
           min="-24"
           max="24"
-          value=${oscillator.pitch}
+          value=${wave.pitch}
           @change=${this._updateValue('pitch')}
         /></synthia-slider>
-        <span class="value">${oscillator.pitch}</span>
+        <span class="value">${wave.pitch}</span>
       </div>
 
       <div class="form-row">
@@ -118,10 +118,10 @@ export class OscillatorSidebar extends Sidebar {
           type="range"
           min="0"
           max="1"
-          value=${oscillator.gain.value}
-          @change=${(e: any) => oscillator.gain.linearRampToValueAtTime(e.target.value, this._ctx.currentTime + 0.05)}
+          value=${wave.gain.value}
+          @change=${(e: any) => wave.gain.linearRampToValueAtTime(e.target.value, this._ctx.currentTime + 0.05)}
         /></synthia-slider>
-        <span class="value">${oscillator.gain.value}</span>
+        <span class="value">${wave.gain.value}</span>
       </div>
     </form>`;
   }
@@ -130,9 +130,9 @@ export class OscillatorSidebar extends Sidebar {
   private _updateValue(prop: any) {
     return (e: any) => {
       // @ts-ignore
-      this.oscillator.output[prop] = parseFloat(e.target.value);
+      this.wave.output[prop] = parseFloat(e.target.value);
       this.requestUpdate();
-      this.oscillator!.requestUpdate();
+      this.wave!.requestUpdate();
     }
   }
 
@@ -140,6 +140,6 @@ export class OscillatorSidebar extends Sidebar {
 
 declare global {
   interface HTMLElementTagNameMap {
-    [SElement.oscillatorSidebar]: OscillatorSidebar;
+    [SElement.waveSidebar]: WaveSidebar;
   }
 }

@@ -1,7 +1,7 @@
 import { html } from "lit-html";
 
-export const iconOscillator1 = html`
-<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 120 120" class="oscillator1">
+export const iconWave1 = html`
+<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 120 120" class="wave1">
   <g fill="none" fill-rule="evenodd">
     <path fill="var(--color)" d="M24.366 78.19A39.83 39.83 0 0 1 20 60c0-22.091 17.909-40 40-40v7.5c17.95 0 32.5 14.55 32.5 32.5h7.5c0 21.42-16.838 38.909-38 39.95V89.935C77.636 88.905 90 75.896 90 60c0-16.569-13.431-30-30-30-16.569 0-30 13.431-30 30 0 4.729 1.094 9.202 3.043 13.18l-8.677 5.01zm1.997 3.465l8.676-5.008C40.07 84.178 48.422 89.304 58 89.934v10.017c-13.279-.654-24.855-7.783-31.637-18.296zM61 99.988a40.767 40.767 0 0 1-2 0V89.984a30.548 30.548 0 0 0 2 0v10.004z"/>
     <g class="center">

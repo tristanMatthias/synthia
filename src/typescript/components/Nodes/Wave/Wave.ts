@@ -1,7 +1,7 @@
 import { html, query } from 'lit-element';
 
 import { iconConnect } from '../../../images/icons/connect';
-import { iconOscillator } from '../../../images/icons/oscillator';
+import { iconWave } from '../../../images/icons/wave';
 import { iconWaveSawtooth } from '../../../images/icons/waveSawtooth';
 import { iconWaveSine } from '../../../images/icons/waveSine';
 import { iconWaveSquare } from '../../../images/icons/waveSquare';
@@ -12,13 +12,13 @@ import { DraggableMixin } from '../../../lib/mixins/Draggable/Draggable';
 import { HasCircleMenuMixin } from '../../../lib/mixins/HasCircleMenu/HasCircleMenu';
 import { mix } from '../../../lib/mixins/mix';
 import { SelectableEvents, SelectableMixin } from '../../../lib/mixins/Selectable/Selectable';
-import { SynthiaOscillator } from '../../../audioNodes/Oscillator';
+import { SynthiaWave } from '../../../audioNodes/Wave';
 import { SElement } from '../../../types';
 import { BaseNode } from '../BaseNode/BaseNode';
 import { CircleMenuButton } from '../../ui/CircleMenu/CircleMenu';
 import { SidebarEvents } from '../../layout/Sidebar/Sidebar';
-import styles from './oscillator.styles';
-import { OscillatorSidebar } from './OscillatorSidebar/OscillatorSidebar';
+import styles from './wave.styles';
+import { WaveSidebar } from './WaveSidebar/WaveSidebar';
 
 
 const icons = {
@@ -27,7 +27,7 @@ const icons = {
   square: iconWaveSquare,
 }
 
-export class Oscillator extends BaseNode {
+export class Wave extends BaseNode {
 
   static get styles() {
     return [styles]
@@ -39,9 +39,9 @@ export class Oscillator extends BaseNode {
 
 
   multipleConnections = true;
-  output: SynthiaOscillator;
+  output: SynthiaWave;
 
-  private _sidebar: OscillatorSidebar | null = null;
+  private _sidebar: WaveSidebar | null = null;
 
 
   get buttons(): CircleMenuButton[] {
@@ -67,7 +67,7 @@ export class Oscillator extends BaseNode {
     this.addEventListener(ConnectableEvents.connectingRotate, (e: CustomEventInit) => {
       this.background!.style.transform = `rotate(${e.detail.angle + 90}deg)`
     });
-    this.output = this._ctx.createSynthiaOscillator();
+    this.output = this._ctx.createSynthiaWave();
   }
 
 
@@ -82,7 +82,7 @@ export class Oscillator extends BaseNode {
     // @ts-ignore
     const icon = icons[this.type];
     return html`
-      <div class="background"> ${iconOscillator} </div>
+      <div class="background"> ${iconWave} </div>
       <div class="icon">${icon}</div>
     `;
   }
@@ -110,8 +110,8 @@ export class Oscillator extends BaseNode {
       if (this._sidebar) this._sidebar.remove();
       this._sidebar = null;
     } else {
-      const sidebar = new OscillatorSidebar();
-      sidebar.oscillator = this;
+      const sidebar = new WaveSidebar();
+      sidebar.wave = this;
       sidebar.addEventListener(SidebarEvents.closed, () => {
         this.toggleSidebar(true);
       });
@@ -131,8 +131,8 @@ export class Oscillator extends BaseNode {
 
 
 window.customElements.define(
-  SElement.oscillator,
-  mix(Oscillator, [
+  SElement.wave,
+  mix(Wave, [
     DraggableMixin,
     SelectableMixin,
     DeletableMixin,
@@ -143,6 +143,6 @@ window.customElements.define(
 
 declare global {
   interface HTMLElementTagNameMap {
-    [SElement.oscillator]: Oscillator;
+    [SElement.wave]: Wave;
   }
 }

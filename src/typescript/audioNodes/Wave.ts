@@ -2,13 +2,13 @@ import CompositeAudioNode from "./BaseNode";
 import { Envelope } from "./Envelope";
 
 
-interface OscillatorOptions {
+interface WaveOptions {
   type?: OscillatorType;
   gain?: number;
 }
 
 
-export class SynthiaOscillator extends CompositeAudioNode {
+export class SynthiaWave extends CompositeAudioNode {
 
   private _type: OscillatorType = 'sine';
   get type() {
@@ -67,10 +67,10 @@ export class SynthiaOscillator extends CompositeAudioNode {
 
   constructor(
     protected _ctx: AudioContext | OfflineAudioContext,
-    options?: OscillatorOptions
+    options?: WaveOptions
   ) {
     super(_ctx);
-    const defaults: OscillatorOptions = {
+    const defaults: WaveOptions = {
       type: 'sine',
       gain: 1,
       ...options
@@ -180,10 +180,10 @@ export class SynthiaOscillator extends CompositeAudioNode {
 
 declare global {
   interface AudioContext {
-    createSynthiaOscillator(options?: OscillatorOptions): SynthiaOscillator
+    createSynthiaWave(options?: WaveOptions): SynthiaWave
   }
   interface OfflineAudioContext {
-    createSynthiaOscillator(options?: OscillatorOptions): SynthiaOscillator
+    createSynthiaWave(options?: WaveOptions): SynthiaWave
   }
 }
 
@@ -191,7 +191,7 @@ declare global {
 
 
 // Inject the new class into AudioContext prototype.
-AudioContext.prototype.createSynthiaOscillator =
-  OfflineAudioContext.prototype.createSynthiaOscillator = function (options: OscillatorOptions) {
-    return new SynthiaOscillator(this as AudioContext | OfflineAudioContext, options);
+AudioContext.prototype.createSynthiaWave =
+  OfflineAudioContext.prototype.createSynthiaWave = function (options: WaveOptions) {
+    return new SynthiaWave(this as AudioContext | OfflineAudioContext, options);
   };

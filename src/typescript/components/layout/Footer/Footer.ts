@@ -3,7 +3,7 @@ import { customElement, html, LitElement, TemplateResult } from 'lit-element';
 import { iconEffectDelay } from '../../../images/icons/effectDelay';
 import { iconEffectReverb } from '../../../images/icons/effectReverb';
 import { iconFilterSmall } from '../../../images/icons/filterSmall';
-import { iconOscillatorSmall } from '../../../images/icons/oscillatorSmall';
+import { iconWaveSmall } from '../../../images/icons/waveSmall';
 import { footerBackground } from '../../../images/footerBackground';
 import { SElement } from '../../../types';
 import styles from './footer.styles';
@@ -34,7 +34,7 @@ export class ComponentToolbar extends LitElement {
 
   get nodes(): FooterNode[] {
     return [
-      {icon: iconOscillatorSmall, text: 'Oscillator', type: SElement.oscillator},
+      {icon: iconWaveSmall, text: 'Wave', type: SElement.wave},
       {icon: iconFilterSmall, text: 'Filter', type: SElement.filter},
       {icon: iconEffectDelay, text: 'Delay effect', type: SElement.delay},
       {icon: iconEffectReverb, text: 'Reverb effect', type: SElement.reverb},

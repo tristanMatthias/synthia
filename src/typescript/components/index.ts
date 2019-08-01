@@ -4,7 +4,7 @@ import './layout/Footer/Footer';
 import './layout/Sidebar/Sidebar';
 import './nodes/EffectDelay/Delay';
 import './nodes/Filter/Filter';
-import './nodes/Oscillator/Oscillator';
+import './nodes/Wave/Wave';
 import './nodes/EffectPan/Pan';
 import './nodes/EffectReverb/Reverb';
 import './nodes/Root/Root';
