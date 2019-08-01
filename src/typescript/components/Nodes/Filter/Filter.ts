@@ -47,7 +47,10 @@ export class Filter extends BaseNode {
   set type(v: BiquadFilterType) { this.filter.type = v; }
 
   get frequency() { return this.filter.frequency.value; }
-  set frequency(v: number) { this.filter.frequency.value = v }
+  set frequency(v: number) {
+    this.filter.frequency.value = v;
+    this._drawFrequencyArc();
+  }
 
   get q() { return this.filter.Q.value; }
   set q(v: number) { this.filter.Q.value = v }
@@ -119,8 +122,8 @@ export class Filter extends BaseNode {
     this.toggleSidebar(true);
   }
 
-  firstUpdated(props: Map<keyof Filter, any>) {
-    super.firstUpdated(props);
+  updated(props: Map<keyof Filter, any>) {
+    super.updated(props);
     this._drawFrequencyArc();
   }
 
@@ -156,6 +159,9 @@ export class Filter extends BaseNode {
     perc = Math.log(perc) / Math.log(maxFreq);
     if (perc == -1) perc = -0.999999;
 
+    // Prevent no drawing
+    if (perc === 0) perc -= 0.001;
+
 
     ctx.clearRect(0, 0, size, size);
     ctx.beginPath();
@@ -170,7 +176,7 @@ export class Filter extends BaseNode {
 
     ctx.beginPath();
     ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-alt');;
-    ctx.globalAlpha = 0.4;
+    ctx.globalAlpha = 1;
     ctx.arc(size / 2, size / 2, (size - 2 - lineWidth) / 2, 0, perc * 2 * Math.PI);
     ctx.stroke();
   }

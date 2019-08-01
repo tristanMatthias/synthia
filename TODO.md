@@ -1,11 +1,12 @@
 ## Features
-[ ] Reverb node
-[ ] Panning node
+[x] Reverb node
+[x] Panning node
 [ ] Gain node
 [ ] Group node
 [ ] Oscillating properties of nodes
 [x] Deleting a connection
 [ ] Offline mode with web workers
+[ ] Dry wet on delay
 
 ## Bugs
-[ ] Improve slider dragging
+[x] Improve slider dragging

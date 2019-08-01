@@ -30,6 +30,7 @@ export class BaseEffectClass<SidebarType extends NodeSidebar> extends BaseNode {
 
   protected _icon: TemplateResult = html``;
   protected _sidebarType: string = 'synthia-sidebar';
+  protected _canvas: boolean = false;
 
   private _sidebar: SidebarType | null = null;
   private _startConnect() { return true; }
@@ -45,8 +46,10 @@ export class BaseEffectClass<SidebarType extends NodeSidebar> extends BaseNode {
 
   render() {
     return html`
-    <div class="background">${iconEffect}</div>
-    <div class="icon">${this._icon}</div>`;
+      ${this._canvas ? html`<canvas></canvas>`: null}
+      <div class="background">${iconEffect}</div>
+      <div class="icon">${this._icon}</div>
+    `;
   }
 
   connectedCallback() {
