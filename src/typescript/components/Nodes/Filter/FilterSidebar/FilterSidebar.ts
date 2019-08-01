@@ -1,28 +1,22 @@
-import { customElement, LitElement, html } from 'lit-element';
+import { customElement, html } from 'lit-element';
 
 import { SElement } from '../../../../types';
-import styles from './filter-sidebar.styles';
+import { Sidebar } from '../../../layout/Sidebar/Sidebar';
 import { Filter } from '../Filter';
 
 
 @customElement(SElement.filterSidebar)
-export class FilterSidebar extends LitElement {
-
-  static get styles() {
-    return [styles]
-  }
+export class FilterSidebar extends Sidebar {
 
   filter?: Filter;
 
-  private _ctx = document.querySelector(SElement.app)!.context
+  heading = 'Filter Settings';
 
-
-  render() {
-    if (!this.filter) return html``;
+  get _contents() {
+    if (!this.filter) return null;
     const filter = this.filter.filter;
 
-    return html`<synthia-sidebar>
-      <span slot="header">Filter settings</span>
+    return html`
       <synthia-frequency-response
         .filter=${filter}
         width="318"
@@ -81,9 +75,7 @@ export class FilterSidebar extends LitElement {
           /></synthia-slider>
           <span class="value">${Math.floor(this.filter.gain)}</span>
         </div>
-      </form>
-    </synthia-sidebar>
-  `;
+      </form>`;
   }
 
 
