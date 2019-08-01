@@ -1,18 +1,19 @@
 import { customElement, html } from 'lit-element';
 
-import { SElement } from '../../../../types';
-import { Sidebar } from '../../../layout/Sidebar/Sidebar';
-import { Reverb } from '../Reverb';
+import { SElement } from '../../../types';
+import { Sidebar } from '../../layout/Sidebar/Sidebar';
+import { NodeSidebar } from '../BaseEffect/BaseEffect';
+import { Reverb } from './Reverb';
 
 
 @customElement(SElement.reverbSidebar)
-export class ReverbSidebar extends Sidebar {
+export class ReverbSidebar extends Sidebar implements NodeSidebar {
 
-  reverb?: Reverb;
+  input?: Reverb;
   heading = 'Reverb Settings';
 
   get _contents() {
-    if (!this.reverb) return null;
+    if (!this.input) return null;
 
     return html`<form>
       <div class="form-row">
@@ -21,10 +22,10 @@ export class ReverbSidebar extends Sidebar {
           type="range"
           min="0"
           max="60"
-          value=${this.reverb.decayTime}
+          value=${this.input.decayTime}
           @change=${this._updateValue('decayTime')}
         /></synthia-slider>
-        <span class="value">${Math.floor(this.reverb.decayTime)}s</span>
+        <span class="value">${Math.floor(this.input.decayTime)}s</span>
       </div>
 
       <div class="form-row">
@@ -33,10 +34,10 @@ export class ReverbSidebar extends Sidebar {
           type="range"
           min="0"
           max="150000"
-          value=${this.reverb.roomSize}
+          value=${this.input.roomSize}
           @change=${this._updateValue('roomSize')}
         /></synthia-expo-slider>
-        <span class="value">${Math.floor(this.reverb.roomSize)}hz</span>
+        <span class="value">${Math.floor(this.input.roomSize)}hz</span>
       </div>
 
       <div class="form-row">
@@ -45,10 +46,10 @@ export class ReverbSidebar extends Sidebar {
           type="range"
           min="0"
           max="3"
-          value=${this.reverb.fadeInTime}
+          value=${this.input.fadeInTime}
           @change=${this._updateValue('fadeInTime')}
         /></synthia-slider>
-        <span class="value">${Math.floor(this.reverb.fadeInTime)}s</span>
+        <span class="value">${Math.floor(this.input.fadeInTime)}s</span>
       </div>
 
       <div class="form-row">
@@ -57,10 +58,10 @@ export class ReverbSidebar extends Sidebar {
           type="range"
           min="0"
           max="1"
-          value=${this.reverb.dryWet}
+          value=${this.input.dryWet}
           @change=${this._updateValue('dryWet')}
         /></synthia-expo-slider>
-        <span class="value">${Math.floor(this.reverb.dryWet)}hz</span>
+        <span class="value">${Math.floor(this.input.dryWet)}hz</span>
       </div>
     </form>`;
   }
@@ -69,7 +70,7 @@ export class ReverbSidebar extends Sidebar {
   private _updateValue(prop: any) {
     return (e: any) => {
       // @ts-ignore
-      this.reverb![prop] = e.target.value;
+      this.input![prop] = e.target.value;
       this.requestUpdate();
     }
   }

@@ -1,10 +1,8 @@
-import { html } from 'lit-element';
+import { html, TemplateResult } from 'lit-element';
 
 import { iconConnect } from '../../../images/icons/connect';
 import { iconEffect } from '../../../images/icons/effect';
-import { iconEffectPan } from '../../../images/icons/effectPan';
 import { iconSettings } from '../../../images/icons/settings';
-import { Storage, StorageKey } from '../../../lib/Storage';
 import { ConnectableMixin } from '../../../lib/mixins/Connectable/Connectable';
 import { DeletableMixin } from '../../../lib/mixins/Deletable/Deletable';
 import { DraggableMixin } from '../../../lib/mixins/Draggable/Draggable';
@@ -12,27 +10,30 @@ import { HasCircleMenuMixin } from '../../../lib/mixins/HasCircleMenu/HasCircleM
 import { mix } from '../../../lib/mixins/mix';
 import { ReceivableMixin } from '../../../lib/mixins/Receivable/Receivable';
 import { SelectableEvents, SelectableMixin } from '../../../lib/mixins/Selectable/Selectable';
-import { SElement } from '../../../types';
-import { BaseNode } from '../BaseNode/BaseNode';
+import { Storage, StorageKey } from '../../../lib/Storage';
+import { Sidebar, SidebarEvents } from '../../layout/Sidebar/Sidebar';
 import { CircleMenuButton } from '../../ui/CircleMenu/CircleMenu';
-import { SidebarEvents } from '../../layout/Sidebar/Sidebar';
-import styles from './pan.styles';
-import { PanSidebar } from './PanSidebar/PanSidebar';
+import { BaseNode } from '../BaseNode/BaseNode';
+import styles from './base-effect.styles';
 
-export class Pan extends BaseNode {
+
+export interface NodeSidebar extends Sidebar {
+  input?: any;
+}
+
+
+export class BaseEffectClass<SidebarType extends NodeSidebar> extends BaseNode {
 
   static get styles() {
     return [styles]
   }
 
-  panner = this._ctx.createStereoPanner();
-  multipleConnections = false;
-  output = this.panner;
-  input = this.panner;
+  protected _icon: TemplateResult = html``;
+  protected _sidebarType: string = 'synthia-sidebar';
 
-
-  private _sidebar: PanSidebar | null = null;
+  private _sidebar: SidebarType | null = null;
   private _startConnect() { return true; }
+
 
   get buttons(): CircleMenuButton[] {
     return [
@@ -41,10 +42,11 @@ export class Pan extends BaseNode {
     ];
   }
 
+
   render() {
     return html`
     <div class="background">${iconEffect}</div>
-    <div class="icon">${iconEffectPan}</div>`;
+    <div class="icon">${this._icon}</div>`;
   }
 
   connectedCallback() {
@@ -59,40 +61,27 @@ export class Pan extends BaseNode {
       if (this._sidebar) this._sidebar.remove();
       this._sidebar = null;
     } else {
-      const sidebar = new PanSidebar();
-      sidebar.pan = this;
+      const sidebar = document.createElement(this._sidebarType) as SidebarType;
+      sidebar.input = this;
       sidebar.addEventListener(SidebarEvents.closed, () => {
         this.toggleSidebar(true);
       });
       this._app.appendChild(sidebar);
       this._sidebar = sidebar;
 
-      if (!Storage.get(StorageKey.notifiedFilterSidebar)) {
-        this._toaster.info('Pro tip: You can open the Filter settings by double clicking on the panner');
-        Storage.set(StorageKey.notifiedFilterSidebar, true)
+      if (!Storage.get(StorageKey.notifiedSidebarOpen)) {
+        this._toaster.info('Pro tip: You can open any settings by double clicking on the node');
+        Storage.set(StorageKey.notifiedSidebarOpen, true)
       }
     }
   }
-
-
-  get pan() {
-    return this.panner.pan.value;
-  }
-  set pan(v: number) {
-    this.panner.pan.value = v;
-    this.requestUpdate();
-  }
 }
 
-
-const panner = mix(Pan, [
+export const baseEffectMix = (c: any) => mix(c, [
   DraggableMixin,
   SelectableMixin,
   DeletableMixin,
   ConnectableMixin,
   ReceivableMixin,
   HasCircleMenuMixin
-])
-
-
-window.customElements.define(SElement.pan, panner);
+]);

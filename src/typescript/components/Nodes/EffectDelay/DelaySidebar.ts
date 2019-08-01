@@ -1,20 +1,21 @@
 import { customElement, html } from 'lit-element';
 
-import { SElement } from '../../../../types';
-import { Sidebar } from '../../../layout/Sidebar/Sidebar';
-import { Delay } from '../Delay';
+import { SElement } from '../../../types';
+import { Sidebar } from '../../layout/Sidebar/Sidebar';
+import { Delay } from './Delay';
+import { NodeSidebar } from '../BaseEffect/BaseEffect';
 
 
 @customElement(SElement.delaySidebar)
-export class DelaySidebar extends Sidebar {
+export class DelaySidebar extends Sidebar implements NodeSidebar {
 
-  delay?: Delay;
+  input?: Delay;
 
   heading = 'Delay Settings'
 
 
   get _contents() {
-    if (!this.delay) return null;
+    if (!this.input) return null;
 
     return html`<form>
       <div class="form-row">
@@ -23,10 +24,10 @@ export class DelaySidebar extends Sidebar {
           type="range"
           min="0"
           max="10"
-          value=${this.delay.delayTime}
+          value=${this.input.delayTime}
           @change=${this._updateValue('delayTime')}
         /></synthia-slider>
-        <span class="value">${this.delay.delayTime}s</span>
+        <span class="value">${this.input.delayTime}s</span>
       </div>
       <div class="form-row">
         <label>Feedback</label>
@@ -34,10 +35,10 @@ export class DelaySidebar extends Sidebar {
           type="range"
           min="0"
           max="1"
-          value=${this.delay.feedback}
+          value=${this.input.feedback}
           @change=${this._updateValue('feedback')}
         /></synthia-slider>
-        <span class="value">${this.delay.feedback}s</span>
+        <span class="value">${this.input.feedback}s</span>
       </div>
     </form>`;
   }
@@ -46,7 +47,7 @@ export class DelaySidebar extends Sidebar {
   private _updateValue(prop: any) {
     return (e: any) => {
       // @ts-ignore
-      this.delay![prop] = e.target.value;
+      this.input![prop] = e.target.value;
       this.requestUpdate();
     }
   }

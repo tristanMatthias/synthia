@@ -1,19 +1,19 @@
 import { customElement, html } from 'lit-element';
 
-import { SElement } from '../../../../types';
-import { Sidebar } from '../../../layout/Sidebar/Sidebar';
-import { Pan } from '../Pan';
-
+import { SElement } from '../../../types';
+import { Sidebar } from '../../layout/Sidebar/Sidebar';
+import { NodeSidebar } from '../BaseEffect/BaseEffect';
+import { Pan } from './Pan';
 
 @customElement(SElement.panSidebar)
-export class PanSidebar extends Sidebar {
+export class PanSidebar extends Sidebar implements NodeSidebar {
 
-  pan?: Pan;
+  input?: Pan;
 
-  heading = 'Pan Settings'
+  heading = 'Pan Settings';
 
   get _contents() {
-    if (!this.pan) return null;
+    if (!this.input) return null;
     return html`<form>
       <div class="form-row">
         <label>Pan</label>
@@ -21,10 +21,10 @@ export class PanSidebar extends Sidebar {
           type="range"
           min="-1"
           max="1"
-          value=${this.pan.pan}
+          value=${this.input.pan}
           @change=${this._updateValue('pan')}
         /></synthia-slider>
-        <span class="value">${this.pan.pan}</span>
+        <span class="value">${this.input.pan}</span>
       </div>
     </form>`;
   }
@@ -33,7 +33,7 @@ export class PanSidebar extends Sidebar {
   private _updateValue(prop: any) {
     return (e: any) => {
       // @ts-ignore
-      this.pan![prop] = e.target.value;
+      this.input![prop] = e.target.value;
       this.requestUpdate();
     }
   }

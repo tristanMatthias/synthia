@@ -138,9 +138,9 @@ export class Filter extends BaseNode {
       this._app.appendChild(sidebar);
       this._sidebar = sidebar;
 
-      if (!Storage.get(StorageKey.notifiedFilterSidebar)) {
+      if (!Storage.get(StorageKey.notifiedSidebarOpen)) {
         this._toaster.info('Pro tip: You can open the Filter settings by double clicking on the filter');
-        Storage.set(StorageKey.notifiedFilterSidebar, true)
+        Storage.set(StorageKey.notifiedSidebarOpen, true)
       }
     }
   }
