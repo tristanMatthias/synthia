@@ -21,4 +21,5 @@ export enum SElement {
   reverbSidebar = 'synthia-reverb-sidebar',
   pan = 'synthia-pan',
   panSidebar = 'synthia-pan-sidebar',
+  dial = 'synthia-dial'
 }

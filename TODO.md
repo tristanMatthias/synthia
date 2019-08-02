@@ -6,7 +6,8 @@
 [ ] Oscillating properties of nodes
 [x] Deleting a connection
 [ ] Offline mode with web workers
-[ ] Dry wet on delay
+[ ] Dry wet on all filters
+[ ] Alt drag a node
 
 ## Bugs
 [x] Improve slider dragging
