@@ -28,100 +28,84 @@ export class WaveSidebar extends Sidebar {
           <option value="sawtooth">Saw Tooth</option>
         </select>
       </div>
-      <div class="form-row">
+      <div class="form-col">
         <label> Delay </label>
-        <synthia-slider
-          type="range"
+        <synthia-dial
           min="0"
           max="5"
           value=${wave.delay}
           @change=${this._updateValue('delay')}
-        /></synthia-slider>
-        <span class="value">${wave.delay}s</span>
+        /></synthia-dial>
       </div>
 
-      <div class="form-row">
+      <div class="form-col">
         <label> Attack </label>
-        <synthia-slider
-          type="range"
+        <synthia-dial
           min="0"
           max="10"
           value=${wave.attack}
           @change=${this._updateValue('attack')}
-        /></synthia-slider>
-        <span class="value">${wave.attack}s</span>
+        /></synthia-dial>
       </div>
 
-      <div class="form-row">
+      <div class="form-col">
         <label> Attack Level </label>
-        <synthia-slider
-          type="range"
+        <synthia-dial
           min="0"
           max="1"
           value=${wave.attackLevel}
           @change=${this._updateValue('attackLevel')}
-        /></synthia-slider>
-        <span class="value">${wave.attackLevel}</span>
+        /></synthia-dial>
       </div>
 
-      <div class="form-row">
+      <div class="form-col">
         <label> Decay </label>
-        <synthia-slider
-          type="range"
+        <synthia-dial
           min="0"
           max="20"
           value=${wave.decay}
           @change=${this._updateValue('decay')}
-        /></synthia-slider>
-        <span class="value">${wave.decay}s</span>
+        /></synthia-dial>
       </div>
 
-      <div class="form-row">
+      <div class="form-col">
         <label> Decay Level </label>
-        <synthia-slider
-          type="range"
+        <synthia-dial
           min="0"
           max="1"
           value=${wave.decayLevel}
           @change=${this._updateValue('decayLevel')}
-        /></synthia-slider>
-        <span class="value">${wave.decayLevel}</span>
+        /></synthia-dial>
       </div>
 
-      <div class="form-row">
+      <div class="form-col">
         <label> Release </label>
-        <synthia-slider
-          type="range"
+        <synthia-dial
           min="0"
           max="20"
           value=${wave.release}
           @change=${this._updateValue('release')}
-        /></synthia-slider>
-        <span class="value">${wave.release}s</span>
+        /></synthia-dial>
       </div>
 
-      <div class="form-row">
+      <div class="form-col">
         <label> Pitch </label>
-        <synthia-slider
-          type="range"
+        <synthia-dial
           min="-24"
           max="24"
           value=${wave.pitch}
           @change=${this._updateValue('pitch')}
-        /></synthia-slider>
-        <span class="value">${wave.pitch}</span>
+        /></synthia-dial>
       </div>
 
-      <div class="form-row">
+      <div class="form-col">
         <label> Gain </label>
-        <synthia-slider
-          type="range"
+        <synthia-dial
           min="0"
           max="1"
           value=${wave.gain.value}
           @change=${(e: any) => wave.gain.linearRampToValueAtTime(e.target.value, this._ctx.currentTime + 0.05)}
-        /></synthia-slider>
-        <span class="value">${wave.gain.value}</span>
+        /></synthia-dial>
       </div>
     </form>`;
   }

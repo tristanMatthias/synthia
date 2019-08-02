@@ -2,6 +2,7 @@
   display: block;
   position: fixed;
   box-sizing: content-box;
+  user-select: none;
 
   top: calc(var(--margin) * 2);
   right: calc(var(--margin) * 2);
@@ -94,7 +95,12 @@
 
   form {
     margin-top: var(--margin);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 2rem 0;
+
     .form-row {
+      grid-column: span 2;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
@@ -125,7 +131,20 @@
         white-space: nowrap;
       }
     }
+    .form-col {
+      grid-column: span 1;
+      text-align: center;
+
+      label {
+        display: block;
+      }
+
+      synthia-dial {
+        margin-top: 1rem;
+      }
+    }
   }
+
 
   select {
     height: 4rem;
