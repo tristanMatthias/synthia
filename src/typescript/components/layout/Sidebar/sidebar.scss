@@ -6,7 +6,6 @@
   z-index: 100;
 
   top: calc(var(--margin) * 2);
-  right: calc(var(--margin));
   bottom: calc(var(--margin) * 2);
   width: 32rem;
 
@@ -168,4 +167,12 @@
       background: var(--color-dark);
     }
   }
+}
+
+
+:host([type="left"]) {
+  left: calc(var(--margin));
+}
+:host([type="right"]) {
+  right: calc(var(--margin));
 }

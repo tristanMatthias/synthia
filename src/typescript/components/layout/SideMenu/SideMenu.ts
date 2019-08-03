@@ -44,7 +44,7 @@ export class SideMenu extends LitElement {
 
   get buttons(): SideMenuItemButton[] {
     return [
-      {icon: iconWaveSine, text: 'LFO Settings', action: () => alert(1)}
+      // {icon: iconWaveSine, text: 'LFO Settings', action: () => alert(1)}
     ]
   }
 

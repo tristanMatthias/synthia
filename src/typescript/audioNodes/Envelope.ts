@@ -122,7 +122,7 @@ export class Envelope extends CompositeAudioNode {
 
   startRelease(time = this.release) {
     this._ending = true;
-    this._envelopeGain.gain.cancelAndHoldAtTime(this._ctx.currentTime);
+    this._envelopeGain.gain.cancelScheduledValues(this._ctx.currentTime);
     this._envelopeGain.gain.linearRampToValueAtTime(ZERO, this._ctx.currentTime + time);
   }
 
@@ -156,7 +156,7 @@ export class Envelope extends CompositeAudioNode {
     const props = this._props();
     const newTimes = this._times(props);
 
-    g.cancelAndHoldAtTime(t);
+    g.cancelScheduledValues(t);
 
 
     // const newIncludesAttack

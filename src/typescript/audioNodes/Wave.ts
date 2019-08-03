@@ -104,7 +104,7 @@ export class SynthiaWave extends CompositeAudioNode {
     if (existing) {
       const e = existing[0];
       // Prevent clicking
-      e.gain.cancelAndHoldAtTime(this._ctx.currentTime);
+      e.gain.cancelScheduledValues(this._ctx.currentTime);
       e.gain.linearRampToValueAtTime(0, this._ctx.currentTime + 0.01)
       e.onend = undefined;
     }

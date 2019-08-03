@@ -7,6 +7,8 @@ export enum SidebarEvents {
   closed = 'closed'
 }
 
+export enum SidebarSide { left = 'left', right = 'right' }
+
 @customElement(SElement.sidebar)
 export class Sidebar extends LitElement {
   static styles = [styles]
@@ -14,8 +16,8 @@ export class Sidebar extends LitElement {
   @property({reflect: true})
   heading?: string;
 
-  @property({reflect: true})
-  type: 'left' | 'right' = 'right';
+  @property({reflect: true, type: String})
+  type: SidebarSide = SidebarSide.right;
 
   protected get _contents(): TemplateResult | null {
     return null;
