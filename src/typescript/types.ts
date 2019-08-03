@@ -12,7 +12,7 @@ export enum SElement {
   button = 'synthia-button',
   slider = 'synthia-slider',
   expoSlider = 'synthia-expo-slider',
-  footer = 'synthia-footer',
+  sideMenu = 'synthia-side-menu',
   sidebar = 'synthia-sidebar',
   toaster = 'synthia-toaster',
   delay = 'synthia-delay',

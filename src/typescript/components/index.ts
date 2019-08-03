@@ -1,6 +1,6 @@
 import './layout/App/App';
 import './layout/Canvas/Canvas';
-import './layout/Footer/Footer';
+import './layout/SideMenu/SideMenu';
 import './layout/Sidebar/Sidebar';
 import './nodes/EffectDelay/Delay';
 import './nodes/EffectPan/Pan';

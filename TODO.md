@@ -8,6 +8,8 @@
 [ ] Offline mode with web workers
 [ ] Dry wet on all filters
 [ ] Alt drag a node
+[ ] Distortion Node
+[ ] Expo dial
 
 ## Bugs
 [x] Improve slider dragging

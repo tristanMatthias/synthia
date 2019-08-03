@@ -1,0 +1,123 @@
+:host {
+  --tile-size: 7rem;
+  position: fixed;;
+  left: var(--margin);
+  top: calc(var(--margin) * 2);
+  bottom: calc(var(--margin) * 2);
+  width: var(--tile-size);
+  border-right: 1px solid var(--color-line);
+  display: grid;
+  padding-top: 4rem;
+  grid-template-columns: var(--tile-size);
+  grid-auto-rows: var(--tile-size);
+  // grid-template-columns: repeat(6, 6rem);
+  align-items: center;
+  justify-content: center;
+  // background: var(--color-bg-off);
+
+
+  // &:before,
+  // &:after {
+  //   content: '';
+  //   position: absolute;
+  //   bottom: calc(1/2 * var(--margin));
+  //   border-top: 2px solid var(--color-main);
+  //   width: calc(var(--margin) * 5);
+  //   height: 0.5rem;
+  //   opacity: 0.3;
+  // }
+
+  // &:before {
+  //   border-left: calc(var(--margin) * 2) solid var(--color-main);
+  //   left: 0;
+  // }
+
+  // &:after {
+  //   border-right: calc(var(--margin) * 2) solid var(--color-main);
+  //   right: 0;
+  // }
+
+  // &>svg {
+  //   position: fixed;
+  //   bottom: 0;
+  //   left: 50%;
+  //   transform: translateX(-50%);
+  //   opacity: 0.5;
+  //   z-index: -1;
+  // }
+
+  & > div:first-of-type {
+    border-top: 1px solid var(--color-dark);
+  }
+  & > div:last-of-type {
+    border-bottom: 1px solid var(--color-dark);
+  }
+
+  div.button + div.drag {
+    border-top: 1px solid var(--color-dark);
+  }
+
+  div {
+    position: relative;
+    text-align: center;
+    line-height: var(--tile-size);
+    transition: all 0.2s;
+    cursor: grab;
+    user-select: none;
+
+    svg {
+      width: 4rem;
+      display: inline-block;
+      vertical-align: middle;
+      transition: all 0.2s ease-out;
+
+      * {
+        stroke-width: 0.2rem;
+      }
+    }
+
+    &.button {
+      svg {
+        --color: var(--color-white);
+      }
+    }
+    &.drag svg {
+      --color: var(--color-alt);
+    }
+
+    span {
+      position: absolute;
+      top: 50%;
+      right: -2rem;
+      transform: translate(100%, -50%);
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.2s;
+      pointer-events: none;
+
+      height: 3rem;
+      line-height: 3rem;
+      padding: 0 1rem;
+      white-space: nowrap;
+
+      text-align: center;
+      background: var(--color-hover);
+      border-radius: 1.5rem;
+    }
+
+    &:hover {
+      background: var(--color-hover);
+
+      span {
+        visibility: visible;
+        opacity: 1;
+        right: -1rem;
+      }
+
+      svg {
+        transform: scale(1.2)
+      }
+    }
+  }
+
+}

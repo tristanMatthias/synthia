@@ -3,9 +3,10 @@
   position: fixed;
   box-sizing: content-box;
   user-select: none;
+  z-index: 100;
 
   top: calc(var(--margin) * 2);
-  right: calc(var(--margin) * 2);
+  right: calc(var(--margin));
   bottom: calc(var(--margin) * 2);
   width: 32rem;
 

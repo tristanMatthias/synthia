@@ -26,7 +26,9 @@
   --color-bg: #1E1E3F;
   --color-bg-off: #224;
   --color-dark: #2D2B55;
+  --color-white: #e1efff;
   --color-main: #A599E9;
+  --color-line: #{rgba(#A599E9, 0.3)};
   --color-alt: #FAD000;
   --color-hover: #{rgba(#4D21FC, 0.2)};
   --color-text: #9EFFFF;
@@ -40,7 +42,7 @@
 
 :root {
   --node-size: 12rem;
-  --margin: 2rem;
+  --margin: 1rem;
   --font-family: 'Space Mono', monospace;
 }
 
@@ -70,8 +72,8 @@ synthia-root {
 
 synthia-waveform {
   position: fixed;
-  left: calc(var(--margin) * 2.5);
-  bottom: calc(var(--margin) * 4);
+  left: calc(var(--margin) * 12);
+  bottom: calc(var(--margin) / 4);
 }
 
 synthia-toaster {

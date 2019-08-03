@@ -4,21 +4,30 @@ import { iconEffectDelay } from '../../../images/icons/effectDelay';
 import { iconEffectReverb } from '../../../images/icons/effectReverb';
 import { iconFilterSmall } from '../../../images/icons/filterSmall';
 import { iconWaveSmall } from '../../../images/icons/waveSmall';
-import { footerBackground } from '../../../images/footerBackground';
 import { SElement } from '../../../types';
-import styles from './footer.styles';
+import styles from './side-menu.styles';
 import { iconEffectPan } from '../../../images/icons/effectPan';
+import { iconWaveSine } from '../../../images/icons/waveSine';
 
 
-interface FooterNode {
+interface SideMenuItemBase {
   icon: TemplateResult,
-  text: string,
+  text: string
+}
+
+interface SideMenuItemNode extends SideMenuItemBase {
   type: SElement
 }
 
+interface SideMenuItemButton extends SideMenuItemBase {
+  action: () => void;
+}
 
-@customElement(SElement.footer)
-export class ComponentToolbar extends LitElement {
+type SideMenuNode = SideMenuItemNode | SideMenuItemButton;
+
+
+@customElement(SElement.sideMenu)
+export class SideMenu extends LitElement {
   static get styles() {
     return [styles]
   }
@@ -32,7 +41,14 @@ export class ComponentToolbar extends LitElement {
     this._instruct = this._instruct.bind(this);
   }
 
-  get nodes(): FooterNode[] {
+
+  get buttons(): SideMenuItemButton[] {
+    return [
+      {icon: iconWaveSine, text: 'LFO Settings', action: () => alert(1)}
+    ]
+  }
+
+  get nodes(): SideMenuItemNode[] {
     return [
       {icon: iconWaveSmall, text: 'Wave', type: SElement.wave},
       {icon: iconFilterSmall, text: 'Filter', type: SElement.filter},
@@ -42,18 +58,24 @@ export class ComponentToolbar extends LitElement {
     ]
   }
 
+
   render() {
     return html`
-      ${footerBackground}
-      ${this.nodes.map(n => html`<div>
-        <div
-          draggable="true"
-          @click=${this._instruct}
-          @dragstart=${this._handleDragStart(n.type)}
-        >${n.icon}</div>
-        <span>${n.text}
+      ${this.buttons.map(n => html`<div class="button">
+        <div @click=${n.action}>${n.icon}</div>
+        <span>${n.text}</span>
       </div>`)}
-    `;
+
+      ${this.nodes.map(n => html`<div class="drag">
+            <div
+              draggable="true"
+              @click=${this._instruct}
+              @dragstart=${this._handleDragStart(n.type)}
+            >${n.icon}</div>
+            <span>${n.text}</span>
+          </div>`
+      )}
+    </div>`;
   }
 
   private _handleDragStart(type: string) {
@@ -74,6 +96,6 @@ export class ComponentToolbar extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    [SElement.footer]: ComponentToolbar;
+    [SElement.sideMenu]: SideMenu;
   }
 }
