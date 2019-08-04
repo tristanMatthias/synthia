@@ -2,6 +2,7 @@ export enum SElement {
   app = 'synthia-app',
   root = 'synthia-root',
   canvas = 'synthia-canvas',
+  keyboard = 'synthia-keyboard',
   wave = 'synthia-wave',
   waveSidebar = 'synthia-wave-sidebar',
   filter = 'synthia-filter',

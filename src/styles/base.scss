@@ -76,6 +76,14 @@ synthia-waveform {
   bottom: calc(var(--margin) / 4);
 }
 
+synthia-keyboard {
+  position: fixed;
+  left: calc(var(--margin) * 12);
+  bottom: calc(var(--margin) * 8);
+  width: 40rem;
+  height: 3.5rem;
+}
+
 synthia-toaster {
   position: fixed;
   right: calc(var(--margin) * 2.5);

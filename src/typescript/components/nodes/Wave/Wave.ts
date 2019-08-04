@@ -1,22 +1,22 @@
 import { html, query } from 'lit-element';
 
+import { SynthiaWave } from '../../../audioNodes/Wave';
 import { iconConnect } from '../../../images/icons/connect';
 import { iconWave } from '../../../images/icons/wave';
 import { iconWaveSawtooth } from '../../../images/icons/waveSawtooth';
 import { iconWaveSine } from '../../../images/icons/waveSine';
 import { iconWaveSquare } from '../../../images/icons/waveSquare';
-import { KeyboardEvent } from '../../../lib/Keyboard';
 import { ConnectableEvents, ConnectableMixin } from '../../../lib/mixins/Connectable/Connectable';
 import { DeletableMixin } from '../../../lib/mixins/Deletable/Deletable';
 import { DraggableMixin } from '../../../lib/mixins/Draggable/Draggable';
 import { HasCircleMenuMixin } from '../../../lib/mixins/HasCircleMenu/HasCircleMenu';
 import { mix } from '../../../lib/mixins/mix';
 import { SelectableEvents, SelectableMixin } from '../../../lib/mixins/Selectable/Selectable';
-import { SynthiaWave } from '../../../audioNodes/Wave';
 import { SElement } from '../../../types';
-import { BaseNode } from '../BaseNode/BaseNode';
-import { CircleMenuButton } from '../../ui/CircleMenu/CircleMenu';
 import { SidebarEvents } from '../../layout/Sidebar/Sidebar';
+import { CircleMenuButton } from '../../ui/CircleMenu/CircleMenu';
+import { SynthiaKeyboardEvent, Keyboard } from '../../visualizations/Keyboard/Keyboard';
+import { BaseNode } from '../BaseNode/BaseNode';
 import styles from './wave.styles';
 import { WaveSidebar } from './WaveSidebar/WaveSidebar';
 
@@ -42,6 +42,8 @@ export class Wave extends BaseNode {
   output: SynthiaWave;
 
   private _sidebar: WaveSidebar | null = null;
+
+  keyboard: Keyboard = document.querySelector(SElement.keyboard)!;
 
 
   get buttons(): CircleMenuButton[] {
@@ -87,19 +89,19 @@ export class Wave extends BaseNode {
     `;
   }
 
-  connectedCallback() {
-    super.connectedCallback();
+  firstUpdated(props: Map<string, keyof Wave>) {
+    super.firstUpdated(props);
     this.addEventListener('dblclick', () => this.toggleSidebar());
     this.addEventListener(SelectableEvents.deselected, () => this.toggleSidebar(true));
-    window.addEventListener(KeyboardEvent.play, this._play);
-    window.addEventListener(KeyboardEvent.stop, this._stop);
+    this.keyboard!.addEventListener(SynthiaKeyboardEvent.play, this._play);
+    this.keyboard!.addEventListener(SynthiaKeyboardEvent.stop, this._stop);
     window.addEventListener('blur', this._stop);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    window.removeEventListener(KeyboardEvent.play, this._play);
-    window.removeEventListener(KeyboardEvent.stop, this._stop);
+    this.keyboard!.removeEventListener(SynthiaKeyboardEvent.play, this._play);
+    this.keyboard!.removeEventListener(SynthiaKeyboardEvent.stop, this._stop);
     window.removeEventListener('blur', this._stop);
     this.toggleSidebar(true);
   }

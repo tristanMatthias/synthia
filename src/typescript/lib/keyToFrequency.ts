@@ -1,4 +1,5 @@
-const realNotes = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']
+export const realNotes = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']
+export const realNotesCShifted = [...realNotes.slice(3), ...realNotes.slice(0, 3)];
 
 /**
  * Maps the keyboard note to a frequency
@@ -53,3 +54,10 @@ export const noteToFrequency = function (realNote: string, octave: number) {
   // Return frequency of note
   return a4 * Math.pow(2, (keyNumber - 49) / 12);
 };
+
+
+export const frequencyToNote = (f: number) => {
+  const keyNumber = 12 * Math.log2(f / 440) + 49 - 1;
+  const octave = Math.floor(keyNumber / 12) + 1;
+  return {note: realNotes[Math.floor(keyNumber % 12)], octave};
+}

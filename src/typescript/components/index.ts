@@ -1,7 +1,7 @@
 import './layout/App/App';
 import './layout/Canvas/Canvas';
-import './layout/SideMenu/SideMenu';
 import './layout/Sidebar/Sidebar';
+import './layout/SideMenu/SideMenu';
 import './nodes/EffectDelay/Delay';
 import './nodes/EffectPan/Pan';
 import './nodes/EffectReverb/Reverb';
@@ -15,4 +15,5 @@ import './ui/ExpoSlider/ExpoSlider';
 import './ui/Slider/Slider';
 import './ui/Toaster/Toaster';
 import './visualizations/FrequencyResponse/FrequencyResponse';
+import './visualizations/Keyboard/Keyboard';
 import './visualizations/Waveform/Waveform';

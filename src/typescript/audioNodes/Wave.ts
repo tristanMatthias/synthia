@@ -151,8 +151,6 @@ export class SynthiaWave extends CompositeAudioNode {
     // Note is not playing
     if (!envOsc) return false;
     envOsc[0].startRelease();
-    console.log('starting release of', freq);
-
   }
 
   kill(freq: number) {

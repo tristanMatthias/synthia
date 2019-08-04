@@ -1,9 +1,9 @@
-import { customElement, html, LitElement, property } from 'lit-element';
+import { customElement, html, LitElement, property, query } from 'lit-element';
 
-import { Storage, StorageKey } from '../../../lib/Storage';
 import { Selectable } from '../../../lib/mixins/Selectable/Selectable';
+import { Storage, StorageKey } from '../../../lib/Storage';
 import { SElement } from '../../../types';
-import { Keyboard } from '../../../lib/Keyboard';
+import { Keyboard } from '../../visualizations/Keyboard/Keyboard';
 
 export enum AppEvents {
   connecting = 'connecting'
@@ -22,7 +22,8 @@ export class App extends LitElement {
 
   private _toaster = document.querySelector(SElement.toaster)!;
 
-  keyboard = new Keyboard(this.context, this._toaster);
+  @query(SElement.keyboard)
+  keyboard?: Keyboard;
 
 
 
