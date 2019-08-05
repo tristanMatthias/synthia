@@ -1,8 +1,5 @@
-import { customElement, html, LitElement, query, property } from 'lit-element';
 import color from 'color';
-
-// @ts-ignore
-window.color = color;
+import { customElement, html, LitElement, property, query } from 'lit-element';
 
 import { SElement } from '../../../types';
 import styles from './dial.styles';
@@ -27,7 +24,7 @@ export class Dial extends LitElement {
     if (this._value < this.min) this._value = this.min;
     if (this._value > this.max) this._value = this.max;
 
-    this._draw(this._value / this.max);
+    this._draw();
     this.dispatchEvent(new CustomEvent('change', {
       detail: this._value
     }))
@@ -58,7 +55,7 @@ export class Dial extends LitElement {
   firstUpdated(props: Map<string, keyof Dial>) {
     super.firstUpdated(props);
     this._canvas!.addEventListener('mousedown', this._handleMouseDown);
-    this._draw(this.value / this.max);
+    this._draw();
   }
 
   render() {
@@ -96,12 +93,14 @@ export class Dial extends LitElement {
     if (angleDeg > 320) angleDeg = 0;
     if (angleDeg > this._maxAngle) angleDeg = this._maxAngle;
 
-    const v = (angleDeg / this._maxAngle) * this.max;
+    const v = this.min + ((angleDeg / this._maxAngle) * (this.max - this.min));
+
     this.value = Math.round(v * 1000) / 1000;
   }
 
 
-  private _draw(perc: number) {
+  private _draw() {
+    const perc = (this._value - this.min) /(this.max - this.min)
     const size = this._size;
     const ctx = this._canvas!.getContext('2d')!;
     const lineWidth = 4;
