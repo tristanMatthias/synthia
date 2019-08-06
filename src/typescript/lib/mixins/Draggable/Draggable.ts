@@ -62,18 +62,26 @@ export const DraggableMixin = (superclass: new () => LitElement) =>
     }
 
     private updatePosition() {
+      const offsetX = this._offset.x + this._dragOffsetPosition.x;
+      const offsetY = this._offset.y + this._dragOffsetPosition.y;
       this.style.transform = `translate(calc(${this._initialPosition!.x} + ${
-        this._offset.x + this._dragOffsetPosition.x
+        offsetX
         }px), calc(${this._initialPosition!.y} + ${
-        this._offset.y + this._dragOffsetPosition.y
+        offsetY
         }px))`;
 
       this.requestUpdate();
 
       this.dispatchEvent(new CustomEvent(DraggableEvents.dragged))
+      // @ts-ignore
+      if (this.model) this.model.position = {
+        x: offsetX + parseInt(this.style.left!),
+        y: offsetY + parseInt(this.style.top!)
+      }
     }
 
     private _dragStart(e: MouseEvent) {
+      if (this._app.isConnecting) return;
       e.stopPropagation();
 
       window.addEventListener('mouseup', this._dragEnd);

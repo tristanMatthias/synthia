@@ -14,6 +14,7 @@ export class ReverbSidebar extends Sidebar implements NodeSidebar {
 
   get _contents() {
     if (!this.input) return null;
+    const props = this.input.model!.properties;
 
     return html`<form>
       <div class="form-row">
@@ -22,10 +23,10 @@ export class ReverbSidebar extends Sidebar implements NodeSidebar {
           type="range"
           min="0"
           max="60"
-          value=${this.input.decayTime}
+          value=${props.decayTime}
           @change=${this._updateValue('decayTime')}
         /></synthia-slider>
-        <span class="value">${Math.floor(this.input.decayTime)}s</span>
+        <span class="value">${Math.floor(props.decayTime)}s</span>
       </div>
 
       <div class="form-row">
@@ -34,10 +35,10 @@ export class ReverbSidebar extends Sidebar implements NodeSidebar {
           type="range"
           min="0"
           max="150000"
-          value=${this.input.roomSize}
+          value=${props.roomSize}
           @change=${this._updateValue('roomSize')}
         /></synthia-expo-slider>
-        <span class="value">${Math.floor(this.input.roomSize)}hz</span>
+        <span class="value">${Math.floor(props.roomSize)}hz</span>
       </div>
 
       <div class="form-row">
@@ -46,10 +47,10 @@ export class ReverbSidebar extends Sidebar implements NodeSidebar {
           type="range"
           min="0"
           max="3"
-          value=${this.input.fadeInTime}
+          value=${props.fadeInTime}
           @change=${this._updateValue('fadeInTime')}
         /></synthia-slider>
-        <span class="value">${Math.floor(this.input.fadeInTime)}s</span>
+        <span class="value">${Math.floor(props.fadeInTime)}s</span>
       </div>
 
       <div class="form-row">
@@ -58,10 +59,10 @@ export class ReverbSidebar extends Sidebar implements NodeSidebar {
           type="range"
           min="0"
           max="1"
-          value=${this.input.dryWet}
+          value=${props.dryWet}
           @change=${this._updateValue('dryWet')}
         /></synthia-expo-slider>
-        <span class="value">${Math.floor(this.input.dryWet)}hz</span>
+        <span class="value">${Math.floor(props.dryWet)}hz</span>
       </div>
     </form>`;
   }
@@ -70,7 +71,7 @@ export class ReverbSidebar extends Sidebar implements NodeSidebar {
   private _updateValue(prop: any) {
     return (e: any) => {
       // @ts-ignore
-      this.input![prop] = e.target.value;
+      this.input!.model!.properties[prop] = e.target.value;
       this.requestUpdate();
     }
   }

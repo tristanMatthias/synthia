@@ -22,7 +22,7 @@ export interface NodeSidebar extends Sidebar {
 }
 
 
-export class BaseEffectClass<SidebarType extends NodeSidebar> extends BaseNode {
+export class BaseEffectClass<SidebarType extends NodeSidebar, T extends object> extends BaseNode<T> {
 
   static get styles() {
     return [styles]

@@ -1,9 +1,13 @@
-import { customElement, html, LitElement, property, query } from 'lit-element';
+import { customElement, html, LitElement, property } from 'lit-element';
 
+import { SynthiaFile } from '../../../lib/File/file.type';
+import { FileService } from '../../../lib/File/FileService';
 import { Selectable } from '../../../lib/mixins/Selectable/Selectable';
+import { Model, ModelEvents } from '../../../lib/Model/Model';
 import { Storage, StorageKey } from '../../../lib/Storage';
 import { SElement } from '../../../types';
-import { Keyboard } from '../../visualizations/Keyboard/Keyboard';
+import { Canvas } from '../Canvas/Canvas';
+import { connectNode, createNode } from './createNode';
 
 export enum AppEvents {
   connecting = 'connecting'
@@ -21,9 +25,12 @@ export class App extends LitElement {
   isDragging: boolean = false;
 
   private _toaster = document.querySelector(SElement.toaster)!;
+  private _canvas?: Canvas;
 
-  @query(SElement.keyboard)
-  keyboard?: Keyboard;
+
+  fileService = new FileService();
+  model: Model;
+  synthId: string;
 
 
 
@@ -32,7 +39,6 @@ export class App extends LitElement {
     return this._isConnecting;
   }
   public set isConnecting(v: boolean) {
-
     this._isConnecting = v;
     (Array.from(this.querySelectorAll(`${SElement.canvas} > *`)) as HTMLElement[])
       // @ts-ignore
@@ -44,6 +50,26 @@ export class App extends LitElement {
   }
 
 
+  constructor() {
+    super();
+    this.fileService.on('loaded', this._generateNodesFromFile.bind(this));
+    this.model = new Model(this.fileService.file);
+    this.model.on('update', this._handleModelUpdate);
+    // TODO: Dynamic synth selection
+    this.synthId = this.model.file.resources.synths[0].id;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this._canvas = document.createElement(SElement.canvas);
+    this._canvas.model = this.model;
+    this._canvas.synthId = this.synthId;
+
+    const root = document.createElement(SElement.root);
+    root.id = 'root';
+    this._canvas.appendChild(root);
+    this.prepend(this._canvas);
+  }
 
   render() { return html`<slot></slot>`; }
 
@@ -78,6 +104,27 @@ export class App extends LitElement {
       this._toaster.info('Welcome to Synthia! Find your sound by dragging a node onto the canvas');
       Storage.set(StorageKey.notifiedIntro, true)
     }
+    this._generateNodesFromFile(this.fileService.file);
+  }
+
+
+  private _generateNodesFromFile(file: SynthiaFile) {
+    this._canvas!.clear();
+
+    this.model.loadNewFile(file);
+
+    // TODO: Select multiple synths
+    const synth = this.model.file.resources.synths[0];
+    const nodes = synth.nodes;
+    // @ts-ignore
+    nodes.forEach(n => this._canvas.appendChild(createNode(n)))
+    nodes.forEach(connectNode);
+    this.isConnecting = false;
+  }
+
+
+  private _handleModelUpdate(e: ModelEvents['update']) {
+    // console.log(e);
   }
 }
 

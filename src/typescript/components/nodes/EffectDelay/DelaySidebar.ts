@@ -16,6 +16,7 @@ export class DelaySidebar extends Sidebar implements NodeSidebar {
 
   get _contents() {
     if (!this.input) return null;
+    const props = this.input.model!.properties;
 
     return html`<form>
       <div class="form-row">
@@ -24,10 +25,10 @@ export class DelaySidebar extends Sidebar implements NodeSidebar {
           type="range"
           min="0"
           max="10"
-          value=${this.input.delayTime}
+          value=${props.delayTime}
           @change=${this._updateValue('delayTime')}
         /></synthia-slider>
-        <span class="value">${this.input.delayTime}s</span>
+        <span class="value">${props.delayTime}s</span>
       </div>
       <div class="form-row">
         <label>Feedback</label>
@@ -35,10 +36,10 @@ export class DelaySidebar extends Sidebar implements NodeSidebar {
           type="range"
           min="0"
           max="1"
-          value=${this.input.feedback}
+          value=${props.feedback}
           @change=${this._updateValue('feedback')}
         /></synthia-slider>
-        <span class="value">${this.input.feedback}s</span>
+        <span class="value">${props.feedback}s</span>
       </div>
     </form>`;
   }
@@ -47,7 +48,7 @@ export class DelaySidebar extends Sidebar implements NodeSidebar {
   private _updateValue(prop: any) {
     return (e: any) => {
       // @ts-ignore
-      this.input![prop] = e.target.value;
+      this.input!.model.properties[prop] = e.target.value;
       this.requestUpdate();
     }
   }

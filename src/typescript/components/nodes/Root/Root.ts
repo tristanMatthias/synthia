@@ -8,7 +8,7 @@ import { BaseNode } from '../BaseNode/BaseNode';
 import styles from './root.styles';
 
 
-export class Root extends BaseNode {
+export class Root extends BaseNode<any> {
 
   static get styles() {
     return [styles]

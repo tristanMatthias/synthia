@@ -91,6 +91,8 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
 
       if (!this._connectedTo.includes(item)) {
         this._connectedTo.push(item);
+        // @ts-ignore
+        this.model.connectedTo = this._connectedTo.map(ele => ele.id);
 
         // Wait for the new waveform to exist
         await this.requestUpdate();
@@ -111,7 +113,6 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
 
         item.addEventListener(DraggableEvents.dragged, this._updateWaveforms);
         item.addEventListener(ReceivableEvents.removed, () => this.disconnectFrom(item))
-        return true;
       }
 
 
@@ -125,6 +126,8 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
       if (index < 0) return false;
       if (this.output) item.disconnect(this.output);
       this._connectedTo.splice(index, 1);
+      // @ts-ignore
+      this.model!.connectedTo = this._connectedTo.map(ele => ele.id).filter(id => id !== item.id);
       this.requestUpdate();
       return true;
     }
@@ -135,9 +138,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
       this._app.isConnecting = true;
       this._mousePos = null;
       window.addEventListener('mousemove', this._updateConnect);
-      setTimeout(() => {
-        window.addEventListener('click', this._endConnect);
-      }, 100);
+      window.addEventListener('mousedown', this._endConnect);
     }
 
 
@@ -158,10 +159,11 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
       this._app.isConnecting = false;
       await this.requestUpdate();
       window.removeEventListener('mousemove', this._updateConnect);
-      window.removeEventListener('click', this._endConnect);
+      window.removeEventListener('mousedown', this._endConnect);
 
       if (!e || !e.target) return;
       const receivable = e.target as Receivable;
+
 
       // @ts-ignore
       if (!receivable.canReceive || receivable === this) {
@@ -232,7 +234,8 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
       if (distance < 0) distance = 0;
 
 
-      wf.style.transform = `translateY(-50%) rotate(${angleDeg}deg) translateX(60px)`
+      wf.style.transform = `translateY(-50%) rotate(${angleDeg}deg) translateX(60px)`;
+
       wf.width = distance;
 
       if (dispatch) {

@@ -1,12 +1,13 @@
 import { SynthiaDelay } from '../../../audioNodes/Delay';
 import { iconEffectDelay } from '../../../images/icons/effectDelay';
+import { SynthiaFileSynthNodeDelay } from '../../../lib/File/file.type';
 import { SElement } from '../../../types';
 import { BaseEffectClass, baseEffectMix } from '../BaseEffect/BaseEffect';
 import { DelaySidebar } from './DelaySidebar';
 
 export * from './DelaySidebar';
 
-export class Delay extends BaseEffectClass<DelaySidebar> {
+export class Delay extends BaseEffectClass<DelaySidebar, SynthiaFileSynthNodeDelay> {
 
   delay: SynthiaDelay = new SynthiaDelay(this._ctx);
   multipleConnections = false;
@@ -18,19 +19,11 @@ export class Delay extends BaseEffectClass<DelaySidebar> {
   protected _icon = iconEffectDelay;
 
 
-  get delayTime() {
-    return this.delay.delayTime.value;
-  }
-  set delayTime(v: number) {
-    if (this.delay) this.delay.delayTime.setValueAtTime(v, this._ctx.currentTime);
-    this.requestUpdate();
-  }
-
-  get feedback() {
-    return this.delay.feedback.value;
-  }
-  set feedback(v: number) {
-    if (this.delay) this.delay.feedback.setValueAtTime(v, this._ctx.currentTime);
+  protected _updateValues() {
+    const m = this.model!;
+    this.output.delayTime.value = m.properties.delayTime;
+    this.output.feedback.value = m.properties.feedback;
+    this.output.dryWet = m.properties.dryWet;
     this.requestUpdate();
   }
 }

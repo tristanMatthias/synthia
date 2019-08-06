@@ -6,6 +6,7 @@ import { iconWave } from '../../../images/icons/wave';
 import { iconWaveSawtooth } from '../../../images/icons/waveSawtooth';
 import { iconWaveSine } from '../../../images/icons/waveSine';
 import { iconWaveSquare } from '../../../images/icons/waveSquare';
+import { SynthiaFileSynthNodeWave } from '../../../lib/File/file.type';
 import { ConnectableEvents, ConnectableMixin } from '../../../lib/mixins/Connectable/Connectable';
 import { DeletableMixin } from '../../../lib/mixins/Deletable/Deletable';
 import { DraggableMixin } from '../../../lib/mixins/Draggable/Draggable';
@@ -15,7 +16,7 @@ import { SelectableEvents, SelectableMixin } from '../../../lib/mixins/Selectabl
 import { SElement } from '../../../types';
 import { SidebarEvents } from '../../layout/Sidebar/Sidebar';
 import { CircleMenuButton } from '../../ui/CircleMenu/CircleMenu';
-import { SynthiaKeyboardEvent, Keyboard } from '../../visualizations/Keyboard/Keyboard';
+import { Keyboard, SynthiaKeyboardEvent } from '../../visualizations/Keyboard/Keyboard';
 import { BaseNode } from '../BaseNode/BaseNode';
 import styles from './wave.styles';
 import { WaveSidebar } from './WaveSidebar/WaveSidebar';
@@ -27,7 +28,7 @@ const icons = {
   square: iconWaveSquare,
 }
 
-export class Wave extends BaseNode {
+export class Wave extends BaseNode<SynthiaFileSynthNodeWave> {
 
   static get styles() {
     return [styles]
@@ -47,11 +48,12 @@ export class Wave extends BaseNode {
 
 
   get buttons(): CircleMenuButton[] {
-    const action = (type: OscillatorType) => () => this.type = type;
+    if (!this.model) return [];
+    const action = (type: OscillatorType) => () => this.model!.properties.type = type;
     return [
-      { text: 'Square wave', icon: icons.square, action: action('square'), active: this.type === 'square' },
-      { text: 'Sine wave', icon: icons.sine, action: action('sine'), active: this.type === 'sine' },
-      { text: 'Sawtooth wave', icon: icons.sawtooth, action: action('sawtooth'), active: this.type === 'sawtooth' },
+      { text: 'Square wave', icon: icons.square, action: action('square'), active: this.model!.properties.type === 'square' },
+      { text: 'Sine wave', icon: icons.sine, action: action('sine'), active: this.model!.properties.type === 'sine' },
+      { text: 'Sawtooth wave', icon: icons.sawtooth, action: action('sawtooth'), active: this.model!.properties.type === 'sawtooth' },
       // @ts-ignore From Connectable
       { text: 'Connect', icon: iconConnect, action: () => this._startConnect(), color: 'text' },
     ]
@@ -61,6 +63,20 @@ export class Wave extends BaseNode {
   @query('.background')
   background?: HTMLElement;
 
+
+  protected _updateValues() {
+    const m = this.model!;
+    this.output.type = m.properties.type;
+    this.output.delay = m.properties.delay;
+    this.output.attack = m.properties.attack;
+    this.output.attackLevel = m.properties.attackLevel;
+    this.output.decay = m.properties.decay;
+    this.output.decayLevel = m.properties.decayLevel;
+    this.output.release = m.properties.release;
+    this.output.pitch = m.properties.pitch;
+    this.output.gain.value = m.properties.gain;
+    this.requestUpdate();
+  }
 
   constructor() {
     super();
@@ -72,17 +88,10 @@ export class Wave extends BaseNode {
     this.output = this._ctx.createSynthiaWave();
   }
 
-
-  get type() { return this.output.type; }
-  set type(v: OscillatorType) {
-    this.output.type = v;
-    this.requestUpdate();
-  }
-
-
   render() {
+    if (!this.model) return html``;
     // @ts-ignore
-    const icon = icons[this.type];
+    const icon = icons[this.model.properties.type];
     return html`
       <div class="background"> ${iconWave} </div>
       <div class="icon">${icon}</div>

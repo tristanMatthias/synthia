@@ -14,11 +14,11 @@ export class FilterSidebar extends Sidebar {
 
   get _contents() {
     if (!this.filter) return null;
-    const filter = this.filter.filter;
+    const model = this.filter.model!.properties;
 
     return html`
       <synthia-frequency-response
-        .filter=${filter}
+        .filter=${this.filter.filter}
         width="318"
         height="200"
         decibels
@@ -27,7 +27,7 @@ export class FilterSidebar extends Sidebar {
       <form>
         <div class="form-row">
           <label>Type</label>
-          <select @change=${this._updateValue('type')}>
+          <select @change=${this._updateValue('type')} .value=${model.type}>
             <option value="highpass">High Pass</option>
             <option value="lowpass">Low Pass</option>
             <option value="bandpass">Band Pass</option>
@@ -45,10 +45,10 @@ export class FilterSidebar extends Sidebar {
             type="range"
             min="0"
             max="24000"
-            value=${this.filter.frequency}
+            value=${model.frequency}
             @change=${this._updateValue('frequency')}
           /></synthia-expo-slider>
-          <span class="value">${Math.floor(this.filter.frequency)}hz</span>
+          <span class="value">${Math.floor(model.frequency)}hz</span>
         </div>
 
         <div class="form-row">
@@ -57,10 +57,10 @@ export class FilterSidebar extends Sidebar {
             type="range"
             min="0"
             max="20"
-            value=${this.filter.q}
+            value=${model.q}
             @change=${this._updateValue('q')}
           /></synthia-slider>
-          <span class="value">${Math.floor(this.filter.q)}db</span>
+          <span class="value">${Math.floor(model.q)}db</span>
         </div>
 
 
@@ -70,10 +70,10 @@ export class FilterSidebar extends Sidebar {
             type="range"
             min="0"
             max="5"
-            value=${this.filter.gain}
+            value=${model.gain}
             @change=${this._updateValue('gain')}
           /></synthia-slider>
-          <span class="value">${Math.floor(this.filter.gain)}</span>
+          <span class="value">${Math.floor(model.gain)}</span>
         </div>
       </form>`;
   }
@@ -82,7 +82,7 @@ export class FilterSidebar extends Sidebar {
   private _updateValue(prop: any) {
     return (e: any) => {
       // @ts-ignore
-      this.filter![prop] = e.target.value;
+      this.filter!.model!.properties[prop] = e.target.value;
       this.requestUpdate();
     }
   }

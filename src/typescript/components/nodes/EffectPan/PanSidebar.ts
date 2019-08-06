@@ -14,6 +14,8 @@ export class PanSidebar extends Sidebar implements NodeSidebar {
 
   get _contents() {
     if (!this.input) return null;
+    const props = this.input.model!.properties;
+
     return html`<form>
       <div class="form-row">
         <label>Pan</label>
@@ -21,10 +23,10 @@ export class PanSidebar extends Sidebar implements NodeSidebar {
           type="range"
           min="-1"
           max="1"
-          value=${this.input.pan}
+          value=${props.pan}
           @change=${this._updateValue('pan')}
         /></synthia-slider>
-        <span class="value">${this.input.pan}</span>
+        <span class="value">${props.pan}</span>
       </div>
     </form>`;
   }
@@ -33,7 +35,7 @@ export class PanSidebar extends Sidebar implements NodeSidebar {
   private _updateValue(prop: any) {
     return (e: any) => {
       // @ts-ignore
-      this.input![prop] = e.target.value;
+      this.input!.model!.properties[prop] = e.target.value;
       this.requestUpdate();
     }
   }

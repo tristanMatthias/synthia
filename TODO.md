@@ -13,3 +13,4 @@
 
 ## Bugs
 [x] Improve slider dragging
+[] Release not firing if before decay
