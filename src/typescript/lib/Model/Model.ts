@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 
 import { EventObject } from '../EventObject/EventObject';
-import { SynthiaFile, SynthiaFileSynthNode, SynthiaFileSynthNodeType } from '../file/file.type';
+import { SynthiaFile, SynthiaFileSynthNode, SynthiaFileSynthNodeType } from '../File/file.type';
 import { wrapProxy } from './wrapProxy';
 import { defaultSynthNodeProperties } from './defaultSynthNodeProperties';
 
@@ -21,8 +21,6 @@ export interface ModelEvents {
 export class Model extends EventObject<ModelEvents> {
   // @ts-ignore Called from loadNewFile
   file: SynthiaFile;
-
-  private _loading: boolean = true;
 
   constructor(file: SynthiaFile) {
     super();
