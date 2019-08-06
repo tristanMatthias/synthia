@@ -33,8 +33,8 @@ export const defaultProject: SynthiaFile = {
             gain: 0.8
           },
           position: {
-            x: 1185,
-            y: 1440
+            x: 50,
+            y: 42.7667
           },
           receives: [],
           connectedTo: ["root"]

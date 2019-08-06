@@ -2,8 +2,10 @@ import { html, LitElement, property, query } from 'lit-element';
 
 import { Connectable } from '../../../lib/mixins/Connectable/Connectable';
 import { Receivable } from '../../../lib/mixins/Receivable/Receivable';
+import { remToPx } from '../../../lib/pxToRem';
 import { SElement } from '../../../types';
 import styles from './waveform.styles';
+import { AppEvents } from '../../layout/App/App';
 
 
 export class Waveform extends LitElement {
@@ -62,18 +64,19 @@ export class Waveform extends LitElement {
   color?: string;
 
   @property({reflect: true})
-  width: number = 400;
+  width: number = 40;
 
   @property({reflect: true})
-  height: number = 60;
+  height: number = 6;
 
   render() {
-    return html`<canvas width="${this.width}px" height="${this.height}px"></canvas>`;
+    return html`<canvas width="${remToPx(this.width)}px" height="${remToPx(this.height)}px"></canvas>`;
   }
 
   firstUpdated() {
     this._canvasCtx = this.canvas!.getContext('2d')!;
     this._draw();
+    this._app.addEventListener(AppEvents.redraw, () => this.requestUpdate());
   }
 
 
@@ -109,11 +112,14 @@ export class Waveform extends LitElement {
 
 
   private _draw() {
-    window.requestAnimationFrame(this._draw);
+    if (this.isConnected) window.requestAnimationFrame(this._draw);
     const canvas = this.canvas!;
     const ctx = this._canvasCtx!;
 
-    ctx.clearRect(0, 0, this.width, this.height);
+    const width = canvas.width;
+    const height = canvas.height;
+
+    ctx.clearRect(0, 0, width, height);
     this.analyser.getByteTimeDomainData(this._dataArray);
 
     ctx.lineWidth = 2;
@@ -129,14 +135,13 @@ export class Waveform extends LitElement {
     ctx.strokeStyle = this.color || getComputedStyle(document.documentElement).getPropertyValue('--color-text');
     ctx.beginPath();
 
-    const sliceWidth = this.width * 1.0 / this._bufferLength;
+    const sliceWidth = width * 1.0 / this._bufferLength;
     let x = 0;
 
-    for (var i = 0; i < this._bufferLength; i++) {
+    for (let i = 0; i < this._bufferLength; i++) {
 
-      var v = this._dataArray[i] / 128.0;
-
-      var y = (v * (this.height - 2) / 2);
+      const v = this._dataArray[i] / 128.0;
+      const y = (v * (height - 2) / 2);
 
       if (i === 0) ctx.moveTo(x, y);
       else ctx.lineTo(x, y);

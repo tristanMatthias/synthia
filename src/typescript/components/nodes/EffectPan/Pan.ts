@@ -3,6 +3,8 @@ import { SynthiaFileSynthNodePan } from '../../../lib/File/file.type';
 import { SElement } from '../../../types';
 import { BaseEffectClass, baseEffectMix } from '../BaseEffect/BaseEffect';
 import { PanSidebar } from './PanSidebar';
+import { pxToRem } from '../../../lib/pxToRem';
+import { AppEvents } from '../../layout/App/App';
 
 export * from './PanSidebar';
 
@@ -25,15 +27,21 @@ export class Pan extends BaseEffectClass<PanSidebar, SynthiaFileSynthNodePan> {
   protected _canvas = true;
 
 
+  firstUpdated(props: Map<string, keyof Pan>) {
+    super.firstUpdated(props);
+    this._app.addEventListener(AppEvents.redraw, this._drawFrequencyArc.bind(this));
+  }
+
+
   updated(props: Map<keyof Pan, any>) {
     super.updated(props);
     this._drawFrequencyArc();
   }
 
   private _drawFrequencyArc() {
-    const size = 120;
+    const size = pxToRem(120);
     const ctx = this.shadowRoot!.querySelector('canvas')!.getContext('2d')!;
-    const lineWidth = 6;
+    const lineWidth = pxToRem(6);
     const perc = (this.model!.properties.pan + 1) / 2;
     const offsetDeg = 17; // Creates the curved look
     const start = (180 - offsetDeg) / (180 / Math.PI);

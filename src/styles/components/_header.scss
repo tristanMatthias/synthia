@@ -5,12 +5,13 @@ header {
   right: var(--margin);
   z-index: 10;
   display: grid;
+  pointer-events: none;
 
   &:before, &:after {
     content: '';
     position: absolute;
     top: 0;
-    border-bottom: 2px solid var(--color-main);
+    border-bottom: 0.2rem solid var(--color-main);
     width: calc(var(--margin) * 5);
     height: 0.5rem;
     opacity: 0.3;

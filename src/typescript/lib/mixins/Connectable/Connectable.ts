@@ -2,8 +2,10 @@ import { html, LitElement, TemplateResult } from 'lit-element';
 
 import { Waveform } from '../../../components/visualizations/Waveform/Waveform';
 import { SElement } from '../../../types';
+import { pxToRem, remToPx } from '../../pxToRem';
 import { DraggableEvents, Position } from '../Draggable/Draggable';
 import { Receivable, ReceivableEvents } from '../Receivable/Receivable';
+import { AppEvents } from '../../../components/layout/App/App';
 
 
 export enum ConnectableEvents {
@@ -73,6 +75,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
     connectedCallback() {
       super.connectedCallback();
       window.addEventListener('keydown', this._connectableKeyDown);
+      this._app.addEventListener(AppEvents.redraw, this._updateWaveforms);
       this._startConnect();
     }
 
@@ -226,17 +229,15 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
       let angleDeg = angleRad * 180 / Math.PI;
 
       let distance = Math.sqrt(((x - destX) ** 2) + ((y - destY) ** 2));
-      if (!this._connecting) distance -= 120;
-      else distance -= 60;
+      if (!this._connecting) distance -= remToPx(12);
+      else distance -= remToPx(6);
 
       if (x >= destX) angleDeg += 180;
-
       if (distance < 0) distance = 0;
 
 
-      wf.style.transform = `translateY(-50%) rotate(${angleDeg}deg) translateX(60px)`;
-
-      wf.width = distance;
+      wf.style.transform = `translateY(-50%) rotate(${angleDeg}deg) translateX(6rem)`;
+      wf.width = pxToRem(distance);
 
       if (dispatch) {
         this.dispatchEvent(new CustomEvent(ConnectableEvents.connectingRotate, {

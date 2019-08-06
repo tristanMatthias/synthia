@@ -6,6 +6,7 @@ import { Model } from '../../../lib/Model/Model';
 import { SElement } from '../../../types';
 import { ElementToFileNodeType } from '../App/createNode';
 import styles from './canvas.styles';
+import { pxToRem } from '../../../lib/pxToRem';
 
 
 export class Canvas extends LitElement {
@@ -50,22 +51,23 @@ export class Canvas extends LitElement {
   private _handleDrop(e: DragEvent) {
     if (!this.model || !this.synthId) return false;
 
-    let { x, y } = this.getBoundingClientRect() as DOMRect;
-    x = Math.abs(x) + e.clientX - 60;
-    y = Math.abs(y) + e.clientY - 60;
+    let { x, y, width, height } = this.getBoundingClientRect() as DOMRect;
 
+    const xPerc = (Math.abs(x) + e.clientX - 60) / width * 100;
+    const yPerc = (Math.abs(y) + e.clientY - 60) / height * 100;
+    // const yPerc = pxToRem(Math.abs(y) + e.clientY - 60);
     const type = e.dataTransfer!.getData('type')! as keyof typeof ElementToFileNodeType;
 
     const object = document.createElement(type);
-    const model = this.model.createSynthNode(this.synthId, x, y, ElementToFileNodeType[type]);
+    const model = this.model.createSynthNode(this.synthId, xPerc, yPerc, ElementToFileNodeType[type]);
     // @ts-ignore
     object.model = model;
     object.id = model!.id;
 
     // @ts-ignore
-    object.x = x;
+    object.x = xPerc;
     // @ts-ignore
-    object.y = y;
+    object.y = yPerc;
     this.appendChild(object);
   }
 }

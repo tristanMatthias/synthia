@@ -10,6 +10,7 @@
 [ ] Alt drag a node
 [ ] Distortion Node
 [ ] Expo dial
+[ ] Fade in and and out visual on waveform
 
 ## Bugs
 [x] Improve slider dragging

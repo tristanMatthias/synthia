@@ -1,5 +1,6 @@
 import { LitElement } from 'lit-element';
 import { SElement } from '../../../types';
+import { pxToRem } from '../../pxToRem';
 
 export interface InitialPosition {
   x: number | string,
@@ -28,10 +29,10 @@ export const DraggableMixin = (superclass: new () => LitElement) =>
 
 
     set x(x: number) {
-      this.style.left = `${x}px`;
+      this.style.left = `${x}%`;
     }
     set y(y: number) {
-      this.style.top = `${y}px`;
+      this.style.top = `${y}%`;
     }
 
 
@@ -44,10 +45,10 @@ export const DraggableMixin = (superclass: new () => LitElement) =>
       if (!this._initialPosition) this._initialPosition = { x: 0, y: 0 }
 
       if (typeof this._initialPosition.x === 'number') {
-        this._initialPosition.x = `${this._initialPosition.x}px`
+        this._initialPosition.x = `${this._initialPosition.x / 10}rem`
       }
       if (typeof this._initialPosition.y === 'number') {
-        this._initialPosition.y = `${this._initialPosition.y}px`
+        this._initialPosition.y = `${this._initialPosition.y / 10}rem`
       }
     }
 
@@ -65,18 +66,21 @@ export const DraggableMixin = (superclass: new () => LitElement) =>
       const offsetX = this._offset.x + this._dragOffsetPosition.x;
       const offsetY = this._offset.y + this._dragOffsetPosition.y;
       this.style.transform = `translate(calc(${this._initialPosition!.x} + ${
-        offsetX
-        }px), calc(${this._initialPosition!.y} + ${
-        offsetY
-        }px))`;
+        offsetX / 10
+        }rem), calc(${this._initialPosition!.y} + ${
+        offsetY / 10
+        }rem))`;
 
       this.requestUpdate();
 
       this.dispatchEvent(new CustomEvent(DraggableEvents.dragged))
+
+      const canvasBox = document.querySelector(SElement.canvas)!.getBoundingClientRect() as DOMRect;
+      const box = this.getBoundingClientRect() as DOMRect;
       // @ts-ignore
       if (this.model) this.model.position = {
-        x: offsetX + parseInt(this.style.left!),
-        y: offsetY + parseInt(this.style.top!)
+        x: (box.x + Math.abs(canvasBox.x)) / canvasBox.width * 100,
+        y: (box.y + Math.abs(canvasBox.y)) / canvasBox.height * 100
       }
     }
 

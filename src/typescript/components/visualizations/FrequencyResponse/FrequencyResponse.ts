@@ -60,7 +60,7 @@ export class FrequencyResponse extends LitElement {
   }
 
   render() {
-    return html`<canvas width="${this.width}px" height="${this.height}px"></canvas>`;
+    return html`<canvas width="${this.width / 10}rem" height="${this.height / 10}rem"></canvas>`;
   }
 
   firstUpdated() {
@@ -68,8 +68,8 @@ export class FrequencyResponse extends LitElement {
     var dpr = window.devicePixelRatio || 1;
     c.width = this.width * dpr;
     c.height = this.height * dpr;
-    c.style.width = `${this.width}px`;
-    c.style.height = `${this.height}px`;
+    c.style.width = `${this.width / 10}rem`;
+    c.style.height = `${this.height / 10}rem`;
 
     this._canvasCtx = c.getContext('2d')!;
     this._canvasCtx.font = '1.2rem Space Mono';
@@ -78,12 +78,12 @@ export class FrequencyResponse extends LitElement {
   }
 
   updated() {
-    this.style.width = `${this.width}px`;
-    this.style.height = `${this.height}px`;
+    this.style.width = `${this.width / 10}rem`;
+    this.style.height = `${this.height / 10}rem`;
   }
 
   private _draw() {
-    window.requestAnimationFrame(this._draw);
+    if (this.isConnected) window.requestAnimationFrame(this._draw);
     if (!this.filter) return;
 
 

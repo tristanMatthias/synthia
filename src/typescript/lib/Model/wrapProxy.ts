@@ -44,6 +44,7 @@ export const wrapProxy = <T extends object>(
     },
 
     set<K extends keyof T>(target: ProxyExtended<T>, key: K, value: ProxyExtended<T>[K]) {
+      if (target[key] == value) return true;
       target[key] = value;
       if (!ignoreProps.includes(key as string)) target.__update();
       return true;

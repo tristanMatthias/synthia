@@ -10,7 +10,8 @@ import { Canvas } from '../Canvas/Canvas';
 import { connectNode, createNode } from './createNode';
 
 export enum AppEvents {
-  connecting = 'connecting'
+  connecting = 'connecting',
+  redraw = 'redraw'
 }
 
 @customElement(SElement.app)
@@ -24,8 +25,10 @@ export class App extends LitElement {
   @property()
   isDragging: boolean = false;
 
-  private _toaster = document.querySelector(SElement.toaster)!;
+  private readonly _toaster = document.querySelector(SElement.toaster)!;
   private _canvas?: Canvas;
+  // Redraw all elements on change
+  private _globalFontSize = parseInt(getComputedStyle(document.documentElement).fontSize || '10px')
 
 
   fileService = new FileService();
@@ -69,6 +72,14 @@ export class App extends LitElement {
     root.id = 'root';
     this._canvas.appendChild(root);
     this.prepend(this._canvas);
+
+    window.addEventListener('resize', () => {
+      const newFS = parseInt(getComputedStyle(document.documentElement).fontSize || '10px');
+      if (newFS !== this._globalFontSize) {
+        this._globalFontSize = newFS;
+        this.dispatchEvent(new CustomEvent(AppEvents.redraw));
+      }
+    })
   }
 
   render() { return html`<slot></slot>`; }

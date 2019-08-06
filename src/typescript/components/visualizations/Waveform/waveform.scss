@@ -21,6 +21,13 @@
     background-size: 3rem;
     margin-left: -2rem;
   }
+
+  // canvas {
+  //   position: absolute;
+  //   top: 50%;
+  //   left: 0;
+  //   transform: translateY(-50%);
+  // }
 }
 
 :host(:hover):before {

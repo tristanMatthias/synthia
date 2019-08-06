@@ -3,6 +3,8 @@ import { customElement, html, LitElement, property, query } from 'lit-element';
 
 import { SElement } from '../../../types';
 import styles from './dial.styles';
+import { pxToRem, remToPx } from '../../../lib/pxToRem';
+import { AppEvents } from '../../layout/App/App';
 
 @customElement(SElement.dial)
 export class Dial extends LitElement {
@@ -35,8 +37,7 @@ export class Dial extends LitElement {
     return [styles]
   }
 
-  private _dragging: boolean = false;
-  private _size: number = 80;
+  private _size: number = 8;
   private _offsetDeg = 40;
   private _maxAngle = 270;
 
@@ -44,6 +45,8 @@ export class Dial extends LitElement {
   private _canvas?: HTMLCanvasElement;
   @query('span')
   private _handle?: HTMLSpanElement;
+
+  private readonly _app = document.querySelector(SElement.app)!;
 
   constructor() {
     super();
@@ -56,24 +59,30 @@ export class Dial extends LitElement {
     super.firstUpdated(props);
     this._canvas!.addEventListener('mousedown', this._handleMouseDown);
     this._draw();
+    this._app.addEventListener(AppEvents.redraw, () => {
+      this.requestUpdate();
+    });
+  }
+
+  updated(props: Map<keyof Dial, any>) {
+    super.updated(props);
+    this._draw();
   }
 
   render() {
     return html`
-      <canvas width="${this._size}" height="${this._size}"></canvas>
+      <canvas width="${remToPx(this._size)}px" height="${remToPx(this._size)}px"></canvas>
       <span></span>
       <input .value=${this.value} @change=${(e: any) => this.value = e.target.value}/>
     `;
   }
 
   private _handleMouseDown(e: MouseEvent) {
-    this._dragging = true;
     window.addEventListener('mousemove', this._handleDrag);
     window.addEventListener('mouseup', this._handleMouseUp);
   }
 
   private _handleMouseUp(e: MouseEvent) {
-    this._dragging = false;
     window.removeEventListener('mousemove', this._handleDrag);
     window.removeEventListener('mouseup', this._handleMouseUp);
   }
@@ -101,7 +110,7 @@ export class Dial extends LitElement {
 
   private _draw() {
     const perc = (this._value - this.min) /(this.max - this.min)
-    const size = this._size;
+    const size = remToPx(this._size);
     const ctx = this._canvas!.getContext('2d')!;
     const lineWidth = 4;
     const start = (180 - this._offsetDeg) / (180 / Math.PI);

@@ -10,7 +10,7 @@
   width: 32rem;
 
   background-color: var(--color-bg-off);
-  border: 1px solid var(--color-main);
+  border: 0.1rem solid var(--color-main);
 
   overflow-y: auto;
 
@@ -54,7 +54,7 @@
     h2 {
       flex: 1;
       font-size: 1.8rem;
-      letter-spacing: 1px;
+      letter-spacing: 0.1rem;
       line-height: 4rem;
       margin: 0;
       margin-left: 1rem;
@@ -148,7 +148,7 @@
 
   select {
     height: 4rem;
-    border: 1px solid var(--color-main);
+    border: 0.1rem solid var(--color-main);
     background: none;
     border-radius: 0.4rem;
     width: 100%;

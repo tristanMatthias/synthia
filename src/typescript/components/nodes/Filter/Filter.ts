@@ -26,6 +26,8 @@ import { CircleMenuButton } from '../../ui/CircleMenu/CircleMenu';
 import { BaseNode } from '../BaseNode/BaseNode';
 import styles from './filter.styles';
 import { FilterSidebar } from './FilterSidebar/FilterSidebar';
+import { pxToRem } from '../../../lib/pxToRem';
+import { AppEvents } from '../../layout/App/App';
 
 
 const icons = {
@@ -98,7 +100,7 @@ export class Filter extends BaseNode<SynthiaFileSynthNodeFilter> {
     // @ts-ignore
     const icon = icons[this.model!.properties.type];
     return html`
-      <canvas width="120" height="120"></canvas>
+      <canvas width="12rem" height="12rem"></canvas>
       <div class="background"> ${iconFilter} </div>
       <div class="icon">${icon}</div>
     `;
@@ -113,6 +115,11 @@ export class Filter extends BaseNode<SynthiaFileSynthNodeFilter> {
   disconnectedCallback() {
     super.disconnectedCallback();
     this.toggleSidebar(true);
+  }
+
+  firstUpdated(props: Map<string, keyof Filter>) {
+    super.firstUpdated(props);
+    this._app.addEventListener(AppEvents.redraw, this._drawFrequencyArc.bind(this));
   }
 
   updated(props: Map<keyof Filter, any>) {
@@ -144,10 +151,10 @@ export class Filter extends BaseNode<SynthiaFileSynthNodeFilter> {
 
 
   private _drawFrequencyArc() {
-    const size = 120;
+    const size = pxToRem(120);
     const ctx = this.shadowRoot!.querySelector('canvas')!.getContext('2d')!;
     const maxFreq = 24000;
-    const lineWidth = 6;
+    const lineWidth = pxToRem(6);
     let perc = this.model!.properties.frequency / maxFreq;
     perc = Math.log(perc) / Math.log(maxFreq);
     if (perc == -1) perc = -0.999999;

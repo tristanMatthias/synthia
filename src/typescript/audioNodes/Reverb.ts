@@ -16,22 +16,25 @@ export class ReverbEffect extends CompositeAudioNode {
   private _decayTime: number;
   get decayTime() { return this._decayTime; }
   set decayTime(v: number) {
+    const past = this._decayTime;
     this._decayTime = v;
-    this._getImpulseResponse();
+    if (past !== v) this._getImpulseResponse();
   }
 
   private _fadeInTime: number;
   get fadeInTime() { return this._fadeInTime; }
   set fadeInTime(v: number) {
+    const past = this._fadeInTime;
     this._fadeInTime = v;
-    this._getImpulseResponse();
+    if (past !== v) this._getImpulseResponse();
   }
 
   private _roomSize: number;
   get roomSize() { return this._roomSize; }
   set roomSize(v: number) {
+    const past = this._roomSize;
     this._roomSize = v;
-    this._getImpulseResponse();
+    if (past !== v) this._getImpulseResponse();
   }
 
   _convolver = this._ctx.createConvolver();
