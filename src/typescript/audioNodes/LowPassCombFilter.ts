@@ -1,4 +1,5 @@
 import CompositeAudioNode from "./BaseNode";
+import { AudioCtx, OfflineAudioCtx } from "../lib/AudioContext";
 
 interface LowPassCombFilterOptions {
   delayTime: number
@@ -58,7 +59,7 @@ declare global {
 
 
 // Inject the new class into AudioContext prototype.
-AudioContext.prototype.createLowPassCombFilter =
-OfflineAudioContext.prototype.createLowPassCombFilter = function (options: LowPassCombFilterOptions) {
+AudioCtx.prototype.createLowPassCombFilter =
+OfflineAudioCtx.prototype.createLowPassCombFilter = function (options: LowPassCombFilterOptions) {
   return new LowPassCombFilter(this as AudioContext | OfflineAudioContext, options);
 };

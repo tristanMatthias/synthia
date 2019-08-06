@@ -8,6 +8,7 @@ import { Storage, StorageKey } from '../../../lib/Storage';
 import { SElement } from '../../../types';
 import { Canvas } from '../Canvas/Canvas';
 import { connectNode, createNode } from './createNode';
+import { AudioCtx } from '../../../lib/AudioContext';
 
 export enum AppEvents {
   connecting = 'connecting',
@@ -17,7 +18,7 @@ export enum AppEvents {
 @customElement(SElement.app)
 export class App extends LitElement {
 
-  context = new AudioContext();
+  context = new AudioCtx();
   mainWaveform = document.querySelector(SElement.waveform)!;
 
   private _selected: Selectable[] = [];

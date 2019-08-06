@@ -1,5 +1,6 @@
 import CompositeAudioNode from "./BaseNode";
 import { Envelope } from "./Envelope";
+import { AudioCtx, OfflineAudioCtx } from "../lib/AudioContext";
 
 
 interface WaveOptions {
@@ -189,7 +190,7 @@ declare global {
 
 
 // Inject the new class into AudioContext prototype.
-AudioContext.prototype.createSynthiaWave =
-  OfflineAudioContext.prototype.createSynthiaWave = function (options: WaveOptions) {
+AudioCtx.prototype.createSynthiaWave =
+  OfflineAudioCtx.prototype.createSynthiaWave = function (options: WaveOptions) {
     return new SynthiaWave(this as AudioContext | OfflineAudioContext, options);
   };

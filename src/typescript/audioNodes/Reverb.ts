@@ -1,5 +1,6 @@
 import CompositeAudioNode from "./BaseNode";
 import { generateImpulseResponse } from "../lib/generateImpulseResponse";
+import { AudioCtx, OfflineAudioCtx } from "../lib/AudioContext";
 
 interface ReverbOptions {
   wetGain?: number,
@@ -126,7 +127,7 @@ declare global {
 
 
 // Inject the new class into AudioContext prototype.
-AudioContext.prototype.createReverb =
-  OfflineAudioContext.prototype.createReverb = function (options: ReverbOptions) {
+AudioCtx.prototype.createReverb =
+  OfflineAudioCtx.prototype.createReverb = function (options: ReverbOptions) {
     return new ReverbEffect(this as AudioContext | OfflineAudioContext, options);
   };

@@ -1,6 +1,7 @@
 import CompositeAudioNode from '../../audioNodes/BaseNode';
 import { mergeParams } from '../mergeParams';
 import { LowPassCombFilter } from '../../audioNodes/LowPassCombFilter';
+import { OfflineAudioCtx, AudioCtx } from '../AudioContext';
 
 // Freeverb params defined by Mr. Shroeder
 // const SAMPLE_RATE = 44100;
@@ -111,7 +112,7 @@ declare global {
 
 
 // Inject the new class into AudioContext prototype.
-AudioContext.prototype.createFreeverb =
-  OfflineAudioContext.prototype.createFreeverb = function (options: ReverbOptions) {
+AudioCtx.prototype.createFreeverb =
+  OfflineAudioCtx.prototype.createFreeverb = function (options: ReverbOptions) {
     return new Reverb(this as AudioContext | OfflineAudioContext, options);
   };
