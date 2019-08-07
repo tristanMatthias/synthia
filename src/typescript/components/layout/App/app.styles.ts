@@ -1,0 +1,3 @@
+import { css } from 'lit-element';
+export default css`:host .corners{position:fixed;right:var(--margin);left:var(--margin);top:calc( var(--margin) * 6);bottom:calc( var(--margin) * 6);pointer-events:none;opacity:0.3;border-left:0.1rem solid var(--color-main);border-right:0.1rem solid var(--color-main)}:host .corners svg{position:absolute}:host .corners svg.corner-top-left{top:-4rem;left:-0.2rem}:host .corners svg.corner-bottom-left{bottom:-4rem;left:-0.2rem;transform:scaleY(-1)}:host .corners svg.corner-top-right{top:-4rem;right:-0.2rem;transform:scaleX(-1)}:host .corners svg.corner-bottom-right{bottom:-4rem;right:-0.2rem;transform:scale(-1, -1)}
+`;

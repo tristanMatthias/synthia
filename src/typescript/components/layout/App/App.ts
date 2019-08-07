@@ -1,14 +1,16 @@
 import { customElement, html, LitElement, property } from 'lit-element';
 
+import { AudioCtx } from '../../../lib/AudioContext';
 import { SynthiaFile } from '../../../lib/File/file.type';
 import { FileService } from '../../../lib/File/FileService';
 import { Selectable } from '../../../lib/mixins/Selectable/Selectable';
 import { Model, ModelEvents } from '../../../lib/Model/Model';
+import { remToPx } from '../../../lib/pxToRem';
 import { Storage, StorageKey } from '../../../lib/Storage';
 import { SElement } from '../../../types';
 import { Canvas } from '../Canvas/Canvas';
+import styles from './app.styles';
 import { connectNode, createNode } from './createNode';
-import { AudioCtx } from '../../../lib/AudioContext';
 
 export enum AppEvents {
   connecting = 'connecting',
@@ -17,6 +19,10 @@ export enum AppEvents {
 
 @customElement(SElement.app)
 export class App extends LitElement {
+
+  static get styles() {
+    return [styles]
+  }
 
   context = new AudioCtx();
   mainWaveform = document.querySelector(SElement.waveform)!;
@@ -79,11 +85,28 @@ export class App extends LitElement {
       if (newFS !== this._globalFontSize) {
         this._globalFontSize = newFS;
         this.dispatchEvent(new CustomEvent(AppEvents.redraw));
+        this.requestUpdate()
       }
     })
   }
 
-  render() { return html`<slot></slot>`; }
+  render() { return html`
+    <slot></slot>
+    <div class="corners">
+      <svg xmlns="http://www.w3.org/2000/svg" width="${remToPx(7)}" height="${remToPx(4)}" viewbox="0 0 70 40" class="corner-top-left">
+        <path fill="none" fill-rule="evenodd" stroke="var(--color-main)" stroke-linecap="square" d="M69.454 1H41L1 41" />
+      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="${remToPx(7)}" height="${remToPx(4)}" viewbox="0 0 70 40" class="corner-bottom-left">
+        <path fill="none" fill-rule="evenodd" stroke="var(--color-main)" stroke-linecap="square" d="M69.454 1H41L1 41" />
+      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="${remToPx(7)}" height="${remToPx(4)}" viewbox="0 0 70 40" class="corner-top-right">
+        <path fill="none" fill-rule="evenodd" stroke="var(--color-main)" stroke-linecap="square" d="M69.454 1H41L1 41" />
+      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="${remToPx(7)}" height="${remToPx(4)}" viewbox="0 0 70 40" class="corner-bottom-right">
+        <path fill="none" fill-rule="evenodd" stroke="var(--color-main)" stroke-linecap="square" d="M69.454 1H41L1 41" />
+      </svg>
+    </div>
+  `; }
 
 
   select(element: Selectable, multiple = false) {
