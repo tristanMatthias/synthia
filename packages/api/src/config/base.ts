@@ -24,6 +24,7 @@ export const CONFIG_BASE: Partial<API_CONFIG> = {
     host: process.env.DB_HOST!,
     port: parseInt(process.env.DB_PORT!)
   },
+  accessTokenSecret: process.env.JWT_SECRET,
 
   oauth: {
     facebook: {
