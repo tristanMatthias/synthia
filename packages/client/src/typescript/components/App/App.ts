@@ -20,6 +20,7 @@ export class App extends LitElement {
       if (user.token && prop === 'token') this._updateMe();
     });
     if (this.user.token) this._updateMe();
+    else this.user.checked = true;
   }
 
   render() {
@@ -34,10 +35,14 @@ export class App extends LitElement {
 
   private async _updateMe() {
     state.user.loading = true;
-    const me = await API.request<EUser>('query', 'me');
+
+    try {
+      const me = await API.request<EUser>('query', 'me');
+      state.user.data = me;
+    } catch (e) {}
+
     state.user.loading = false;
     state.user.checked = true;
-    state.user.data = me;
   }
 }
 
