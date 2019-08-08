@@ -48,7 +48,8 @@ const config: Configuration = {
     new Favicon('./src/images/favicon.png'),
     new Copy([
       {from: './src/images/social', to: 'social'},
-      {from: './src/images/', to: 'images'}
+      {from: './src/images/', to: 'images'},
+      {from: './_redirects'}
     ]),
     new ReplacePlugin({
       values: {
