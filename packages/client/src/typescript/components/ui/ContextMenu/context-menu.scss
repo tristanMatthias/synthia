@@ -1,0 +1,50 @@
+@mixin div {
+  transition: all 0.05s;
+  font-size: 1.5rem;
+  height: 3rem;
+  line-height: 3rem;
+  padding: 0 2rem;
+  cursor: pointer;
+}
+
+@mixin div-hover {
+  background: var(--color-hover);
+  color: var(--color-alt);
+}
+
+
+:host {
+  display: none;
+  border: 0.1rem solid var(--color-line);
+  position: absolute;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: var(--color-line);
+    opacity: 0.2;
+  }
+
+  div {
+    @include div;
+
+    &:hover {
+      @include div-hover;
+    }
+  }
+}
+
+:host-context([show]) {
+  display: block;
+}
+
+::slotted(div) {
+  @include div;
+}
+::slotted(div:hover) {
+  @include div-hover;
+}

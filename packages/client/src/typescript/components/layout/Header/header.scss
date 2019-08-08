@@ -1,0 +1,113 @@
+:host {
+  position: fixed;
+  top: calc(1/2 * var(--margin));
+  left: var(--margin);
+  right: var(--margin);
+  z-index: 10;
+  user-select: none;
+
+  .wrapper {
+    display: flex;
+    height: 4rem;
+    align-items: center;
+    text-align: right;
+    justify-content: flex-end;
+    margin: 0 calc(var(--margin) * 9);
+  }
+
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    border-bottom: 0.2rem solid var(--color-main);
+    width: calc(var(--margin) * 5);
+    height: 0.5rem;
+    opacity: 0.3;
+  }
+
+  &:before {
+    border-left: calc(var(--margin) * 2) solid var(--color-main);
+    left: 0;
+  }
+  &:after {
+    border-right: calc(var(--margin) * 2) solid var(--color-main);
+    right: 0;
+  }
+
+  * {
+    position: relative;
+    z-index: 9999;
+    box-sizing: border-box;
+  }
+
+  svg {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 5rem;
+    transform: translate(-50%, -50%);
+  }
+
+  a {
+    color: var(--color-text);
+    text-decoration: none;
+    flex-grow: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1.5rem;
+    opacity: 0.7;
+    transition: all 0.1s;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .user {
+    height: 4rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    border: 0.1rem solid transparent;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      border-radius: 0.4rem;
+      background: var(--color-line);
+      opacity: 0.2;
+    }
+
+    &:hover, &.active {
+      background: var(--color-hover);
+    }
+
+    &.active {
+      border: 0.1rem solid var(--color-line);
+    }
+
+    img {
+      border-radius: 50%;
+      width: 2rem;
+      height: 2rem;
+      vertical-align: middle;
+      margin-right: var(--margin);
+    }
+    span {
+      vertical-align: middle;
+      font-size: 1.5rem;
+    }
+
+    & + synthia-context-menu {
+      position: absolute;
+      top: calc(4rem - 0.1rem);
+      right: 0;
+    }
+  }
+}

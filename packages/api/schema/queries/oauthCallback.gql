@@ -1,0 +1,6 @@
+query oauthCallback($provider: String!, $code: String!){
+    oauthCallback(provider: $provider, code: $code){
+        accessToken
+        expiry
+    }
+}
