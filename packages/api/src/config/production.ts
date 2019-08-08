@@ -10,5 +10,5 @@ import { API_CONFIG } from './types';
 
 export const CONFIG_PRODUCTION: API_CONFIG = {
   ...CONFIG_BASE as API_CONFIG,
-  corsAllowFrom: [/\.synthia\.app$/],
+  corsAllowFrom: [/synthia\.app$/],
 };
