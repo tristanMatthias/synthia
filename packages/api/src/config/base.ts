@@ -15,7 +15,7 @@ config({
 });
 
 export const CONFIG_BASE: Partial<API_CONFIG> = {
-  port: parseInt(process.env.PORT!) | 4000,
+  port: parseInt(process.env.PORT!) || 4000,
   dbConnection: {
     database: process.env.DB_DATABASE!,
     username: process.env.DB_USERNAME!,
