@@ -1,5 +1,5 @@
-import { BaseService } from "./BaseService";
-import { User } from "../models/User";
+import { User } from '../models/User';
+import { BaseService } from './BaseService';
 
 export interface CreateUser {
   firstName: string;
@@ -16,14 +16,13 @@ export interface GetUser {
   id: string;
 }
 
-
 export const UserService = new class extends BaseService<
   User,
   CreateUser,
   UpdateUser,
   GetUser
 > {
-  findByEmail(email: string) {
-    return User.findOne({where: {email}})
+  async findByEmail(email: string) {
+    return await User.findOne({where: {email}})
   }
 }(User)

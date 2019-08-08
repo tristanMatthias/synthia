@@ -74,9 +74,9 @@ export class OAuthProvider {
    * @param next Origami NextFunction
    */
   public authenticate(
-    req: Request,
+    _req: Request,
     res: Response,
-    next: NextFunction
+    _next: NextFunction
   ) {
     const _qs = Object.entries({
       client_id: this.clientID,
