@@ -1,20 +1,20 @@
 import CompositeAudioNode from '../../audioNodes/BaseNode';
-import { mergeParams } from '../mergeParams';
 import { LowPassCombFilter } from '../../audioNodes/LowPassCombFilter';
-import { OfflineAudioCtx, AudioCtx } from '../AudioContext';
+import { AudioCtx, OfflineAudioCtx } from '../AudioContext';
+import { mergeParams } from '../mergeParams';
 
 // Freeverb params defined by Mr. Shroeder
 // const SAMPLE_RATE = 44100;
 const COMB_FILTER_TUNINGS = [1557, 1617, 1491, 1422, 1277, 1356, 1188, 1116];
-const ALLPASS_FREQUENCIES = [225, 556, 441, 341];
+// const ALLPASS_FREQUENCIES = [225, 556, 441, 341];
 
 
-const createAP = (ctx: AudioContext | OfflineAudioContext, freq: number) => {
-  const allPass = ctx.createBiquadFilter();
-  allPass.type = 'allpass';
-  allPass.frequency.value = freq;
-  return allPass;
-};
+// const createAP = (ctx: AudioContext | OfflineAudioContext, freq: number) => {
+//   const allPass = ctx.createBiquadFilter();
+//   allPass.type = 'allpass';
+//   allPass.frequency.value = freq;
+//   return allPass;
+// };
 
 
 interface ReverbOptions {

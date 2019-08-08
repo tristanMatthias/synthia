@@ -45,7 +45,7 @@ export class Router extends LitElement {
       path: this.root,
       children: this.routes.map(r => ({
         path: r.path,
-        action: (ctx, params) => {
+        action: (ctx, _params) => {
           const ele = document.createElement('div');
           ele.classList.add('synthia-page');
           ele.innerHTML = r.html;

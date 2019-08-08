@@ -17,14 +17,6 @@ interface Timings {
   end?: number
 }
 
-enum Stage {
-  delay = 'delay',
-  attack = 'attack',
-  sustain = 'sustain',
-  release = 'release',
-  end = 'end',
-}
-
 const ZERO = 0.00000001;
 
 export class Envelope extends CompositeAudioNode {

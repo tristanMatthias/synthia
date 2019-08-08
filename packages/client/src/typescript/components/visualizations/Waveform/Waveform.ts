@@ -99,7 +99,7 @@ export class Waveform extends LitElement {
     // If single clicked, instruct the user to double click\
     if (this.removable) {
 
-      this.addEventListener('click', (e) => {
+      this.addEventListener('click', () => {
         setTimeout(() => {
           if (!this._removing && this.style.display !== 'none') this._instruct();
         }, 500);

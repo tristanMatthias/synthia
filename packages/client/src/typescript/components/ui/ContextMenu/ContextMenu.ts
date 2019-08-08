@@ -23,9 +23,6 @@ export class ContextMenu extends LitElement {
     return [styles]
   }
 
-  firstUpdated(props: Map<string, keyof ContextMenu>) {
-  }
-
   render() {
     return html`
       <slot></slot>

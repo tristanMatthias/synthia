@@ -1,6 +1,6 @@
 import { EventObject } from '../EventObject/EventObject';
+import { defaultProject } from './defaultProject';
 import { SynthiaFile } from './file.type';
-import {defaultProject} from './defaultProject';
 
 interface FileServiceEvents {
   loaded: SynthiaFile;
@@ -68,5 +68,7 @@ export class FileService extends EventObject<FileServiceEvents> {
     a.href = window.URL.createObjectURL(data);
     a.click();
     a.remove();
+
+    return true;
   }
 }

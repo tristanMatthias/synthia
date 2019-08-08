@@ -1,12 +1,11 @@
+import { TokenResult } from '@synthia/api/dist/gql/resolvers/OAuthResolver';
 import { customElement, html, property } from 'lit-element';
-import {TokenResult} from '@synthia/api/dist/gql/resolvers/OAuthResolver';
 
-import { SElement } from '../../../types';
-import { Page } from '../../layout/Page/Page';
 import { API } from '../../../lib/API/API';
 import { History } from '../../../lib/History';
-import { EUser } from '@synthia/api/dist/gql/entities/UserEntity';
 import { state } from '../../../state/state';
+import { SElement } from '../../../types';
+import { Page } from '../../layout/Page/Page';
 
 @customElement(SElement.oauthPage)
 export class PageOAuth extends Page {
@@ -44,5 +43,7 @@ export class PageOAuth extends Page {
     state.user.token = data.accessToken;
 
     History.history.replace('/');
+
+    return true;
   }
 }

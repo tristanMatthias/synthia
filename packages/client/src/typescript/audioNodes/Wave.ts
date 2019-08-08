@@ -31,7 +31,7 @@ export class SynthiaWave extends CompositeAudioNode {
     this._pitch = v;
 
     Array.from(this._notes.entries())
-      .forEach(([freq, [env, o]]) => {
+      .forEach(([freq, [_env, o]]) => {
         const tuned = this._tuned(freq);
         o.frequency.setValueAtTime(tuned, this._ctx.currentTime);
       })
@@ -139,29 +139,30 @@ export class SynthiaWave extends CompositeAudioNode {
   }
 
 
-  stop(freq?: number, when: number = 0) {
+  stop(freq?: number) {
     // Stop all frequencies if none supplied
     if (freq === undefined) {
       Array.from(this._notes.keys()).forEach(f => this.stop(f));
       return;
     }
 
-    const tuned = this._tuned(freq);
-
     const envOsc = this._notes.get(freq);
     // Note is not playing
     if (!envOsc) return false;
     envOsc[0].startRelease();
+
+    return true;
   }
 
   kill(freq: number) {
-    const tuned = this._tuned(freq);
     const envOsc = this._notes.get(freq);
     // Note is not playing
     if (!envOsc) return false;
 
     envOsc[1].stop(this._ctx.currentTime);
     this._notes.delete(freq);
+
+    return true;
   }
 
   private _setEnvGainOnType() {

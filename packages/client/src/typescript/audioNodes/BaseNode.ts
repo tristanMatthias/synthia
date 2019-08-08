@@ -19,13 +19,13 @@ export default class CompositeAudioNode {
     this._output = this._ctx.createGain();
   }
 
-  connect(...args: any[]) {
+  connect(..._args: any[]) {
     // TODO: Fix up this type
     // @ts-ignore
     return this._output.connect.apply(this._output, arguments);
   }
 
-  disconnect(...args: any[]) {
+  disconnect(..._args: any[]) {
     // TODO: Fix up this type
     // @ts-ignore
     return this._output.disconnect.apply(this._output, arguments);

@@ -1,4 +1,4 @@
-import { Subject, Subscription } from "rxjs";
+import { Subject, Subscription } from 'rxjs';
 
 export class EventObject<Events> {
 
@@ -20,6 +20,7 @@ export class EventObject<Events> {
     let subscription = this._subscriptions.get([event, func])
     if (!subscription) return false;
     subscription.unsubscribe();
+    return true;
   }
 
 
@@ -27,6 +28,7 @@ export class EventObject<Events> {
     let subject = this._subjects.get(event)
     if (!subject) return false;
     subject.next(data);
+    return true;
   }
 
   clear() {

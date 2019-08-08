@@ -20,7 +20,7 @@ export class BaseNode<T extends object> extends LitElement {
   }
   set model(m: T | undefined) {
     if (m && m !== this._model) {
-      this._model = wrapProxy(m, (v) => {
+      this._model = wrapProxy(m, () => {
         this._updateValues();
       });
       this._updateValues();

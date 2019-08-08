@@ -1,10 +1,9 @@
 import { customElement, html } from 'lit-element';
 
+import { SynthiaFileSynthNodeWave } from '../../../../lib/File/file.type';
 import { SElement } from '../../../../types';
 import { Sidebar } from '../../../layout/Sidebar/Sidebar';
 import { Wave } from '../Wave';
-import { SynthiaFileSynthNodeWave } from '../../../../lib/File/file.type';
-import { ctx } from '../../../../lib/AudioContext';
 
 
 @customElement(SElement.waveSidebar)

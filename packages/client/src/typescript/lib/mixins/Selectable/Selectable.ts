@@ -1,7 +1,7 @@
-import { html, LitElement, property } from 'lit-element';
+import { html, LitElement } from 'lit-element';
 
-import styles from './selectable.styles';
 import { SElement } from '../../../types';
+import styles from './selectable.styles';
 
 
 export interface Selectable {

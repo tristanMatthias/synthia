@@ -68,6 +68,8 @@ export class Canvas extends LitElement {
     // @ts-ignore
     object.y = yPerc;
     this.appendChild(object);
+
+    return object;
   }
 }
 

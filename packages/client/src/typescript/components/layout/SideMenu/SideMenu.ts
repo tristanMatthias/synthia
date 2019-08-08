@@ -1,13 +1,12 @@
 import { customElement, html, LitElement, TemplateResult } from 'lit-element';
 
 import { iconEffectDelay } from '../../../images/icons/effectDelay';
+import { iconEffectPan } from '../../../images/icons/effectPan';
 import { iconEffectReverb } from '../../../images/icons/effectReverb';
 import { iconFilterSmall } from '../../../images/icons/filterSmall';
 import { iconWaveSmall } from '../../../images/icons/waveSmall';
 import { SElement } from '../../../types';
 import styles from './side-menu.styles';
-import { iconEffectPan } from '../../../images/icons/effectPan';
-import { iconWaveSine } from '../../../images/icons/waveSine';
 
 
 interface SideMenuItemBase {
@@ -22,9 +21,6 @@ interface SideMenuItemNode extends SideMenuItemBase {
 interface SideMenuItemButton extends SideMenuItemBase {
   action: () => void;
 }
-
-type SideMenuNode = SideMenuItemNode | SideMenuItemButton;
-
 
 @customElement(SElement.sideMenu)
 export class SideMenu extends LitElement {

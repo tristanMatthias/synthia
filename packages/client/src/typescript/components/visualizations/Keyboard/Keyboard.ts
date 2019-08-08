@@ -71,12 +71,12 @@ export class Keyboard extends LitElement {
     this._stopFreq(keyToFrequency(e.key, this.octave))
   }
 
-  private _handleMouseDown(e: MouseEvent) {
+  private _handleMouseDown() {
     this._dragging = true;
     window.addEventListener('mouseup', this._handleMouseUp)
   }
 
-  private _handleMouseUp(e: MouseEvent) {
+  private _handleMouseUp() {
     this._dragging = false;
     if (this._draggingNote) this._stopFreq(this._draggingNote);
     window.removeEventListener('mouseup', this._handleMouseUp)

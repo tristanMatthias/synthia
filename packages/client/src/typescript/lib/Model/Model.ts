@@ -2,8 +2,8 @@ import { v4 as uuid } from 'uuid';
 
 import { EventObject } from '../EventObject/EventObject';
 import { SynthiaFile, SynthiaFileSynthNode, SynthiaFileSynthNodeType } from '../File/file.type';
-import { wrapProxy } from './wrapProxy';
 import { defaultSynthNodeProperties } from './defaultSynthNodeProperties';
+import { wrapProxy } from './wrapProxy';
 
 
 export enum ModelDataObjectType {
@@ -28,7 +28,7 @@ export class Model extends EventObject<ModelEvents> {
   }
 
   loadNewFile(file: SynthiaFile) {
-    this.file = wrapProxy(file, newFile => {
+    this.file = wrapProxy(file, () => {
       this.emit('update', file);
     });
   }

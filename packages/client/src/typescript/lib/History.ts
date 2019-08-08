@@ -15,7 +15,7 @@ export const History = new class extends EventObject<HistoryEvent> {
     window.addEventListener('click', this._capture.bind(this));
 
     // Listen for changes to the current location.
-    this.history.listen((location, action) => {
+    this.history.listen((location) => {
       this.emit('change', {path: location.pathname})
     });
   }

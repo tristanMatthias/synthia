@@ -161,7 +161,7 @@ export class PageSynth extends LitElement {
   }
 
 
-  private _handleModelUpdate(e: ModelEvents['update']) {
+  private _handleModelUpdate(_e: ModelEvents['update']) {
     // console.log(e);
   }
 }

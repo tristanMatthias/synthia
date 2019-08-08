@@ -179,6 +179,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
 
       // @ts-ignore
       this._synth.select(this);
+      return true;
     }
 
 

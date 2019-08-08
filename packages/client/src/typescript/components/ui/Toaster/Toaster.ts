@@ -89,6 +89,8 @@ export class Toaster extends LitElement {
         ele.remove();
       }
     });
+
+    return true;
   }
 
 

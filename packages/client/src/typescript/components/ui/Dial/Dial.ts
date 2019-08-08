@@ -1,10 +1,10 @@
 import color from 'color';
 import { customElement, html, LitElement, property, query } from 'lit-element';
 
+import { remToPx } from '../../../lib/pxToRem';
 import { SElement } from '../../../types';
-import styles from './dial.styles';
-import { pxToRem, remToPx } from '../../../lib/pxToRem';
 import { SynthPageEvents } from '../../pages/synth/synth.page';
+import styles from './dial.styles';
 
 @customElement(SElement.dial)
 export class Dial extends LitElement {
@@ -77,12 +77,12 @@ export class Dial extends LitElement {
     `;
   }
 
-  private _handleMouseDown(e: MouseEvent) {
+  private _handleMouseDown() {
     window.addEventListener('mousemove', this._handleDrag);
     window.addEventListener('mouseup', this._handleMouseUp);
   }
 
-  private _handleMouseUp(e: MouseEvent) {
+  private _handleMouseUp() {
     window.removeEventListener('mousemove', this._handleDrag);
     window.removeEventListener('mouseup', this._handleMouseUp);
   }
