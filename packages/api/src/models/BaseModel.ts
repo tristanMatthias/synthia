@@ -1,8 +1,9 @@
 import { UUIDV4 } from 'sequelize';
-import { Column, DeletedAt, IsUUID, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import { AllowNull, BelongsTo, Column, Default, ForeignKey, IsUUID, Model, PrimaryKey, IsDate } from 'sequelize-typescript';
+import { User } from './User';
 
 
-@Table
+
 export class BaseModel<T extends Model<T>> extends Model<T> {
   // Setup the primary key
   @PrimaryKey
@@ -10,6 +11,29 @@ export class BaseModel<T extends Model<T>> extends Model<T> {
   @Column({ defaultValue: UUIDV4 })
   id: string;
 
-  @DeletedAt
-  deletedAt: Date;
+  @IsDate
+  @Column
+  createdAt: Date
 }
+
+export class WithMetadata<T extends BaseModel<T>> extends BaseModel<T> {
+
+  @AllowNull(false)
+  @Column
+  name: string;
+
+  @AllowNull(false)
+  @Default(true)
+  @Column
+  public: boolean;
+
+  @ForeignKey(() => User)
+  @AllowNull(false)
+  @Column
+  creatorId: string;
+
+  @BelongsTo(() => User)
+  creator: User;
+}
+
+

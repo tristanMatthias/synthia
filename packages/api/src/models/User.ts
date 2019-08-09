@@ -1,6 +1,7 @@
-import { Column, Table, IsEmail, AllowNull } from 'sequelize-typescript';
+import { Column, Table, IsEmail, AllowNull, HasMany } from 'sequelize-typescript';
 
 import { BaseModel } from './BaseModel';
+import { Project } from './Project';
 
 
 @Table
@@ -27,4 +28,7 @@ export class User extends BaseModel<User> {
   @Column
   socialPic: string;
 
+  // ------------------------------------------------------------- Relationships
+  @HasMany(() => Project)
+  projects: Project[]
 }

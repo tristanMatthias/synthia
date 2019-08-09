@@ -5,7 +5,7 @@ export const defaultProject: SynthiaFile = {
   meta: {
     name: "Default project",
     public: true,
-    createdBy: "synthia",
+    creatorId: "synthia",
     created: new Date(),
   },
   resources: {
@@ -15,7 +15,7 @@ export const defaultProject: SynthiaFile = {
         created: new Date(),
         name: "Simple square",
         public: true,
-        createdBy: "synthia"
+        creatorId: "synthia"
       },
       nodes: [
         {

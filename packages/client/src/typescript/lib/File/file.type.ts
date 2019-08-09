@@ -12,7 +12,7 @@ export interface SynthiaFileMetadata {
   name: string;
   created: Date;
   public: boolean;
-  createdBy: string;
+  creatorId: string;
 }
 
 

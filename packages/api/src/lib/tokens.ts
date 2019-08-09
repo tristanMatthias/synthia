@@ -12,6 +12,7 @@ export interface JWTUser extends CreateUser {
 interface JWTData {
   fingerprint: string;
   user: JWTUser;
+  isDevelopment: boolean;
 }
 
 export interface JWTVerifyResult extends JWTData {
@@ -29,6 +30,7 @@ export const createToken = async (
   data: JWTData,
   expiresIn = '15m',
 ): Promise<{ token: string, expiry: number }> => {
+  if (process.env.NODE_ENV === 'development') expiresIn = '7d';
   const token = jwt.sign(data, CONFIG.accessTokenSecret, { expiresIn });
   const expiry = (jwt.decode(token) as JWTVerifyResult).exp;
   return { token, expiry };
@@ -62,7 +64,7 @@ export const verifyToken = async (
   }
 
   // NOTE: Potentially may want to invalidate this JWT too, to prevent it's reuse
-  if (data.fingerprint !== fingerprint) throw new ErrorAuthInvalidToken();
+  if (data.fingerprint !== fingerprint && !data.isDevelopment) throw new ErrorAuthInvalidToken();
 
   return data;
 };
@@ -90,7 +92,8 @@ export const generateToken = async (
       email: user.email,
       socialId: user.socialId,
       socialPic: user.socialPic
-    }
+    },
+    isDevelopment: process.env.NODE_ENV === 'development'
   };
   const { token: accessToken, expiry } = await createToken(data);
   return { accessToken, expiry };

@@ -8,18 +8,19 @@ export class BaseService<
   T extends BaseModel<any>,
   CreateInput,
   UpdateInput extends { id: string, [key: string]: any },
-  FindAllArgs,
+  FindAllArgs = {id: string},
   > {
   constructor(
     public model: typeof BaseModel
   ) { }
 
-  async findById(id: string, throwError: boolean = false) {
+  async findById(id: string, throwError = true): Promise<T | null> {
     const resource = await this.model.findOne({
       where: { id }
     });
     if (!resource && throwError) throw new ErrorResourceNotFound(this.model.name, id);
-    return resource as T | null;
+    // @ts-ignore
+    return resource;
   }
 
   async findAll({ }: FindAllArgs) {

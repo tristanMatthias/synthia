@@ -14,6 +14,3 @@ const CONFIGS: { [env in Env]: API_CONFIG } = {
 };
 
 export const CONFIG = CONFIGS[process.env.NODE_ENV as Env || Env.development];
-
-
-console.log(CONFIG);
