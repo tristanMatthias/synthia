@@ -7,6 +7,7 @@ import { iconFilterSmall } from '../../../images/icons/filterSmall';
 import { iconWaveSmall } from '../../../images/icons/waveSmall';
 import { SElement } from '../../../types';
 import styles from './side-menu.styles';
+import { Toaster } from '../../ui/Toaster/Toaster';
 
 
 interface SideMenuItemBase {
@@ -28,7 +29,7 @@ export class SideMenu extends LitElement {
     return [styles]
   }
 
-  private _toaster = document.querySelector(SElement.toaster)!;
+  private _toaster: Toaster;
   private _lastNotified = Date.now();
 
   constructor() {
@@ -46,14 +47,19 @@ export class SideMenu extends LitElement {
 
   get nodes(): SideMenuItemNode[] {
     return [
-      {icon: iconWaveSmall, text: 'Wave', type: SElement.wave},
-      {icon: iconFilterSmall, text: 'Filter', type: SElement.filter},
-      {icon: iconEffectDelay, text: 'Delay effect', type: SElement.delay},
-      {icon: iconEffectReverb, text: 'Reverb effect', type: SElement.reverb},
-      {icon: iconEffectPan, text: 'Pan effect', type: SElement.pan}
+      { icon: iconWaveSmall, text: 'Wave', type: SElement.wave },
+      { icon: iconFilterSmall, text: 'Filter', type: SElement.filter },
+      { icon: iconEffectDelay, text: 'Delay effect', type: SElement.delay },
+      { icon: iconEffectReverb, text: 'Reverb effect', type: SElement.reverb },
+      { icon: iconEffectPan, text: 'Pan effect', type: SElement.pan }
     ]
   }
 
+
+  connectedCallback() {
+    super.connectedCallback();
+    this._toaster = document.querySelector(SElement.toaster)!;
+  }
 
   render() {
     return html`
@@ -70,7 +76,7 @@ export class SideMenu extends LitElement {
             >${n.icon}</div>
             <span>${n.text}</span>
           </div>`
-      )}
+    )}
     </div>`;
   }
 
