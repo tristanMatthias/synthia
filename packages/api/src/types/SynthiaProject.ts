@@ -1,7 +1,5 @@
-export interface SynthiaProject {
+export interface SynthiaProject extends SynthiaProjectMetadata {
   id: string;
-  meta: SynthiaProjectMetadata
-
   resources: SynthiaProjectResources
 }
 
@@ -18,9 +16,8 @@ export interface SynthiaProjectMetadata {
 }
 
 
-export interface SynthiaProjectResourceSynth {
+export interface SynthiaProjectResourceSynth extends SynthiaProjectMetadata {
   id: string;
-  meta: SynthiaProjectMetadata;
   nodes: SynthiaProjectSynthNode[];
 }
 

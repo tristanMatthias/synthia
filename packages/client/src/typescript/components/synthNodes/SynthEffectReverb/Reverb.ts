@@ -1,13 +1,14 @@
+import { SynthiaProjectSynthNodeReverb } from '@synthia/api';
+
 import { ReverbEffect } from '../../../audioNodes/Reverb';
 import { iconEffectReverb } from '../../../images/icons/effectReverb';
-import { SynthiaFileSynthNodeReverb } from '../../../lib/File/file.type';
 import { SElement } from '../../../types';
 import { BaseEffectClass, baseEffectMix } from '../SynthBaseEffect/BaseEffect';
 import { ReverbSidebar } from './ReverbSidebar';
 
 export * from './ReverbSidebar';
 
-export class Reverb extends BaseEffectClass<ReverbSidebar, SynthiaFileSynthNodeReverb> {
+export class Reverb extends BaseEffectClass<ReverbSidebar, SynthiaProjectSynthNodeReverb> {
 
   protected _updateValues() {
     const m = this.model!;

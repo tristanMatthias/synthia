@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "API for Synthia",
   "main": "index.js",
+  "typings": "dist/index.d.ts",
   "repository": "https://github.com/tristanMatthias/synthia",
   "author": "Tristan Matthias <hello@tristanmatthias.com>",
   "private": true,

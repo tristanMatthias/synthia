@@ -1,13 +1,14 @@
+import { SynthiaProjectSynthNodeDelay } from '@synthia/api';
+
 import { SynthiaDelay } from '../../../audioNodes/Delay';
 import { iconEffectDelay } from '../../../images/icons/effectDelay';
-import { SynthiaFileSynthNodeDelay } from '../../../lib/File/file.type';
 import { SElement } from '../../../types';
 import { BaseEffectClass, baseEffectMix } from '../SynthBaseEffect/BaseEffect';
 import { DelaySidebar } from './DelaySidebar';
 
 export * from './DelaySidebar';
 
-export class Delay extends BaseEffectClass<DelaySidebar, SynthiaFileSynthNodeDelay> {
+export class Delay extends BaseEffectClass<DelaySidebar, SynthiaProjectSynthNodeDelay> {
 
   delay: SynthiaDelay = new SynthiaDelay(this._ctx);
   multipleConnections = false;

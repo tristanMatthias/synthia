@@ -11,7 +11,6 @@ import { iconFilterLowShelf } from '../../../images/icons/filterLowShelf';
 import { iconFilterNotch } from '../../../images/icons/filterNotch';
 import { iconFilterPeaking } from '../../../images/icons/filterPeaking';
 import { iconSettings } from '../../../images/icons/settings';
-import { SynthiaFileSynthNodeFilter } from '../../../lib/File/file.type';
 import { ConnectableEvents, ConnectableMixin } from '../../../lib/mixins/Connectable/Connectable';
 import { DeletableMixin } from '../../../lib/mixins/Deletable/Deletable';
 import { DraggableMixin } from '../../../lib/mixins/Draggable/Draggable';
@@ -28,6 +27,7 @@ import styles from './filter.styles';
 import { FilterSidebar } from './FilterSidebar/FilterSidebar';
 import { pxToRem } from '../../../lib/pxToRem';
 import { SynthPageEvents } from '../../pages/synth/synth.page';
+import { SynthiaProjectSynthNodeFilter } from '@synthia/api';
 
 
 const icons = {
@@ -40,7 +40,7 @@ const icons = {
   notch: iconFilterNotch,
   peaking: iconFilterPeaking,
 }
-export class Filter extends BaseNode<SynthiaFileSynthNodeFilter> {
+export class Filter extends BaseNode<SynthiaProjectSynthNodeFilter> {
 
   static get styles() {
     return [styles]

@@ -1,14 +1,15 @@
+import { SynthiaProjectSynthNodePan } from '@synthia/api';
+
 import { iconEffectPan } from '../../../images/icons/effectPan';
-import { SynthiaFileSynthNodePan } from '../../../lib/File/file.type';
+import { pxToRem } from '../../../lib/pxToRem';
 import { SElement } from '../../../types';
+import { SynthPageEvents } from '../../pages/synth/synth.page';
 import { BaseEffectClass, baseEffectMix } from '../SynthBaseEffect/BaseEffect';
 import { PanSidebar } from './PanSidebar';
-import { pxToRem } from '../../../lib/pxToRem';
-import { SynthPageEvents } from '../../pages/synth/synth.page';
 
 export * from './PanSidebar';
 
-export class Pan extends BaseEffectClass<PanSidebar, SynthiaFileSynthNodePan> {
+export class Pan extends BaseEffectClass<PanSidebar, SynthiaProjectSynthNodePan> {
 
   panner = this._ctx.createStereoPanner();
   multipleConnections = false;

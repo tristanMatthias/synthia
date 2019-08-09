@@ -1,9 +1,9 @@
 import { EventObject } from '../EventObject/EventObject';
 import { defaultProject } from './defaultProject';
-import { SynthiaFile } from './file.type';
+import { SynthiaProject } from '@synthia/api';
 
 interface FileServiceEvents {
-  loaded: SynthiaFile;
+  loaded: SynthiaProject;
 }
 
 export class FileService extends EventObject<FileServiceEvents> {
@@ -11,11 +11,11 @@ export class FileService extends EventObject<FileServiceEvents> {
 
   private _fileReader = new FileReader();
 
-  private _file: SynthiaFile;
-  public get file(): SynthiaFile {
+  private _file: SynthiaProject;
+  public get file(): SynthiaProject {
     return this._file;
   }
-  public set file(v: SynthiaFile) {
+  public set file(v: SynthiaProject) {
     this._file = v;
     if (v) this.emit('loaded', v);
   }
@@ -32,9 +32,9 @@ export class FileService extends EventObject<FileServiceEvents> {
   }
 
 
-  async fromJSON(json: string | SynthiaFile) {
+  async fromJSON(json: string | SynthiaProject) {
     if (typeof json === 'string') this.file = JSON.parse(json);
-    this.file = json as SynthiaFile;
+    this.file = json as SynthiaProject;
   }
 
   async load(url: string) {
@@ -62,7 +62,7 @@ export class FileService extends EventObject<FileServiceEvents> {
     if (!this._file) return false;
 
     const a = document.createElement('a');
-    a.download = `${this._file.meta.name}.synth`;
+    a.download = `${this._file.name}.synth`;
     const data = new Blob([JSON.stringify(this._file)], { type: 'text/plain' });
 
     a.href = window.URL.createObjectURL(data);

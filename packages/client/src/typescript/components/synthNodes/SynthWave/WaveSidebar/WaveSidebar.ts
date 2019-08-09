@@ -1,9 +1,9 @@
 import { customElement, html } from 'lit-element';
 
-import { SynthiaFileSynthNodeWave } from '../../../../lib/File/file.type';
 import { SElement } from '../../../../types';
 import { Sidebar } from '../../../layout/Sidebar/Sidebar';
 import { Wave } from '../Wave';
+import { SynthiaProjectSynthNodeWave } from '@synthia/api';
 
 
 @customElement(SElement.waveSidebar)
@@ -109,7 +109,7 @@ export class WaveSidebar extends Sidebar {
   }
 
 
-  private _updateValue(prop: Exclude<keyof SynthiaFileSynthNodeWave['properties'], 'type'>) {
+  private _updateValue(prop: Exclude<keyof SynthiaProjectSynthNodeWave['properties'], 'type'>) {
     return (e: any) => {
       this.wave!.model!.properties[prop] = parseFloat(e.target.value);
       this.requestUpdate();

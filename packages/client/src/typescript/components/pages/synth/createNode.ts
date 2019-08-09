@@ -1,29 +1,31 @@
-import { SynthiaFileSynthNode, SynthiaFileSynthNodeType } from '../../../lib/File/file.type';
+import { SynthiaProjectSynthNode, SynthiaProjectSynthNodeType } from '@synthia/api/dist/types/index';
+
 import { Connectable } from '../../../lib/mixins/Connectable/Connectable';
 import { Receivable } from '../../../lib/mixins/Receivable/Receivable';
 import { SElement } from '../../../types';
 
 
+
 export const FileNodeTypeToElement = {
-  [SynthiaFileSynthNodeType.oscillator]: SElement.oscillator,
-  [SynthiaFileSynthNodeType.wave]: SElement.wave,
-  [SynthiaFileSynthNodeType.reverb]: SElement.reverb,
-  [SynthiaFileSynthNodeType.delay]: SElement.delay,
-  [SynthiaFileSynthNodeType.filter]: SElement.filter,
-  [SynthiaFileSynthNodeType.pan]: SElement.pan,
+  [SynthiaProjectSynthNodeType.oscillator]: SElement.oscillator,
+  [SynthiaProjectSynthNodeType.wave]: SElement.wave,
+  [SynthiaProjectSynthNodeType.reverb]: SElement.reverb,
+  [SynthiaProjectSynthNodeType.delay]: SElement.delay,
+  [SynthiaProjectSynthNodeType.filter]: SElement.filter,
+  [SynthiaProjectSynthNodeType.pan]: SElement.pan,
 }
 
 export const ElementToFileNodeType = {
-  [SElement.oscillator]: SynthiaFileSynthNodeType.oscillator,
-  [SElement.wave]: SynthiaFileSynthNodeType.wave,
-  [SElement.reverb]: SynthiaFileSynthNodeType.reverb,
-  [SElement.delay]: SynthiaFileSynthNodeType.delay,
-  [SElement.filter]: SynthiaFileSynthNodeType.filter,
-  [SElement.pan]: SynthiaFileSynthNodeType.pan,
+  [SElement.oscillator]: SynthiaProjectSynthNodeType.oscillator,
+  [SElement.wave]: SynthiaProjectSynthNodeType.wave,
+  [SElement.reverb]: SynthiaProjectSynthNodeType.reverb,
+  [SElement.delay]: SynthiaProjectSynthNodeType.delay,
+  [SElement.filter]: SynthiaProjectSynthNodeType.filter,
+  [SElement.pan]: SynthiaProjectSynthNodeType.pan,
 }
 
 
-export const createNode = (node: SynthiaFileSynthNode) => {
+export const createNode = (node: SynthiaProjectSynthNode) => {
   const nodeType = FileNodeTypeToElement[node.type]
   if (!nodeType) throw new Error(`Could not create node of type ${node.type}`);
   let ele = document.createElement(nodeType);
@@ -41,7 +43,7 @@ export const createNode = (node: SynthiaFileSynthNode) => {
   return ele;
 }
 
-export const connectNode = (node: SynthiaFileSynthNode) => {
+export const connectNode = (node: SynthiaProjectSynthNode) => {
   const ele = document.getElementById(node.id) as unknown as Connectable;
 
   // @ts-ignore

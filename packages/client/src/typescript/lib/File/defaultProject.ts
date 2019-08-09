@@ -1,26 +1,22 @@
-import { SynthiaFile, SynthiaFileSynthNodeType } from "./file.type";
+import { SynthiaProject, SynthiaProjectSynthNodeType } from '@synthia/api/dist/types/index';
 
-export const defaultProject: SynthiaFile = {
+export const defaultProject: SynthiaProject = {
   id: "af877d59-4911-494a-b18d-1a8f8e5ba875",
-  meta: {
-    name: "Default project",
-    public: true,
-    creatorId: "synthia",
-    created: new Date(),
-  },
+  name: "Default project",
+  public: true,
+  creatorId: "synthia",
+  createdAt: new Date(),
   resources: {
     synths: [{
       id: "eb2c4d17-f4db-44e4-8f4f-2afc862c3454",
-      meta: {
-        created: new Date(),
-        name: "Simple square",
-        public: true,
-        creatorId: "synthia"
-      },
+      createdAt: new Date(),
+      name: "Simple square",
+      public: true,
+      creatorId: "synthia",
       nodes: [
         {
           id: "625ddab9-d059-45cb-bff3-26f91658249d",
-          type: SynthiaFileSynthNodeType.wave,
+          type: SynthiaProjectSynthNodeType.wave,
           properties: {
             type: "sawtooth",
             attack: 0.2,

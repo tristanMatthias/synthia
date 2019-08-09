@@ -6,7 +6,6 @@ import { iconWave } from '../../../images/icons/wave';
 import { iconWaveSawtooth } from '../../../images/icons/waveSawtooth';
 import { iconWaveSine } from '../../../images/icons/waveSine';
 import { iconWaveSquare } from '../../../images/icons/waveSquare';
-import { SynthiaFileSynthNodeWave } from '../../../lib/File/file.type';
 import { ConnectableEvents, ConnectableMixin } from '../../../lib/mixins/Connectable/Connectable';
 import { DeletableMixin } from '../../../lib/mixins/Deletable/Deletable';
 import { DraggableMixin } from '../../../lib/mixins/Draggable/Draggable';
@@ -20,6 +19,7 @@ import { Keyboard, SynthiaKeyboardEvent } from '../../visualizations/Keyboard/Ke
 import { BaseNode } from '../SynthBaseNode/BaseNode';
 import styles from './wave.styles';
 import { WaveSidebar } from './WaveSidebar/WaveSidebar';
+import { SynthiaProjectSynthNodeWave } from '@synthia/api';
 
 
 const icons = {
@@ -28,7 +28,7 @@ const icons = {
   square: iconWaveSquare,
 }
 
-export class Wave extends BaseNode<SynthiaFileSynthNodeWave> {
+export class Wave extends BaseNode<SynthiaProjectSynthNodeWave> {
 
   static get styles() {
     return [styles]

@@ -1,7 +1,7 @@
+import { SynthiaProject } from '@synthia/api';
 import { customElement, html, LitElement, property } from 'lit-element';
 
 import { ctx } from '../../../lib/AudioContext';
-import { SynthiaFile } from '../../../lib/File/file.type';
 import { FileService } from '../../../lib/File/FileService';
 import { Selectable } from '../../../lib/mixins/Selectable/Selectable';
 import { Model, ModelEvents } from '../../../lib/Model/Model';
@@ -146,7 +146,7 @@ export class PageSynth extends LitElement {
   }
 
 
-  private _generateNodesFromFile(file: SynthiaFile) {
+  private _generateNodesFromFile(file: SynthiaProject) {
     this._canvas!.clear();
 
     this.model.loadNewFile(file);

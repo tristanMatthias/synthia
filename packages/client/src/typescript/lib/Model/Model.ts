@@ -1,10 +1,11 @@
+import { SynthiaProject, SynthiaProjectSynthNode, SynthiaProjectSynthNodeType } from '@synthia/api';
 import { v4 as uuid } from 'uuid';
 
 import { EventObject } from '../EventObject/EventObject';
-import { SynthiaFile, SynthiaFileSynthNode, SynthiaFileSynthNodeType } from '../File/file.type';
 import { defaultSynthNodeProperties } from './defaultSynthNodeProperties';
 import { wrapProxy } from './wrapProxy';
 
+// import { SynthiaProject, SynthiaProjectSynthNode, SynthiaProjectSynthNodeType } from '../File/file.type';
 
 export enum ModelDataObjectType {
   meta = 'meta',
@@ -15,27 +16,27 @@ export enum ModelDataObjectType {
 
 
 export interface ModelEvents {
-  update: SynthiaFile
+  update: SynthiaProject
 }
 
 export class Model extends EventObject<ModelEvents> {
   // @ts-ignore Called from loadNewFile
-  file: SynthiaFile;
+  file: SynthiaProject;
 
-  constructor(file: SynthiaFile) {
+  constructor(file: SynthiaProject) {
     super();
     this.loadNewFile(file);
   }
 
-  loadNewFile(file: SynthiaFile) {
+  loadNewFile(file: SynthiaProject) {
     this.file = wrapProxy(file, () => {
       this.emit('update', file);
     });
   }
 
-  createSynthNode(synthId: string, x: number, y:number, type: SynthiaFileSynthNodeType, props?: any) {
+  createSynthNode(synthId: string, x: number, y: number, type: SynthiaProjectSynthNodeType, props?: any) {
     const properties = props || defaultSynthNodeProperties(type);
-    const node: SynthiaFileSynthNode = {
+    const node: SynthiaProjectSynthNode = {
       id: uuid(),
       type,
       properties,
