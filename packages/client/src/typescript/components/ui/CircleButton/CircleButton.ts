@@ -1,10 +1,10 @@
 import { customElement, html, LitElement } from 'lit-element';
 
 import { SElement } from '../../../types';
-import styles from './button.styles';
+import styles from './circle-button.styles';
 
-@customElement(SElement.button)
-export class Button extends LitElement {
+@customElement(SElement.circleButton)
+export class CircleButton extends LitElement {
   static get styles() {
     return [styles]
   }
@@ -18,6 +18,6 @@ export class Button extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    [SElement.button]: Button;
+    [SElement.circleButton]: CircleButton;
   }
 }

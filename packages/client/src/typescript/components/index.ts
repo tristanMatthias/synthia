@@ -13,7 +13,7 @@ import './layout/Sidebar/Sidebar';
 import './layout/SideMenu/SideMenu';
 
 // -------------------------------------------------------------------------- UI
-import './ui/Button/Button';
+import './ui/CircleButton/CircleButton';
 import './ui/CircleMenu/CircleMenu';
 import './ui/Dial/Dial';
 import './ui/ExpoSlider/ExpoSlider';

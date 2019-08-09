@@ -18,7 +18,7 @@ export enum SElement {
 
   // ------------------------------------------------------------------------ UI
   circleMenu = 'synthia-circle-menu',
-  button = 'synthia-button',
+  circleButton = 'synthia-circle-button',
   slider = 'synthia-slider',
   expoSlider = 'synthia-expo-slider',
   toaster = 'synthia-toaster',

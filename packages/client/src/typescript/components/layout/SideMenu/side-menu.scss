@@ -2,8 +2,8 @@
   --tile-size: 7rem;
   position: fixed;;
   left: var(--margin);
-  top: calc(var(--margin) * 2);
-  bottom: calc(var(--margin) * 2);
+  top: calc(var(--margin) * 7);
+  bottom: calc(var(--margin) * 1);
   width: var(--tile-size);
   border-right: 0.1rem solid var(--color-line);
   display: grid;

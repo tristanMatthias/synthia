@@ -1,6 +1,6 @@
 :host {
   position: fixed;
-  top: calc(1/2 * var(--margin));
+  top: var(--margin);
   left: var(--margin);
   right: var(--margin);
   z-index: 10;
@@ -12,16 +12,16 @@
     align-items: center;
     text-align: right;
     justify-content: flex-end;
-    margin: 0 calc(var(--margin) * 9);
+    // margin: 0 calc(var(--margin) * 1);
   }
 
   &:before, &:after {
     content: '';
     position: absolute;
-    top: 0;
+    bottom: calc(var(--margin) * -1.5);
     border-bottom: 0.2rem solid var(--color-main);
     width: calc(var(--margin) * 5);
-    height: 0.5rem;
+    height: 0.25rem;
     opacity: 0.3;
   }
 
