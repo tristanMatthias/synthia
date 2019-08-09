@@ -1,10 +1,12 @@
-import { LitElement, html, customElement, property } from "lit-element";
+import { customElement, html, LitElement, property } from 'lit-element';
+
+import { API_URL } from '../../../config';
+import { iconFacebook } from '../../../images/icons/facebook';
+import { logo } from '../../../images/icons/logo';
+import { wrapProxy } from '../../../lib/Model/wrapProxy';
+import { AppState, state } from '../../../state/state';
+import { SElement } from '../../../types';
 import styles from './header.styles';
-import { logo } from "../../../images/icons/logo";
-import { SElement } from "../../../types";
-import { API_URL } from "../../../config";
-import { state, AppState } from "../../../state/state";
-import { wrapProxy } from "../../../lib/Model/wrapProxy";
 
 @customElement(SElement.header)
 export class Header extends LitElement {
@@ -21,15 +23,21 @@ export class Header extends LitElement {
     this.user = wrapProxy(state.user, () => {
       this.requestUpdate()
     });
+
   }
 
   render() {
     return html`<div class="wrapper">
-      ${logo}
+      <div class="logo">${logo}</div>
       ${(!this.user.loading && this.user.checked) ?
         this.user.data
           ? this._user
-          : html`<a href="${API_URL}/oauth/facebook"> Login </a>`
+          : html`<synthia-button color="text">
+            <a href="${API_URL}/oauth/facebook">
+              ${iconFacebook}
+              <span>Login</span>
+            </a>
+          </synthia-button>`
         : null
       }
     </div>`;
