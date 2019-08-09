@@ -5,8 +5,6 @@ import { EventObject } from '../EventObject/EventObject';
 import { defaultSynthNodeProperties } from './defaultSynthNodeProperties';
 import { wrapProxy } from './wrapProxy';
 
-// import { SynthiaProject, SynthiaProjectSynthNode, SynthiaProjectSynthNodeType } from '../File/file.type';
-
 export enum ModelDataObjectType {
   meta = 'meta',
   synths = 'synths',

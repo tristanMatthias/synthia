@@ -5,6 +5,13 @@ import { API } from '../../lib/API/API';
 import { wrapProxy } from '../../lib/Model/wrapProxy';
 import { AppState, state } from '../../state/state';
 import { SElement } from '../../types';
+import { FileService } from '../../lib/File/FileService';
+import { Model } from '../../lib/Model/Model';
+import { SynthiaProject } from '@synthia/api';
+
+export enum AppEvents {
+  loadProject = 'loadProject'
+}
 
 @customElement(SElement.app)
 export class App extends LitElement {
@@ -12,6 +19,8 @@ export class App extends LitElement {
     return [css`:host { display: block;}`]
   }
 
+  fileService = new FileService();
+  model: Model;
   user: AppState['user']
 
   constructor() {
@@ -21,10 +30,23 @@ export class App extends LitElement {
     });
     if (this.user.token) this._updateMe();
     else this.user.checked = true;
+
+    this.fileService.on('loaded', this.loadProject.bind(this));
   }
 
   render() {
     return html`<slot></slot>`;
+  }
+
+  firstUpdated() {
+    this.fileService.loadDefault();
+  }
+
+  loadProject(file: SynthiaProject) {
+    this.model = new Model(file);
+    this.dispatchEvent(new CustomEvent(AppEvents.loadProject, {
+      detail: {file, mode: this.model}
+    }))
   }
 
   logout() {
@@ -32,6 +54,7 @@ export class App extends LitElement {
     this.user.data = null;
     localStorage.removeItem('token');
   }
+
 
   private async _updateMe() {
     state.user.loading = true;

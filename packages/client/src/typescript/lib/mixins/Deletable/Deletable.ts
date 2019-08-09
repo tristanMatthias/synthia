@@ -21,9 +21,9 @@ export const DeletableMixin = (superclass: new () => LitElement) =>
 
     disconnectedCallback() {
       super.disconnectedCallback();
+
       // Remove the synth node on deleting the component
-      const synth = this._synth.model.file.resources.synths.find(s => s.id === this._synth.synthId)!;
-      synth.nodes = synth.nodes.filter(n => n.id === this.id);
+      this._synth.removeNode(this);
     }
 
 

@@ -2,15 +2,12 @@ import { html, LitElement } from 'lit-element';
 
 import { DraggableMixin, InitialPosition } from '../../../lib/mixins/Draggable/Draggable';
 import { mix } from '../../../lib/mixins/mix';
-import { Model } from '../../../lib/Model/Model';
 import { SElement } from '../../../types';
 import { ElementToFileNodeType } from '../../pages/synth/createNode';
 import styles from './canvas.styles';
 
 
 export class Canvas extends LitElement {
-  model?: Model
-  synthId?: string;
 
   _initialPosition: InitialPosition;
 
@@ -48,7 +45,7 @@ export class Canvas extends LitElement {
   }
 
   private _handleDrop(e: DragEvent) {
-    if (!this.model || !this.synthId) return false;
+    if (!this._synth.model || !this._synth.synthId) return false;
 
     let { x, y, width, height } = this.getBoundingClientRect() as DOMRect;
 
@@ -58,7 +55,7 @@ export class Canvas extends LitElement {
     const type = e.dataTransfer!.getData('type')! as keyof typeof ElementToFileNodeType;
 
     const object = document.createElement(type);
-    const model = this.model.createSynthNode(this.synthId, xPerc, yPerc, ElementToFileNodeType[type]);
+    const model = this._synth.model.createSynthNode(this._synth.synthId, xPerc, yPerc, ElementToFileNodeType[type]);
     // @ts-ignore
     object.model = model;
     object.id = model!.id;

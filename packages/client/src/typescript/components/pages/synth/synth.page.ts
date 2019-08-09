@@ -1,16 +1,16 @@
-import { SynthiaProject } from '@synthia/api';
 import { customElement, html, LitElement, property } from 'lit-element';
 
 import { ctx } from '../../../lib/AudioContext';
-import { FileService } from '../../../lib/File/FileService';
 import { Selectable } from '../../../lib/mixins/Selectable/Selectable';
-import { Model, ModelEvents } from '../../../lib/Model/Model';
+import { Model } from '../../../lib/Model/Model';
 import { remToPx } from '../../../lib/pxToRem';
 import { Storage, StorageKey } from '../../../lib/Storage';
 import { SElement } from '../../../types';
+import { AppEvents } from '../../App/App';
 import { Canvas } from '../../layout/Canvas/Canvas';
 import { connectNode, createNode } from './createNode';
 import styles from './synth-page.styles';
+
 
 export enum SynthPageEvents {
   connecting = 'connecting',
@@ -34,15 +34,16 @@ export class PageSynth extends LitElement {
   @property()
   isDragging: boolean = false;
 
+  private readonly _app = document.querySelector(SElement.app)!;
   private readonly _toaster = document.querySelector(SElement.toaster)!;
   private _canvas?: Canvas;
+  private _clearing = false;
   // Redraw all elements on change
   private _globalFontSize = parseInt(getComputedStyle(document.documentElement).fontSize || '10px')
 
 
-  fileService = new FileService();
-  model: Model;
-  synthId: string;
+  synthId?: string;
+  model?: Model;
 
 
 
@@ -64,24 +65,21 @@ export class PageSynth extends LitElement {
 
   constructor() {
     super();
-    this.fileService.on('loaded', this._generateNodesFromFile.bind(this));
-    this.model = new Model(this.fileService.file);
-    this.model.on('update', this._handleModelUpdate);
     // TODO: Dynamic synth selection
-    this.synthId = this.model.file.resources.synths[0].id;
     this.input.connect(this.context.destination);
   }
 
   connectedCallback() {
     super.connectedCallback();
     this._canvas = document.createElement(SElement.canvas);
-    this._canvas.model = this.model;
-    this._canvas.synthId = this.synthId;
 
     const root = document.createElement(SElement.root);
     root.id = 'root';
     this._canvas.appendChild(root);
     this.prepend(this._canvas);
+
+    this._app.addEventListener(AppEvents.loadProject, this._loadProject.bind(this));
+    if (this._app.model.file) this._loadProject();
 
     window.addEventListener('resize', () => {
       const newFS = parseInt(getComputedStyle(document.documentElement).fontSize || '10px');
@@ -90,10 +88,11 @@ export class PageSynth extends LitElement {
         this.dispatchEvent(new CustomEvent(SynthPageEvents.redraw));
         this.requestUpdate()
       }
-    })
+    });
   }
 
-  render() { return html`
+  render() {
+    return html`
     <slot></slot>
     <div class="corners">
       <svg xmlns="http://www.w3.org/2000/svg" width="${remToPx(7)}" height="${remToPx(4)}" viewbox="0 0 70 40" class="corner-top-left">
@@ -137,32 +136,43 @@ export class PageSynth extends LitElement {
     }
   }
 
+  removeNode(node: HTMLElement) {
+    if (this._clearing || !this.model || !this.synthId) return false;
+    const synth = this.model.file.resources.synths.find(s => s.id === this.synthId)!;
+    synth.nodes = synth.nodes.filter(n => n.id !== node.id);
+    return true;
+  }
+
   firstUpdated() {
     if (!Storage.get(StorageKey.notifiedIntro)) {
       this._toaster.info('Welcome to Synthia! Find your sound by dragging a node onto the canvas');
       Storage.set(StorageKey.notifiedIntro, true)
     }
-    this._generateNodesFromFile(this.fileService.file);
   }
 
+  private async _loadProject() {
+    const model = this._app.model;
+    this.model = model;
+    await this._generateNodesFromFile();
+  }
 
-  private _generateNodesFromFile(file: SynthiaProject) {
+  private _generateNodesFromFile() {
+    if (!this.model) return false;
+    this._clearing = true;
     this._canvas!.clear();
-
-    this.model.loadNewFile(file);
+    this._clearing = false;
 
     // TODO: Select multiple synths
     const synth = this.model.file.resources.synths[0];
+    this.synthId = synth.id;
     const nodes = synth.nodes;
+
     // @ts-ignore
     nodes.forEach(n => this._canvas.appendChild(createNode(n)))
     nodes.forEach(connectNode);
     this.isConnecting = false;
-  }
 
-
-  private _handleModelUpdate(_e: ModelEvents['update']) {
-    // console.log(e);
+    return true;
   }
 }
 

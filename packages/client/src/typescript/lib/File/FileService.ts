@@ -17,6 +17,7 @@ export class FileService extends EventObject<FileServiceEvents> {
   }
   public set file(v: SynthiaProject) {
     this._file = v;
+
     if (v) this.emit('loaded', v);
   }
 
@@ -27,14 +28,16 @@ export class FileService extends EventObject<FileServiceEvents> {
       // @ts-ignore
       this.file = JSON.parse(file.target.result);
     });
-
-    this._file = defaultProject;
   }
 
 
   async fromJSON(json: string | SynthiaProject) {
     if (typeof json === 'string') this.file = JSON.parse(json);
     this.file = json as SynthiaProject;
+  }
+
+  async loadDefault() {
+    this.file = defaultProject;
   }
 
   async load(url: string) {
