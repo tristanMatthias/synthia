@@ -1,7 +1,8 @@
-import { API_URL } from "../../config";
+import { ECreateProject, ECreateSynth, EOauthCallbackInput, EProject, ETokenResult, EUser } from '@synthia/api';
+import { API_URL } from '../../config';
+import { mutations } from './mutations';
+import { queries } from './queries';
 
-import {queries} from './queries';
-import {mutations} from './mutations';
 
 export const API = new class {
   private _url = `${API_URL}/graphql`;
@@ -9,6 +10,28 @@ export const API = new class {
   private _queries = queries;
   private _token: string | null = localStorage.getItem('token');
 
+
+  // --------------------------------------------------------------------- OAuth
+  async oauthCallback(details: EOauthCallbackInput) {
+    return this._request<ETokenResult>('mutation', 'oauthCallback', {details})
+  }
+
+  // --------------------------------------------------------------------- OAuth
+  async me() {
+    return this._request<EUser>('query', 'me')
+  }
+
+  // ------------------------------------------------------------------ Projects
+  async createProject(project: ECreateProject) {
+    return this._request<EProject>('mutation', 'createProject', {project})
+  }
+  async createSynth(synth: ECreateSynth) {
+    return this._request<EProject>('mutation', 'createSynth', {synth})
+  }
+
+
+
+  // ----------------------------------------------------------- Private methods
   private get _headers() {
     const headers: HeadersInit = {
       'content-type': 'application/json'
@@ -28,10 +51,10 @@ export const API = new class {
    * @param name Name of mutation/query
    * @param variables Query name
    */
-  async request<Return>(
+  private async _request<Return>(
     type: 'mutation' | 'query',
     name: (keyof typeof queries) | (keyof typeof mutations),
-    variables?: object,
+    variables?: any,
     headers?: object
   ): Promise<Return> {
     // Lookup the query

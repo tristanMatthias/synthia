@@ -5,6 +5,7 @@ import { mix } from '../../../lib/mixins/mix';
 import { SElement } from '../../../types';
 import { ElementToFileNodeType } from '../../pages/synth/createNode';
 import styles from './canvas.styles';
+import { model } from '../../../lib/Model/Model';
 
 
 export class Canvas extends LitElement {
@@ -45,7 +46,7 @@ export class Canvas extends LitElement {
   }
 
   private _handleDrop(e: DragEvent) {
-    if (!this._synth.model || !this._synth.synthId) return false;
+    if (!model.file || !this._synth.synthId) return false;
 
     let { x, y, width, height } = this.getBoundingClientRect() as DOMRect;
 
@@ -55,10 +56,10 @@ export class Canvas extends LitElement {
     const type = e.dataTransfer!.getData('type')! as keyof typeof ElementToFileNodeType;
 
     const object = document.createElement(type);
-    const model = this._synth.model.createSynthNode(this._synth.synthId, xPerc, yPerc, ElementToFileNodeType[type]);
+    const oModel = model.createSynthNode(this._synth.synthId, xPerc, yPerc, ElementToFileNodeType[type]);
     // @ts-ignore
-    object.model = model;
-    object.id = model!.id;
+    object.model = oModel;
+    object.id = oModel!.id;
 
     // @ts-ignore
     object.x = xPerc;

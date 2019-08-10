@@ -1,4 +1,4 @@
-import { TokenResult } from '@synthia/api/dist/gql/resolvers/OAuthResolver';
+import { ETokenResult } from '@synthia/api';
 import { customElement, html, property } from 'lit-element';
 
 import { API } from '../../../lib/API/API';
@@ -31,9 +31,9 @@ export class PageOAuth extends Page {
   async firstUpdated() {
     if (!this.code) return;
 
-    let data: TokenResult;
+    let data: ETokenResult;
     try {
-      data = await API.request<TokenResult>('query', 'oauthCallback', {code: this.code, provider: this.provider})
+      data = await API.oauthCallback({code: this.code, provider: this.provider!})
     } catch (e) {
       this.error = e.message;
       return false;

@@ -1,4 +1,4 @@
-import { Arg, Ctx, Field, ObjectType, Query, Resolver } from 'type-graphql';
+import { Arg, Ctx, Query, Resolver } from 'type-graphql';
 
 import { Context } from '../../lib/context';
 import { OAuthProvider } from '../../lib/OAuthProvider';
@@ -6,23 +6,15 @@ import { generateToken } from '../../lib/tokens';
 import { facebook } from '../../server/middleware/oauth/facebook';
 import { google } from '../../server/middleware/oauth/google';
 import { UserService } from '../../services/UserService';
-
-@ObjectType()
-export class TokenResult {
-  @Field()
-  accessToken: string
-  @Field()
-  expiry: number
-}
+import { EOauthCallbackInput, ETokenResult } from '../entities/OAuthEntity';
 
 @Resolver()
 export class OAuthResolver {
-  @Query(() => TokenResult)
+  @Query(() => ETokenResult)
   async oauthCallback(
-    @Arg('code') code: string,
-    @Arg('provider') providerName: string,
+    @Arg('details') {code, provider: providerName}: EOauthCallbackInput,
     @Ctx() ctx: Context
-  ): Promise<TokenResult> {
+  ): Promise<ETokenResult> {
     let provider: OAuthProvider;
     if (providerName === 'facebook') provider = facebook;
     else if (providerName === 'google') provider = google;

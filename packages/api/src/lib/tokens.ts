@@ -2,8 +2,8 @@ import jwt from 'jsonwebtoken';
 import { CONFIG } from '../config';
 import { User } from '../models/User';
 import { ErrorAuthInvalidToken } from './errors';
-import { TokenResult } from '../gql/resolvers/OAuthResolver';
 import { CreateUser } from '../services/UserService';
+import { ETokenResult } from '../gql/entities/OAuthEntity';
 
 export interface JWTUser extends CreateUser {
   id: string;
@@ -82,7 +82,7 @@ export const verifyToken = async (
 export const generateToken = async (
   fingerprint: string,
   user: User | JWTUser
-): Promise<TokenResult> => {
+): Promise<ETokenResult> => {
   const data: JWTData = {
     fingerprint,
     user: {

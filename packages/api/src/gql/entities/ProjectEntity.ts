@@ -8,13 +8,16 @@ import { ESynth } from './SynthEntity';
 export class EProjectResources {
 
   @Field(() => [ESynth])
-  synths: ESynth[]
+  synths: ESynth[];
 }
 
 @ObjectType()
 export class EProject extends EMetadata {
   @Field()
   id: string;
+
+  @Field(() => EProjectResources)
+  resources: EProjectResources;
 }
 
 

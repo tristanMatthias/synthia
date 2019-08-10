@@ -17,17 +17,8 @@
   display: none;
   border: 0.1rem solid var(--color-line);
   position: absolute;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background: var(--color-line);
-    opacity: 0.2;
-  }
+  background: var(--color-bg-off);
+  border-radius: 0.4rem;
 
   div {
     @include div;

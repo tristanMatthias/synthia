@@ -2,6 +2,7 @@ import { Field, InputType, ObjectType } from 'type-graphql';
 
 import { SynthiaProjectSynthNodeBase } from '../../types/SynthiaProject';
 import { EMetadata, EMetadataInput } from './MetadataEntity';
+import { SynthNodeUnion } from './SynthNodeEntity';
 
 
 @ObjectType()
@@ -9,8 +10,8 @@ export class ESynth extends EMetadata {
   @Field()
   id: string;
 
-  @Field(() => [ESynthNode], {nullable: true})
-  nodes: ESynthNode[]
+  @Field(() => [SynthNodeUnion], {nullable: true})
+  nodes: (typeof SynthNodeUnion)[]
 }
 
 
@@ -51,26 +52,13 @@ export class EPositionInput {
   y: number;
 }
 
-
-@ObjectType()
-export class ESynthNode implements SynthiaProjectSynthNodeBase {
-  @Field()
-  id: string;
-
-  @Field(() => [String])
-  connectedTo: string[];
-
-  @Field(() => [String])
-  receives: string[];
-
-  @Field(() => EPosition)
-  position: EPosition;
-}
-
 @InputType()
 export class ESynthNodeInput implements SynthiaProjectSynthNodeBase {
   @Field()
   id: string;
+
+  @Field()
+  type: string;
 
   @Field(() => [String])
   connectedTo: string[];

@@ -135,7 +135,7 @@ export class Waveform extends LitElement {
       ctx.globalAlpha = 0.2;
     }
 
-    ctx.strokeStyle = this.color || getComputedStyle(document.documentElement).getPropertyValue('--color-text');
+    ctx.strokeStyle = this.color || getComputedStyle(document.documentElement).getPropertyValue('--color-feature');
     ctx.beginPath();
 
     const sliceWidth = width * 1.0 / this._bufferLength;

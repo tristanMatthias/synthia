@@ -42,14 +42,22 @@
   }
 
   .logo {
+    --color: var(--color-text);
     flex-grow: 0;
     margin-right: auto;
     svg {
-      height: 5rem;
+      height: 4rem;
       vertical-align: middle;
       margin-left: -1rem;
       margin-top: -1rem;
     }
+  }
+
+  h1 {
+    font-size: 2rem;
+    flex: 1;
+    text-align: center;
+    font-weight: normal;
   }
 
   synthia-button {

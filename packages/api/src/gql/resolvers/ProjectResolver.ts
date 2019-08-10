@@ -44,13 +44,10 @@ export class ProjectResolver {
   }
 
   @FieldResolver(() => EProjectResources)
-
   async resources(
     @Root() project: Project
-  ): Promise<EProjectResources> {
+  ) {
     const synths = await SynthService.findByProject(project.id)
-    return {
-      synths
-    }
+    return { synths }
   }
 }

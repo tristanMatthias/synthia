@@ -7,6 +7,8 @@ import { wrapProxy } from '../../../lib/Model/wrapProxy';
 import { AppState, state } from '../../../state/state';
 import { SElement } from '../../../types';
 import styles from './header.styles';
+import { model } from '../../../lib/Model/Model';
+import { AppEvents } from '../../App/App';
 
 @customElement(SElement.header)
 export class Header extends LitElement {
@@ -20,15 +22,16 @@ export class Header extends LitElement {
 
   constructor() {
     super();
-    this.user = wrapProxy(state.user, () => {
-      this.requestUpdate()
-    });
-
+    this.user = wrapProxy(state.user, () => this.requestUpdate());
+    this.app.addEventListener(AppEvents.loadProject, () => this.requestUpdate())
   }
 
   render() {
     return html`<div class="wrapper">
       <div class="logo">${logo}</div>
+
+      ${model.file ? html`<h1>${model.file.name}</h1>` : null}
+
       ${(!this.user.loading && this.user.checked) ?
         this.user.data
           ? this._user

@@ -1,5 +1,5 @@
-query oauthCallback($provider: String!, $code: String!){
-    oauthCallback(provider: $provider, code: $code){
+query oauthCallback($details: EOauthCallbackInput!){
+    oauthCallback(details: $details){
         accessToken
         expiry
     }

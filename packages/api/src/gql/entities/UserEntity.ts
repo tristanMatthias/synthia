@@ -4,6 +4,9 @@ import { IsEmail } from 'class-validator';
 @ObjectType()
 export class EUser {
   @Field()
+  id: string;
+
+  @Field()
   firstName: string;
 
   @Field()

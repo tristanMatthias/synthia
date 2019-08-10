@@ -1,6 +1,7 @@
 import { SynthiaProject, SynthiaProjectSynthNode, SynthiaProjectSynthNodeType } from '@synthia/api';
 import { v4 as uuid } from 'uuid';
 
+import { API } from '../API/API';
 import { EventObject } from '../EventObject/EventObject';
 import { defaultSynthNodeProperties } from './defaultSynthNodeProperties';
 import { wrapProxy } from './wrapProxy';
@@ -17,14 +18,8 @@ export interface ModelEvents {
   update: SynthiaProject
 }
 
-export class Model extends EventObject<ModelEvents> {
-  // @ts-ignore Called from loadNewFile
-  file: SynthiaProject;
-
-  constructor(file: SynthiaProject) {
-    super();
-    this.loadNewFile(file);
-  }
+export const model = new class Model extends EventObject<ModelEvents> {
+  file?: SynthiaProject;
 
   loadNewFile(file: SynthiaProject) {
     this.file = wrapProxy(file, () => {
@@ -33,6 +28,7 @@ export class Model extends EventObject<ModelEvents> {
   }
 
   createSynthNode(synthId: string, x: number, y: number, type: SynthiaProjectSynthNodeType, props?: any) {
+    if (!this.file) throw new Error('Not initialized')
     const properties = props || defaultSynthNodeProperties(type);
     const node: SynthiaProjectSynthNode = {
       id: uuid(),
@@ -46,6 +42,8 @@ export class Model extends EventObject<ModelEvents> {
     if (!synth) throw new Error(`Could not find synth with id ${synthId}`);
     synth.nodes.push(node);
 
+    API.createSynth({ ...synth, projectId: this.file.id })
+
     return synth.nodes.slice(-1).pop();
   }
-}
+}()

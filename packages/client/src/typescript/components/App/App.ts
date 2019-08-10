@@ -1,13 +1,12 @@
-import { EUser } from '@synthia/api/dist/gql/entities/UserEntity';
-import { customElement, html, LitElement, css } from 'lit-element';
+import { SynthiaProject } from '@synthia/api';
+import { css, customElement, html, LitElement } from 'lit-element';
 
 import { API } from '../../lib/API/API';
+import { FileService } from '../../lib/File/FileService';
+import { model } from '../../lib/Model/Model';
 import { wrapProxy } from '../../lib/Model/wrapProxy';
 import { AppState, state } from '../../state/state';
 import { SElement } from '../../types';
-import { FileService } from '../../lib/File/FileService';
-import { Model } from '../../lib/Model/Model';
-import { SynthiaProject } from '@synthia/api';
 
 export enum AppEvents {
   loadProject = 'loadProject'
@@ -20,7 +19,7 @@ export class App extends LitElement {
   }
 
   fileService = new FileService();
-  model: Model;
+  model = model;
   user: AppState['user']
 
   constructor() {
@@ -43,7 +42,7 @@ export class App extends LitElement {
   }
 
   loadProject(file: SynthiaProject) {
-    this.model = new Model(file);
+    this.model.loadNewFile(file);
     this.dispatchEvent(new CustomEvent(AppEvents.loadProject, {
       detail: {file, mode: this.model}
     }))
@@ -60,7 +59,7 @@ export class App extends LitElement {
     state.user.loading = true;
 
     try {
-      const me = await API.request<EUser>('query', 'me');
+      const me = await API.me();
       state.user.data = me;
     } catch (e) {}
 

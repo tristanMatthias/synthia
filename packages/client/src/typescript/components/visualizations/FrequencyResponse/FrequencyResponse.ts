@@ -95,7 +95,7 @@ export class FrequencyResponse extends LitElement {
     const gridColor = getComputedStyle(document.documentElement).getPropertyValue('--color-dark');
     const textColor = getComputedStyle(document.documentElement).getPropertyValue('--color-text');
     const highlightColor = getComputedStyle(document.documentElement).getPropertyValue('--color-alt');
-    const midColor = getComputedStyle(document.documentElement).getPropertyValue('--color-feature');
+    const midColor = getComputedStyle(document.documentElement).getPropertyValue('--color-accent');
 
     ctx.fillStyle = bgColor;
     ctx.fillRect(0, 0, this.width, this.height);

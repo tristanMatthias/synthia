@@ -2,7 +2,6 @@ import { customElement, html, LitElement, property } from 'lit-element';
 
 import { ctx } from '../../../lib/AudioContext';
 import { Selectable } from '../../../lib/mixins/Selectable/Selectable';
-import { Model } from '../../../lib/Model/Model';
 import { remToPx } from '../../../lib/pxToRem';
 import { Storage, StorageKey } from '../../../lib/Storage';
 import { SElement } from '../../../types';
@@ -10,6 +9,7 @@ import { AppEvents } from '../../App/App';
 import { Canvas } from '../../layout/Canvas/Canvas';
 import { connectNode, createNode } from './createNode';
 import styles from './synth-page.styles';
+import { model } from '../../../lib/Model/Model';
 
 
 export enum SynthPageEvents {
@@ -43,8 +43,6 @@ export class PageSynth extends LitElement {
 
 
   synthId?: string;
-  model?: Model;
-
 
 
   private _isConnecting: boolean = false;
@@ -137,8 +135,8 @@ export class PageSynth extends LitElement {
   }
 
   removeNode(node: HTMLElement) {
-    if (this._clearing || !this.model || !this.synthId) return false;
-    const synth = this.model.file.resources.synths.find(s => s.id === this.synthId)!;
+    if (this._clearing || !model.file || !this.synthId) return false;
+    const synth = model.file.resources.synths.find(s => s.id === this.synthId)!;
     synth.nodes = synth.nodes.filter(n => n.id !== node.id);
     return true;
   }
@@ -151,19 +149,17 @@ export class PageSynth extends LitElement {
   }
 
   private async _loadProject() {
-    const model = this._app.model;
-    this.model = model;
     await this._generateNodesFromFile();
   }
 
   private _generateNodesFromFile() {
-    if (!this.model) return false;
+    if (!model.file) return false;
     this._clearing = true;
     this._canvas!.clear();
     this._clearing = false;
 
     // TODO: Select multiple synths
-    const synth = this.model.file.resources.synths[0];
+    const synth = model.file.resources.synths[0];
     this.synthId = synth.id;
     const nodes = synth.nodes;
 

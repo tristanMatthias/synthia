@@ -1,9 +1,12 @@
+import { EProject } from '@synthia/api';
+
+import { API } from '../API/API';
 import { EventObject } from '../EventObject/EventObject';
 import { defaultProject } from './defaultProject';
-import { SynthiaProject } from '@synthia/api';
+
 
 interface FileServiceEvents {
-  loaded: SynthiaProject;
+  loaded: EProject;
 }
 
 export class FileService extends EventObject<FileServiceEvents> {
@@ -11,11 +14,11 @@ export class FileService extends EventObject<FileServiceEvents> {
 
   private _fileReader = new FileReader();
 
-  private _file: SynthiaProject;
-  public get file(): SynthiaProject {
+  private _file: EProject;
+  public get file(): EProject {
     return this._file;
   }
-  public set file(v: SynthiaProject) {
+  public set file(v: EProject) {
     this._file = v;
 
     if (v) this.emit('loaded', v);
@@ -31,9 +34,9 @@ export class FileService extends EventObject<FileServiceEvents> {
   }
 
 
-  async fromJSON(json: string | SynthiaProject) {
+  async fromJSON(json: string | EProject) {
     if (typeof json === 'string') this.file = JSON.parse(json);
-    this.file = json as SynthiaProject;
+    this.file = json as EProject;
   }
 
   async loadDefault() {
@@ -43,6 +46,31 @@ export class FileService extends EventObject<FileServiceEvents> {
   async load(url: string) {
     this.file = await fetch(url).then(r => r.json());
   }
+
+  async newProject() {
+    const pj = await API.createProject({
+      name: 'New Synthia project',
+      public: true
+    });
+    this.file = pj;
+  }
+
+  // async create() {
+  //   const project: EProject = JSON.parse(JSON.stringify(this.file));
+  //   project.creatorId = state.user.data!.id;
+  //   delete project.id;
+  //   delete project.createdAt;
+  //   const {resources} = project;
+  //   delete project.resources;
+  //   const pj = await API.request<EProject>('mutation', 'createProject', {project});
+  //   const synths = await Promise.all(
+  //     resources.synths.map(s => API.request<ESynth>(
+  //       'mutation',
+  //       'createSynth',
+  //       {synth: {...s, projectId: pj.id}}
+  //     ))
+  //   );
+  // }
 
 
   async openFile() {
