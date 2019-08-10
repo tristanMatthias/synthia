@@ -20,6 +20,7 @@ import './ui/Dial/Dial';
 import './ui/ExpoSlider/ExpoSlider';
 import './ui/Slider/Slider';
 import './ui/Toaster/Toaster';
+import './ui/FileBar/FileBar';
 import './ui/ContextMenu/ContextMenu';
 
 // ----------------------------------------------------------------------- Synth

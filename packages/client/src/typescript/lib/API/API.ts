@@ -13,7 +13,7 @@ export const API = new class {
 
   // --------------------------------------------------------------------- OAuth
   async oauthCallback(details: EOauthCallbackInput) {
-    return this._request<ETokenResult>('mutation', 'oauthCallback', {details})
+    return this._request<ETokenResult>('query', 'oauthCallback', {details})
   }
 
   // --------------------------------------------------------------------- OAuth

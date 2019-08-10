@@ -1,0 +1,28 @@
+:host {
+  position: relative;
+  display: flex;
+  &, * {
+    box-sizing: border-box;
+  }
+
+  synthia-button {
+    opacity: 0.7;
+    text-transform: none;
+    font-weight: normal;
+    border: 0.1rem solid transparent;
+
+    &:hover {
+      opacity: 1;
+    }
+    &.active {
+      background: var(--color-hover);
+      border: 0.1rem solid var(--color-line);
+      opacity: 1;
+    }
+  }
+
+  synthia-context-menu {
+    top: calc(3rem);
+    min-width: 12rem;
+  }
+}

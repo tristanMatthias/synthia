@@ -9,6 +9,7 @@ import { SElement } from '../../../types';
 import styles from './header.styles';
 import { model } from '../../../lib/Model/Model';
 import { AppEvents } from '../../App/App';
+import { FileBarOptions } from '../../ui/FileBar/FileBar';
 
 @customElement(SElement.header)
 export class Header extends LitElement {
@@ -18,7 +19,24 @@ export class Header extends LitElement {
   app = document.querySelector(SElement.app)!;
 
   @property()
-  private _showContext: boolean = false;
+  private _showUserContext: boolean = false;
+
+  private _fileBarOptions: FileBarOptions = {
+    'File': [
+      {
+        action: () => this.app.fileService.newProject(),
+        text: 'New project'
+      },
+      {
+        action: () => this.app.fileService.openFile(),
+        text: 'Import .synth file'
+      },
+      {
+        action: () => this.app.fileService.download(),
+        text: 'Download'
+      }
+    ]
+  }
 
   constructor() {
     super();
@@ -30,12 +48,20 @@ export class Header extends LitElement {
     return html`<div class="wrapper">
       <div class="logo">${logo}</div>
 
-      ${model.file ? html`<h1>${model.file.name}</h1>` : null}
+      ${model.file
+        ? html`
+          <div class="file">
+            <h1>${model.file.name}</h1>
+            <synthia-file-bar .options=${this._fileBarOptions}></synthia-file-bar>
+          </div>
+
+        ` : null
+      }
 
       ${(!this.user.loading && this.user.checked) ?
         this.user.data
           ? this._user
-          : html`<synthia-button color="text">
+          : html`<synthia-button color="text" class="login">
             <a href="${API_URL}/oauth/facebook">
               ${iconFacebook}
               <span>Login</span>
@@ -50,13 +76,13 @@ export class Header extends LitElement {
     if (!this.user.data) return null;
 
     return html`<div
-      class="user ${this._showContext ? 'active' : ''}"
-      @click=${() => this._showContext = !this._showContext}
+      class="user ${this._showUserContext ? 'active' : ''}"
+      @click=${() => this._showUserContext = !this._showUserContext}
     >
       <img src="${this.user.data.socialPic}">
       <span>${this.user.data.firstName}
     </div>
-    <synthia-context-menu .show=${this._showContext}>
+    <synthia-context-menu .show=${this._showUserContext}>
       <div @click=${this.app.logout}>Logout</div>
     </synthia-context-menu>`
   }

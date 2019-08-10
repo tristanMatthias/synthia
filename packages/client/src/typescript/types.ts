@@ -24,6 +24,7 @@ export enum SElement {
   expoSlider = 'synthia-expo-slider',
   toaster = 'synthia-toaster',
   dial = 'synthia-dial',
+  fileBar = 'synthia-file-bar',
   contextMenu = 'synthia-context-menu',
 
 

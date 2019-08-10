@@ -5,7 +5,7 @@
 
   position: relative;
   display: inline-block;
-  background: var(--button-bg);
+  background-color: var(--button-bg);
   color: var(--button-text);
   border-radius: 0.4rem;
   padding: 0 1rem;
@@ -32,7 +32,6 @@
 
 
 ::slotted(*) {
-  display: inline-block;
   color: var(--button-text);
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -43,17 +42,21 @@
   vertical-align: middle;
 }
 
+::slotted(span),
+::slotted(svg) {
+  display: inline-block;
+}
 
 
-:host-context([disabled]) {
+:host([disabled]) {
   opacity: 0.5;
   pointer-events: none;
 }
 
-:host-context([hollow]) {
+:host([hollow]) {
   --button-text: var(--button-color);
   --button-bg: transparent;
 }
-:host-context([hollow]:hover) {
+:host([hollow]:hover) {
   background: var(--color-hover);
 }
