@@ -1089,6 +1089,13 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
+"@types/graphql-type-json@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@types/graphql-type-json/-/graphql-type-json-0.3.0.tgz#e1f4c94c89238407842a106d2d87b1afb5430ddb"
+  integrity sha512-Qu2dkjikNAQg63w0VoE7/hMZn/hRdfCgXSW84NmuWV3EboRVEVgrtqKBCFdZRY6n3ksd+vaYm9StmRWWuJUIZw==
+  dependencies:
+    "@types/graphql" "*"
+
 "@types/graphql-upload@^8.0.0":
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/@types/graphql-upload/-/graphql-upload-8.0.0.tgz#cf1a464e1ad3d185d6e1d77b5df0ca26057a572c"
@@ -4869,6 +4876,11 @@ graphql-tools@^4.0.0:
     deprecated-decorator "^0.1.6"
     iterall "^1.1.3"
     uuid "^3.1.0"
+
+graphql-type-json@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/graphql-type-json/-/graphql-type-json-0.3.0.tgz#bb32e1b74bf52ebc690f9df12b4067bc061f818a"
+  integrity sha512-lnxg5HiB95yxy+/5cDKtP6pZo0zgntsOmqsjeCBXFGJ4YoMF3+1YaSEKWJntNTu+VsAm3zf6lPxFpp1kxzofLA==
 
 graphql-upload@^8.0.2:
   version "8.0.7"

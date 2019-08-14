@@ -1,31 +1,30 @@
-import { SynthiaProjectSynthNode, SynthiaProjectSynthNodeType } from '@synthia/api/dist/types/index';
-
+import {TSynthiaProjectSynthNode} from '@synthia/api';
 import { Connectable } from '../../../lib/mixins/Connectable/Connectable';
 import { Receivable } from '../../../lib/mixins/Receivable/Receivable';
 import { SElement } from '../../../types';
-
+import { SynthNodeType } from '@synthia/api';
 
 
 export const FileNodeTypeToElement = {
-  [SynthiaProjectSynthNodeType.oscillator]: SElement.oscillator,
-  [SynthiaProjectSynthNodeType.wave]: SElement.wave,
-  [SynthiaProjectSynthNodeType.reverb]: SElement.reverb,
-  [SynthiaProjectSynthNodeType.delay]: SElement.delay,
-  [SynthiaProjectSynthNodeType.filter]: SElement.filter,
-  [SynthiaProjectSynthNodeType.pan]: SElement.pan,
+  ['oscillator']: SElement.oscillator,
+  ['wave']: SElement.wave,
+  ['reverb']: SElement.reverb,
+  ['delay']: SElement.delay,
+  ['filter']: SElement.filter,
+  ['pan']: SElement.pan,
 }
 
-export const ElementToFileNodeType = {
-  [SElement.oscillator]: SynthiaProjectSynthNodeType.oscillator,
-  [SElement.wave]: SynthiaProjectSynthNodeType.wave,
-  [SElement.reverb]: SynthiaProjectSynthNodeType.reverb,
-  [SElement.delay]: SynthiaProjectSynthNodeType.delay,
-  [SElement.filter]: SynthiaProjectSynthNodeType.filter,
-  [SElement.pan]: SynthiaProjectSynthNodeType.pan,
+export const ElementToFileNodeType: Partial<{[key in SElement]: SynthNodeType}> = {
+  [SElement.oscillator]: 'oscillator',
+  [SElement.wave]: 'wave',
+  [SElement.reverb]: 'reverb',
+  [SElement.delay]: 'delay',
+  [SElement.filter]: 'filter',
+  [SElement.pan]: 'pan',
 }
 
 
-export const createNode = (node: SynthiaProjectSynthNode) => {
+export const createNode = (node: TSynthiaProjectSynthNode) => {
   const nodeType = FileNodeTypeToElement[node.type]
   if (!nodeType) throw new Error(`Could not create node of type ${node.type}`);
   let ele = document.createElement(nodeType);
@@ -43,7 +42,7 @@ export const createNode = (node: SynthiaProjectSynthNode) => {
   return ele;
 }
 
-export const connectNode = (node: SynthiaProjectSynthNode) => {
+export const connectNode = (node: TSynthiaProjectSynthNode) => {
   const ele = document.getElementById(node.id) as unknown as Connectable;
 
   // @ts-ignore
@@ -57,5 +56,5 @@ export const connectNode = (node: SynthiaProjectSynthNode) => {
   setTimeout(() => {
     // @ts-ignore
     ele.requestUpdate()
-  },10);
+  }, 10);
 }

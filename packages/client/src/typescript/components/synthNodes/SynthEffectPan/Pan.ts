@@ -1,4 +1,4 @@
-import { SynthiaProjectSynthNodePan } from '@synthia/api';
+import {ESynthiaProjectSynthNodePan} from '@synthia/api';
 
 import { iconEffectPan } from '../../../images/icons/effectPan';
 import { pxToRem } from '../../../lib/pxToRem';
@@ -9,7 +9,7 @@ import { PanSidebar } from './PanSidebar';
 
 export * from './PanSidebar';
 
-export class Pan extends BaseEffectClass<PanSidebar, SynthiaProjectSynthNodePan> {
+export class Pan extends BaseEffectClass<PanSidebar, ESynthiaProjectSynthNodePan> {
 
   panner = this._ctx.createStereoPanner();
   multipleConnections = false;

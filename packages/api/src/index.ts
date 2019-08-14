@@ -6,5 +6,5 @@ export * from './gql/entities/SynthNodeEntity';
 export * from './gql/entities/SynthNodeProperties';
 export * from './gql/entities/UserEntity';
 export * from './server/';
-export * from './types/index';
+
 

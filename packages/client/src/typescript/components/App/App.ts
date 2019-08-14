@@ -1,12 +1,13 @@
-import { SynthiaProject } from '@synthia/api';
+import {EProject} from '@synthia/api';
 import { css, customElement, html, LitElement } from 'lit-element';
-
 import { API } from '../../lib/API/API';
 import { FileService } from '../../lib/File/FileService';
 import { model } from '../../lib/Model/Model';
 import { wrapProxy } from '../../lib/Model/wrapProxy';
 import { AppState, state } from '../../state/state';
 import { SElement } from '../../types';
+import { ModalContainerEvents } from '../ui/Modal/ModalContainers';
+
 
 export enum AppEvents {
   loadProject = 'loadProject'
@@ -15,12 +16,14 @@ export enum AppEvents {
 @customElement(SElement.app)
 export class App extends LitElement {
   static get styles() {
-    return [css`:host { display: block;}`]
+    return [css`:host { display: block; transition: filter 0.3s; }`]
   }
 
   fileService = new FileService();
   model = model;
   user: AppState['user']
+  modal = document.querySelector(SElement.modalContainer)!;
+
 
   constructor() {
     super();
@@ -33,6 +36,16 @@ export class App extends LitElement {
     this.fileService.on('loaded', this.loadProject.bind(this));
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    this.modal.addEventListener(ModalContainerEvents.open, () => {
+      this.style.filter = 'blur(4px)';
+    });
+    this.modal.addEventListener(ModalContainerEvents.close, () => {
+      this.style.filter = null;
+    });
+  }
+
   render() {
     return html`<slot></slot>`;
   }
@@ -41,7 +54,7 @@ export class App extends LitElement {
     this.fileService.loadDefault();
   }
 
-  loadProject(file: SynthiaProject) {
+  loadProject(file: EProject) {
     this.model.loadNewFile(file);
     this.dispatchEvent(new CustomEvent(AppEvents.loadProject, {
       detail: {file, mode: this.model}

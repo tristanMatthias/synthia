@@ -1,4 +1,4 @@
-import { ETokenResult } from '@synthia/api';
+import {ETokenResult} from '@synthia/api';
 import { customElement, html, property } from 'lit-element';
 
 import { API } from '../../../lib/API/API';

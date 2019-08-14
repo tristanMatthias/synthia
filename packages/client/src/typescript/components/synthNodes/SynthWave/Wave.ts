@@ -1,3 +1,4 @@
+import {ESynthiaProjectSynthNodeWave} from '@synthia/api';
 import { html, query } from 'lit-element';
 
 import { SynthiaWave } from '../../../audioNodes/Wave';
@@ -19,7 +20,6 @@ import { Keyboard, SynthiaKeyboardEvent } from '../../visualizations/Keyboard/Ke
 import { BaseNode } from '../SynthBaseNode/BaseNode';
 import styles from './wave.styles';
 import { WaveSidebar } from './WaveSidebar/WaveSidebar';
-import { SynthiaProjectSynthNodeWave } from '@synthia/api';
 
 
 const icons = {
@@ -28,7 +28,7 @@ const icons = {
   square: iconWaveSquare,
 }
 
-export class Wave extends BaseNode<SynthiaProjectSynthNodeWave> {
+export class Wave extends BaseNode<ESynthiaProjectSynthNodeWave> {
 
   static get styles() {
     return [styles]

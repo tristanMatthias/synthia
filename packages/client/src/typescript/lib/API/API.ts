@@ -1,4 +1,14 @@
-import { ECreateProject, ECreateSynth, EOauthCallbackInput, EProject, ETokenResult, EUser } from '@synthia/api';
+import {
+  ECreateProject,
+  ECreateSynth,
+  EOauthCallbackInput,
+  EProject,
+  ESynth,
+  ETokenResult,
+  EUpdateSynth,
+  EUser,
+} from '@synthia/api';
+
 import { API_URL } from '../../config';
 import { mutations } from './mutations';
 import { queries } from './queries';
@@ -13,7 +23,7 @@ export const API = new class {
 
   // --------------------------------------------------------------------- OAuth
   async oauthCallback(details: EOauthCallbackInput) {
-    return this._request<ETokenResult>('query', 'oauthCallback', {details})
+    return this._request<ETokenResult>('query', 'oauthCallback', { details })
   }
 
   // --------------------------------------------------------------------- OAuth
@@ -23,10 +33,13 @@ export const API = new class {
 
   // ------------------------------------------------------------------ Projects
   async createProject(project: ECreateProject) {
-    return this._request<EProject>('mutation', 'createProject', {project})
+    return this._request<EProject>('mutation', 'createProject', { project })
   }
   async createSynth(synth: ECreateSynth) {
-    return this._request<EProject>('mutation', 'createSynth', {synth})
+    return this._request<ESynth>('mutation', 'createSynth', { synth })
+  }
+  async updateSynth(synth: EUpdateSynth) {
+    return this._request<ESynth>('mutation', 'updateSynth', { synth })
   }
 
 

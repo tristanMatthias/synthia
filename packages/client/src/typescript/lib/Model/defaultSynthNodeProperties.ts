@@ -1,15 +1,10 @@
-import {
-  SynthiaProjectSynthNodeDelay,
-  SynthiaProjectSynthNodeFilter,
-  SynthiaProjectSynthNodePan,
-  SynthiaProjectSynthNodeReverb,
-  SynthiaProjectSynthNodeType,
-  SynthiaProjectSynthNodeWave,
-} from '@synthia/api/dist/types/index';
+import { SynthiaProjectSynthNodeProperties, SynthNodeType } from '@synthia/api';
 
-export const defaultSynthNodeProperties = (type: SynthiaProjectSynthNodeType) => {
-  switch (type) {
-    case SynthiaProjectSynthNodeType.wave:
+export const defaultSynthNodeProperties = (
+  type: SynthNodeType
+): SynthiaProjectSynthNodeProperties => {
+  switch (type as SynthNodeType) {
+    case "wave":
       return {
         type: "sine",
         attack: 0.2,
@@ -20,35 +15,35 @@ export const defaultSynthNodeProperties = (type: SynthiaProjectSynthNodeType) =>
         release: 0.2,
         pitch: 0,
         gain: 1
-      } as SynthiaProjectSynthNodeWave['properties']
+      }
 
-    case SynthiaProjectSynthNodeType.filter:
+    case "filter":
       return {
         type: 'lowpass',
         frequency: 320,
         q: 8,
         gain: 0,
-      } as SynthiaProjectSynthNodeFilter['properties']
+      }
 
-    case SynthiaProjectSynthNodeType.delay:
+    case "delay":
       return {
         delayTime: 0.5,
         dryWet: 0.5,
         feedback: 0.7,
-      } as SynthiaProjectSynthNodeDelay['properties']
+      }
 
-    case SynthiaProjectSynthNodeType.reverb:
+    case "reverb":
       return {
         dryWet: 0.5,
         decayTime: 3,
         fadeInTime: 0.1,
         roomSize: 150000
-      } as SynthiaProjectSynthNodeReverb['properties']
+      }
 
-    case SynthiaProjectSynthNodeType.pan:
+    case "pan":
       return {
         pan: 0
-      } as SynthiaProjectSynthNodePan['properties']
+      }
 
     default:
       throw Error(`Unknown synth node type ${type}`);

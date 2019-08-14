@@ -24,7 +24,7 @@ export class Header extends LitElement {
   private _fileBarOptions: FileBarOptions = {
     'File': [
       {
-        action: () => this.app.fileService.newProject(),
+        action: () => this.app.modal.open(SElement.modalCreateProject),
         text: 'New project'
       },
       {

@@ -19,6 +19,14 @@
   font-size: 1.5rem;
   font-weight: bold;
   cursor: pointer;
+  user-select: none;
+
+  synthia-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 
 :host(:hover) {
@@ -59,4 +67,13 @@
 }
 :host([hollow]:hover) {
   background: var(--color-hover);
+}
+
+:host([loading]) {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+:host([loading]) span {
+  opacity: 0;
 }

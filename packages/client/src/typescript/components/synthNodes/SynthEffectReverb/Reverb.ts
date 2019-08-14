@@ -1,5 +1,4 @@
-import { SynthiaProjectSynthNodeReverb } from '@synthia/api';
-
+import {ESynthiaProjectSynthNodeReverb} from '@synthia/api';
 import { ReverbEffect } from '../../../audioNodes/Reverb';
 import { iconEffectReverb } from '../../../images/icons/effectReverb';
 import { SElement } from '../../../types';
@@ -8,7 +7,7 @@ import { ReverbSidebar } from './ReverbSidebar';
 
 export * from './ReverbSidebar';
 
-export class Reverb extends BaseEffectClass<ReverbSidebar, SynthiaProjectSynthNodeReverb> {
+export class Reverb extends BaseEffectClass<ReverbSidebar, ESynthiaProjectSynthNodeReverb> {
 
   protected _updateValues() {
     const m = this.model!;

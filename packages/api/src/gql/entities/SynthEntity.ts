@@ -1,8 +1,9 @@
+import { GraphQLJSONObject } from 'graphql-type-json';
 import { Field, InputType, ObjectType } from 'type-graphql';
 
-import { SynthiaProjectSynthNodeBase } from '../../types/SynthiaProject';
 import { EMetadata, EMetadataInput } from './MetadataEntity';
 import { SynthNodeUnion } from './SynthNodeEntity';
+import { SynthiaProjectSynthNodeProperties } from './SynthNodeProperties';
 
 
 @ObjectType()
@@ -53,7 +54,7 @@ export class EPositionInput {
 }
 
 @InputType()
-export class ESynthNodeInput implements SynthiaProjectSynthNodeBase {
+export class ESynthNodeInput {
   @Field()
   id: string;
 
@@ -68,4 +69,7 @@ export class ESynthNodeInput implements SynthiaProjectSynthNodeBase {
 
   @Field(() => EPositionInput)
   position: EPositionInput;
+
+  @Field(() => GraphQLJSONObject)
+  properties: SynthiaProjectSynthNodeProperties;
 }

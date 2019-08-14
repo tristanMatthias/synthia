@@ -11,6 +11,7 @@
 [ ] Distortion Node
 [ ] Expo dial
 [ ] Fade in and and out visual on waveform
+[ ] Publish to sound cloud (advertising and paid features)
 
 ## Bugs
 [x] Improve slider dragging

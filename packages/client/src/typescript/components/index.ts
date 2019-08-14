@@ -13,6 +13,7 @@ import './layout/Sidebar/Sidebar';
 import './layout/SideMenu/SideMenu';
 
 // -------------------------------------------------------------------------- UI
+import './ui/Loading/Loading';
 import './ui/Button/Button';
 import './ui/CircleButton/CircleButton';
 import './ui/CircleMenu/CircleMenu';
@@ -22,6 +23,10 @@ import './ui/Slider/Slider';
 import './ui/Toaster/Toaster';
 import './ui/FileBar/FileBar';
 import './ui/ContextMenu/ContextMenu';
+import './ui/Modal/ModalContainers';
+import './ui/Modal/Modals';
+import './ui/Form/Form';
+import './ui/Input/Input';
 
 // ----------------------------------------------------------------------- Synth
 import './synthNodes/SynthEffectDelay/Delay';
@@ -38,3 +43,5 @@ import './visualizations/Keyboard/Keyboard';
 import './visualizations/Waveform/Waveform';
 
 
+// ---------------------------------------------------------------------- Modals
+import './modals/CreateProjectModal/CreateProjectModal';

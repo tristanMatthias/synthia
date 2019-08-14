@@ -56,7 +56,7 @@ export class Canvas extends LitElement {
     const type = e.dataTransfer!.getData('type')! as keyof typeof ElementToFileNodeType;
 
     const object = document.createElement(type);
-    const oModel = model.createSynthNode(this._synth.synthId, xPerc, yPerc, ElementToFileNodeType[type]);
+    const oModel = model.createSynthNode(this._synth.synthId, xPerc, yPerc, ElementToFileNodeType[type]!);
     // @ts-ignore
     object.model = oModel;
     object.id = oModel!.id;

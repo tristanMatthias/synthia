@@ -1,6 +1,5 @@
 import { EProject } from '@synthia/api/dist/gql/entities/ProjectEntity';
-import { SynthiaProjectSynthNodeType } from '@synthia/api/dist/types/index';
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
 
 export const defaultProject: EProject = {
   id: uuid(),
@@ -18,7 +17,7 @@ export const defaultProject: EProject = {
       nodes: [
         {
           id: uuid(),
-          type: SynthiaProjectSynthNodeType.wave,
+          type: 'wave',
           properties: {
             type: "sawtooth",
             attack: 0.2,

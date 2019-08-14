@@ -13,11 +13,17 @@ export class Button extends LitElement {
   @property({reflect: true, type: Boolean})
   hollow = false;
 
+  @property({reflect: true, type: Boolean})
+  loading = false;
+
   @property({reflect: true, type: String})
   color = 'alt';
 
   render() {
-    return html`<slot></slot>`;
+    return html`
+      <span><slot></slot></span>
+      ${this.loading ? html`<synthia-loading></synthia-loading>` : null}
+    `;
   }
 
   updated(props: Map<keyof Button, any>) {

@@ -17,9 +17,9 @@ export class EMetadata {
 
 @InputType()
 export class EMetadataInput {
-  @Field()
-  name: string;
+  @Field({nullable: true})
+  name?: string;
 
   @Field({nullable: true})
-  public: boolean;
+  public?: boolean;
 }

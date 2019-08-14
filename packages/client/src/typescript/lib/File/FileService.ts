@@ -1,4 +1,4 @@
-import { EProject } from '@synthia/api';
+import {EProject} from '@synthia/api';
 
 import { API } from '../API/API';
 import { EventObject } from '../EventObject/EventObject';
@@ -47,31 +47,20 @@ export class FileService extends EventObject<FileServiceEvents> {
     this.file = await fetch(url).then(r => r.json());
   }
 
-  async newProject() {
+  async newProject(name = 'New Synthia project') {
     const pj = await API.createProject({
-      name: 'New Synthia project',
+      name,
       public: true
     });
+    const synth = await API.createSynth({
+      name: 'My Synth',
+      projectId: pj.id,
+      public: true,
+      nodes: []
+    });
+    pj.resources.synths.push(synth);
     this.file = pj;
   }
-
-  // async create() {
-  //   const project: EProject = JSON.parse(JSON.stringify(this.file));
-  //   project.creatorId = state.user.data!.id;
-  //   delete project.id;
-  //   delete project.createdAt;
-  //   const {resources} = project;
-  //   delete project.resources;
-  //   const pj = await API.request<EProject>('mutation', 'createProject', {project});
-  //   const synths = await Promise.all(
-  //     resources.synths.map(s => API.request<ESynth>(
-  //       'mutation',
-  //       'createSynth',
-  //       {synth: {...s, projectId: pj.id}}
-  //     ))
-  //   );
-  // }
-
 
   async openFile() {
     const inp = document.createElement('input');

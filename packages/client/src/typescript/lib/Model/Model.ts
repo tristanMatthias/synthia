@@ -1,10 +1,12 @@
-import { SynthiaProject, SynthiaProjectSynthNode, SynthiaProjectSynthNodeType } from '@synthia/api';
+import { EProject, ESynthNodeInput } from '@synthia/api';
+import { SynthNodeType, TSynthiaProjectSynthNode } from '@synthia/api/dist/gql/entities/SynthNodeEntity';
 import { v4 as uuid } from 'uuid';
 
 import { API } from '../API/API';
 import { EventObject } from '../EventObject/EventObject';
 import { defaultSynthNodeProperties } from './defaultSynthNodeProperties';
 import { wrapProxy } from './wrapProxy';
+
 
 export enum ModelDataObjectType {
   meta = 'meta',
@@ -15,22 +17,22 @@ export enum ModelDataObjectType {
 
 
 export interface ModelEvents {
-  update: SynthiaProject
+  update: EProject
 }
 
 export const model = new class Model extends EventObject<ModelEvents> {
-  file?: SynthiaProject;
+  file?: EProject;
 
-  loadNewFile(file: SynthiaProject) {
+  loadNewFile(file: EProject) {
     this.file = wrapProxy(file, () => {
       this.emit('update', file);
     });
   }
 
-  createSynthNode(synthId: string, x: number, y: number, type: SynthiaProjectSynthNodeType, props?: any) {
+  createSynthNode(synthId: string, x: number, y: number, type: SynthNodeType, props?: any) {
     if (!this.file) throw new Error('Not initialized')
     const properties = props || defaultSynthNodeProperties(type);
-    const node: SynthiaProjectSynthNode = {
+    const node: TSynthiaProjectSynthNode = {
       id: uuid(),
       type,
       properties,
@@ -38,12 +40,18 @@ export const model = new class Model extends EventObject<ModelEvents> {
       receives: [],
       connectedTo: [],
     }
-    const synth = this.file.resources.synths.find(s => s.id === synthId);
+
+    let synth = this.file.resources.synths.find(s => s.id === synthId);
     if (!synth) throw new Error(`Could not find synth with id ${synthId}`);
     synth.nodes.push(node);
 
-    API.createSynth({ ...synth, projectId: this.file.id })
 
-    return synth.nodes.slice(-1).pop();
+    API.updateSynth({
+      id: synth.id,
+      nodes: synth.nodes as ESynthNodeInput[]
+    });
+
+
+    return node;
   }
 }()

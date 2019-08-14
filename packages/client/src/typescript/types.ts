@@ -17,6 +17,7 @@ export enum SElement {
 
 
   // ------------------------------------------------------------------------ UI
+  loading = 'synthia-loading',
   button = 'synthia-button',
   circleMenu = 'synthia-circle-menu',
   circleButton = 'synthia-circle-button',
@@ -26,6 +27,11 @@ export enum SElement {
   dial = 'synthia-dial',
   fileBar = 'synthia-file-bar',
   contextMenu = 'synthia-context-menu',
+  modalContainer = 'synthia-modal-container',
+  modal = 'synthia-modal',
+  form = 'synthia-form',
+  input = 'synthia-input',
+
 
 
   // --------------------------------------------------------------------- Synth
@@ -53,5 +59,8 @@ export enum SElement {
   // ----------------------------------------------------------------------- Viz
   frequencyResponse = 'synthia-frequency-response',
   waveform = 'synthia-waveform',
-  keyboard = 'synthia-keyboard'
+  keyboard = 'synthia-keyboard',
+
+  // -------------------------------------------------------------------- Modals
+  modalCreateProject = 'synthia-modal-create-project'
 }

@@ -160,12 +160,14 @@ export class PageSynth extends LitElement {
 
     // TODO: Select multiple synths
     const synth = model.file.resources.synths[0];
-    this.synthId = synth.id;
-    const nodes = synth.nodes;
+    if (synth) {
+      this.synthId = synth.id;
+      const nodes = synth.nodes;
 
-    // @ts-ignore
-    nodes.forEach(n => this._canvas.appendChild(createNode(n)))
-    nodes.forEach(connectNode);
+      // @ts-ignore
+      nodes.forEach(n => this._canvas.appendChild(createNode(n)))
+      nodes.forEach(connectNode);
+    }
     this.isConnecting = false;
 
     return true;

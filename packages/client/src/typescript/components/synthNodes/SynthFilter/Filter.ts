@@ -1,3 +1,4 @@
+import { ESynthiaProjectSynthNodeFilter } from '@synthia/api';
 import { html, query } from 'lit-element';
 
 import { iconConnect } from '../../../images/icons/connect';
@@ -18,16 +19,15 @@ import { HasCircleMenuMixin } from '../../../lib/mixins/HasCircleMenu/HasCircleM
 import { mix } from '../../../lib/mixins/mix';
 import { ReceivableMixin } from '../../../lib/mixins/Receivable/Receivable';
 import { SelectableEvents, SelectableMixin } from '../../../lib/mixins/Selectable/Selectable';
+import { pxToRem } from '../../../lib/pxToRem';
 import { Storage, StorageKey } from '../../../lib/Storage';
 import { SElement } from '../../../types';
 import { SidebarEvents } from '../../layout/Sidebar/Sidebar';
+import { SynthPageEvents } from '../../pages/synth/synth.page';
 import { CircleMenuButton } from '../../ui/CircleMenu/CircleMenu';
 import { BaseNode } from '../SynthBaseNode/BaseNode';
 import styles from './filter.styles';
 import { FilterSidebar } from './FilterSidebar/FilterSidebar';
-import { pxToRem } from '../../../lib/pxToRem';
-import { SynthPageEvents } from '../../pages/synth/synth.page';
-import { SynthiaProjectSynthNodeFilter } from '@synthia/api';
 
 
 const icons = {
@@ -40,7 +40,7 @@ const icons = {
   notch: iconFilterNotch,
   peaking: iconFilterPeaking,
 }
-export class Filter extends BaseNode<SynthiaProjectSynthNodeFilter> {
+export class Filter extends BaseNode<ESynthiaProjectSynthNodeFilter> {
 
   static get styles() {
     return [styles]

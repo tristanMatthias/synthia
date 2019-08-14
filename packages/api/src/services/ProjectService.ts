@@ -1,9 +1,9 @@
+import { EMetadata } from '../gql/entities/MetadataEntity';
 import { ECreateProject } from '../gql/entities/ProjectEntity';
+import { handleSequelizeError } from '../lib/errors';
 import { Project } from '../models/Project';
-import { SynthiaProjectMetadata } from '../types/SynthiaProject';
 import { BaseService } from './BaseService';
 import { UserService } from './UserService';
-import { handleSequelizeError } from '../lib/errors';
 
 export interface UpdateProject extends ECreateProject {
   id: string;
@@ -14,7 +14,7 @@ export interface GetProject {
 
 export const ProjectService = new class extends BaseService<
   Project,
-  SynthiaProjectMetadata,
+  EMetadata,
   UpdateProject,
   GetProject
 > {
