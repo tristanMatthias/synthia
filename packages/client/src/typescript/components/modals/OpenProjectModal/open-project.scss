@@ -1,0 +1,60 @@
+:host {
+  width: calc(100vw - var(--margin) * 8);
+  height: calc(100vh - var(--margin) * 8);
+  display: grid;
+  grid-template-columns: 4fr 32rem;
+  grid-template-rows: calc(var(--modal-header-height) * 1.5) 1fr 16rem;
+
+  header {
+    height: calc(var(--modal-header-height) * 1.5);
+    grid-column: span 2;
+    border-bottom: 0.1rem solid var(--color-line);
+  }
+
+  footer {
+    height: auto;
+    border-top: 0.1rem solid var(--color-line);
+    display: block;
+  }
+
+  main, footer, aside {
+    grid-column: span 1;
+    padding: calc(var(--margin) * 2);
+  }
+
+  aside {
+    background: var(--color-dark);
+    grid-row: span 2;
+    border-left: 0.1rem solid var(--color-line);
+  }
+
+  h4 {
+    font-weight: normal;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    color: var(--color-main);
+    margin: 0;
+  }
+
+  synthia-from-now {
+    display: block;
+    font-size: 1.2rem;
+    color: var(--color-main);
+  }
+
+  .projects {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: calc(var(--margin) * 2);
+
+    a {
+      text-decoration: none;
+      color: var(--color-text);
+
+      &:hover synthia-card {
+        background: var(--color-hover);
+      }
+    }
+  }
+}

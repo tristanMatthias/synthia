@@ -51,7 +51,7 @@ export class Router extends LitElement {
           ele.innerHTML = r.html;
 
           if (r.applyContext !== false) {
-            if (ele.childElementCount !== 1) throw new Error('Can only apply context to html with one root element');
+            if (ele.childElementCount !== 1) console.error('Can only apply context to html with one root element');
             Object.assign(ele.firstChild, ctx.params);
             Object.assign(ele.firstChild, ctx.query);
           }
@@ -76,6 +76,7 @@ export class Router extends LitElement {
       if (this._appendTo) this._appendTo.appendChild(ele);
       else this.appendChild(ele);
     } catch (e) {
+      console.log(e);
 
     }
   }

@@ -19,7 +19,7 @@ const ROUTES: Route[] = [
     html: templateOAuth
   },
   {
-    path: '/',
+    path: '/project/:synthId',
     html: templateSynth
   },
   {

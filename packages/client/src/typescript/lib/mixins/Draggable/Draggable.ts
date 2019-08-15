@@ -1,6 +1,7 @@
 import { LitElement } from 'lit-element';
 
 import { SElement } from '../../../types';
+import { model } from '../../Model/Model';
 
 export interface InitialPosition {
   x: number | string,
@@ -100,6 +101,7 @@ export const DraggableMixin = (superclass: new () => LitElement) =>
       this._dragOffsetPosition = { x: 0, y: 0 };
       window.removeEventListener('mousemove', this._drag);
       window.removeEventListener('mouseup', this._dragEnd);
+      model.save();
     }
 
     private _drag(e: MouseEvent) {

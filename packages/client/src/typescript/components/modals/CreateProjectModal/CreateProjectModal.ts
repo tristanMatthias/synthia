@@ -4,6 +4,7 @@ import { html } from 'lit-html';
 import { SElement } from '../../../types';
 import { Form } from '../../ui/Form/Form';
 import { Modal } from '../../ui/Modal/Modals';
+import { fileService } from '../../../lib/File/FileService';
 
 @customElement(SElement.modalCreateProject)
 export class CustomProjectModal extends Modal {
@@ -55,7 +56,7 @@ export class CustomProjectModal extends Modal {
   async create() {
     this.loading = true;
     this.requestUpdate();
-    await this.app.fileService.newProject(this.form.values.name);
+    await fileService.newProject(this.form.values.name);
     this.close();
   }
 }

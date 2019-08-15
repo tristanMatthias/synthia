@@ -1,7 +1,7 @@
 import {EProject} from '@synthia/api';
 import { css, customElement, html, LitElement } from 'lit-element';
 import { API } from '../../lib/API/API';
-import { FileService } from '../../lib/File/FileService';
+import { fileService } from '../../lib/File/FileService';
 import { model } from '../../lib/Model/Model';
 import { wrapProxy } from '../../lib/Model/wrapProxy';
 import { AppState, state } from '../../state/state';
@@ -19,7 +19,6 @@ export class App extends LitElement {
     return [css`:host { display: block; transition: filter 0.3s; }`]
   }
 
-  fileService = new FileService();
   model = model;
   user: AppState['user']
   modal = document.querySelector(SElement.modalContainer)!;
@@ -33,7 +32,7 @@ export class App extends LitElement {
     if (this.user.token) this._updateMe();
     else this.user.checked = true;
 
-    this.fileService.on('loaded', this.loadProject.bind(this));
+    fileService.on('loaded', this.loadProject.bind(this));
   }
 
   connectedCallback() {
@@ -48,10 +47,6 @@ export class App extends LitElement {
 
   render() {
     return html`<slot></slot>`;
-  }
-
-  firstUpdated() {
-    this.fileService.loadDefault();
   }
 
   loadProject(file: EProject) {

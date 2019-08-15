@@ -40,9 +40,6 @@ class ESynthiaProjectSynthNodeBase {
 
   @Field(() => [String])
   receives: string[];
-
-  @Field(() => EPosition)
-  position: EPosition;
 }
 
 export type TSynthiaProjectSynthNode =
@@ -59,41 +56,53 @@ export class ESynthiaProjectSynthNodeOscillator extends ESynthiaProjectSynthNode
   type: "oscillator";
   @Field(() => ESynthiaProjectSynthNodeOscillatorProperties)
   properties: ESynthiaProjectSynthNodeOscillatorProperties;
+  @Field(() => EPosition)
+  position: EPosition;
 }
 @ObjectType()
 export class ESynthiaProjectSynthNodeWave extends ESynthiaProjectSynthNodeBase {
   @Field(() => SynthNodeTypeEnum)
   type: "wave";
-  @Field(() => ESynthiaProjectSynthNodeOscillatorProperties)
+  @Field(() => ESynthiaProjectSynthNodeWaveProperties)
   properties: ESynthiaProjectSynthNodeWaveProperties;
+  @Field(() => EPosition)
+  position: EPosition;
 }
 @ObjectType()
 export class ESynthiaProjectSynthNodeReverb extends ESynthiaProjectSynthNodeBase {
   @Field(() => SynthNodeTypeEnum)
   type: "reverb";
-  @Field(() => ESynthiaProjectSynthNodeOscillatorProperties)
+  @Field(() => ESynthiaProjectSynthNodeReverbProperties)
   properties: ESynthiaProjectSynthNodeReverbProperties;
+  @Field(() => EPosition)
+  position: EPosition;
 }
 @ObjectType()
 export class ESynthiaProjectSynthNodeDelay extends ESynthiaProjectSynthNodeBase {
   @Field(() => SynthNodeTypeEnum)
   type: "delay";
-  @Field(() => ESynthiaProjectSynthNodeOscillatorProperties)
+  @Field(() => ESynthiaProjectSynthNodeDelayProperties)
   properties: ESynthiaProjectSynthNodeDelayProperties;
+  @Field(() => EPosition)
+  position: EPosition;
 }
 @ObjectType()
 export class ESynthiaProjectSynthNodeFilter extends ESynthiaProjectSynthNodeBase {
   @Field(() => SynthNodeTypeEnum)
   type: "filter";
-  @Field(() => ESynthiaProjectSynthNodeOscillatorProperties)
+  @Field(() => ESynthiaProjectSynthNodeFilterProperties)
   properties: ESynthiaProjectSynthNodeFilterProperties;
+  @Field(() => EPosition)
+  position: EPosition;
 }
 @ObjectType()
 export class ESynthiaProjectSynthNodePan extends ESynthiaProjectSynthNodeBase {
   @Field(() => SynthNodeTypeEnum)
   type: "pan";
-  @Field(() => ESynthiaProjectSynthNodeOscillatorProperties)
+  @Field(() => ESynthiaProjectSynthNodePanProperties)
   properties: ESynthiaProjectSynthNodePanProperties;
+  @Field(() => EPosition)
+  position: EPosition;
 }
 
 export const SynthNodeUnion: TSynthiaProjectSynthNode = createUnionType({

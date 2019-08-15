@@ -11,7 +11,7 @@
     "build": "tsc",
     "start": "node ./dist/server/index",
     "dev": "tsc -w & NODE_ENV=development nodemon ./dist/server/index",
-    "generate-schema": "rimraf schema; ts-node src/lib/generateSchemaFile.ts; gqlg --schemaFilePath dist/schema.gql --destDirPath ./schema --depthLimit 6"
+    "generate-schema": "rimraf schema; ts-node src/lib/generateSchemaFile.ts; gqlg --schemaFilePath dist/schema.gql --destDirPath ./schema --depthLimit 10; cp -r src/custom-queries/* schema"
   },
   "dependencies": {
     "@types/graphql-type-json": "^0.3.0",

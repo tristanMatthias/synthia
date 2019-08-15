@@ -12,7 +12,7 @@ export class ProjectResolver {
 
   @Authorized()
   @Query(() => EProject)
-  async project(@Arg('id') id: string) {
+  async project(@Arg('projectId') id: string) {
     return ProjectService.findById(id);
   }
 

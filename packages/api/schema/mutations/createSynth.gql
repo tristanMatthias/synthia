@@ -11,12 +11,12 @@ mutation createSynth($synth: ECreateSynth!){
                 type
                 connectedTo
                 receives
+                properties{
+                    type
+                }
                 position{
                     x
                     y
-                }
-                properties{
-                    type
                 }
             }
             ... on ESynthiaProjectSynthNodeWave {

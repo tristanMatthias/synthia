@@ -10,6 +10,9 @@ import { Canvas } from '../../layout/Canvas/Canvas';
 import { connectNode, createNode } from './createNode';
 import styles from './synth-page.styles';
 import { model } from '../../../lib/Model/Model';
+import { History } from '../../../lib/History';
+import { Toaster } from '../../ui/Toaster/Toaster';
+import { fileService } from '../../../lib/File/FileService';
 
 
 export enum SynthPageEvents {
@@ -35,7 +38,7 @@ export class PageSynth extends LitElement {
   isDragging: boolean = false;
 
   private readonly _app = document.querySelector(SElement.app)!;
-  private readonly _toaster = document.querySelector(SElement.toaster)!;
+  private _toaster: Toaster;
   private _canvas?: Canvas;
   private _clearing = false;
   // Redraw all elements on change
@@ -56,7 +59,6 @@ export class PageSynth extends LitElement {
       .filter(e => !e.canReceive && !e._connecting)
       .forEach(e => e.style.opacity = v ? '0.2' : '1')
 
-
     this.requestUpdate();
   }
 
@@ -65,28 +67,6 @@ export class PageSynth extends LitElement {
     super();
     // TODO: Dynamic synth selection
     this.input.connect(this.context.destination);
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this._canvas = document.createElement(SElement.canvas);
-
-    const root = document.createElement(SElement.root);
-    root.id = 'root';
-    this._canvas.appendChild(root);
-    this.prepend(this._canvas);
-
-    this._app.addEventListener(AppEvents.loadProject, this._loadProject.bind(this));
-    if (this._app.model.file) this._loadProject();
-
-    window.addEventListener('resize', () => {
-      const newFS = parseInt(getComputedStyle(document.documentElement).fontSize || '10px');
-      if (newFS !== this._globalFontSize) {
-        this._globalFontSize = newFS;
-        this.dispatchEvent(new CustomEvent(SynthPageEvents.redraw));
-        this.requestUpdate()
-      }
-    });
   }
 
   render() {
@@ -141,7 +121,37 @@ export class PageSynth extends LitElement {
     return true;
   }
 
-  firstUpdated() {
+  async firstUpdated() {
+    try {
+      await fileService.load(this.synthId!);
+    } catch (e) {
+      History.replace('/404');
+      this.remove();
+      return;
+    }
+
+    console.log('created');
+
+    this._toaster = document.querySelector(SElement.toaster)!;
+    this._canvas = document.createElement(SElement.canvas);
+
+    const root = document.createElement(SElement.root);
+    root.id = 'root';
+    this._canvas.appendChild(root);
+    this.prepend(this._canvas);
+
+    this._app.addEventListener(AppEvents.loadProject, this._loadProject.bind(this));
+    if (this._app.model.file) this._loadProject();
+
+    window.addEventListener('resize', () => {
+      const newFS = parseInt(getComputedStyle(document.documentElement).fontSize || '10px');
+      if (newFS !== this._globalFontSize) {
+        this._globalFontSize = newFS;
+        this.dispatchEvent(new CustomEvent(SynthPageEvents.redraw));
+        this.requestUpdate()
+      }
+    });
+
     if (!Storage.get(StorageKey.notifiedIntro)) {
       this._toaster.info('Welcome to Synthia! Find your sound by dragging a node onto the canvas');
       Storage.set(StorageKey.notifiedIntro, true)

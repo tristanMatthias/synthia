@@ -10,6 +10,7 @@ import styles from './header.styles';
 import { model } from '../../../lib/Model/Model';
 import { AppEvents } from '../../App/App';
 import { FileBarOptions } from '../../ui/FileBar/FileBar';
+import { fileService } from '../../../lib/File/FileService';
 
 @customElement(SElement.header)
 export class Header extends LitElement {
@@ -24,15 +25,19 @@ export class Header extends LitElement {
   private _fileBarOptions: FileBarOptions = {
     'File': [
       {
+        action: () => this.app.modal.open(SElement.modalOpenProject),
+        text: 'Open project'
+      },
+      {
         action: () => this.app.modal.open(SElement.modalCreateProject),
         text: 'New project'
       },
       {
-        action: () => this.app.fileService.openFile(),
+        action: () => fileService.openFile(),
         text: 'Import .synth file'
       },
       {
-        action: () => this.app.fileService.download(),
+        action: () => fileService.download(),
         text: 'Download'
       }
     ]

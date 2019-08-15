@@ -32,6 +32,12 @@ export const API = new class {
   }
 
   // ------------------------------------------------------------------ Projects
+  async listProjects() {
+    return this._request<EProject[]>('query', 'projects')
+  }
+  async loadProject(projectId: string) {
+    return this._request<EProject>('query', 'project', {projectId})
+  }
   async createProject(project: ECreateProject) {
     return this._request<EProject>('mutation', 'createProject', { project })
   }

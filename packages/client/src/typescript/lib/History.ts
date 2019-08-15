@@ -22,12 +22,16 @@ export const History = new class extends EventObject<HistoryEvent> {
 
   push(path: string) {
     this.history.push(path);
+    this.emit('change', {path: location.pathname})
   }
   replace(path: string) {
     this.history.replace(path);
+    this.emit('change', {path: location.pathname})
   }
 
   _capture(e: MouseEvent) {
+    console.log('capturing');
+
     if (e.metaKey || e.ctrlKey || e.shiftKey) return;
     if (e.defaultPrevented) return;
 
@@ -91,7 +95,7 @@ export const History = new class extends EventObject<HistoryEvent> {
     path = path[0] !== '/' ? '/' + path : path;
 
     // same page
-    const orig = path;
+    // const orig = path;
     const pageBase = window.location.origin;
 
     if (path.indexOf(pageBase) === 0) {
@@ -100,10 +104,10 @@ export const History = new class extends EventObject<HistoryEvent> {
 
     // if (this._hashbang) path = path.replace('#!', '');
 
-    if (pageBase && orig === path) {
-      return;
-    }
 
+    // if (pageBase && orig === path) {
+    //   return;
+    // }
     e.preventDefault();
     this.history.push(path);
   };

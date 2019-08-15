@@ -8,7 +8,7 @@
 
   position: relative;
   z-index: 101;
-  max-height: calc(100vh - 8rem);
+  max-height: calc(100vh - var(--margin) * 8);
   overflow: hidden;
   background-color: var(--color-bg-off);
   border: 0.1rem solid var(--color-line);

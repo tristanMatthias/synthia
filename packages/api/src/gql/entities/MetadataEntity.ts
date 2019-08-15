@@ -22,4 +22,10 @@ export class EMetadataInput {
 
   @Field({nullable: true})
   public?: boolean;
+
+  @Field({nullable: true})
+  creatorId?: string;
+
+  @Field({nullable: true})
+  createdAt?: Date;
 }

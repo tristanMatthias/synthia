@@ -6,7 +6,8 @@ import { API } from '../API/API';
 import { EventObject } from '../EventObject/EventObject';
 import { defaultSynthNodeProperties } from './defaultSynthNodeProperties';
 import { wrapProxy } from './wrapProxy';
-
+import { fileService } from '../File/FileService';
+import debounce from 'lodash.debounce';
 
 export enum ModelDataObjectType {
   meta = 'meta',
@@ -22,10 +23,21 @@ export interface ModelEvents {
 
 export const model = new class Model extends EventObject<ModelEvents> {
   file?: EProject;
+  save: () => Promise<any> | false;
+
+  constructor() {
+    super();
+    this.save = debounce(this._save, 500, {
+      leading: true,
+      trailing: true,
+      maxWait: 1000
+    });
+  }
 
   loadNewFile(file: EProject) {
     this.file = wrapProxy(file, () => {
       this.emit('update', file);
+      this.save();
     });
   }
 
@@ -53,5 +65,10 @@ export const model = new class Model extends EventObject<ModelEvents> {
 
 
     return node;
+  }
+
+  private _save() {
+    if (!this.file) return false;
+    return fileService.save(this.file);
   }
 }()

@@ -6,6 +6,7 @@ import { pxToRem, remToPx } from '../../pxToRem';
 import { DraggableEvents, Position } from '../Draggable/Draggable';
 import { Receivable, ReceivableEvents } from '../Receivable/Receivable';
 import { SynthPageEvents } from '../../../components/pages/synth/synth.page';
+import { model } from '../../Model/Model';
 
 
 export enum ConnectableEvents {
@@ -113,6 +114,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
         this.dispatchEvent(new CustomEvent(ConnectableEvents.newConnection, {
           detail: wf
         }));
+        model.save();
 
         item.addEventListener(DraggableEvents.dragged, this._updateWaveforms);
         item.addEventListener(ReceivableEvents.removed, () => this.disconnectFrom(item))
@@ -132,6 +134,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
       // @ts-ignore
       this.model!.connectedTo = this._connectedTo.map(ele => ele.id).filter(id => id !== item.id);
       this.requestUpdate();
+      model.save();
       return true;
     }
 

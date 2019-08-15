@@ -9,7 +9,7 @@ interface FileServiceEvents {
   loaded: EProject;
 }
 
-export class FileService extends EventObject<FileServiceEvents> {
+export const fileService = new class FileService extends EventObject<FileServiceEvents> {
 
 
   private _fileReader = new FileReader();
@@ -43,8 +43,12 @@ export class FileService extends EventObject<FileServiceEvents> {
     this.file = defaultProject;
   }
 
-  async load(url: string) {
-    this.file = await fetch(url).then(r => r.json());
+  async load(projectId: string) {
+    this.file = await API.loadProject(projectId);
+  }
+
+  async list() {
+    return await API.listProjects();
   }
 
   async newProject(name = 'New Synthia project') {
@@ -91,4 +95,20 @@ export class FileService extends EventObject<FileServiceEvents> {
 
     return true;
   }
-}
+
+
+  async save(file: EProject) {
+    return await Promise.all(file.resources.synths.map(s => {
+      // Clean each synth
+      // @ts-ignore
+      const synth = s.toJSON();
+      delete synth.createdAt;
+      delete synth.creatorId;
+      // @ts-ignore
+      delete synth.creator;
+      // @ts-ignore
+      delete synth.projects;
+      return API.updateSynth(synth)
+    }));
+  }
+}()

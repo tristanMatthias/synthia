@@ -5,7 +5,7 @@ import { Receivable } from '../../../lib/mixins/Receivable/Receivable';
 import { remToPx } from '../../../lib/pxToRem';
 import { SElement } from '../../../types';
 import styles from './waveform.styles';
-import { SynthPageEvents } from '../../pages/synth/synth.page';
+import { SynthPageEvents, PageSynth } from '../../pages/synth/synth.page';
 import { ctx } from '../../../lib/AudioContext';
 
 
@@ -14,7 +14,7 @@ export class Waveform extends LitElement {
     return [styles]
   }
 
-  private _synth = document.querySelector(SElement.synthPage)!;
+  private _synth: PageSynth;
   private _ctx = ctx;
 
   analyser = this._ctx.createAnalyser();
@@ -63,13 +63,13 @@ export class Waveform extends LitElement {
   canvas?: HTMLCanvasElement;
 
 
-  @property({reflect: true})
+  @property({ reflect: true })
   color?: string;
 
-  @property({reflect: true})
+  @property({ reflect: true })
   width: number = 40;
 
-  @property({reflect: true})
+  @property({ reflect: true })
   height: number = 6;
 
   render() {
@@ -77,6 +77,7 @@ export class Waveform extends LitElement {
   }
 
   firstUpdated() {
+    this._synth = document.querySelector(SElement.synthPage)!;
     this._canvasCtx = this.canvas!.getContext('2d')!;
     this._draw();
     this._synth.addEventListener(SynthPageEvents.redraw, () => this.requestUpdate());

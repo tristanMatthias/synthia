@@ -31,6 +31,8 @@ export enum SElement {
   modal = 'synthia-modal',
   form = 'synthia-form',
   input = 'synthia-input',
+  card = 'synthia-card',
+  fromNow = 'synthia-from-now',
 
 
 
@@ -62,5 +64,6 @@ export enum SElement {
   keyboard = 'synthia-keyboard',
 
   // -------------------------------------------------------------------- Modals
-  modalCreateProject = 'synthia-modal-create-project'
+  modalCreateProject = 'synthia-modal-create-project',
+  modalOpenProject = 'synthia-modal-open-project'
 }

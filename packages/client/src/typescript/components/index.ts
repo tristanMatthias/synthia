@@ -27,6 +27,8 @@ import './ui/Modal/ModalContainers';
 import './ui/Modal/Modals';
 import './ui/Form/Form';
 import './ui/Input/Input';
+import './ui/Card/Card';
+import './ui/FromNow/FromNow';
 
 // ----------------------------------------------------------------------- Synth
 import './synthNodes/SynthEffectDelay/Delay';
@@ -45,3 +47,4 @@ import './visualizations/Waveform/Waveform';
 
 // ---------------------------------------------------------------------- Modals
 import './modals/CreateProjectModal/CreateProjectModal';
+import './modals/OpenProjectModal/OpenProjectModal';

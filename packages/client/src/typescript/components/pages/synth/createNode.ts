@@ -25,6 +25,8 @@ export const ElementToFileNodeType: Partial<{[key in SElement]: SynthNodeType}> 
 
 
 export const createNode = (node: TSynthiaProjectSynthNode) => {
+  console.log(node);
+
   const nodeType = FileNodeTypeToElement[node.type]
   if (!nodeType) throw new Error(`Could not create node of type ${node.type}`);
   let ele = document.createElement(nodeType);

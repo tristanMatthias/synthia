@@ -18,12 +18,12 @@ mutation createProject($project: ECreateProject!){
                         type
                         connectedTo
                         receives
+                        properties{
+                            type
+                        }
                         position{
                             x
                             y
-                        }
-                        properties{
-                            type
                         }
                     }
                     ... on ESynthiaProjectSynthNodeWave {
