@@ -33,6 +33,14 @@ export class ProjectResolver {
     return ProjectService.createProject(project, user!.id);;
   }
 
+  @Authorized()
+  @Query(() => EProject, {nullable: true})
+  async mostRecentProject(
+    @Ctx() {user}: Context
+  ): Promise<Project | null> {
+    return ProjectService.mostRecent(user!.id);;
+  }
+
   // ---------------------------------------------------------------------------
   // -------------------------------------------------------------------- Fields
   // ---------------------------------------------------------------------------

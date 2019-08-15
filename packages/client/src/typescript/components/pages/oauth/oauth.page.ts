@@ -42,7 +42,9 @@ export class PageOAuth extends Page {
     API.authenticate(data.accessToken);
     state.user.token = data.accessToken;
 
-    History.history.replace('/');
+    const {id} = await API.mostRecentProject();
+
+    History.history.replace(`/project/${id}`);
 
     return true;
   }

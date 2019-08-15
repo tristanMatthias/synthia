@@ -1,7 +1,7 @@
-import {ESynthiaProjectSynthNodePan} from '@synthia/api';
+import { ESynthiaProjectSynthNodePan } from '@synthia/api';
 
 import { iconEffectPan } from '../../../images/icons/effectPan';
-import { pxToRem, remToPx } from '../../../lib/pxToRem';
+import { remToPx } from '../../../lib/pxToRem';
 import { SElement } from '../../../types';
 import { SynthPageEvents } from '../../pages/synth/synth.page';
 import { BaseEffectClass, baseEffectMix } from '../SynthBaseEffect/BaseEffect';

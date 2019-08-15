@@ -2,7 +2,6 @@ import {EProject} from '@synthia/api';
 
 import { API } from '../API/API';
 import { EventObject } from '../EventObject/EventObject';
-import { defaultProject } from './defaultProject';
 
 
 interface FileServiceEvents {
@@ -37,10 +36,6 @@ export const fileService = new class FileService extends EventObject<FileService
   async fromJSON(json: string | EProject) {
     if (typeof json === 'string') this.file = JSON.parse(json);
     this.file = json as EProject;
-  }
-
-  async loadDefault() {
-    this.file = defaultProject;
   }
 
   async load(projectId: string) {

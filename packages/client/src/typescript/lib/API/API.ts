@@ -32,6 +32,9 @@ export const API = new class {
   }
 
   // ------------------------------------------------------------------ Projects
+  async mostRecentProject() {
+    return this._request<EProject>('query', 'mostRecentProject')
+  }
   async listProjects() {
     return this._request<EProject[]>('query', 'projects')
   }
