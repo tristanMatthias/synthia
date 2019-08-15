@@ -1,0 +1,63 @@
+/* === Space Mono - regular */
+@font-face {
+	font-family: 'Space Mono';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url("../font/SpaceMono-Regular.eot");
+	src: local("Space Mono"),
+		local("SpaceMono-Regular"),
+		url("../font/SpaceMono-Regular.eot") format("embedded-opentype"),
+		url("../font/SpaceMono-Regular.woff2") format("woff2"),
+		url("../font/SpaceMono-Regular.woff") format("woff"),
+		url("../font/SpaceMono-Regular.ttf") format("truetype"),
+		url("../font/SpaceMono-Regular.svg") format("svg");
+}
+
+/* === Space Mono - italic */
+@font-face {
+	font-family: 'Space Mono';
+	font-style: italic;
+	font-weight: 400;
+	font-display: swap;
+	src: url("../font/SpaceMono-Italic.eot");
+	src: local("Space Mono Italic"),
+		local("SpaceMono-Italic"),
+		url("../font/SpaceMono-Italic.eot") format("embedded-opentype"),
+		url("../font/SpaceMono-Italic.woff2") format("woff2"),
+		url("../font/SpaceMono-Italic.woff") format("woff"),
+		url("../font/SpaceMono-Italic.ttf") format("truetype"),
+		url("../font/SpaceMono-Italic.svg") format("svg");
+}
+
+/* === Space Mono - 700 */
+@font-face {
+	font-family: 'Space Mono';
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url("../font/SpaceMono-Bold.eot");
+	src: local("Space Mono Bold"),
+		local("SpaceMono-Bold"),
+		url("../font/SpaceMono-Bold.eot") format("embedded-opentype"),
+		url("../font/SpaceMono-Bold.woff2") format("woff2"),
+		url("../font/SpaceMono-Bold.woff") format("woff"),
+		url("../font/SpaceMono-Bold.ttf") format("truetype"),
+		url("../font/SpaceMono-Bold.svg") format("svg");
+}
+
+/* === Space Mono - 700italic */
+@font-face {
+	font-family: 'Space Mono';
+	font-style: italic;
+	font-weight: 700;
+	font-display: swap;
+	src: url("../font/SpaceMono-BoldItalic.eot");
+	src: local("Space Mono Bold Italic"),
+		local("SpaceMono-BoldItalic"),
+		url("../font/SpaceMono-BoldItalic.eot") format("embedded-opentype"),
+		url("../font/SpaceMono-BoldItalic.woff2") format("woff2"),
+		url("../font/SpaceMono-BoldItalic.woff") format("woff"),
+		url("../font/SpaceMono-BoldItalic.ttf") format("truetype"),
+		url("../font/SpaceMono-BoldItalic.svg") format("svg");
+}

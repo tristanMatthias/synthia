@@ -34,6 +34,10 @@
   <meta property="twitter:image" content="https://synthia.app/social/twitter.png">
 
   <title>Synthia – Find your sound</title>
+
+  <script>
+    const isProd = {{IS_PROD}};
+  </script>
 </head>
 
 <body>
@@ -44,17 +48,21 @@
   </synthia-app>
 
 
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-144389552-1"></script>
   <script>
-    window.dataLayer = window.dataLayer || [];
+    if (isProd) {
+      const script = document.createElement('script');
+      script.async = true;
+      document.appendChild(script);
+      script.src = "https://www.googletagmanager.com/gtag/js?id=UA-144389552-1";
+      window.dataLayer = window.dataLayer || [];
 
-    function gtag() {
-      dataLayer.push(arguments);
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-144389552-1');
     }
-    gtag('js', new Date());
-
-    gtag('config', 'UA-144389552-1');
   </script>
 
 </body>

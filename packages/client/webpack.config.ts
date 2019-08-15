@@ -11,7 +11,6 @@ const ReplacePlugin = require('webpack-plugin-replace');
 
 const CSS = new ExtractText('app.css');
 
-
 const isProd = process.env.NODE_ENV != 'development';
 
 
@@ -36,6 +35,10 @@ const config: Configuration = {
       {test: /\.scss/, loader: CSS.extract(['css-loader', 'sass-loader'])},
       {test: /\.html/, loader: 'html-loader'},
       {test: /\.svg/, loader: 'url-loader'},
+      {test: /font\/.*\.(svg|eot|ttf|woff|woff2)/, loader: 'url-loader', options: {
+        limit: false,
+        outputPath: 'fonts'
+      }},
       {test: /\.gql/, loader: 'raw-loader'}
     ]
   },
@@ -53,7 +56,8 @@ const config: Configuration = {
     ]),
     new ReplacePlugin({
       values: {
-        '{{API_URL}}': isProd ? 'https://api.synthia.app' : 'http://localhost:4000'
+        '{{API_URL}}': isProd ? 'https://api.synthia.app' : 'http://localhost:4000',
+        '{{IS_PROD}}': isProd
       }
     })
   ],
