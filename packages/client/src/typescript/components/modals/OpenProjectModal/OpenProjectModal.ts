@@ -38,6 +38,7 @@ export class OpenProjectModal extends Modal {
             <h4>My projects</h4>
             <div class="projects">
               ${this.projects.map(pj => html`<a
+                title=${pj.name}
                 href=${`/project/${pj.id}`}
                 @click=${() => this.close()}
               ><synthia-card>

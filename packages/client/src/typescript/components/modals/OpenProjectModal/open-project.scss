@@ -52,6 +52,12 @@
       text-decoration: none;
       color: var(--color-text);
 
+      &, synthia-card, * {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+
       &:hover synthia-card {
         background: var(--color-hover);
       }

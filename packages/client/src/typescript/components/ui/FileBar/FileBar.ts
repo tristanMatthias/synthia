@@ -25,7 +25,7 @@ export class FileBar extends LitElement {
     const buttons = Object.keys(this.options).map(k =>
       html`<synthia-button
         hollow="hollow"
-        color='text'
+        color='main'
         class="${this._activeTab === k && this._active ? 'active' : null}"
         @mouseenter=${() => this._activeTab = k}
         @click=${() => this._active = !this._active}

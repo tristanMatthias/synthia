@@ -4,6 +4,7 @@ import { handleSequelizeError } from '../lib/errors';
 import { Project } from '../models/Project';
 import { BaseService } from './BaseService';
 import { UserService } from './UserService';
+import { SynthService } from './SynthService';
 
 export interface UpdateProject extends ECreateProject {
   id: string;
@@ -32,10 +33,18 @@ export const ProjectService = new class extends BaseService<
   }
 
   async createDefault(userId: string) {
-    return await this.createProject({
+    const pj = await this.createProject({
       name: 'My first Synthia project',
       public: true
     }, userId);
+
+    await SynthService.createSynth({
+      name: 'My Synth',
+      projectId: pj.id,
+      public: true
+    }, userId);
+
+    return pj;
   }
 
   async mostRecent(userId: string) {

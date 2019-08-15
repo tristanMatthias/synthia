@@ -1,4 +1,5 @@
 @mixin div {
+  color: var(--color-white);
   transition: all 0.05s;
   font-size: 1.5rem;
   height: 4rem;
