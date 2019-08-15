@@ -19,7 +19,7 @@ import { HasCircleMenuMixin } from '../../../lib/mixins/HasCircleMenu/HasCircleM
 import { mix } from '../../../lib/mixins/mix';
 import { ReceivableMixin } from '../../../lib/mixins/Receivable/Receivable';
 import { SelectableEvents, SelectableMixin } from '../../../lib/mixins/Selectable/Selectable';
-import { pxToRem } from '../../../lib/pxToRem';
+import { remToPx } from '../../../lib/pxToRem';
 import { Storage, StorageKey } from '../../../lib/Storage';
 import { SElement } from '../../../types';
 import { SidebarEvents } from '../../layout/Sidebar/Sidebar';
@@ -100,7 +100,7 @@ export class Filter extends BaseNode<ESynthiaProjectSynthNodeFilter> {
     // @ts-ignore
     const icon = icons[this.model!.properties.type];
     return html`
-      <canvas width="12rem" height="12rem"></canvas>
+      <canvas width="${remToPx(12)}px" height="${remToPx(12)}px"></canvas>
       <div class="background"> ${iconFilter} </div>
       <div class="icon">${icon}</div>
     `;
@@ -151,10 +151,10 @@ export class Filter extends BaseNode<ESynthiaProjectSynthNodeFilter> {
 
 
   private _drawFrequencyArc() {
-    const size = pxToRem(120);
+    const size = remToPx(12);
     const ctx = this.shadowRoot!.querySelector('canvas')!.getContext('2d')!;
     const maxFreq = 24000;
-    const lineWidth = pxToRem(6);
+    const lineWidth = 6;
     let perc = this.model!.properties.frequency / maxFreq;
     perc = Math.log(perc) / Math.log(maxFreq);
     if (perc == -1) perc = -0.999999;

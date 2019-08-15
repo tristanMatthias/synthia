@@ -1,7 +1,7 @@
 import {ESynthiaProjectSynthNodePan} from '@synthia/api';
 
 import { iconEffectPan } from '../../../images/icons/effectPan';
-import { pxToRem } from '../../../lib/pxToRem';
+import { pxToRem, remToPx } from '../../../lib/pxToRem';
 import { SElement } from '../../../types';
 import { SynthPageEvents } from '../../pages/synth/synth.page';
 import { BaseEffectClass, baseEffectMix } from '../SynthBaseEffect/BaseEffect';
@@ -40,9 +40,9 @@ export class Pan extends BaseEffectClass<PanSidebar, ESynthiaProjectSynthNodePan
   }
 
   private _drawFrequencyArc() {
-    const size = pxToRem(120);
+    const size = remToPx(12);
     const ctx = this.shadowRoot!.querySelector('canvas')!.getContext('2d')!;
-    const lineWidth = pxToRem(6);
+    const lineWidth = 6;
     const perc = (this.model!.properties.pan + 1) / 2;
     const offsetDeg = 17; // Creates the curved look
     const start = (180 - offsetDeg) / (180 / Math.PI);
