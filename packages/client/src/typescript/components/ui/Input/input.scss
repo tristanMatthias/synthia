@@ -2,6 +2,8 @@
   --input-padding: 1rem;
   --input-height: 4rem;
   --input-color: var(--color-white);
+  --input-font-size: 1.4rem;
+  --input-font-weight: 400;
   display: block;
   position: relative;
 
@@ -17,7 +19,8 @@
     border-radius: 0.4rem;
     color: var(--input-color);
     font-family: var(--font-family);
-    font-size: 1.4rem;
+    font-size: var(--input-font-size);
+    font-weight: var(--input-font-weight);
     outline: none;
     border: 0.1rem solid var(--color-line);
 

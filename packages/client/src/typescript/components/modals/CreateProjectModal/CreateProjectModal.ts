@@ -5,6 +5,7 @@ import { SElement } from '../../../types';
 import { Form } from '../../ui/Form/Form';
 import { Modal } from '../../ui/Modal/Modals';
 import { fileService } from '../../../lib/File/FileService';
+import { History } from '../../../lib/History';
 
 @customElement(SElement.modalCreateProject)
 export class CustomProjectModal extends Modal {
@@ -56,7 +57,8 @@ export class CustomProjectModal extends Modal {
   async create() {
     this.loading = true;
     this.requestUpdate();
-    await fileService.newProject(this.form.values.name);
+    const pj = await fileService.newProject(this.form.values.name);
+    History.push(`/project/${pj.id}`);
     this.close();
   }
 }

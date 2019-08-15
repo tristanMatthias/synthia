@@ -6,6 +6,7 @@ import {
   ESynth,
   ETokenResult,
   EUpdateSynth,
+  EUpdateProject,
   EUser,
 } from '@synthia/api';
 
@@ -43,6 +44,9 @@ export const API = new class {
   }
   async createProject(project: ECreateProject) {
     return this._request<EProject>('mutation', 'createProject', { project })
+  }
+  async updateProject(project: EUpdateProject) {
+    return this._request<EProject>('mutation', 'updateProject', { project })
   }
   async createSynth(synth: ECreateSynth) {
     return this._request<ESynth>('mutation', 'createSynth', { synth })

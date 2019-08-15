@@ -5,7 +5,7 @@ import { SElement } from '../../../types';
 import styles from './input.styles';
 
 @customElement(SElement.input)
-export class ZenInput extends LitElement {
+export class Input extends LitElement {
   static styles = [styles];
 
   @property({ reflect: true, type: String })
@@ -69,6 +69,6 @@ export class ZenInput extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    [SElement.input]: ZenInput;
+    [SElement.input]: Input;
   }
 }

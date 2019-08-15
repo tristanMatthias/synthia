@@ -59,6 +59,8 @@ export const fileService = new class FileService extends EventObject<FileService
     });
     pj.resources.synths.push(synth);
     this.file = pj;
+
+    return pj;
   }
 
   async openFile() {
@@ -93,6 +95,7 @@ export const fileService = new class FileService extends EventObject<FileService
 
 
   async save(file: EProject) {
+    API.updateProject({ id: file.id, name: file.name })
     return await Promise.all(file.resources.synths.map(s => {
       // Clean each synth
       // @ts-ignore

@@ -29,3 +29,15 @@ export class ECreateProject {
   @Field({nullable: true})
   public?: boolean;
 }
+
+@InputType()
+export class EUpdateProject {
+  @Field()
+  id: string;
+
+  @Field({nullable: true})
+  name: string;
+
+  @Field({nullable: true})
+  public?: boolean;
+}

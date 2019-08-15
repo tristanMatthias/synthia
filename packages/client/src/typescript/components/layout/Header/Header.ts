@@ -12,6 +12,7 @@ import { FileBarOptions } from '../../ui/FileBar/FileBar';
 import { fileService } from '../../../lib/File/FileService';
 import { proxa } from 'proxa';
 
+export * from './ProjectName';
 @customElement(SElement.header)
 export class Header extends LitElement {
   static styles = [styles];
@@ -56,7 +57,8 @@ export class Header extends LitElement {
       ${model.file
         ? html`
           <div class="file">
-            <h1>${model.file.name}</h1>
+            <!-- <h1>${model.file.name}</h1> -->
+            <project-name .value=${model.file.name}></project-name>
             <synthia-file-bar .options=${this._fileBarOptions}></synthia-file-bar>
           </div>
 

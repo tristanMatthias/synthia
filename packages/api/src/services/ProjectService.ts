@@ -1,5 +1,5 @@
 import { EMetadata } from '../gql/entities/MetadataEntity';
-import { ECreateProject } from '../gql/entities/ProjectEntity';
+import { ECreateProject, EUpdateProject } from '../gql/entities/ProjectEntity';
 import { handleSequelizeError } from '../lib/errors';
 import { Project } from '../models/Project';
 import { BaseService } from './BaseService';
@@ -53,6 +53,16 @@ export const ProjectService = new class extends BaseService<
         where: { creatorId: userId },
         order: [['updatedAt', 'DESC']]
       });
+    } catch (e) {
+      throw await handleSequelizeError(e);
+    }
+  }
+
+  async updateProject(project: EUpdateProject) {
+    const pj = await this.findById(project.id);
+
+    try {
+      return await pj!.update({ ...project });
     } catch (e) {
       throw await handleSequelizeError(e);
     }

@@ -60,13 +60,8 @@
     margin-right: auto;
     height: 6rem;
 
-    h1 {
-      font-size: 1.8rem;
-      line-height: 2rem;
-      font-weight: 600;
-      letter-spacing: 0.1rem;
+    project-name {
       flex-basis: 100%;
-      color: var(--color-white);
       margin: 0.25em 1rem;
     }
     // synthia-button {

@@ -125,6 +125,7 @@ export class PageSynth extends LitElement {
     try {
       await fileService.load(this.synthId!);
     } catch (e) {
+      console.log(e);
       History.replace('/404');
       this.remove();
       return;

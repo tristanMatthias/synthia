@@ -32,15 +32,20 @@ export class OpenProjectModal extends Modal {
     return html`
       ${this._renderHeader()}
       <main>
+        <h4>My projects</h4>
+
         ${this.loading
-          ? html`<synthia-loading></synthia-loading>`
+          ? html`<div class="loading">
+            <synthia-loading></synthia-loading>
+            <span>Loading projects…</span>
+          </div>`
           : html`
-            <h4>My projects</h4>
             <div class="projects">
-              ${this.projects.map(pj => html`<a
+              ${this.projects.map((pj, i) => html`<a
                 title=${pj.name}
                 href=${`/project/${pj.id}`}
                 @click=${() => this.close()}
+                style="animation-delay: ${Math.log(i + 1) / 5}s"
               ><synthia-card>
                 ${pj.name}
                 <synthia-from-now .time=${pj.createdAt}></synthia-from-now>

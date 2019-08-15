@@ -3,7 +3,7 @@ import { Context } from '../../lib/context';
 import { Project } from '../../models/Project';
 import { ProjectService } from '../../services/ProjectService';
 import { SynthService } from '../../services/SynthService';
-import { ECreateProject, EProject, EProjectResources } from '../entities/ProjectEntity';
+import { ECreateProject, EProject, EProjectResources, EUpdateProject } from '../entities/ProjectEntity';
 import { EUser } from '../entities/UserEntity';
 
 
@@ -31,6 +31,14 @@ export class ProjectResolver {
     @Ctx() {user}: Context
   ): Promise<Project> {
     return ProjectService.createProject(project, user!.id);;
+  }
+
+  @Authorized()
+  @Mutation(() => EProject)
+  async updateProject(
+    @Arg('project') project: EUpdateProject
+  ): Promise<Project> {
+    return ProjectService.updateProject(project);;
   }
 
   @Authorized()

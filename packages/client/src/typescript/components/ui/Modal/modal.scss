@@ -12,6 +12,8 @@
   overflow: hidden;
   background-color: var(--color-bg-off);
   border: 0.1rem solid var(--color-line);
+  opacity: 0;
+  animation: slide-up ease-out 0.2s forwards;
 
   &:before, &:after {
     --size: 0.5rem;
@@ -91,5 +93,16 @@
     synthia-button {
       margin-left: var(--margin);
     }
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(2rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
