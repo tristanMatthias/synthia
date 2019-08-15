@@ -5,9 +5,9 @@ import { v4 as uuid } from 'uuid';
 import { API } from '../API/API';
 import { EventObject } from '../EventObject/EventObject';
 import { defaultSynthNodeProperties } from './defaultSynthNodeProperties';
-import { wrapProxy } from './wrapProxy';
 import { fileService } from '../File/FileService';
 import debounce from 'lodash.debounce';
+import { proxa } from 'proxa';
 
 export enum ModelDataObjectType {
   meta = 'meta',
@@ -35,7 +35,7 @@ export const model = new class Model extends EventObject<ModelEvents> {
   }
 
   loadNewFile(file: EProject) {
-    this.file = wrapProxy(file, () => {
+    this.file = proxa(file, () => {
       this.emit('update', file);
       this.save();
     });

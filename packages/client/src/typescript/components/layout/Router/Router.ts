@@ -76,8 +76,6 @@ export class Router extends LitElement {
       if (this._appendTo) this._appendTo.appendChild(ele);
       else this.appendChild(ele);
     } catch (e) {
-      console.log(e);
-
     }
   }
 

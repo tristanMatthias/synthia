@@ -8035,6 +8035,11 @@ protoduck@^5.0.1:
   dependencies:
     genfun "^5.0.0"
 
+proxa@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/proxa/-/proxa-1.1.0.tgz#abf6fc44f08a8e5bc37b1b7e1828722c5e09c879"
+  integrity sha512-bu+Ko3d8+p/dmjm7BUz+Pi+vqrSnUR34NH2s0ONjtYUVOtM5yrQeEDhSxrb5WgpnBKK7ZjN9Gw8h3TrtPGb0ug==
+
 proxy-addr@~2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/proxy-addr/-/proxy-addr-2.0.5.tgz#34cbd64a2d81f4b1fd21e76f9f06c8a45299ee34"

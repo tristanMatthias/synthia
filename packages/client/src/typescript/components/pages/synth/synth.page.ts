@@ -130,8 +130,6 @@ export class PageSynth extends LitElement {
       return;
     }
 
-    console.log('created');
-
     this._toaster = document.querySelector(SElement.toaster)!;
     this._canvas = document.createElement(SElement.canvas);
 

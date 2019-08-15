@@ -3,11 +3,10 @@ import { css, customElement, html, LitElement } from 'lit-element';
 import { API } from '../../lib/API/API';
 import { fileService } from '../../lib/File/FileService';
 import { model } from '../../lib/Model/Model';
-import { wrapProxy } from '../../lib/Model/wrapProxy';
 import { AppState, state } from '../../state/state';
 import { SElement } from '../../types';
 import { ModalContainerEvents } from '../ui/Modal/ModalContainers';
-
+import {proxa} from 'proxa';
 
 export enum AppEvents {
   loadProject = 'loadProject'
@@ -26,7 +25,7 @@ export class App extends LitElement {
 
   constructor() {
     super();
-    this.user = wrapProxy(state.user, (user, prop) => {
+    this.user = proxa(state.user, (user, prop) => {
       if (user.token && prop === 'token') this._updateMe();
     });
     if (this.user.token) this._updateMe();

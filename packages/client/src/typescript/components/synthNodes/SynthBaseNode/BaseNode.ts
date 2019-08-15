@@ -2,8 +2,8 @@ import { LitElement } from 'lit-element';
 
 import CompositeAudioNode from '../../../audioNodes/BaseNode';
 import { ctx } from '../../../lib/AudioContext';
-import { wrapProxy } from '../../../lib/Model/wrapProxy';
 import { SElement } from '../../../types';
+import { proxa } from 'proxa';
 
 export class BaseNode<T extends object> extends LitElement {
 
@@ -20,7 +20,7 @@ export class BaseNode<T extends object> extends LitElement {
   }
   set model(m: T | undefined) {
     if (m && m !== this._model) {
-      this._model = wrapProxy(m, () => {
+      this._model = proxa(m, () => {
         this._updateValues();
       });
       this._updateValues();

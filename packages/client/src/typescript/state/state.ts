@@ -1,5 +1,5 @@
 import { EUser } from "@synthia/api/dist/gql/entities/UserEntity";
-import { wrapProxy } from "../lib/Model/wrapProxy";
+import { proxa } from "proxa";
 
 export interface AppState {
   user: {
@@ -19,6 +19,6 @@ const initialState: AppState = {
   }
 }
 
-export const state = wrapProxy(initialState);
+export const state = proxa(initialState);
 // @ts-ignore
 window.state = state;

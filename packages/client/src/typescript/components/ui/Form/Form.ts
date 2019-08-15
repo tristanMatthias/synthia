@@ -1,14 +1,14 @@
 import { customElement, html, LitElement } from 'lit-element';
 
-import { wrapProxy } from '../../../lib/Model/wrapProxy';
 import { SElement } from '../../../types';
 import styles from './form.styles';
+import { proxa } from 'proxa';
 
 @customElement(SElement.form)
 export class Form extends LitElement {
   static styles = [styles];
 
-  values = wrapProxy<any>({}, () => this._updateValues())
+  values = proxa<any>({}, () => this._updateValues())
 
   connectedCallback() {
     super.connectedCallback();

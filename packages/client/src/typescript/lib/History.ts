@@ -30,8 +30,6 @@ export const History = new class extends EventObject<HistoryEvent> {
   }
 
   _capture(e: MouseEvent) {
-    console.log('capturing');
-
     if (e.metaKey || e.ctrlKey || e.shiftKey) return;
     if (e.defaultPrevented) return;
 
@@ -97,6 +95,7 @@ export const History = new class extends EventObject<HistoryEvent> {
     // same page
     // const orig = path;
     const pageBase = window.location.origin;
+    if (a.origin !== pageBase) return;
 
     if (path.indexOf(pageBase) === 0) {
       path = path.substr(pageBase.length);

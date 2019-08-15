@@ -3,7 +3,6 @@ import { customElement, html, LitElement, property } from 'lit-element';
 import { API_URL } from '../../../config';
 import { iconFacebook } from '../../../images/icons/facebook';
 import { logo } from '../../../images/icons/logo';
-import { wrapProxy } from '../../../lib/Model/wrapProxy';
 import { AppState, state } from '../../../state/state';
 import { SElement } from '../../../types';
 import styles from './header.styles';
@@ -11,6 +10,7 @@ import { model } from '../../../lib/Model/Model';
 import { AppEvents } from '../../App/App';
 import { FileBarOptions } from '../../ui/FileBar/FileBar';
 import { fileService } from '../../../lib/File/FileService';
+import { proxa } from 'proxa';
 
 @customElement(SElement.header)
 export class Header extends LitElement {
@@ -45,7 +45,7 @@ export class Header extends LitElement {
 
   constructor() {
     super();
-    this.user = wrapProxy(state.user, () => this.requestUpdate());
+    this.user = proxa(state.user, () => this.requestUpdate());
     this.app.addEventListener(AppEvents.loadProject, () => this.requestUpdate())
   }
 
