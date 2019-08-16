@@ -32,10 +32,19 @@ export class PageProject extends Router {
 
   static styles = [
     ...Router.styles,
-    css`:host {
-      display: block;
-      margin-top: 8rem;
-    }`
+    css`
+      :host {
+        display: block;
+        margin-top: 8rem;
+      }
+      .loading {
+        color: var(--color-main);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    `
   ];
 
   routes = ROUTES;

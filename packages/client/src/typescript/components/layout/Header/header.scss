@@ -17,25 +17,6 @@
     align-items: center;
   }
 
-  &:before, &:after {
-    content: '';
-    position: absolute;
-    bottom: calc(var(--margin) * -1);
-    border-bottom: 0.2rem solid var(--color-main);
-    width: calc(var(--margin) * 5);
-    height: 0.25rem;
-    opacity: 0.3;
-  }
-
-  &:before {
-    border-left: calc(var(--margin) * 2) solid var(--color-main);
-    left: calc(var(--margin) * 9);
-  }
-  &:after {
-    border-right: calc(var(--margin) * 2) solid var(--color-main);
-    right: calc(var(--margin) * 9);
-  }
-
   * {
     position: relative;
     z-index: 9999;
