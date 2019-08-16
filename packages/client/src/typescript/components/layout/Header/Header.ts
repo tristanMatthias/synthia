@@ -1,18 +1,19 @@
 import { customElement, html, LitElement, property } from 'lit-element';
+import { proxa } from 'proxa';
 
 import { API_URL } from '../../../config';
 import { iconFacebook } from '../../../images/icons/facebook';
-import { logo } from '../../../images/icons/logo';
+import { logoMark } from '../../../images/icons/logo';
+import { model } from '../../../lib/Model/Model';
 import { AppState, state } from '../../../state/state';
 import { SElement } from '../../../types';
-import styles from './header.styles';
-import { model } from '../../../lib/Model/Model';
 import { AppEvents } from '../../App/App';
-import { FileBarOptions } from '../../ui/FileBar/FileBar';
-import { fileService } from '../../../lib/File/FileService';
-import { proxa } from 'proxa';
+import styles from './header.styles';
 
 export * from './ProjectName';
+export * from './HeaderSocial';
+export * from './HeaderProjectOwner';
+
 @customElement(SElement.header)
 export class Header extends LitElement {
   static styles = [styles];
@@ -23,26 +24,7 @@ export class Header extends LitElement {
   @property()
   private _showUserContext: boolean = false;
 
-  private _fileBarOptions: FileBarOptions = {
-    'File': [
-      {
-        action: () => this.app.modal.open(SElement.modalOpenProject),
-        text: 'Open project'
-      },
-      {
-        action: () => this.app.modal.open(SElement.modalCreateProject),
-        text: 'New project'
-      },
-      {
-        action: () => fileService.openFile(),
-        text: 'Import .synth file'
-      },
-      {
-        action: () => fileService.download(),
-        text: 'Download'
-      }
-    ]
-  }
+
 
   constructor() {
     super();
@@ -52,17 +34,13 @@ export class Header extends LitElement {
 
   render() {
     return html`<div class="wrapper">
-      <div class="logo">${logo}</div>
+      <div class="logo">${logoMark}</div>
 
       ${model.file
-        ? html`
-          <div class="file">
-            <!-- <h1>${model.file.name}</h1> -->
-            <project-name .value=${model.file.name}></project-name>
-            <synthia-file-bar .options=${this._fileBarOptions}></synthia-file-bar>
-          </div>
-
-        ` : null
+        ? state.user.data && state.user.data.id === model.file.creatorId
+          ? html`<header-project-owner></header-project-owner>`
+          : html`<header-social></header-social>`
+        : null
       }
 
       ${(!this.user.loading && this.user.checked) ?

@@ -7,6 +7,8 @@ export enum SElement {
 
   // --------------------------------------------------------------------- Pages
   page = 'synthia-page',
+  projectPage = 'synthia-page-project',
+  projectHomePage = 'synthia-page-project-home',
   synthPage = 'synthia-page-synth',
   oauthPage = 'synthia-page-oauth',
 

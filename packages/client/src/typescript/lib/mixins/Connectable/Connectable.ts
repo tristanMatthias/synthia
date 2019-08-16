@@ -5,7 +5,7 @@ import { SElement } from '../../../types';
 import { pxToRem, remToPx } from '../../pxToRem';
 import { DraggableEvents, Position } from '../Draggable/Draggable';
 import { Receivable, ReceivableEvents } from '../Receivable/Receivable';
-import { SynthPageEvents } from '../../../components/pages/synth/synth.page';
+import { SynthPageEvents } from '../../../components/pages/project/synth/synth.page';
 import { model } from '../../Model/Model';
 
 

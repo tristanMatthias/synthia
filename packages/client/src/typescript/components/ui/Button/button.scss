@@ -2,6 +2,8 @@
   --button-color: var(--color-alt);
   --button-bg: var(--button-color);
   --button-text: var(--color-bg);
+  --button-height: 3rem;
+  --button-font-size: 1.5rem;
 
   position: relative;
   display: inline-block;
@@ -10,13 +12,13 @@
   border-radius: 0.4rem;
   padding: 0 1rem;
   transition: all 0.1s;
-  height: 3rem;
-  line-height: 3rem;
+  height: var(--button-height);
+  line-height: var(--button-height);
 
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-size: 1.5rem;
+  font-size: var(--button-font-size);
   font-weight: bold;
   cursor: pointer;
   user-select: none;
@@ -76,4 +78,9 @@
 
 :host([loading]) span {
   opacity: 0;
+}
+
+:host([small]) {
+  --button-height: 2rem;
+  --button-font-size: 1.3rem;
 }

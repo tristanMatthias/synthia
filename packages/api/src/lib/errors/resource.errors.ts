@@ -16,3 +16,11 @@ export class ErrorResourceUnique extends ErrorBadRequest {
     super(`A ${resourceName.toLowerCase()} already exists with '${field}' as '${value}'`);
   }
 }
+
+export class ErrorResourceNotPublic extends ErrorBadRequest {
+  constructor(
+    resourceName: string
+  ) {
+    super(`This ${resourceName.toLowerCase()} is not public`);
+  }
+}

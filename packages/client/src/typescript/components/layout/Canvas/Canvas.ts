@@ -3,7 +3,7 @@ import { html, LitElement } from 'lit-element';
 import { DraggableMixin, InitialPosition } from '../../../lib/mixins/Draggable/Draggable';
 import { mix } from '../../../lib/mixins/mix';
 import { SElement } from '../../../types';
-import { ElementToFileNodeType } from '../../pages/synth/createNode';
+import { ElementToFileNodeType } from '../../pages/project/synth/createNode';
 import styles from './canvas.styles';
 import { model } from '../../../lib/Model/Model';
 

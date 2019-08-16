@@ -5,7 +5,7 @@ import { Receivable } from '../../../lib/mixins/Receivable/Receivable';
 import { remToPx } from '../../../lib/pxToRem';
 import { SElement } from '../../../types';
 import styles from './waveform.styles';
-import { SynthPageEvents, PageSynth } from '../../pages/synth/synth.page';
+import { SynthPageEvents, PageSynth } from '../../pages/project/synth/synth.page';
 import { ctx } from '../../../lib/AudioContext';
 
 

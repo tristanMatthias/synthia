@@ -1,5 +1,5 @@
-mutation updateProject($project: EUpdateProject!){
-    updateProject(project: $project){
+query publicProject($projectId: String!){
+    publicProject(projectId: $projectId){
         name
         public
         creatorId

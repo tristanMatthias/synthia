@@ -1,5 +1,6 @@
-import { UUIDV4 } from 'sequelize';
-import { AllowNull, BelongsTo, Column, Default, ForeignKey, IsUUID, Model, PrimaryKey, IsDate } from 'sequelize-typescript';
+import { AllowNull, BelongsTo, Column, Default, ForeignKey, IsDate, Model, PrimaryKey } from 'sequelize-typescript';
+import shortid from 'shortid';
+
 import { User } from './User';
 
 
@@ -7,8 +8,8 @@ import { User } from './User';
 export class BaseModel<T extends Model<T>> extends Model<T> {
   // Setup the primary key
   @PrimaryKey
-  @IsUUID(4)
-  @Column({ defaultValue: UUIDV4 })
+  @Default(() => shortid())
+  @Column
   id: string;
 
   @IsDate

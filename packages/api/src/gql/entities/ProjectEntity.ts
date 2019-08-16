@@ -2,6 +2,7 @@ import { Field, InputType, ObjectType } from 'type-graphql';
 
 import { EMetadata } from './MetadataEntity';
 import { ESynth } from './SynthEntity';
+import { EUser } from './UserEntity';
 
 
 @ObjectType()
@@ -18,6 +19,9 @@ export class EProject extends EMetadata {
 
   @Field(() => EProjectResources)
   resources: EProjectResources;
+
+  @Field(() => EUser)
+  creator: EUser;
 }
 
 

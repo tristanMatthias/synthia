@@ -1,7 +1,7 @@
 import {TSynthiaProjectSynthNode} from '@synthia/api';
-import { Connectable } from '../../../lib/mixins/Connectable/Connectable';
-import { Receivable } from '../../../lib/mixins/Receivable/Receivable';
-import { SElement } from '../../../types';
+import { Connectable } from '../../../../lib/mixins/Connectable/Connectable';
+import { Receivable } from '../../../../lib/mixins/Receivable/Receivable';
+import { SElement } from '../../../../types';
 import { SynthNodeType } from '@synthia/api';
 
 

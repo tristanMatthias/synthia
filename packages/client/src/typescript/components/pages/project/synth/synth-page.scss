@@ -1,4 +1,11 @@
 :host {
+  .loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--color-main);
+  }
   .corners {
     position: fixed;
     right:  var(--margin);
@@ -6,7 +13,8 @@
     top: calc( var(--margin) * 11);
     bottom: calc( var(--margin) * 5);
     pointer-events: none;
-    opacity: 0.3;
+    opacity: 0;
+    animation: fade-in 0.5s ease-out forwards;
 
     border-left: 0.1rem solid var(--color-main);
     border-right: 0.1rem solid var(--color-main);
@@ -37,4 +45,9 @@
       transform: scale(-1, -1);
     }
   }
+}
+
+@keyframes fade-in {
+  from {opacity: 0;}
+  to {opacity: 0.3;}
 }

@@ -16,6 +16,9 @@ export class Button extends LitElement {
   @property({reflect: true, type: Boolean})
   loading = false;
 
+  @property({reflect: true, type: Boolean})
+  small = false;
+
   @property({reflect: true, type: String})
   color = 'alt';
 

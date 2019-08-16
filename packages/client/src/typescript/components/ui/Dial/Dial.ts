@@ -3,7 +3,7 @@ import { customElement, html, LitElement, property, query } from 'lit-element';
 
 import { remToPx } from '../../../lib/pxToRem';
 import { SElement } from '../../../types';
-import { SynthPageEvents } from '../../pages/synth/synth.page';
+import { SynthPageEvents } from '../../pages/project/synth/synth.page';
 import styles from './dial.styles';
 
 @customElement(SElement.dial)

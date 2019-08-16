@@ -1,6 +1,6 @@
 import { EMetadata } from '../gql/entities/MetadataEntity';
 import { ECreateProject, EUpdateProject } from '../gql/entities/ProjectEntity';
-import { handleSequelizeError } from '../lib/errors';
+import { handleSequelizeError, ErrorResourceNotPublic } from '../lib/errors';
 import { Project } from '../models/Project';
 import { BaseService } from './BaseService';
 import { UserService } from './UserService';
@@ -19,6 +19,13 @@ export const ProjectService = new class extends BaseService<
   UpdateProject,
   GetProject
   > {
+
+  async findPublicById(id: string) {
+    const pj = (await this.findById(id))!;
+    if (pj.public) throw new ErrorResourceNotPublic('project');
+    return pj;
+  }
+
   async myProjects(userId: string) {
     const user = (await UserService.findById(userId))!;
     return await user.$get('projects');

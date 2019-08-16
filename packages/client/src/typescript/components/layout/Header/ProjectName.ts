@@ -7,17 +7,21 @@ export class ProjectName extends LitElement {
   static styles = [
     css`
       :host,
+      :host span,
       :host synthia-input {
         display: block;
-        font-size: 1.8rem;
-        line-height: 2rem;
-        height: 2rem;
-        font-weight: 600;
+        line-height: 3rem;
+        height: 3rem;
+        font-size: 1.6rem;
         letter-spacing: 0.1rem;
         color: var(--color-white);
         --input-padding: 0.5rem;
         --input-height: 2.5rem;
         --input-font-size: 1.4rem;
+      }
+
+      synthia-input {
+        margin-top: 0.3rem;
       }
 
       :host span {

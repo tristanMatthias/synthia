@@ -1,6 +1,6 @@
 import { EProject, ESynthNodeInput } from '@synthia/api';
 import { SynthNodeType, TSynthiaProjectSynthNode } from '@synthia/api/dist/gql/entities/SynthNodeEntity';
-import { v4 as uuid } from 'uuid';
+import shortid from 'shortid';
 
 import { API } from '../API/API';
 import { EventObject } from '../EventObject/EventObject';
@@ -35,7 +35,7 @@ export const model = new class Model extends EventObject<ModelEvents> {
   }
 
   loadNewFile(file: EProject) {
-    this.file = proxa(file, () => {
+    this.file = proxa(file, (file) => {
       this.emit('update', file);
       this.save();
     });
@@ -45,7 +45,7 @@ export const model = new class Model extends EventObject<ModelEvents> {
     if (!this.file) throw new Error('Not initialized')
     const properties = props || defaultSynthNodeProperties(type);
     const node: TSynthiaProjectSynthNode = {
-      id: uuid(),
+      id: shortid(),
       type,
       properties,
       position: {x, y},
@@ -68,6 +68,8 @@ export const model = new class Model extends EventObject<ModelEvents> {
   }
 
   private _save() {
+    console.log();
+
     if (!this.file) return false;
     return fileService.save(this.file);
   }

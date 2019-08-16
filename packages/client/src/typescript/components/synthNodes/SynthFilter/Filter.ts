@@ -23,7 +23,7 @@ import { remToPx } from '../../../lib/pxToRem';
 import { Storage, StorageKey } from '../../../lib/Storage';
 import { SElement } from '../../../types';
 import { SidebarEvents } from '../../layout/Sidebar/Sidebar';
-import { SynthPageEvents } from '../../pages/synth/synth.page';
+import { SynthPageEvents } from '../../pages/project/synth/synth.page';
 import { CircleMenuButton } from '../../ui/CircleMenu/CircleMenu';
 import { BaseNode } from '../SynthBaseNode/BaseNode';
 import styles from './filter.styles';

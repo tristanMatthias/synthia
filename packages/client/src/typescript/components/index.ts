@@ -5,7 +5,8 @@ import './router/AppRouter';
 
 // ----------------------------------------------------------------------- Pages
 import './pages/oauth/oauth.page';
-import './pages/synth/synth.page';
+import './pages/project/project.page';
+import './pages/project/synth/synth.page';
 
 // ---------------------------------------------------------------------- Layout
 import './layout/Header/Header';

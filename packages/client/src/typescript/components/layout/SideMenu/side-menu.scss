@@ -10,41 +10,8 @@
   padding-top: 4rem;
   grid-template-columns: var(--tile-size);
   grid-auto-rows: var(--tile-size);
-  // grid-template-columns: repeat(6, 6rem);
   align-items: center;
   justify-content: center;
-  // background: var(--color-bg-off);
-
-
-  // &:before,
-  // &:after {
-  //   content: '';
-  //   position: absolute;
-  //   bottom: calc(1/2 * var(--margin));
-  //   border-top: 0.2rem solid var(--color-main);
-  //   width: calc(var(--margin) * 5);
-  //   height: 0.5rem;
-  //   opacity: 0.3;
-  // }
-
-  // &:before {
-  //   border-left: calc(var(--margin) * 2) solid var(--color-main);
-  //   left: 0;
-  // }
-
-  // &:after {
-  //   border-right: calc(var(--margin) * 2) solid var(--color-main);
-  //   right: 0;
-  // }
-
-  // &>svg {
-  //   position: fixed;
-  //   bottom: 0;
-  //   left: 50%;
-  //   transform: translateX(-50%);
-  //   opacity: 0.5;
-  //   z-index: -1;
-  // }
 
   & > div:first-of-type {
     border-top: 0.1rem solid var(--color-dark);
@@ -64,6 +31,8 @@
     transition: all 0.2s;
     cursor: grab;
     user-select: none;
+    opacity: 0;
+    animation: fade-in 0.5s forwards;
 
     svg {
       width: 4rem;
@@ -120,4 +89,10 @@
     }
   }
 
+}
+
+
+@keyframes fade-in {
+  from {opacity: 0;}
+  to {opacity: 1;}
 }

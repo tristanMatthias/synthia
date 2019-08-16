@@ -5,15 +5,26 @@ import { ProjectService } from '../../services/ProjectService';
 import { SynthService } from '../../services/SynthService';
 import { ECreateProject, EProject, EProjectResources, EUpdateProject } from '../entities/ProjectEntity';
 import { EUser } from '../entities/UserEntity';
+import { ErrorResourceNotPublic, ErrorAuthNoAccess } from '../../lib/errors';
 
 
 @Resolver(EProject)
 export class ProjectResolver {
 
-  @Authorized()
   @Query(() => EProject)
-  async project(@Arg('projectId') id: string) {
-    return ProjectService.findById(id);
+  async project(
+    @Arg('projectId') id: string,
+    @Ctx() { user }: Context
+  ) {
+    const pj = (await ProjectService.findById(id))!;
+    // If public, return it for everyone
+    if (pj.public) return pj;
+    // If not logged in and it's private, throw not public
+    if (!user) throw new ErrorResourceNotPublic('project');
+    // If not public, and user is logged in but not creator, throw no access
+    if (pj.creatorId !== user.id) throw new ErrorAuthNoAccess('project');
+    // If not public, user logged in, and user is creator, return it
+    return pj;
   }
 
   @Authorized()

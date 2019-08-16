@@ -1,82 +1,107 @@
 import { css, customElement, html, LitElement } from 'lit-element';
-import UniversalRouter, { Context } from 'universal-router';
+import ptr from 'path-to-regexp';
 import qs from 'query-string';
+import { Context } from 'universal-router';
 
 import { History } from '../../../lib/History';
 import { SElement } from '../../../types';
 
-export interface Route {
-  path: string,
-  html: string,
+// @ts-ignore
+window.ptr = ptr;
+
+interface BaseRoute {
+  path: string
   applyContext?: boolean;
   enter?: (ctx: Context, ele: HTMLElement) => any
   exit?: (ctx: Context, ele: HTMLElement) => any
 }
 
+interface RouteHTML extends BaseRoute {
+  html: string
+}
+interface RouteElement extends BaseRoute {
+  element: string
+}
+
+export type Route = RouteElement | RouteHTML;
+
 
 @customElement(SElement.router)
 export class Router extends LitElement {
 
-  static get styles() {
-    return [css`:host { display: block;}`]
-  }
+  static styles = [css`:host { display: block;}`]
+
 
   routes: Route[] = [];
   root = '';
 
+  private _currentRoute?: Route;
   private _currentPage?: HTMLElement;
-  private _router: UniversalRouter<any, HTMLElement>
   protected _appendTo?: HTMLElement;
 
-  constructor() {
-    super();
-    this._router = new UniversalRouter([]);
-  }
 
   connectedCallback() {
     super.connectedCallback();
-    History.on('change', ({path}) => this.load(path));
-    this.loadPages();
+    History.on('change', ({ path }) => this.load(path));
     this.load();
   }
 
-  loadPages() {
-    this._router = new UniversalRouter({
-      path: this.root,
-      children: this.routes.map(r => ({
-        path: r.path,
-        action: (ctx, _params) => {
-          const ele = document.createElement('div');
-          ele.classList.add('synthia-page');
-          ele.innerHTML = r.html;
+  private _resolve(path: string, queryString?: string) {
+    const route = this.routes.find(r =>
+      ptr(r.path).test(path)
+    );
+    if (!route) throw new Error('Route not found');
 
-          if (r.applyContext !== false) {
-            if (ele.childElementCount !== 1) console.error('Can only apply context to html with one root element');
-            Object.assign(ele.firstChild, ctx.params);
-            Object.assign(ele.firstChild, ctx.query);
-          }
+    const keys: any[] = [];
+    const r = ptr(route.path, keys).exec(location.pathname) || [];
 
-          if (r.enter) r.enter(ctx, ele);
-          return ele;
-        }
-      }))
-    })
+    const params = keys.reduce((acc, key, i) => ({ [key.name]: r[i + 1], ...acc }), {});
+    const query = queryString ? qs.parse(queryString) : {}
+
+    return {
+      route,
+      params,
+      query
+    }
   }
 
 
   async load(path: string = document.location.pathname) {
     try {
-      const ele = await this._router.resolve({
-        pathname: path,
-        query: qs.parse(document.location.search)
-      });
+      const { route, params, query } = await this._resolve(path, document.location.search);
 
-      if (ele && this._currentPage) this._currentPage.remove();
+      // Don't need to do anything as already on current page
+      if (this._currentRoute === route) return;
+
+      if (this._currentPage) this._currentPage.remove();
+
+      let ele;
+      if ((<RouteHTML>route).html) {
+        ele = document.createElement('div');
+        ele.classList.add('synthia-page');
+        ele.innerHTML = (<RouteHTML>route).html;
+
+        if (route.applyContext !== false) {
+          if (ele.childElementCount !== 1) console.error('Can only apply context to html with one root element.');
+          Object.assign(ele.firstChild, params);
+          Object.assign(ele.firstChild, query);
+        }
+
+      } else {
+        ele = document.createElement((<RouteElement>route).element);
+        if (route.applyContext !== false) {
+          Object.assign(ele, params);
+          Object.assign(ele, query);
+        }
+      }
+
+      if (route.enter) route.enter({ params, query }, ele);
+
       this._currentPage = ele;
+      this._currentRoute = route;
       if (this._appendTo) this._appendTo.appendChild(ele);
       else this.appendChild(ele);
-    } catch (e) {
-    }
+    } catch (e) { }
   }
 
   render() {

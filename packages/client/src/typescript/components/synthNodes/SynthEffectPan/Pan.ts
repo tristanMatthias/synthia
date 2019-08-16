@@ -3,7 +3,7 @@ import { ESynthiaProjectSynthNodePan } from '@synthia/api';
 import { iconEffectPan } from '../../../images/icons/effectPan';
 import { remToPx } from '../../../lib/pxToRem';
 import { SElement } from '../../../types';
-import { SynthPageEvents } from '../../pages/synth/synth.page';
+import { SynthPageEvents } from '../../pages/project/synth/synth.page';
 import { BaseEffectClass, baseEffectMix } from '../SynthBaseEffect/BaseEffect';
 import { PanSidebar } from './PanSidebar';
 

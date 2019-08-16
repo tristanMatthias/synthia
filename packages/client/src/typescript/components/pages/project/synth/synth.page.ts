@@ -1,18 +1,16 @@
 import { customElement, html, LitElement, property } from 'lit-element';
 
-import { ctx } from '../../../lib/AudioContext';
-import { Selectable } from '../../../lib/mixins/Selectable/Selectable';
-import { remToPx } from '../../../lib/pxToRem';
-import { Storage, StorageKey } from '../../../lib/Storage';
-import { SElement } from '../../../types';
-import { AppEvents } from '../../App/App';
-import { Canvas } from '../../layout/Canvas/Canvas';
+import { ctx } from '../../../../lib/AudioContext';
+import { Selectable } from '../../../../lib/mixins/Selectable/Selectable';
+import { model } from '../../../../lib/Model/Model';
+import { remToPx } from '../../../../lib/pxToRem';
+import { Storage, StorageKey } from '../../../../lib/Storage';
+import { SElement } from '../../../../types';
+import { AppEvents } from '../../../App/App';
+import { Canvas } from '../../../layout/Canvas/Canvas';
+import { Toaster } from '../../../ui/Toaster/Toaster';
 import { connectNode, createNode } from './createNode';
 import styles from './synth-page.styles';
-import { model } from '../../../lib/Model/Model';
-import { History } from '../../../lib/History';
-import { Toaster } from '../../ui/Toaster/Toaster';
-import { fileService } from '../../../lib/File/FileService';
 
 
 export enum SynthPageEvents {
@@ -122,15 +120,6 @@ export class PageSynth extends LitElement {
   }
 
   async firstUpdated() {
-    try {
-      await fileService.load(this.synthId!);
-    } catch (e) {
-      console.log(e);
-      History.replace('/404');
-      this.remove();
-      return;
-    }
-
     this._toaster = document.querySelector(SElement.toaster)!;
     this._canvas = document.createElement(SElement.canvas);
 
@@ -139,8 +128,8 @@ export class PageSynth extends LitElement {
     this._canvas.appendChild(root);
     this.prepend(this._canvas);
 
-    this._app.addEventListener(AppEvents.loadProject, this._loadProject.bind(this));
-    if (this._app.model.file) this._loadProject();
+    this._app.addEventListener(AppEvents.loadProject, this._generateNodesFromFile.bind(this));
+    if (this._app.model.file) this._generateNodesFromFile();
 
     window.addEventListener('resize', () => {
       const newFS = parseInt(getComputedStyle(document.documentElement).fontSize || '10px');
@@ -155,10 +144,6 @@ export class PageSynth extends LitElement {
       this._toaster.info('Welcome to Synthia! Find your sound by dragging a node onto the canvas');
       Storage.set(StorageKey.notifiedIntro, true)
     }
-  }
-
-  private async _loadProject() {
-    await this._generateNodesFromFile();
   }
 
   private _generateNodesFromFile() {
