@@ -31,7 +31,9 @@ export class PageProjectHome extends LitElement {
           ${s.name}
           <synthia-from-now .time=${s.createdAt}></synthia-from-now>
         </synthia-card></a>`)}
-      </div>`
+      </div>
+      <synthia-piano-roll></synthia-piano-roll>
+    `
   }
 
 }

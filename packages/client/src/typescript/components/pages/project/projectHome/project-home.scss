@@ -1,11 +1,4 @@
 :host {
-  display: block;
-  max-width: 80rem;
-  margin-top: 4rem;
-  margin: auto;
-  background: var(--color-bg-off);
-  padding: 2rem;
-  border-radius: 0.4rem;
 
   h4 {
     font-weight: normal;
@@ -17,6 +10,12 @@
   }
 
   .synths {
+    max-width: 80rem;
+    margin-top: 4rem;
+    margin: auto;
+    background: var(--color-bg-off);
+    padding: 2rem;
+    border-radius: 0.4rem;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: calc(var(--margin) * 2);

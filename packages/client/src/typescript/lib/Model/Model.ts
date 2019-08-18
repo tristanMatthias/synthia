@@ -68,8 +68,6 @@ export const model = new class Model extends EventObject<ModelEvents> {
   }
 
   private _save() {
-    console.log();
-
     if (!this.file) return false;
     return fileService.save(this.file);
   }

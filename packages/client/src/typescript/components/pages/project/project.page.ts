@@ -63,8 +63,6 @@ export class PageProject extends Router {
   }
 
   async firstUpdated() {
-    console.log('first updated');
-
     try {
       await fileService.load(this.projectId);
       this.loading = false;

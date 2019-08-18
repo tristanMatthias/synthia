@@ -64,6 +64,8 @@ export enum SElement {
   frequencyResponse = 'synthia-frequency-response',
   waveform = 'synthia-waveform',
   keyboard = 'synthia-keyboard',
+  pianoRoll = 'synthia-piano-roll',
+  pianoRollNote = 'synthia-piano-roll-note',
 
   // -------------------------------------------------------------------- Modals
   modalCreateProject = 'synthia-modal-create-project',
