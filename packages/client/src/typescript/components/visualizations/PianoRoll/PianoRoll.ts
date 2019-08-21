@@ -4,6 +4,8 @@ import { realNotesCShifted } from '../../../lib/keyToFrequency';
 import { SElement } from '../../../types';
 import styles from './piano-roll.styles';
 import { remToPx } from '../../../lib/pxToRem';
+import { Clock } from '../../../lib/Clock';
+import debounce = require('lodash.debounce');
 
 export * from './Note';
 
@@ -16,6 +18,14 @@ export class PianoRoll extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener('dblclick', this._addNote.bind(this));
+    const updateTime = debounce(() => {
+      (this.shadowRoot!.querySelector('span.time')! as HTMLSpanElement).style.left = `calc(${Clock.currentBarExact} * var(--note-width) * 4)`;
+      this.requestUpdate();
+      updateTime();
+    }, 0, {
+      maxWait: 500
+    });
+    requestAnimationFrame(updateTime)
   }
 
   render() {
@@ -35,7 +45,11 @@ export class PianoRoll extends LitElement {
       </div>`);
     };
 
-    return html`${keys}<slot></slot>`;
+    return html`
+      ${keys}
+      <slot></slot>
+      <synthia-clock-line></synthia-clock-line>
+    `;
   }
 
 

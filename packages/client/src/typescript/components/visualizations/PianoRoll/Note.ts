@@ -80,23 +80,28 @@ export class PianoRollNote extends LitElement {
   private _handleDrag(e: MouseEvent) {
     const style = getComputedStyle(this);
     const noteWidth = remToPx(parseInt(style.getPropertyValue('--note-width')));
+    const noteHeight = remToPx(parseInt(style.getPropertyValue('--note-height')));
 
     const xDiff = e.x - this._mouseStart!.x;
+    const yDiff = e.y - this.closest(SElement.pianoRoll)!.getBoundingClientRect().top;
 
-    const gridDiff = Math.round(xDiff / noteWidth);
+    const gridDiffX = Math.round(xDiff / noteWidth);
+    const gridDiffY = Math.round(yDiff / noteHeight) * noteHeight;
+
 
     switch (this._dragType) {
       case 'resizeLeft':
-        this.start = this._dragStartPosition!.start + gridDiff;
-        this.duration = this._dragStartPosition!.duration - gridDiff;
+        this.start = this._dragStartPosition!.start + gridDiffX;
+        this.duration = this._dragStartPosition!.duration - gridDiffX;
         break;
 
       case 'drag':
-        this.start = this._dragStartPosition!.start + gridDiff;
+        this.start = this._dragStartPosition!.start + gridDiffX;
+        this.style.top = `${gridDiffY}px`;
         break;
 
       case 'resizeRight':
-        this.duration = this._dragStartPosition!.duration + gridDiff;
+        this.duration = this._dragStartPosition!.duration + gridDiffX;
     }
 
     this._updatePosition();

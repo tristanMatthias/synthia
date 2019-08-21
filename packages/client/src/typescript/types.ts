@@ -66,6 +66,7 @@ export enum SElement {
   keyboard = 'synthia-keyboard',
   pianoRoll = 'synthia-piano-roll',
   pianoRollNote = 'synthia-piano-roll-note',
+  clockLine = 'synthia-clock-line',
 
   // -------------------------------------------------------------------- Modals
   modalCreateProject = 'synthia-modal-create-project',

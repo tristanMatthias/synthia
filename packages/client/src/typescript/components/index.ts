@@ -45,6 +45,7 @@ import './visualizations/FrequencyResponse/FrequencyResponse';
 import './visualizations/Keyboard/Keyboard';
 import './visualizations/PianoRoll/PianoRoll';
 import './visualizations/Waveform/Waveform';
+import './visualizations/ClockLine/ClockLine';
 
 
 // ---------------------------------------------------------------------- Modals

@@ -21,6 +21,7 @@ export class App extends LitElement {
   model = model;
   user: AppState['user']
   modal = document.querySelector(SElement.modalContainer)!;
+  globalTime: number = 0;
 
 
   constructor() {
@@ -40,7 +41,7 @@ export class App extends LitElement {
       this.style.filter = 'blur(4px)';
     });
     this.modal.addEventListener(ModalContainerEvents.close, () => {
-      this.style.filter = null;
+      this.style.filter = '';
     });
   }
 

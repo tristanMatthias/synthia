@@ -67,6 +67,8 @@
       user-select: none;
       font-size: 1.2rem;
       border-top: 0.1rem solid var(--color-bg);
+      border-top-right-radius: 0.4rem;
+      border-bottom-right-radius: 0.4rem;
     }
 
     &.black span {
@@ -90,5 +92,9 @@
         color: var(--color-bg);
       }
     }
+  }
+
+  synthia-clock-line {
+    transform: translateX(var(--key-width));
   }
 }
