@@ -20,7 +20,7 @@ export class SynthiaWave extends CompositeAudioNode {
     this._notes.forEach(([, o]) => {
       o.type = v;
     })
-    this._setEnvGainOnType();
+    this.getGainFromType();
   }
 
   private _pitch: number = 0;
@@ -105,33 +105,33 @@ export class SynthiaWave extends CompositeAudioNode {
     if (existing) {
       const e = existing[0];
       // Prevent clicking
-      e.gain.cancelScheduledValues(this._ctx.currentTime);
-      e.gain.linearRampToValueAtTime(0, this._ctx.currentTime + 0.01)
+      e.rampToZero();
       e.onend = undefined;
     }
 
     const osc = this._ctx.createOscillator();
     osc.type = this.type;
     osc.frequency.setValueAtTime(tuned, this._ctx.currentTime);
+    const oscGain = this._ctx.createGain();
+    oscGain.gain.value = 0;
+    osc.connect(oscGain);
 
 
-    const env = new Envelope(this._ctx, {
+    const env = new Envelope(oscGain.gain, {
       delay: this.delay,
       attack: this.attack,
       attackLevel: this.attackLevel,
       decay: this.decay,
       decayLevel: this.decayLevel,
       release: this.release,
+      maxPercentage: this.getGainFromType()
     }, duration);
 
     env.onend = () => this.kill(freq);
 
-    // @ts-ignore
-    osc.connect(env as AudioNode);
-    env.connect(this._input);
+    oscGain.connect(this._input);
 
     this._notes.set(freq, [env, osc]);
-    this._setEnvGainOnType();
     osc.start();
 
 
@@ -165,15 +165,11 @@ export class SynthiaWave extends CompositeAudioNode {
     return true;
   }
 
-  private _setEnvGainOnType() {
-    Array.from(this._notes.values()).forEach(([env]) => {
-      let gain;
-      if (this.type === 'sine') gain = 1;
-      else if (this.type === 'sawtooth') gain = 0.32;
-      else if (this.type === 'square') gain = 0.4;
-      else gain = 1;
-      env.gain.setValueAtTime(gain, this._ctx.currentTime);
-    })
+  private getGainFromType() {
+    if (this.type === 'sine') return 1;
+    else if (this.type === 'sawtooth') return 0.32;
+    else if (this.type === 'square') return 0.4;
+    else return 1;
   }
 }
 

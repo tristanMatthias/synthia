@@ -26,7 +26,6 @@ export class ClockLine extends LitElement {
     }, 0, {
       maxWait: 500
     });
-    console.log('updating');
 
     if (this.isConnected) requestAnimationFrame(updateTime)
   }

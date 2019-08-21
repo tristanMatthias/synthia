@@ -1,4 +1,4 @@
-import CompositeAudioNode from './BaseNode';
+import { ctx } from '../lib/AudioContext';
 
 export interface EnvelopeOptions {
   delay: number;
@@ -6,7 +6,8 @@ export interface EnvelopeOptions {
   attackLevel: number,
   decay: number,
   decayLevel: number,
-  release: number
+  release: number,
+  maxPercentage: number
 }
 
 interface Timings {
@@ -19,9 +20,11 @@ interface Timings {
 
 const ZERO = 0.00000001;
 
-export class Envelope extends CompositeAudioNode {
-  private _started = this._ctx.currentTime;
-  private _envelopeGain = this._ctx.createGain();
+export class Envelope {
+
+  param: AudioParam;
+
+  private _started = ctx.currentTime;
   private _ending = false;
 
 
@@ -46,7 +49,7 @@ export class Envelope extends CompositeAudioNode {
   private _attackLevel: number = 1;
   get attackLevel() { return this._attackLevel }
   set attackLevel(v: number) {
-    this._attackLevel = v;
+    this._attackLevel = v * this._maxPercentage;
     this._update();
   }
 
@@ -60,7 +63,7 @@ export class Envelope extends CompositeAudioNode {
   private _decayLevel: number = 0.7;
   get decayLevel() { return this._decayLevel }
   set decayLevel(v: number) {
-    this._decayLevel = v;
+    this._decayLevel = v * this._maxPercentage;
     this._update();
   }
 
@@ -70,15 +73,14 @@ export class Envelope extends CompositeAudioNode {
     this._release = v;
     this._update();
   }
+  private _maxPercentage: number = 1;
 
 
   constructor(
-    ctx: AudioContext | OfflineAudioContext,
+    param: AudioParam,
     options?: Partial<EnvelopeOptions>,
     private _duration?: number
   ) {
-    super(ctx);
-
 
     const settings: EnvelopeOptions = {
       delay: 0,
@@ -87,41 +89,47 @@ export class Envelope extends CompositeAudioNode {
       decay: 1,
       decayLevel: 0.7,
       release: 0.2,
+      maxPercentage: 1,
       ...options
     }
+    this.param = param;
 
-    const g = this._envelopeGain.gain;
-
-
-    this._input.connect(this._envelopeGain);
-    this._envelopeGain.connect(this._output);
 
     // Set to 0 initially
-    g.setValueAtTime(ZERO, ctx.currentTime);
+    param.setValueAtTime(ZERO, ctx.currentTime);
 
+    this._maxPercentage = settings.maxPercentage;
     this._delay = settings.delay;
     this._attack = settings.attack;
-    this._attackLevel = settings.attackLevel;
+    this._attackLevel = settings.attackLevel * this._maxPercentage;
     this._decay = settings.decay;
-    this._decayLevel = settings.decayLevel;
+    this._decayLevel = settings.decayLevel * this._maxPercentage;
     this._release = settings.release;
 
     this._update();
     this._timer();
-
   }
 
 
   startRelease(time = this.release) {
     this._ending = true;
-    this._envelopeGain.gain.cancelScheduledValues(this._ctx.currentTime);
-    this._envelopeGain.gain.linearRampToValueAtTime(ZERO, this._ctx.currentTime + time);
+    // Hack around jumping sounds
+    const initial = this.param.value;
+    this.param.cancelAndHoldAtTime(ctx.currentTime);
+    this.param.setValueAtTime(initial, ctx.currentTime);
+    this.param.linearRampToValueAtTime(ZERO, ctx.currentTime + time);
+  }
+
+
+  rampToZero() {
+    this.param.cancelScheduledValues(ctx.currentTime);
+    this.param.linearRampToValueAtTime(0, ctx.currentTime + 0.01);
   }
 
 
   private _props(): EnvelopeOptions {
-    const { delay, attack, attackLevel, decay, decayLevel, release } = this;
-    return { delay, attack, attackLevel, decay, decayLevel, release }
+    const { delay, attack, attackLevel, decay, decayLevel, release, _maxPercentage } = this;
+    return { delay, attack, attackLevel, decay, decayLevel, release, maxPercentage: _maxPercentage }
   }
 
 
@@ -143,37 +151,37 @@ export class Envelope extends CompositeAudioNode {
 
 
   private _update() {
-    const t = this._ctx.currentTime;
-    const g = this._envelopeGain.gain;
+
+    const t = ctx.currentTime;
+    const p = this.param;
     const props = this._props();
     const newTimes = this._times(props);
 
-    g.cancelScheduledValues(t);
-
+    p.cancelScheduledValues(t);
 
     // const newIncludesAttack
-    g.setValueAtTime(ZERO, newTimes.attackStart);
-    g.linearRampToValueAtTime(this.attackLevel, newTimes.decayStart);
-    g.exponentialRampToValueAtTime(props.decayLevel, newTimes.decayEnd);
+    p.setValueAtTime(ZERO, newTimes.attackStart);
+    p.linearRampToValueAtTime(this.attackLevel, newTimes.decayStart);
+    p.exponentialRampToValueAtTime(props.decayLevel, newTimes.decayEnd);
 
     if (newTimes.releaseStart && newTimes.end) {
       // Hold the decay level until release
-      g.linearRampToValueAtTime(props.decayLevel, newTimes.releaseStart);
-      g.linearRampToValueAtTime(ZERO, newTimes.end);
+      p.linearRampToValueAtTime(props.decayLevel, newTimes.releaseStart);
+      p.linearRampToValueAtTime(ZERO, newTimes.end);
     }
   }
 
 
   private _timer() {
     // If at the end of the release
-    if (!this._ending && this._duration && (this._ctx.currentTime >= this._started + this._duration)) {
+    if (!this._ending && this._duration && (ctx.currentTime >= this._started + this._duration)) {
       this.startRelease();
     }
 
     if (
       // If manually ending...
-      (this._ending && this._envelopeGain.gain.value <= ZERO)
-      // this._duration && (this._ctx.currentTime >= this._started + this._duration + this._release)
+      (this._ending && this.param.value <= ZERO)
+      // this._duration && (ctx.currentTime >= this._started + this._duration + this._release)
     ) {
       if (this.onend) this.onend();
     } else {
