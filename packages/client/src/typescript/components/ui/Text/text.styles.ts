@@ -1,3 +1,3 @@
 import { css } from 'lit-element';
-export default css`:host{color:var(--color-text);font-size:1.8rem;line-height:3.6rem}:host([type=h1]){font-size:3.6rem;color:var(--color-white);line-height:4.8rem}:host([type=h2]){font-size:3rem;color:var(--color-white);line-height:3.6rem}:host([type=h4]){font-weight:normal;font-size:1.4rem;text-transform:uppercase;color:var(--color-main)}
+export default css`:host{color:var(--color-text);font-size:1.8rem;line-height:3.6rem}:host([type=h1]){font-size:3.6rem;color:var(--color-white);line-height:4.8rem}:host([type=h2]){font-size:3rem;color:var(--color-white);line-height:3.6rem}:host([type=h4]){font-weight:normal;font-size:1.4rem;text-transform:uppercase;color:var(--color-main);user-select:none}
 `;

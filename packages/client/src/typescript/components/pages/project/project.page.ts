@@ -37,6 +37,7 @@ export class PageProject extends Router {
       :host {
         display: block;
         margin-top: 8rem;
+        --footer-height: var(--header-height);
       }
       .loading {
         color: var(--color-main);
@@ -44,6 +45,14 @@ export class PageProject extends Router {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+      }
+      ::slotted(*) {
+        position: absolute;
+        top: 0;
+        bottom: var(--footer-height);
+        left: 0;
+        width: 100%;
+        overflow-y: auto;
       }
     `
   ];
@@ -57,8 +66,6 @@ export class PageProject extends Router {
   public set projectId(v : string) {
     this._projectId = v;
     this._load();
-    console.log('setting');
-
   }
 
 
@@ -66,12 +73,15 @@ export class PageProject extends Router {
   private loading = true;
 
   render() {
-    const root = super.render();
     if (this.loading) return html`<div class="loading">
       <synthia-loading></synthia-loading>
       Loading…
     </div>`;
-    else return root;
+
+    return html`
+      <slot></slot>
+      <synthia-project-footer></synthia-project-footer>
+    `;
   }
 
   disconnectedCallback() {

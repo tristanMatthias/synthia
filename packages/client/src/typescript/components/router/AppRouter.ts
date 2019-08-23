@@ -1,5 +1,5 @@
 import { Router, Route } from "../layout/Router/Router";
-import { customElement } from "lit-element";
+import { customElement, css } from "lit-element";
 import { SElement } from "../../types";
 
 
@@ -25,5 +25,26 @@ const ROUTES: Route[] = [
 
 @customElement(SElement.appRouter)
 export class AppRouter extends Router {
+  static styles = [
+    css`
+      :host {
+        display: block;
+        position: fixed;
+        top: var(--header-height);
+        left: 0;
+        width: 100%;
+        bottom: 0;
+      }
+      ::slotted(*) {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        overflow-y: auto;
+      }
+    `
+  ];
+
   routes = ROUTES;
 }

@@ -33,7 +33,7 @@ export class Header extends LitElement {
   }
 
   render() {
-    return html`<div class="wrapper">
+    return html`
       <a class="logo" href="/">${logoMark}</a>
 
       ${project.file
@@ -54,21 +54,23 @@ export class Header extends LitElement {
           </synthia-button>`
         : null
       }
-    </div>`;
+    `;
   }
 
   get _user() {
     if (!this.user.data) return null;
 
-    return html`<div
-      class="user ${this._showUserContext ? 'active' : ''}"
-      @click=${() => this._showUserContext = !this._showUserContext}
-    >
-      <img src="${this.user.data.socialPic}">
-      <span>${this.user.data.firstName}
-    </div>
-    <synthia-context-menu .show=${this._showUserContext}>
-      <div @click=${this.app.logout}>Logout</div>
-    </synthia-context-menu>`
+    return html`<div class="user">
+      <div
+        class="badge ${this._showUserContext ? 'active' : ''}"
+        @click=${() => this._showUserContext = !this._showUserContext}
+      >
+        <img src="${this.user.data.socialPic}">
+        <span>${this.user.data.firstName}
+      </div>
+      <synthia-context-menu .show=${this._showUserContext}>
+        <div @click=${this.app.logout}>Logout</div>
+      </synthia-context-menu>
+    </div>`;
   }
 }
