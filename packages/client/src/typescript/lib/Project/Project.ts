@@ -17,10 +17,11 @@ export enum ProjectDataObjectType {
 
 export interface ProjectEvents {
   loadedNewProject: EProject;
+  close: void;
 }
 
 export const project = new class Project extends EventObject<ProjectEvents> {
-  file?: EProject;
+  file: EProject | null = null;
   save: () => Promise<any> | false;
   instruments: {[id: string]: Instrument} = {};
 
@@ -42,6 +43,12 @@ export const project = new class Project extends EventObject<ProjectEvents> {
     });
 
     this.emit('loadedNewProject', file);
+  }
+
+  close() {
+    fileService.close();
+    this.file = null;
+    this.emit('close', undefined);
   }
 
   private _save() {

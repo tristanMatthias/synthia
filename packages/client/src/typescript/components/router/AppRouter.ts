@@ -13,6 +13,10 @@ const ROUTES: Route[] = [
     element: SElement.projectPage
   },
   {
+    path: '/',
+    element: SElement.homePage
+  },
+  {
     path: '(.*)',
     html: 'Page not found'
   },

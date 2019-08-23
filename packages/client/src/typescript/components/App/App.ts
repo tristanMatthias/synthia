@@ -10,7 +10,16 @@ import { ModalContainerEvents } from '../ui/Modal/ModalContainers';
 @customElement(SElement.app)
 export class App extends LitElement {
   static get styles() {
-    return [css`:host { display: block; transition: filter 0.3s; }`]
+    return [css`
+      :host { display: block; transition: filter 0.3s; }
+      ::slotted(synthia-app-router) {
+        position: fixed;
+        top: var(--header-height);
+        bottom: 0;
+        left: 0;
+        width: 100%;
+      }
+    `]
   }
 
 

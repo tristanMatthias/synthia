@@ -7,6 +7,7 @@ export enum SElement {
 
   // --------------------------------------------------------------------- Pages
   page = 'synthia-page',
+  homePage = 'synthia-page-home',
   projectPage = 'synthia-page-project',
   projectHomePage = 'synthia-page-project-home',
   synthPage = 'synthia-page-synth',
@@ -70,5 +71,9 @@ export enum SElement {
 
   // -------------------------------------------------------------------- Modals
   modalCreateProject = 'synthia-modal-create-project',
-  modalOpenProject = 'synthia-modal-open-project'
+  modalOpenProject = 'synthia-modal-open-project',
+
+
+  // -------------------------------------------------------------------- Common
+  projectList = 'synthia-project-list'
 }

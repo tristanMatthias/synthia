@@ -13,11 +13,11 @@ export const fileService = new class FileService extends EventObject<FileService
 
   private _fileReader = new FileReader();
 
-  private _file: EProject;
-  public get file(): EProject {
+  private _file: EProject | null;
+  public get file(): EProject | null {
     return this._file;
   }
-  public set file(v: EProject) {
+  public set file(v: EProject | null) {
     this._file = v;
     if (v) this.emit('loaded', v);
   }
@@ -76,6 +76,10 @@ export const fileService = new class FileService extends EventObject<FileService
 
     inp.click();
     inp.remove();
+  }
+
+  async close() {
+    this.file = null;
   }
 
 

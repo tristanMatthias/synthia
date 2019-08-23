@@ -28,14 +28,13 @@ export class Header extends LitElement {
   constructor() {
     super();
     this.user = proxa(state.user, () => this.requestUpdate());
-    project.on('loadedNewProject', () => {
-      this.requestUpdate()
-    });
+    project.on('loadedNewProject', () => this.requestUpdate());
+    project.on('close', () => this.requestUpdate());
   }
 
   render() {
     return html`<div class="wrapper">
-      <div class="logo">${logoMark}</div>
+      <a class="logo" href="/">${logoMark}</a>
 
       ${project.file
         ? state.user.data && state.user.data.id === project.file.creatorId

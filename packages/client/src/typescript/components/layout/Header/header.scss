@@ -1,5 +1,4 @@
 :host {
-  --height: 4rem;
   position: fixed;
   top: 0;
   padding: var(--margin);
@@ -12,8 +11,8 @@
 
   .wrapper {
     display: flex;
-    height: var(--height);
-    line-height: var(--height);
+    height: var(--header-height);
+    line-height: var(--header-height);
     align-items: center;
   }
 
@@ -26,19 +25,23 @@
   .logo {
     --color: var(--color-main);
     flex-grow: 0;
-    height: calc(var(--height) * 1.5);
-    width: calc(var(--height) * 1.5);
-    line-height: calc(var(--height) * 1.5);
+    height: calc(var(--header-height) * 1.5);
+    width: calc(var(--header-height) * 1.5);
+    line-height: calc(var(--header-height) * 1.5);
     text-align: center;
     font-size: 0;
     margin-right: 1rem;
 
     svg {
-      width: calc(var(--height));
+      width: calc(var(--header-height));
       vertical-align: middle;
-      // vertical-align: middle;
-      // margin-left: -1rem;
-      // margin-top: -0.5rem;
+      &, * {
+        transition: all 0.1s;
+      }
+    }
+
+    &:hover {
+      --color: var(--color-alt);
     }
   }
 
@@ -106,7 +109,7 @@
 
     & + synthia-context-menu {
       position: absolute;
-      top: calc(var(--height) - 0.1rem);
+      top: calc(var(--header-height) - 0.1rem);
       right: 0;
     }
   }

@@ -5,6 +5,7 @@ import './router/AppRouter';
 
 // ----------------------------------------------------------------------- Pages
 import './pages/oauth/oauth.page';
+import './pages/home/Home.page';
 import './pages/project/project.page';
 import './pages/project/synth/synth.page';
 
@@ -51,3 +52,6 @@ import './visualizations/ClockLine/ClockLine';
 // ---------------------------------------------------------------------- Modals
 import './modals/CreateProjectModal/CreateProjectModal';
 import './modals/OpenProjectModal/OpenProjectModal';
+
+// ---------------------------------------------------------------------- Common
+import './common/ProjectList/ProjectList';

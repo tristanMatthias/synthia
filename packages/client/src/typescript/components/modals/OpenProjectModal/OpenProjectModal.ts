@@ -1,11 +1,10 @@
-import { EProject } from '@synthia/api';
-import { customElement, property } from 'lit-element';
+import { customElement } from 'lit-element';
 import { html } from 'lit-html';
 
 import { SElement } from '../../../types';
 import { Modal } from '../../ui/Modal/Modals';
 import styles from './open-project.styles';
-import { fileService } from '../../../lib/File/FileService';
+import { History } from '../../../lib/History';
 
 @customElement(SElement.modalOpenProject)
 export class OpenProjectModal extends Modal {
@@ -16,42 +15,22 @@ export class OpenProjectModal extends Modal {
   ]
 
   heading = 'Open a project';
-  projects: EProject[];
 
-  async connectedCallback() {
+  connectedCallback() {
     super.connectedCallback();
-    this.loading = true;
-    this.projects = await fileService.list();
-    this.loading = false;
-  }
+    const handleClose = () => {
+      this.close();
+      History.off('change', handleClose);
+    };
 
-  @property()
-  loading = false;
+    History.on('change', handleClose);
+  }
 
   render() {
     return html`
       ${this._renderHeader()}
       <main>
-        <h4>My projects</h4>
-
-        ${this.loading
-          ? html`<div class="loading">
-            <synthia-loading></synthia-loading>
-            <span>Loading projects…</span>
-          </div>`
-          : html`
-            <div class="projects">
-              ${this.projects.map((pj, i) => html`<a
-                title=${pj.name}
-                href=${`/project/${pj.id}`}
-                @click=${() => this.close()}
-                style="animation-delay: ${Math.log(i + 1) / 5}s"
-              ><synthia-card>
-                ${pj.name}
-                <synthia-from-now .time=${pj.createdAt}></synthia-from-now>
-              </synthia-card></a>`)}
-            </div>`
-        }
+        <synthia-project-list></synthia-project-list>
       </main>
       <aside>
         <h4>Learn</h4>

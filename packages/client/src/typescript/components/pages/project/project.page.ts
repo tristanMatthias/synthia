@@ -4,6 +4,7 @@ import { fileService } from '../../../lib/File/FileService';
 import { History } from '../../../lib/History';
 import { SElement } from '../../../types';
 import { Route, Router } from '../../layout/Router/Router';
+import { project } from '../../../lib/Project/Project';
 
 
 const templateSynth = `<synthia-page-synth>
@@ -56,6 +57,8 @@ export class PageProject extends Router {
   public set projectId(v : string) {
     this._projectId = v;
     this._load();
+    console.log('setting');
+
   }
 
 
@@ -69,6 +72,11 @@ export class PageProject extends Router {
       Loading…
     </div>`;
     else return root;
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    project.close();
   }
 
 

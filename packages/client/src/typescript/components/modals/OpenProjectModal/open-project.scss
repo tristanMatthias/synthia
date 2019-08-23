@@ -17,15 +17,6 @@
     display: block;
   }
 
-  .loading {
-    color: var(--color-line);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-  }
-
   main, footer, aside {
     position: relative;
     grid-column: span 1;
@@ -44,49 +35,5 @@
     text-transform: uppercase;
     color: var(--color-main);
     margin: 0;
-  }
-
-  synthia-from-now {
-    display: block;
-    font-size: 1.2rem;
-    color: var(--color-main);
-  }
-
-  .projects {
-    margin-top: 2rem;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: calc(var(--margin) * 2);
-
-    a {
-      text-decoration: none;
-      color: var(--color-text);
-      opacity: 0;
-      animation: slide-up ease-out 0.7s forwards;
-
-      &, synthia-card, * {
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        transition: all 0.07s;
-      }
-
-      &:hover synthia-card {
-        background: var(--color-hover);
-        color: var(--color-alt);
-      }
-    }
-  }
-}
-
-
-@keyframes slide-up {
-  from {
-    transform: translateY(2rem);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
   }
 }

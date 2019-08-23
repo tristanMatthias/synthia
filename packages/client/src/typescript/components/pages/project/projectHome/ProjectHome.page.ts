@@ -1,20 +1,18 @@
 import { customElement, html, LitElement } from 'lit-element';
 
+import { fileService } from '../../../../lib/File/FileService';
+import { Instrument } from '../../../../lib/Instruments/Instrument';
+import { MidiTrack } from '../../../../lib/MidiTrack/MIDITrack';
 import { project } from '../../../../lib/Project/Project';
 import { SElement } from '../../../../types';
 import styles from './project-home.styles';
-import { fileService } from '../../../../lib/File/FileService';
-import { MidiTrack } from '../../../../lib/MidiTrack/MIDITrack';
-import { Instrument } from '../../../../lib/Instruments/Instrument';
 
 @customElement(SElement.projectHomePage)
 export class PageProjectHome extends LitElement {
   notes = [];
   synth: Instrument;
 
-  static get styles() {
-    return [styles]
-  }
+  static styles = [styles];
 
   constructor() {
     super();
