@@ -62,8 +62,8 @@ export class PageSynth extends LitElement {
     project.on('loadedNewProject', () => {
       this.synth = project.instruments[this.synthId!] as Synth;
       this._generateNodesFromFile();
-    })
-
+    });
+    this.synth = project.instruments[this.synthId!] as Synth;
   }
 
   render() {
@@ -127,7 +127,7 @@ export class PageSynth extends LitElement {
     this._canvas.appendChild(root);
     this.prepend(this._canvas);
 
-    if (project.file) this._generateNodesFromFile();
+    if (this.synth) this._generateNodesFromFile();
 
     window.addEventListener('resize', () => {
       const newFS = parseInt(getComputedStyle(document.documentElement).fontSize || '10px');

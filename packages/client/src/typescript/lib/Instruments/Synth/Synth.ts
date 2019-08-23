@@ -26,6 +26,7 @@ export class Synth implements Instrument {
     });
 
     this.output.connect(ctx.destination);
+    this.setupConnections();
   }
 
   private get _waves() {
@@ -43,7 +44,12 @@ export class Synth implements Instrument {
     })
   }
 
-  connectNode(fromId: string, toId: string, update = true) {
+  connectNode(
+    fromId: string,
+    toId: string,
+    update = true,
+    save = true
+  ) {
     const from = this.nodes[fromId];
     if (!from) throw new Error(`Cannot find node with id ${fromId}`);
 
@@ -51,9 +57,8 @@ export class Synth implements Instrument {
     if (toId === 'root') {
       if (update) {
         from[0].connectedTo.push(toId);
-        fileService.saveSynth(this.synth);
+        if (save) fileService.saveSynth(this.synth);
       }
-      console.log('connected to synth');
 
       return from[1].connect(this.output);
     }
@@ -64,12 +69,12 @@ export class Synth implements Instrument {
     from[1].connect(to[1] as AudioNode);
     if (update) {
       from[0].connectedTo.push(toId);
-      fileService.saveSynth(this.synth);
+      if (save) fileService.saveSynth(this.synth);
     }
   }
 
 
-  disconnectNode(fromId: string, toId: string) {
+  disconnectNode(fromId: string, toId: string, save = true) {
     const from = this.nodes[fromId];
     if (!from) throw new Error(`Cannot find node with id ${fromId}`);
 
@@ -85,7 +90,7 @@ export class Synth implements Instrument {
     from[1].disconnect(to[1] as AudioNode);
     from[0].connectedTo = from[0].connectedTo.filter(n => n !== toId);
 
-    fileService.saveSynth(this.synth);
+    if (save) fileService.saveSynth(this.synth);
   }
 
 
@@ -115,7 +120,7 @@ export class Synth implements Instrument {
     // Disconnect other nodes connected to the deleted one
     Object.values(this.nodes)
       .filter(([n]) => n.connectedTo.includes(id))
-      .forEach(([n]) => this.disconnectNode(n.id, id));
+      .forEach(([n]) => this.disconnectNode(n.id, id, false));
 
     // Kill the audio
     node[1].disconnect();

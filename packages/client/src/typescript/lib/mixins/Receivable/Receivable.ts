@@ -38,8 +38,12 @@ export const ReceivableMixin = (superclass: new () => LitElement) =>
     //   }
     // }
 
-    disconnectedCallback() {
+    remove() {
       this.dispatchEvent(new CustomEvent(ReceivableEvents.removed));
+      super.remove();
+    }
+
+    disconnectedCallback() {
       // if (this.audioNode) this.audioNode.disconnect();
       super.disconnectedCallback();
     }

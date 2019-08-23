@@ -19,18 +19,14 @@ export const DeletableMixin = (superclass: new () => LitElement) =>
       window.addEventListener('keydown', this._deleteableKeyDown);
     }
 
-    disconnectedCallback() {
-      super.disconnectedCallback();
-
-      // Remove the synth node on deleting the component
-      this._synth.removeNode(this);
-    }
-
 
     private _deleteableKeyDown(e: KeyboardEvent) {
       if (e.code === 'Backspace' && this.selected) {
         e.preventDefault();
         this.remove();
+        // Remove the synth node on deleting the component
+        this._synth.removeNode(this);
+        this._synth.synth.removeNode(this.id);
         window.removeEventListener('keydown', this._deleteableKeyDown);
       }
     }

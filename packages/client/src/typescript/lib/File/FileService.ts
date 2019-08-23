@@ -19,9 +19,6 @@ export const fileService = new class FileService extends EventObject<FileService
   }
   public set file(v: EProject) {
     this._file = v;
-    console.log('here insidee set file');
-
-
     if (v) this.emit('loaded', v);
   }
 
@@ -41,10 +38,8 @@ export const fileService = new class FileService extends EventObject<FileService
   }
 
   async load(projectId: string) {
-    console.log('setting file...');
-
+    if (this.file && projectId === this.file.id) return;
     this.file = await API.loadProject(projectId);
-    console.log('setting after...');
   }
 
   async list() {
@@ -116,8 +111,6 @@ export const fileService = new class FileService extends EventObject<FileService
   }
 
   saveSynth(synth: ESynth) {
-    console.log(synth.nodes);
-
     return API.updateSynth({
       id: synth.id,
       nodes: synth.nodes as ESynthNodeInput[]

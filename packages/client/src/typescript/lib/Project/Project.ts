@@ -46,9 +46,8 @@ export const project = new class Project extends EventObject<ProjectEvents> {
 
   private _save() {
     if (!this.file) return false;
-    console.log(this.file.resources.synths);
-
-    // Object.values(this.instruments).forEach
+    // @ts-ignore
+    (Object.values(this.instruments) as Synth[]).forEach(i => fileService.saveSynth(i.synth.toJSON()));
     return fileService.save(this.file);
   }
 }()

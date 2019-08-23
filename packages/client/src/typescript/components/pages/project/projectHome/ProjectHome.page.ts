@@ -4,11 +4,13 @@ import { project } from '../../../../lib/Project/Project';
 import { SElement } from '../../../../types';
 import styles from './project-home.styles';
 import { fileService } from '../../../../lib/File/FileService';
-// import { MidiTrack } from '../../../../lib/MidiTrack/MIDITrack';
+import { MidiTrack } from '../../../../lib/MidiTrack/MIDITrack';
+import { Instrument } from '../../../../lib/Instruments/Instrument';
 
 @customElement(SElement.projectHomePage)
 export class PageProjectHome extends LitElement {
   notes = [];
+  synth: Instrument;
 
   static get styles() {
     return [styles]
@@ -16,8 +18,11 @@ export class PageProjectHome extends LitElement {
 
   constructor() {
     super();
-    fileService.on('loaded', () => this.requestUpdate());
-    // new MidiTrack(this.notes, {});
+    fileService.on('loaded', () => {
+      this.synth = Object.values(project.instruments)[0];
+      new MidiTrack(this.notes, this.synth);
+      this.requestUpdate()
+    });
   }
 
   render() {

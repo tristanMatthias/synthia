@@ -35,10 +35,10 @@ export class PianoRoll extends LitElement {
     const maxOctaves = 7;
     const keys: TemplateResult[] = [];
 
-    let octave = 1;
-    for (let i = 0; i < maxOctaves * 12; i++) {
+    let octave = maxOctaves;
+    for (let i = maxOctaves * 12; i > 0; i--) {
       const n = realNotesCShifted[i % 12];
-      if (n === 'A') octave += 1;
+      if (n === 'G#') octave -= 1;
       let o = octave;
 
       let className = n.length == 2 ? 'black' : 'white';
@@ -56,8 +56,8 @@ export class PianoRoll extends LitElement {
   }
 
 
-  private _addNote(e: MouseEvent)  {
-    const {top, left} = this.getBoundingClientRect()
+  private _addNote(e: MouseEvent) {
+    const { top, left } = this.getBoundingClientRect()
 
     const styles = getComputedStyle(this);
     const snapWidth = remToPx(parseInt(styles.getPropertyValue('--note-width')));
@@ -72,13 +72,29 @@ export class PianoRoll extends LitElement {
     const note = document.createElement(SElement.pianoRollNote);
     note.start = snapX / snapWidth;
     note.duration = 1;
+    const n = this.getNoteFromY(snapY);
+    note.note = n.note + n.octave;
     note.style.left = `${snapX + remToPx(8)}px`;
     note.style.top = `${snapY}px`;
 
-
+    this.getNoteFromY(snapY);
     this.notes.push(note.midiNote);
 
     this.appendChild(note);
+  }
+
+  getNoteFromY(y: number) {
+    const styles = getComputedStyle(this);
+    const noteHeight = remToPx(parseInt(styles.getPropertyValue('--note-height')));
+    const row = Math.floor(y / noteHeight);
+
+    let shifted = row - 1;
+    if (shifted == -1) shifted = 11;
+
+    return {
+      note: realNotesCShifted.slice().reverse()[shifted % 12],
+      octave: 6 - Math.floor((row - 4) / 12)
+    };
   }
 
 }

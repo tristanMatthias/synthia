@@ -80,7 +80,6 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
     }
 
     disconnectedCallback() {
-      this._synth.synth.removeNode(this.id);
       window.removeEventListener('keydown', this._connectableKeyDown);
       super.disconnectedCallback();
     }

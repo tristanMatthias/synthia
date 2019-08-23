@@ -3,6 +3,7 @@ import { SElement } from "../../../types";
 import { Position } from "../../../lib/mixins/Draggable/Draggable";
 import { remToPx } from "../../../lib/pxToRem";
 import { MidiNote } from "../../../lib/MidiTrack/MIDINote";
+import { stringToNoteAndOctave } from "../../../lib/Instruments/keyToFrequency";
 
 @customElement(SElement.pianoRollNote)
 export class PianoRollNote extends LitElement {
@@ -50,6 +51,15 @@ export class PianoRollNote extends LitElement {
   public set duration(v) {
     this._duration = v;
     this.midiNote.duration = v;
+  }
+
+  private _note : string;
+  public get note() { return this._note; }
+  public set note(v) {
+    this._note = v;
+    const [note, octave] = stringToNoteAndOctave(v)!;
+    this.midiNote.note = note;
+    this.midiNote.octave = octave;
   }
 
 
