@@ -16,12 +16,12 @@ export class WaveSidebar extends Sidebar {
 
   get _contents() {
     if (!this.wave) return null;
-    const model = this.wave.model!.properties;
+    const sn = this.wave.synthNode!.properties;
 
     return html`<form>
       <div class="form-row">
         <label>Type</label>
-        <select @change=${(e: any) => this.wave!.model!.properties.type = e.target.value}>
+        <select @change=${(e: any) => this.wave!.synthNode!.properties.type = e.target.value}>
           <option value="square">Square</option>
           <option value="sine">Sine</option>
           <option value="sawtooth">Saw Tooth</option>
@@ -32,7 +32,7 @@ export class WaveSidebar extends Sidebar {
         <synthia-dial
           min="0"
           max="5"
-          value=${model.delay}
+          value=${sn.delay}
           @change=${this._updateValue('delay')}
         /></synthia-dial>
       </div>
@@ -42,7 +42,7 @@ export class WaveSidebar extends Sidebar {
         <synthia-dial
           min="0"
           max="10"
-          value=${model.attack}
+          value=${sn.attack}
           @change=${this._updateValue('attack')}
         /></synthia-dial>
       </div>
@@ -52,7 +52,7 @@ export class WaveSidebar extends Sidebar {
         <synthia-dial
           min="0"
           max="1"
-          value=${model.attackLevel}
+          value=${sn.attackLevel}
           @change=${this._updateValue('attackLevel')}
         /></synthia-dial>
       </div>
@@ -62,7 +62,7 @@ export class WaveSidebar extends Sidebar {
         <synthia-dial
           min="0"
           max="20"
-          value=${model.decay}
+          value=${sn.decay}
           @change=${this._updateValue('decay')}
         /></synthia-dial>
       </div>
@@ -72,7 +72,7 @@ export class WaveSidebar extends Sidebar {
         <synthia-dial
           min="0"
           max="1"
-          value=${model.decayLevel}
+          value=${sn.decayLevel}
           @change=${this._updateValue('decayLevel')}
         /></synthia-dial>
       </div>
@@ -82,7 +82,7 @@ export class WaveSidebar extends Sidebar {
         <synthia-dial
           min="0"
           max="20"
-          value=${model.release}
+          value=${sn.release}
           @change=${this._updateValue('release')}
         /></synthia-dial>
       </div>
@@ -92,7 +92,7 @@ export class WaveSidebar extends Sidebar {
         <synthia-dial
           min="-24"
           max="24"
-          value=${model.pitch}
+          value=${sn.pitch}
           @change=${this._updateValue('pitch')}
         /></synthia-dial>
       </div>
@@ -102,7 +102,7 @@ export class WaveSidebar extends Sidebar {
         <synthia-dial
           min="0"
           max="1"
-          value=${model.gain}
+          value=${sn.gain}
           @change=${this._updateValue('gain')}
         /></synthia-dial>
       </div>
@@ -112,7 +112,7 @@ export class WaveSidebar extends Sidebar {
 
   private _updateValue(prop: Exclude<keyof ESynthiaProjectSynthNodeWave['properties'], 'type'>) {
     return (e: any) => {
-      this.wave!.model!.properties[prop] = parseFloat(e.target.value);
+      this.wave!.synthNode!.properties[prop] = parseFloat(e.target.value);
       this.requestUpdate();
     }
   }

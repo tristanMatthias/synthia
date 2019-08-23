@@ -1,16 +1,11 @@
-import {EProject} from '@synthia/api';
 import { css, customElement, html, LitElement } from 'lit-element';
+import { proxa } from 'proxa';
+
 import { API } from '../../lib/API/API';
-import { fileService } from '../../lib/File/FileService';
-import { model } from '../../lib/Model/Model';
+import { project } from '../../lib/Project/Project';
 import { AppState, state } from '../../state/state';
 import { SElement } from '../../types';
 import { ModalContainerEvents } from '../ui/Modal/ModalContainers';
-import {proxa} from 'proxa';
-
-export enum AppEvents {
-  loadProject = 'loadProject'
-}
 
 @customElement(SElement.app)
 export class App extends LitElement {
@@ -18,10 +13,10 @@ export class App extends LitElement {
     return [css`:host { display: block; transition: filter 0.3s; }`]
   }
 
-  model = model;
+
+  project = project;
   user: AppState['user']
   modal = document.querySelector(SElement.modalContainer)!;
-  globalTime: number = 0;
 
 
   constructor() {
@@ -31,8 +26,6 @@ export class App extends LitElement {
     });
     if (this.user.token) this._updateMe();
     else this.user.checked = true;
-
-    fileService.on('loaded', this.loadProject.bind(this));
   }
 
   connectedCallback() {
@@ -47,13 +40,6 @@ export class App extends LitElement {
 
   render() {
     return html`<slot></slot>`;
-  }
-
-  loadProject(file: EProject) {
-    this.model.loadNewFile(file);
-    this.dispatchEvent(new CustomEvent(AppEvents.loadProject, {
-      detail: {file, mode: this.model}
-    }))
   }
 
   logout() {

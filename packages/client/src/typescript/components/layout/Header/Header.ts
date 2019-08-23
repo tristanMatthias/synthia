@@ -4,10 +4,9 @@ import { proxa } from 'proxa';
 import { API_URL } from '../../../config';
 import { iconFacebook } from '../../../images/icons/facebook';
 import { logoMark } from '../../../images/icons/logo';
-import { model } from '../../../lib/Model/Model';
+import { project } from '../../../lib/Project/Project';
 import { AppState, state } from '../../../state/state';
 import { SElement } from '../../../types';
-import { AppEvents } from '../../App/App';
 import styles from './header.styles';
 
 export * from './ProjectName';
@@ -29,15 +28,17 @@ export class Header extends LitElement {
   constructor() {
     super();
     this.user = proxa(state.user, () => this.requestUpdate());
-    this.app.addEventListener(AppEvents.loadProject, () => this.requestUpdate())
+    project.on('loadedNewProject', () => {
+      this.requestUpdate()
+    });
   }
 
   render() {
     return html`<div class="wrapper">
       <div class="logo">${logoMark}</div>
 
-      ${model.file
-        ? state.user.data && state.user.data.id === model.file.creatorId
+      ${project.file
+        ? state.user.data && state.user.data.id === project.file.creatorId
           ? html`<header-project-owner></header-project-owner>`
           : html`<header-social></header-social>`
         : null

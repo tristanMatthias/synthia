@@ -1,6 +1,6 @@
 import { css, customElement, html, LitElement } from 'lit-element';
 
-import { model } from '../../../lib/Model/Model';
+import { project } from '../../../lib/Project/Project';
 import { FileBarOptions } from '../../ui/FileBar/FileBar';
 import { SElement } from '../../../types';
 import { fileService } from '../../../lib/File/FileService';
@@ -59,8 +59,15 @@ export class ProjectHeader extends LitElement {
     ]
   }
 
+  constructor() {
+    super();
+    project.on('loadedNewProject', () => {
+      this.requestUpdate()
+    });
+  }
+
   render() {
-    const file = model.file!;
+    const file = project.file!;
     return html`
       <project-name .value=${file.name}></project-name>
       <synthia-file-bar .options=${this._fileBarOptions}></synthia-file-bar>

@@ -1,12 +1,14 @@
 import { customElement, html, LitElement } from 'lit-element';
 
-import { model } from '../../../../lib/Model/Model';
+import { project } from '../../../../lib/Project/Project';
 import { SElement } from '../../../../types';
 import styles from './project-home.styles';
 import { fileService } from '../../../../lib/File/FileService';
+// import { MidiTrack } from '../../../../lib/MidiTrack/MIDITrack';
 
 @customElement(SElement.projectHomePage)
 export class PageProjectHome extends LitElement {
+  notes = [];
 
   static get styles() {
     return [styles]
@@ -15,24 +17,25 @@ export class PageProjectHome extends LitElement {
   constructor() {
     super();
     fileService.on('loaded', () => this.requestUpdate());
+    // new MidiTrack(this.notes, {});
   }
 
   render() {
-    if (!model.file) return html``;
+    if (!project.file) return html``;
 
     return html`
       <h4>Synths in this project</h4>
       <div class="synths">
-        ${model.file!.resources.synths.map((s, i) => html`<a
+        ${project.file!.resources.synths.map((s, i) => html`<a
           title=${s.name}
-          href=${`/project/${model.file!.id}/synth/${s.id}`}
+          href=${`/project/${project.file!.id}/synth/${s.id}`}
           style="animation-delay: ${Math.log(i + 1) / 5}s"
         ><synthia-card>
           ${s.name}
           <synthia-from-now .time=${s.createdAt}></synthia-from-now>
         </synthia-card></a>`)}
       </div>
-      <synthia-piano-roll></synthia-piano-roll>
+      <synthia-piano-roll .notes=${this.notes}></synthia-piano-roll>
     `
   }
 

@@ -1,16 +1,16 @@
 import { customElement, html, LitElement, property } from 'lit-element';
 
-import { ctx } from '../../../../lib/AudioContext';
+import { Synth } from '../../../../lib/Instruments/Synth/Synth';
 import { Selectable } from '../../../../lib/mixins/Selectable/Selectable';
-import { model } from '../../../../lib/Model/Model';
+import { project } from '../../../../lib/Project/Project';
 import { remToPx } from '../../../../lib/pxToRem';
 import { Storage, StorageKey } from '../../../../lib/Storage';
 import { SElement } from '../../../../types';
-import { AppEvents } from '../../../App/App';
 import { Canvas } from '../../../layout/Canvas/Canvas';
 import { Toaster } from '../../../ui/Toaster/Toaster';
-import { connectNode, createNode } from './createNode';
+import { connectComponentNode, createComponentNode } from './createComponentNode';
 import styles from './synth-page.styles';
+
 
 
 export enum SynthPageEvents {
@@ -26,16 +26,11 @@ export class PageSynth extends LitElement {
   static get styles() {
     return [styles]
   }
-
-  context = ctx;
-  input = this.context.createGain();
-
   private _selected: Selectable[] = [];
 
   @property()
   isDragging: boolean = false;
 
-  private readonly _app = document.querySelector(SElement.app)!;
   private _toaster: Toaster;
   private _canvas?: Canvas;
   private _clearing = false;
@@ -44,6 +39,7 @@ export class PageSynth extends LitElement {
 
 
   synthId?: string;
+  synth: Synth;
 
 
   private _isConnecting: boolean = false;
@@ -61,10 +57,13 @@ export class PageSynth extends LitElement {
   }
 
 
-  constructor() {
-    super();
-    // TODO: Dynamic synth selection
-    this.input.connect(this.context.destination);
+  connectedCallback() {
+    super.connectedCallback();
+    project.on('loadedNewProject', () => {
+      this.synth = project.instruments[this.synthId!] as Synth;
+      this._generateNodesFromFile();
+    })
+
   }
 
   render() {
@@ -113,8 +112,8 @@ export class PageSynth extends LitElement {
   }
 
   removeNode(node: HTMLElement) {
-    if (this._clearing || !model.file || !this.synthId) return false;
-    const synth = model.file.resources.synths.find(s => s.id === this.synthId)!;
+    if (this._clearing || !project.file || !this.synthId) return false;
+    const synth = project.file.resources.synths.find(s => s.id === this.synthId)!;
     synth.nodes = synth.nodes.filter(n => n.id !== node.id);
     return true;
   }
@@ -128,8 +127,7 @@ export class PageSynth extends LitElement {
     this._canvas.appendChild(root);
     this.prepend(this._canvas);
 
-    this._app.addEventListener(AppEvents.loadProject, this._generateNodesFromFile.bind(this));
-    if (this._app.model.file) this._generateNodesFromFile();
+    if (project.file) this._generateNodesFromFile();
 
     window.addEventListener('resize', () => {
       const newFS = parseInt(getComputedStyle(document.documentElement).fontSize || '10px');
@@ -147,21 +145,19 @@ export class PageSynth extends LitElement {
   }
 
   private _generateNodesFromFile() {
-    if (!model.file) return false;
+    if (!this.synth) return false;
+
     this._clearing = true;
     this._canvas!.clear();
     this._clearing = false;
 
-    // TODO: Select multiple synths
-    const synth = model.file.resources.synths[0];
-    if (synth) {
-      this.synthId = synth.id;
-      const nodes = synth.nodes;
+    const eles = Object.values(this.synth.nodes).map(([sn, an]) => {
+      const ele = createComponentNode(sn, an, true);
+      this._canvas!.appendChild(ele);
+      return ele;
+    });
 
-      // @ts-ignore
-      nodes.forEach(n => this._canvas.appendChild(createNode(n)))
-      nodes.forEach(connectNode);
-    }
+    (eles).forEach(connectComponentNode);
     this.isConnecting = false;
 
     return true;

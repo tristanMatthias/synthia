@@ -9,7 +9,7 @@ import styles from './root.styles';
 import { Waveform } from '../../visualizations/Waveform/Waveform';
 
 
-export class Root extends BaseNode<any> {
+export class Root extends BaseNode<any, any> {
 
   static get styles() {
     return [styles]
@@ -30,15 +30,9 @@ export class Root extends BaseNode<any> {
       </svg>`;
   }
 
-  constructor() {
-    super();
-    this.input.connect(this.output as AudioNode);
-    this.output.connect(this._synth.input);
-  }
-
   firstUpdated(props: Map<string, keyof Root>) {
     super.firstUpdated(props) ;
-    this.input.connect(
+    this._synth.synth.output.connect(
       (document.querySelector(`${SElement.waveform}.main`!) as Waveform).analyser!
     );
   }

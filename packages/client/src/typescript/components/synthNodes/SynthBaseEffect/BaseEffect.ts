@@ -15,6 +15,7 @@ import { Sidebar, SidebarEvents } from '../../layout/Sidebar/Sidebar';
 import { CircleMenuButton } from '../../ui/CircleMenu/CircleMenu';
 import { BaseNode } from '../SynthBaseNode/BaseNode';
 import styles from './base-effect.styles';
+import CompositeAudioNode from '../../../audioNodes/BaseNode';
 
 
 export interface NodeSidebar extends Sidebar {
@@ -22,7 +23,11 @@ export interface NodeSidebar extends Sidebar {
 }
 
 
-export class BaseEffectClass<SidebarType extends NodeSidebar, T extends object> extends BaseNode<T> {
+export class BaseEffectClass<
+  SidebarType extends NodeSidebar,
+  SN extends object,
+  AN extends AudioNode | CompositeAudioNode
+> extends BaseNode<SN, AN> {
 
   static get styles() {
     return [styles]

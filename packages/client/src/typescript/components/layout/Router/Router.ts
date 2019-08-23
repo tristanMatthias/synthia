@@ -71,7 +71,10 @@ export class Router extends LitElement {
       const { route, params, query } = await this._resolve(path, document.location.search);
 
       // Don't need to do anything as already on current page
-      if (this._currentRoute === route) return;
+      if (this._currentRoute === route) {
+        this._applyContextToElement(params, query);
+        return;
+      }
 
       if (this._currentPage) this._currentPage.remove();
 
@@ -81,27 +84,40 @@ export class Router extends LitElement {
         ele.classList.add('synthia-page');
         ele.innerHTML = (<RouteHTML>route).html;
 
-        if (route.applyContext !== false) {
-          if (ele.childElementCount !== 1) console.error('Can only apply context to html with one root element.');
-          Object.assign(ele.firstChild, params);
-          Object.assign(ele.firstChild, query);
-        }
-
       } else {
         ele = document.createElement((<RouteElement>route).element);
-        if (route.applyContext !== false) {
-          Object.assign(ele, params);
-          Object.assign(ele, query);
-        }
       }
-
-      if (route.enter) route.enter({ params, query }, ele);
 
       this._currentPage = ele;
       this._currentRoute = route;
+      this._applyContextToElement(params, query);
+
+      if (route.enter) route.enter({ params, query }, ele);
       if (this._appendTo) this._appendTo.appendChild(ele);
       else this.appendChild(ele);
     } catch (e) { }
+  }
+
+
+  private async _applyContextToElement(
+    params: object,
+    query: object
+  ) {
+    const r = this._currentRoute;
+    const ele = this._currentPage;
+
+    if (!r || !ele) throw new Error('Not initialized');
+
+    if (r.applyContext !== false) {
+      if ((<RouteHTML>r).html) {
+        if (ele.childElementCount !== 1) console.error('Can only apply context to html with one root element.');
+        Object.assign(ele.firstChild, params);
+        Object.assign(ele.firstChild, query);
+      } else {
+        Object.assign(ele, params);
+        Object.assign(ele, query);
+      }
+    }
   }
 
   render() {

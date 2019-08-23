@@ -11,7 +11,7 @@ interface ReverbOptions {
 }
 
 
-export class ReverbEffect extends CompositeAudioNode {
+export class SynthiaReverb extends CompositeAudioNode {
 
 
   private _decayTime: number;
@@ -118,10 +118,10 @@ export class ReverbEffect extends CompositeAudioNode {
 
 declare global {
   interface AudioContext {
-    createReverb(options?: ReverbOptions): ReverbEffect
+    createReverb(options?: ReverbOptions): SynthiaReverb
   }
   interface OfflineAudioContext {
-    createReverb(options?: ReverbOptions): ReverbEffect
+    createReverb(options?: ReverbOptions): SynthiaReverb
   }
 }
 
@@ -129,5 +129,5 @@ declare global {
 // Inject the new class into AudioContext prototype.
 AudioCtx.prototype.createReverb =
   OfflineAudioCtx.prototype.createReverb = function (options: ReverbOptions) {
-    return new ReverbEffect(this as AudioContext | OfflineAudioContext, options);
+    return new SynthiaReverb(this as AudioContext | OfflineAudioContext, options);
   };

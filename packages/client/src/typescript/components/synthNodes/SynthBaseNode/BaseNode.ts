@@ -5,22 +5,21 @@ import { ctx } from '../../../lib/AudioContext';
 import { SElement } from '../../../types';
 import { proxa } from 'proxa';
 
-export class BaseNode<T extends object> extends LitElement {
+export class BaseNode<SN extends object, AN extends AudioNode | CompositeAudioNode> extends LitElement {
 
   protected _synth = document.querySelector(SElement.synthPage)!;
   protected readonly _ctx = ctx;
   protected _toaster = document.querySelector(SElement.toaster)!;
 
-  input: AudioNode | CompositeAudioNode = this._ctx.createGain();
-  output: AudioNode | CompositeAudioNode = this._ctx.createGain();
+  audioNode: AN;
 
-  _model?: T;
-  get model() {
-    return this._model;
+  protected _synthNode?: SN;
+  get synthNode() {
+    return this._synthNode;
   }
-  set model(m: T | undefined) {
-    if (m && m !== this._model) {
-      this._model = proxa(m, () => {
+  set synthNode(sn: SN | undefined) {
+    if (sn && sn !== this._synthNode) {
+      this._synthNode = proxa(sn, () => {
         this._updateValues();
       });
       this._updateValues();

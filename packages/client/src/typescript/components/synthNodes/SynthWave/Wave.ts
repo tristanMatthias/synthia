@@ -1,4 +1,4 @@
-import {ESynthiaProjectSynthNodeWave} from '@synthia/api';
+import { ESynthiaProjectSynthNodeWave } from '@synthia/api';
 import { html, query } from 'lit-element';
 
 import { SynthiaWave } from '../../../audioNodes/Wave';
@@ -16,7 +16,6 @@ import { SelectableEvents, SelectableMixin } from '../../../lib/mixins/Selectabl
 import { SElement } from '../../../types';
 import { SidebarEvents } from '../../layout/Sidebar/Sidebar';
 import { CircleMenuButton } from '../../ui/CircleMenu/CircleMenu';
-import { Keyboard, SynthiaKeyboardEvent } from '../../visualizations/Keyboard/Keyboard';
 import { BaseNode } from '../SynthBaseNode/BaseNode';
 import styles from './wave.styles';
 import { WaveSidebar } from './WaveSidebar/WaveSidebar';
@@ -28,7 +27,7 @@ const icons = {
   square: iconWaveSquare,
 }
 
-export class Wave extends BaseNode<ESynthiaProjectSynthNodeWave> {
+export class Wave extends BaseNode<ESynthiaProjectSynthNodeWave, SynthiaWave> {
 
   static get styles() {
     return [styles]
@@ -40,20 +39,17 @@ export class Wave extends BaseNode<ESynthiaProjectSynthNodeWave> {
 
 
   multipleConnections = true;
-  output: SynthiaWave;
+  audioNode: SynthiaWave;
 
   private _sidebar: WaveSidebar | null = null;
 
-  keyboard: Keyboard = document.querySelector(SElement.keyboard)!;
-
-
   get buttons(): CircleMenuButton[] {
-    if (!this.model) return [];
-    const action = (type: OscillatorType) => () => this.model!.properties.type = type;
+    if (!this.synthNode) return [];
+    const action = (type: OscillatorType) => () => this.synthNode!.properties.type = type;
     return [
-      { text: 'Square wave', icon: icons.square, action: action('square'), active: this.model!.properties.type === 'square' },
-      { text: 'Sine wave', icon: icons.sine, action: action('sine'), active: this.model!.properties.type === 'sine' },
-      { text: 'Sawtooth wave', icon: icons.sawtooth, action: action('sawtooth'), active: this.model!.properties.type === 'sawtooth' },
+      { text: 'Square wave', icon: icons.square, action: action('square'), active: this.synthNode!.properties.type === 'square' },
+      { text: 'Sine wave', icon: icons.sine, action: action('sine'), active: this.synthNode!.properties.type === 'sine' },
+      { text: 'Sawtooth wave', icon: icons.sawtooth, action: action('sawtooth'), active: this.synthNode!.properties.type === 'sawtooth' },
       // @ts-ignore From Connectable
       { text: 'Connect', icon: iconConnect, action: () => this._startConnect(), color: 'text' },
     ]
@@ -65,33 +61,31 @@ export class Wave extends BaseNode<ESynthiaProjectSynthNodeWave> {
 
 
   protected _updateValues() {
-    const m = this.model!;
-    this.output.type = m.properties.type;
-    this.output.delay = m.properties.delay;
-    this.output.attack = m.properties.attack;
-    this.output.attackLevel = m.properties.attackLevel;
-    this.output.decay = m.properties.decay;
-    this.output.decayLevel = m.properties.decayLevel;
-    this.output.release = m.properties.release;
-    this.output.pitch = m.properties.pitch;
-    this.output.gain.value = m.properties.gain;
+    const m = this.synthNode!;
+    this.audioNode.type = m.properties.type;
+    this.audioNode.delay = m.properties.delay;
+    this.audioNode.attack = m.properties.attack;
+    this.audioNode.attackLevel = m.properties.attackLevel;
+    this.audioNode.decay = m.properties.decay;
+    this.audioNode.decayLevel = m.properties.decayLevel;
+    this.audioNode.release = m.properties.release;
+    this.audioNode.pitch = m.properties.pitch;
+    this.audioNode.gain = m.properties.gain;
     this.requestUpdate();
   }
 
   constructor() {
     super();
-    this._play = this._play.bind(this);
-    this._stop = this._stop.bind(this);
     this.addEventListener(ConnectableEvents.connectingRotate, (e: CustomEventInit) => {
       this.background!.style.transform = `rotate(${e.detail.angle + 90}deg)`
     });
-    this.output = this._ctx.createSynthiaWave();
+    this.audioNode = this._ctx.createSynthiaWave();
   }
 
   render() {
-    if (!this.model) return html``;
+    if (!this.synthNode) return html``;
     // @ts-ignore
-    const icon = icons[this.model.properties.type];
+    const icon = icons[this.synthNode.properties.type];
     return html`
       <div class="background"> ${iconWave} </div>
       <div class="icon">${icon}</div>
@@ -102,18 +96,10 @@ export class Wave extends BaseNode<ESynthiaProjectSynthNodeWave> {
     super.firstUpdated(props);
     this.addEventListener('dblclick', () => this.toggleSidebar());
     this.addEventListener(SelectableEvents.deselected, () => this.toggleSidebar(true));
-    this.keyboard!.addEventListener(SynthiaKeyboardEvent.play, this._play);
-    this.keyboard!.addEventListener(SynthiaKeyboardEvent.stop, this._stop);
-    window.addEventListener('blur', this._stop);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    if (this.keyboard){
-      this.keyboard.removeEventListener(SynthiaKeyboardEvent.stop, this._stop);
-      this.keyboard.removeEventListener(SynthiaKeyboardEvent.play, this._play);
-    }
-    window.removeEventListener('blur', this._stop);
     this.toggleSidebar(true);
   }
 
@@ -131,14 +117,6 @@ export class Wave extends BaseNode<ESynthiaProjectSynthNodeWave> {
       this._synth.appendChild(sidebar);
       this._sidebar = sidebar;
     }
-  }
-
-
-  private _play(e: CustomEventInit) {
-    this.output.play(e.detail)
-  }
-  private _stop(e: CustomEventInit) {
-    this.output.stop(e.detail)
   }
 }
 

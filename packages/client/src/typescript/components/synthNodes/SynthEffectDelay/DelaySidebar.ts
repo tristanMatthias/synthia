@@ -16,7 +16,7 @@ export class DelaySidebar extends Sidebar implements NodeSidebar {
 
   get _contents() {
     if (!this.input) return null;
-    const props = this.input.model!.properties;
+    const props = this.input.synthNode!.properties;
 
     return html`<form>
       <div class="form-row">
@@ -48,7 +48,7 @@ export class DelaySidebar extends Sidebar implements NodeSidebar {
   private _updateValue(prop: any) {
     return (e: any) => {
       // @ts-ignore
-      this.input!.model.properties[prop] = e.target.value;
+      this.input!.synthNode.properties[prop] = e.target.value;
       this.requestUpdate();
     }
   }

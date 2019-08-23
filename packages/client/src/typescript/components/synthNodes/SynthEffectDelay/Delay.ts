@@ -1,4 +1,5 @@
-import {ESynthiaProjectSynthNodeDelay} from '@synthia/api';
+import { ESynthiaProjectSynthNodeDelay } from '@synthia/api';
+
 import { SynthiaDelay } from '../../../audioNodes/Delay';
 import { iconEffectDelay } from '../../../images/icons/effectDelay';
 import { SElement } from '../../../types';
@@ -7,23 +8,18 @@ import { DelaySidebar } from './DelaySidebar';
 
 export * from './DelaySidebar';
 
-export class Delay extends BaseEffectClass<DelaySidebar, ESynthiaProjectSynthNodeDelay> {
+export class Delay extends BaseEffectClass<DelaySidebar, ESynthiaProjectSynthNodeDelay, SynthiaDelay> {
 
-  delay: SynthiaDelay = new SynthiaDelay(this._ctx);
   multipleConnections = false;
-  output = this.delay;
-  input = this.delay;
-
 
   protected _sidebarType = SElement.delaySidebar;
   protected _icon = iconEffectDelay;
 
-
   protected _updateValues() {
-    const m = this.model!;
-    this.output.delayTime.value = m.properties.delayTime;
-    this.output.feedback.value = m.properties.feedback;
-    this.output.dryWet = m.properties.dryWet;
+    const m = this.synthNode!;
+    this.audioNode.delayTime.value = m.properties.delayTime;
+    this.audioNode.feedback.value = m.properties.feedback;
+    this.audioNode.dryWet = m.properties.dryWet;
     this.requestUpdate();
   }
 }

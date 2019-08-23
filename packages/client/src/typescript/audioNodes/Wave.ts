@@ -139,10 +139,10 @@ export class SynthiaWave extends CompositeAudioNode {
   }
 
 
-  stop(freq?: number) {
+  triggerRelease(freq?: number) {
     // Stop all frequencies if none supplied
     if (freq === undefined) {
-      Array.from(this._notes.keys()).forEach(f => this.stop(f));
+      Array.from(this._notes.keys()).forEach(f => this.triggerRelease(f));
       return;
     }
 

@@ -1,7 +1,7 @@
 import { LitElement } from 'lit-element';
 
 import { SElement } from '../../../types';
-import { model } from '../../Model/Model';
+import { project } from '../../Project/Project';
 
 export interface InitialPosition {
   x: number | string,
@@ -79,7 +79,7 @@ export const DraggableMixin = (superclass: new () => LitElement) =>
       const canvasBox = document.querySelector(SElement.canvas)!.getBoundingClientRect() as DOMRect;
       const box = this.getBoundingClientRect() as DOMRect;
       // @ts-ignore
-      if (this.model) this.model.position = {
+      if (this.synthNode) this.synthNode.position = {
         x: (box.x + Math.abs(canvasBox.x)) / canvasBox.width * 100,
         y: (box.y + Math.abs(canvasBox.y)) / canvasBox.height * 100
       }
@@ -101,7 +101,7 @@ export const DraggableMixin = (superclass: new () => LitElement) =>
       this._dragOffsetPosition = { x: 0, y: 0 };
       window.removeEventListener('mousemove', this._drag);
       window.removeEventListener('mouseup', this._dragEnd);
-      model.save();
+      project.save();
     }
 
     private _drag(e: MouseEvent) {

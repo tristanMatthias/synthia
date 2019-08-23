@@ -1,6 +1,6 @@
 import {LitElement, property, html, customElement, query, css} from 'lit-element';
 import { Input } from '../../ui/Input/Input';
-import { model } from '../../../lib/Model/Model';
+import { project } from '../../../lib/Project/Project';
 
 @customElement('project-name')
 export class ProjectName extends LitElement {
@@ -85,8 +85,8 @@ export class ProjectName extends LitElement {
 
     if (this._input.value && this._input.value !== this.value) {
       this.value = this._input!.value!;
-      model.file!.name = this.value;
-      model.save();
+      project.file!.name = this.value;
+      project.save();
     }
     this.editing = false;
   }

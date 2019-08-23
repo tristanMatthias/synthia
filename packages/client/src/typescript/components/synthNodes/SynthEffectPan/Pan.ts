@@ -9,16 +9,13 @@ import { PanSidebar } from './PanSidebar';
 
 export * from './PanSidebar';
 
-export class Pan extends BaseEffectClass<PanSidebar, ESynthiaProjectSynthNodePan> {
+export class Pan extends BaseEffectClass<PanSidebar, ESynthiaProjectSynthNodePan, StereoPannerNode> {
 
-  panner = this._ctx.createStereoPanner();
   multipleConnections = false;
-  output = this.panner;
-  input = this.panner;
 
   protected _updateValues() {
-    const m = this.model!;
-    this.output.pan.value = m.properties.pan;
+    const m = this.synthNode!;
+    this.audioNode.pan.value = m.properties.pan;
     this.requestUpdate();
   }
 
@@ -43,7 +40,7 @@ export class Pan extends BaseEffectClass<PanSidebar, ESynthiaProjectSynthNodePan
     const size = remToPx(12);
     const ctx = this.shadowRoot!.querySelector('canvas')!.getContext('2d')!;
     const lineWidth = 6;
-    const perc = (this.model!.properties.pan + 1) / 2;
+    const perc = (this.synthNode!.properties.pan + 1) / 2;
     const offsetDeg = 17; // Creates the curved look
     const start = (180 - offsetDeg) / (180 / Math.PI);
     const end = (360 + offsetDeg) / (180 / Math.PI);

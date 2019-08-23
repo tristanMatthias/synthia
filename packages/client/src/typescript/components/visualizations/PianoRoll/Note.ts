@@ -2,9 +2,11 @@ import { LitElement, css, customElement, html } from "lit-element";
 import { SElement } from "../../../types";
 import { Position } from "../../../lib/mixins/Draggable/Draggable";
 import { remToPx } from "../../../lib/pxToRem";
+import { MidiNote } from "../../../lib/MidiTrack/MIDINote";
 
 @customElement(SElement.pianoRollNote)
 export class PianoRollNote extends LitElement {
+
   static get styles() {
     return [css`
       :host {
@@ -33,15 +35,31 @@ export class PianoRollNote extends LitElement {
     `]
   }
 
-  start: number;
-  duration: number;
+  midiNote: MidiNote;
+
+
+  private _start : number;
+  public get start() { return this._start; }
+  public set start(v) {
+    this._start = v;
+    this.midiNote.start = v;
+  }
+
+  private _duration : number;
+  public get duration() { return this._duration; }
+  public set duration(v) {
+    this._duration = v;
+    this.midiNote.duration = v;
+  }
+
 
   private _mouseStart?: Position;
   private _dragType: 'drag' | 'resizeLeft' | 'resizeRight' | null = null;
-  private _dragStartPosition: {start: number, duration: number} | null = null;
+  private _dragStartPosition: { start: number, duration: number } | null = null;
 
   constructor() {
     super();
+    this.midiNote = new MidiNote(0, 0);
     this._handleDrag = this._handleDrag.bind(this);
     this._stopDrag = this._stopDrag.bind(this);
   }
@@ -63,7 +81,7 @@ export class PianoRollNote extends LitElement {
     const { left, width } = this.getBoundingClientRect();
     const x = e.x - left;
     this._mouseStart = { x: e.x, y: e.y };
-    this._dragStartPosition = {start: this.start, duration: this.duration};
+    this._dragStartPosition = { start: this.start, duration: this.duration };
 
     let handle = 5;
 

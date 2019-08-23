@@ -9,7 +9,10 @@ export default class CompositeAudioNode {
   }
 
   get gain() {
-    return this._output.gain;
+    return this._output.gain.value;
+  }
+  set gain(v: number) {
+    this._output.gain.value = v;
   }
 
   constructor(

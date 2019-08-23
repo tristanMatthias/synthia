@@ -6,7 +6,7 @@ import { pxToRem, remToPx } from '../../pxToRem';
 import { DraggableEvents, Position } from '../Draggable/Draggable';
 import { Receivable, ReceivableEvents } from '../Receivable/Receivable';
 import { SynthPageEvents } from '../../../components/pages/project/synth/synth.page';
-import { model } from '../../Model/Model';
+import { project } from '../../Project/Project';
 
 
 export enum ConnectableEvents {
@@ -24,10 +24,8 @@ export interface Connectable {
 export const ConnectableMixin = (superclass: new () => LitElement) =>
   class Connectable extends superclass implements Connectable {
 
-    // @ts-ignore Defined in superclass
-    output: AudioNode;
-
     multipleConnections?: boolean;
+    audioNode: AudioNode;
 
     private _synth = document.querySelector(SElement.synthPage)!;
     private _toaster = document.querySelector(SElement.toaster)!;
@@ -35,6 +33,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
     private _connectedTo: Receivable[] = [];
     private _connecting: boolean = false;
     private _mousePos: Position | null = null;
+
 
     constructor() {
       super();
@@ -81,10 +80,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
     }
 
     disconnectedCallback() {
-      if (this.output) {
-        this._connectedTo.forEach(this.disconnectFrom.bind(this));
-        this.output.disconnect();
-      }
+      this._synth.synth.removeNode(this.id);
       window.removeEventListener('keydown', this._connectableKeyDown);
       super.disconnectedCallback();
     }
@@ -96,7 +92,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
       if (!this._connectedTo.includes(item)) {
         this._connectedTo.push(item);
         // @ts-ignore
-        this.model.connectedTo = this._connectedTo.map(ele => ele.id);
+        this.synthNode.connectedTo = this._connectedTo.map(ele => ele.id);
 
         // Wait for the new waveform to exist
         await this.requestUpdate();
@@ -105,8 +101,8 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
           `${SElement.waveform}:nth-of-type(${this._connectedTo.length})`
         ) as Waveform;
 
-        this.output.connect(wf.input!);
-        this.output.connect(item.input as AudioNode);
+        this.audioNode.connect(wf.input!);
+        this._synth.synth.connectNode(this.id, item.id);
 
         wf.connectedTo = item;
         wf.connectedFrom = this as Connectable;
@@ -114,7 +110,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
         this.dispatchEvent(new CustomEvent(ConnectableEvents.newConnection, {
           detail: wf
         }));
-        model.save();
+        project.save();
 
         item.addEventListener(DraggableEvents.dragged, this._updateWaveforms);
         item.addEventListener(ReceivableEvents.removed, () => this.disconnectFrom(item))
@@ -129,12 +125,9 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
     async disconnectFrom(item: Receivable) {
       const index = this._connectedTo.indexOf(item);
       if (index < 0) return false;
-      if (this.output) item.disconnect(this.output);
+      this._synth.synth.disconnectNode(this.id, item.id);
       this._connectedTo.splice(index, 1);
-      // @ts-ignore
-      this.model!.connectedTo = this._connectedTo.map(ele => ele.id).filter(id => id !== item.id);
       this.requestUpdate();
-      model.save();
       return true;
     }
 

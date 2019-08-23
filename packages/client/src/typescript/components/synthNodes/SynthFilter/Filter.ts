@@ -40,34 +40,30 @@ const icons = {
   notch: iconFilterNotch,
   peaking: iconFilterPeaking,
 }
-export class Filter extends BaseNode<ESynthiaProjectSynthNodeFilter> {
+export class Filter extends BaseNode<ESynthiaProjectSynthNodeFilter, BiquadFilterNode> {
 
   static get styles() {
     return [styles]
   }
 
   protected _updateValues() {
-    const m = this.model!;
-    this.output.type = m.properties.type;
-    this.output.Q.value = m.properties.q;
-    this.output.frequency.value = m.properties.frequency;
-    this.output.gain.value = m.properties.gain;
+    const m = this._synthNode!;
+    this.audioNode.type = m.properties.type;
+    this.audioNode.Q.value = m.properties.q;
+    this.audioNode.frequency.value = m.properties.frequency;
+    this.audioNode.gain.value = m.properties.gain;
     this.requestUpdate();
   }
 
-  filter: BiquadFilterNode = this._ctx.createBiquadFilter();
   multipleConnections = false;
-  output = this.filter;
-  input = this.filter;
-
 
   private _sidebar: FilterSidebar | null = null;
   private _startConnect() { return true; }
 
 
   get buttons(): CircleMenuButton[] {
-    const action = (type: BiquadFilterType) => () => this.model!.properties.type = type;
-    const t = this.model!.properties.type;
+    const action = (type: BiquadFilterType) => () => this.synthNode!.properties.type = type;
+    const t = this.synthNode!.properties.type;
 
     return [
       { text: 'All Pass', icon: icons.allpass, action: action('allpass'), active: t == 'allpass' },
@@ -98,7 +94,7 @@ export class Filter extends BaseNode<ESynthiaProjectSynthNodeFilter> {
 
   render() {
     // @ts-ignore
-    const icon = icons[this.model!.properties.type];
+    const icon = icons[this.synthNode!.properties.type];
     return html`
       <canvas width="${remToPx(12)}px" height="${remToPx(12)}px"></canvas>
       <div class="background"> ${iconFilter} </div>
@@ -155,7 +151,7 @@ export class Filter extends BaseNode<ESynthiaProjectSynthNodeFilter> {
     const ctx = this.shadowRoot!.querySelector('canvas')!.getContext('2d')!;
     const maxFreq = 24000;
     const lineWidth = 6;
-    let perc = this.model!.properties.frequency / maxFreq;
+    let perc = this.synthNode!.properties.frequency / maxFreq;
     perc = Math.log(perc) / Math.log(maxFreq);
     if (perc == -1) perc = -0.999999;
 

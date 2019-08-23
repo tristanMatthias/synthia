@@ -6,7 +6,7 @@ export interface Receivable extends LitElement {
   disconnect(audioNode: AudioNode): boolean;
 
   canReceive: boolean;
-  input: AudioNode | CompositeAudioNode;
+  audioNode: AudioNode | CompositeAudioNode;
 }
 
 
@@ -18,29 +18,29 @@ export enum ReceivableEvents {
 export const ReceivableMixin = (superclass: new () => LitElement) =>
   class Receivable extends superclass implements Receivable {
     canReceive = true;
-    input?: AudioNode
+    audioNode?: AudioNode
 
-    connect(node: AudioNode) {
-      if (!this.input) throw new Error('No input audio node');
-      node.connect(this.input);
-      return true;
-    }
+    // connect(node: AudioNode) {
+    //   if (!this.audioNode) throw new Error('No audio node');
+    //   node.connect(this.audioNode);
+    //   return true;
+    // }
 
-    disconnect(node: AudioNode) {
-      if (!this.input) throw new Error('No input audio node');
+    // disconnect(node: AudioNode) {
+    //   if (!this.audioNode) throw new Error('No audio node');
 
-      try {
-        node.disconnect(this.input);
-        return true;
-      } catch (e) {
-        // Not connected
-        return false;
-      }
-    }
+    //   try {
+    //     node.disconnect(this.audioNode);
+    //     return true;
+    //   } catch (e) {
+    //     // Not connected
+    //     return false;
+    //   }
+    // }
 
     disconnectedCallback() {
       this.dispatchEvent(new CustomEvent(ReceivableEvents.removed));
-      if (this.input) this.input.disconnect();
+      // if (this.audioNode) this.audioNode.disconnect();
       super.disconnectedCallback();
     }
   }

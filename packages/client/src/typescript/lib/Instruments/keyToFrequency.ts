@@ -2,11 +2,11 @@ export const realNotes = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 
 export const realNotesCShifted = [...realNotes.slice(3), ...realNotes.slice(0, 3)];
 
 /**
- * Maps the keyboard note to a frequency
+ * Maps the keyboard note to a piano note
  * @param key Keyboard keycode
  * @param octave Octave number
  */
-export const keyToFrequency = (key: string, octave: number) => {
+export const keyToNote = (key: string, octave: number) => {
   const up = key.toUpperCase();
   let note: string | false = false;
   let oct = octave;
@@ -37,8 +37,20 @@ export const keyToFrequency = (key: string, octave: number) => {
     oct += 1;
   }
 
-  if (!note) return false;
-  else return noteToFrequency(note, oct);
+  if (!note) return null;
+  else return { note, octave: oct };
+}
+
+/**
+ * Maps the keyboard note to a frequency
+ * @param key Keyboard keycode
+ * @param octave Octave number
+ */
+export const keyToFrequency = (key: string, octave: number) => {
+  const noteOct = keyToNote(key, octave);
+
+  if (!noteOct) return false;
+  else return noteToFrequency(noteOct.note, noteOct.octave);
 }
 
 
@@ -59,5 +71,12 @@ export const noteToFrequency = function (realNote: string, octave: number) {
 export const frequencyToNote = (f: number) => {
   const keyNumber = 12 * Math.log2(f / 440) + 49 - 1;
   const octave = Math.floor(keyNumber / 12) + 1;
-  return {note: realNotes[Math.floor(keyNumber % 12)], octave};
+  return { note: realNotes[Math.floor(keyNumber % 12)], octave };
+}
+
+
+export const stringToNoteAndOctave = (note: string): [string, number] | null => {
+  const result = /^([\w#]{1,2})(\d+)$/.exec(note);
+  if (!result) return null;
+  return [result[1], parseInt(result[2])]
 }

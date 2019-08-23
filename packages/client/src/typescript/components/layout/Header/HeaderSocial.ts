@@ -1,6 +1,6 @@
 import { css, customElement, html, LitElement } from 'lit-element';
 
-import { model } from '../../../lib/Model/Model';
+import { project } from '../../../lib/Project/Project';
 
 @customElement('header-social')
 export class SocialHeader extends LitElement {
@@ -47,7 +47,7 @@ export class SocialHeader extends LitElement {
   ]
 
   render() {
-    const file = model.file!;
+    const file = project.file!;
     return html`
       <img src=${file.creator.socialPic} />
       <span class="name">

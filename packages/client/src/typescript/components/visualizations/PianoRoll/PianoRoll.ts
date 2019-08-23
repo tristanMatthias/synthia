@@ -1,11 +1,12 @@
 import { customElement, html, LitElement, TemplateResult } from 'lit-element';
 
-import { realNotesCShifted } from '../../../lib/keyToFrequency';
+import { realNotesCShifted } from '../../../lib/Instruments/keyToFrequency';
 import { SElement } from '../../../types';
 import styles from './piano-roll.styles';
 import { remToPx } from '../../../lib/pxToRem';
 import { Clock } from '../../../lib/Clock';
 import debounce = require('lodash.debounce');
+import { MidiNote } from '../../../lib/MidiTrack/MIDINote';
 
 export * from './Note';
 
@@ -14,6 +15,8 @@ export class PianoRoll extends LitElement {
   static get styles() {
     return [styles]
   }
+
+  notes: MidiNote[];
 
   connectedCallback() {
     super.connectedCallback();
@@ -71,6 +74,9 @@ export class PianoRoll extends LitElement {
     note.duration = 1;
     note.style.left = `${snapX + remToPx(8)}px`;
     note.style.top = `${snapY}px`;
+
+
+    this.notes.push(note.midiNote);
 
     this.appendChild(note);
   }

@@ -3,9 +3,9 @@ import { html, LitElement } from 'lit-element';
 import { DraggableMixin, InitialPosition } from '../../../lib/mixins/Draggable/Draggable';
 import { mix } from '../../../lib/mixins/mix';
 import { SElement } from '../../../types';
-import { ElementToFileNodeType } from '../../pages/project/synth/createNode';
+import { ElementToFileNodeType, createComponentNode } from '../../pages/project/synth/createComponentNode';
 import styles from './canvas.styles';
-import { model } from '../../../lib/Model/Model';
+import { project } from '../../../lib/Project/Project';
 
 
 export class Canvas extends LitElement {
@@ -46,28 +46,20 @@ export class Canvas extends LitElement {
   }
 
   private _handleDrop(e: DragEvent) {
-    if (!model.file || !this._synth.synthId) return false;
+    if (!project.file || !this._synth.synthId) return false;
 
     let { x, y, width, height } = this.getBoundingClientRect() as DOMRect;
 
     const xPerc = (Math.abs(x) + e.clientX - 60) / width * 100;
     const yPerc = (Math.abs(y) + e.clientY - 60) / height * 100;
-    // const yPerc = pxToRem(Math.abs(y) + e.clientY - 60);
     const type = e.dataTransfer!.getData('type')! as keyof typeof ElementToFileNodeType;
 
-    const object = document.createElement(type);
-    const oModel = model.createSynthNode(this._synth.synthId, xPerc, yPerc, ElementToFileNodeType[type]!);
-    // @ts-ignore
-    object.model = oModel;
-    object.id = oModel!.id;
+    const {synthNode, audioNode} = this._synth.synth.createNode(
+      xPerc, yPerc,
+      ElementToFileNodeType[type]!
+    );
 
-    // @ts-ignore
-    object.x = xPerc;
-    // @ts-ignore
-    object.y = yPerc;
-    this.appendChild(object);
-
-    return object;
+    return this.appendChild(createComponentNode(synthNode, audioNode));
   }
 }
 

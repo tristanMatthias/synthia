@@ -61,7 +61,6 @@
     "proxa": "^1.1.0",
     "query-string": "^6.8.2",
     "raw-loader": "^3.1.0",
-    "rxjs": "^6.5.2",
     "shortid": "^2.2.14",
     "universal-router": "^8.2.1",
     "uuid": "^3.3.2",

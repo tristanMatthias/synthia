@@ -48,7 +48,16 @@ export class PageProject extends Router {
   ];
 
   routes = ROUTES;
-  projectId: string;
+
+  private _projectId : string;
+  public get projectId() : string {
+    return this._projectId;
+  }
+  public set projectId(v : string) {
+    this._projectId = v;
+    this._load();
+  }
+
 
   @property({ reflect: true, type: Boolean })
   private loading = true;
@@ -62,7 +71,8 @@ export class PageProject extends Router {
     else return root;
   }
 
-  async firstUpdated() {
+
+  private async _load() {
     try {
       await fileService.load(this.projectId);
       this.loading = false;
