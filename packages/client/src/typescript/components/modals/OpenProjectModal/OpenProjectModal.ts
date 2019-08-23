@@ -33,10 +33,10 @@ export class OpenProjectModal extends Modal {
         <synthia-project-list></synthia-project-list>
       </main>
       <aside>
-        <h4>Learn</h4>
+        <s-text type="h4">Learn</s-text>
       </aside>
       <footer>
-        <h4>Explore</h4>
+        <s-text type="h4">Explore</s-text>
       </footer>
     `;
   }

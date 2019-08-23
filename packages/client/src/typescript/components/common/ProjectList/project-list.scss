@@ -3,6 +3,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: calc(var(--margin) * 2);
+  position: relative;
 
   .loading {
     color: var(--color-line);
@@ -13,12 +14,7 @@
     text-align: center;
   }
 
-  h4 {
-    font-weight: normal;
-    font-size: 1.4rem;
-    text-transform: uppercase;
-    color: var(--color-main);
-    margin: 0;
+  s-text[type=h4] {
     grid-column: span 4;
   }
 
@@ -29,24 +25,24 @@
   }
 
 
-    a {
-      text-decoration: none;
-      color: var(--color-text);
-      opacity: 0;
-      animation: slide-up ease-out 0.1s forwards;
+  a {
+    text-decoration: none;
+    color: var(--color-text);
+    opacity: 0;
+    animation: slide-up ease-out 0.1s forwards;
 
-      &, synthia-card, * {
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        transition: all 0.07s;
-      }
-
-      &:hover synthia-card {
-        background: var(--color-hover);
-        color: var(--color-alt);
-      }
+    &, synthia-card, * {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      transition: all 0.07s;
     }
+
+    &:hover synthia-card {
+      background: var(--color-hover);
+      color: var(--color-alt);
+    }
+  }
 }
 
 @keyframes slide-up {

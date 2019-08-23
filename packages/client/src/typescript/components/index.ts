@@ -31,6 +31,7 @@ import './ui/Form/Form';
 import './ui/Input/Input';
 import './ui/Card/Card';
 import './ui/FromNow/FromNow';
+import './ui/Text/Text';
 
 // ----------------------------------------------------------------------- Synth
 import './synthNodes/SynthEffectDelay/Delay';

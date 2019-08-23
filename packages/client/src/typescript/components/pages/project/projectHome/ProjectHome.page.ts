@@ -27,7 +27,7 @@ export class PageProjectHome extends LitElement {
     if (!project.file) return html``;
 
     return html`
-      <h4>Synths in this project</h4>
+      <s-text type="h4">Synths in this project</s-text>
       <div class="synths">
         ${project.file!.resources.synths.map((s, i) => html`<a
           title=${s.name}

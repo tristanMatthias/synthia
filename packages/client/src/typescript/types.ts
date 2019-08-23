@@ -36,6 +36,7 @@ export enum SElement {
   input = 'synthia-input',
   card = 'synthia-card',
   fromNow = 'synthia-from-now',
+  text = 's-text',
 
 
 

@@ -1,11 +1,6 @@
 :host {
 
-  h4 {
-    font-weight: normal;
-    font-size: 1.4rem;
-    text-transform: uppercase;
-    color: var(--color-main);
-    margin: 0;
+  s-text[type=h4] {
     margin-bottom: 2rem;
   }
 

@@ -29,7 +29,7 @@ export class ProjectList extends LitElement {
 
   render() {
     return html`
-      <h4>My projects</h4>
+      <s-text type="h4">My projects</s-text>
 
       ${until(this.projects, html`<div class="loading">
         <synthia-loading></synthia-loading>
