@@ -1,9 +1,5 @@
 import { customElement, html, LitElement, property, TemplateResult } from 'lit-element';
 
-import { iconClose } from '../../../images/icons/close';
-import { iconError } from '../../../images/icons/error';
-import { iconInfo } from '../../../images/icons/info';
-import { iconWarning } from '../../../images/icons/warning';
 import { SElement } from '../../../types';
 import styles from './toaster.styles';
 
@@ -20,12 +16,6 @@ interface Notification extends NotificationOptions {
   id: number,
   type: NotificationType,
   created: number
-}
-
-const icons = {
-  info: iconInfo,
-  warning: iconWarning,
-  error: iconError
 }
 
 @customElement(SElement.toaster)
@@ -47,7 +37,7 @@ export class Toaster extends LitElement {
         <div class=${c} id="n-${n.id}">
           <span> ${n.icon} ${n.text}</span>
           <span class="icon close" @click=${() => this.close(n.id)}>
-            ${iconClose}
+            <s-icon type="close"></s-icon>
           </span>
         </div><br>
       `
@@ -104,7 +94,7 @@ export class Toaster extends LitElement {
       ...o,
       created: Date.now()
     };
-    if (n.icon === true || n.icon === undefined) n.icon = icons[type];
+    if (n.icon === true || n.icon === undefined) n.icon = html`<s-icon type=${type}></s-icon>`;
 
 
     this._idSum += 1;

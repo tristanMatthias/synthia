@@ -1,6 +1,6 @@
 import { html } from "lit-html";
 
-export const iconEffect = html`
+export const effect = html`
 <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 120 120">
   <g fill="none" fill-rule="evenodd" stroke="var(--color)" stroke-linecap="square" transform="translate(7.125 8.5)">
     <path d="M0 91.14L52.62 0l52.62 91.14z"/>

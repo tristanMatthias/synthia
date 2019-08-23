@@ -1,17 +1,12 @@
-import { customElement, html, LitElement, TemplateResult } from 'lit-element';
+import { customElement, html, LitElement } from 'lit-element';
 
-import { iconEffectDelay } from '../../../images/icons/effectDelay';
-import { iconEffectPan } from '../../../images/icons/effectPan';
-import { iconEffectReverb } from '../../../images/icons/effectReverb';
-import { iconFilterSmall } from '../../../images/icons/filterSmall';
-import { iconWaveSmall } from '../../../images/icons/waveSmall';
 import { SElement } from '../../../types';
-import styles from './side-menu.styles';
 import { Toaster } from '../../ui/Toaster/Toaster';
+import styles from './side-menu.styles';
 
 
 interface SideMenuItemBase {
-  icon: TemplateResult,
+  icon: string,
   text: string
 }
 
@@ -47,11 +42,11 @@ export class SideMenu extends LitElement {
 
   get nodes(): SideMenuItemNode[] {
     return [
-      { icon: iconWaveSmall, text: 'Wave', type: SElement.wave },
-      { icon: iconFilterSmall, text: 'Filter', type: SElement.filter },
-      { icon: iconEffectDelay, text: 'Delay effect', type: SElement.delay },
-      { icon: iconEffectReverb, text: 'Reverb effect', type: SElement.reverb },
-      { icon: iconEffectPan, text: 'Pan effect', type: SElement.pan }
+      { icon: 'waveSmall', text: 'Wave', type: SElement.wave },
+      { icon: 'filterSmall', text: 'Filter', type: SElement.filter },
+      { icon: 'effectDelay', text: 'Delay effect', type: SElement.delay },
+      { icon: 'effectReverb', text: 'Reverb effect', type: SElement.reverb },
+      { icon: 'effectPan', text: 'Pan effect', type: SElement.pan }
     ]
   }
 
@@ -64,7 +59,9 @@ export class SideMenu extends LitElement {
   render() {
     return html`
       ${this.buttons.map(n => html`<div class="button">
-        <div @click=${n.action}>${n.icon}</div>
+        <div @click=${n.action}>
+          <s-icon type=${n.icon}></s-icon>
+        </div>
         <span>${n.text}</span>
       </div>`)}
 
@@ -74,7 +71,7 @@ export class SideMenu extends LitElement {
               @click=${this._instruct}
               @dragstart=${this._handleDragStart(n.type)}
               style="animation-delay: ${i * 80}ms"
-            >${n.icon}</div>
+            ><s-icon type=${n.icon}></s-icon>
             <span>${n.text}</span>
           </div>`
     )}

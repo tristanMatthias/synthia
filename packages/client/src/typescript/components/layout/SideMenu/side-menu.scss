@@ -34,23 +34,21 @@
     opacity: 0;
     animation: fade-in 0.5s forwards;
 
-    svg {
+    s-icon {
       width: 4rem;
       display: inline-block;
       vertical-align: middle;
       transition: all 0.2s ease-out;
 
-      * {
-        stroke-width: 0.2rem;
-      }
+      --stroke-width: 0.2rem;
     }
 
     &.button {
-      svg {
+      s-icon {
         --color: var(--color-white);
       }
     }
-    &.drag svg {
+    &.drag s-icon {
       --color: var(--color-alt);
     }
 
@@ -83,7 +81,7 @@
         right: -1rem;
       }
 
-      svg {
+      s-icon {
         transform: scale(1.2)
       }
     }

@@ -1,6 +1,5 @@
 import { customElement, html, LitElement, property, TemplateResult } from 'lit-element';
 
-import { iconClose } from '../../../images/icons/close';
 import { SElement } from '../../../types';
 import styles from './modal.styles';
 
@@ -47,7 +46,7 @@ export class Modal extends LitElement {
       ${this.heading ? this.heading : html`<slot name="heading"></slot>`}
       ${this.closeable
       ? html`<span @click=${this.close.bind(this)}>
-          ${iconClose}
+          <s-icon type="close"></s-icon>
         </span>`
         : null
       }

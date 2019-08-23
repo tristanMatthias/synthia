@@ -17,6 +17,7 @@ export enum SElement {
   sideMenu = 's-side-menu',
   sidebar = 's-sidebar',
   header = 's-header',
+  projectFooter = 's-project-footer',
 
 
   // ------------------------------------------------------------------------ UI
@@ -37,6 +38,7 @@ export enum SElement {
   card = 's-card',
   fromNow = 's-from-now',
   text = 's-text',
+  icon = 's-icon',
 
 
 

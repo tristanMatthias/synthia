@@ -1,7 +1,6 @@
 import { ESynthiaProjectSynthNodeDelay } from '@synthia/api';
 
 import { SynthiaDelay } from '../../../audioNodes/Delay';
-import { iconEffectDelay } from '../../../images/icons/effectDelay';
 import { SElement } from '../../../types';
 import { BaseEffectClass, baseEffectMix } from '../SynthBaseEffect/BaseEffect';
 import { DelaySidebar } from './DelaySidebar';
@@ -13,7 +12,7 @@ export class Delay extends BaseEffectClass<DelaySidebar, ESynthiaProjectSynthNod
   multipleConnections = false;
 
   protected _sidebarType = SElement.delaySidebar;
-  protected _icon = iconEffectDelay;
+  protected _icon = 'effectDelay';
 
   protected _updateValues() {
     const m = this.synthNode!;

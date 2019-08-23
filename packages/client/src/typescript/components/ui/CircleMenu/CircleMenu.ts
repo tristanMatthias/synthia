@@ -1,11 +1,11 @@
-import { html, LitElement, property, TemplateResult } from 'lit-element';
+import { html, LitElement, property } from 'lit-element';
 
 import { SElement } from '../../../types';
 import styles from './circle-menu.styles';
 
 
 export interface CircleMenuButton {
-  icon: TemplateResult,
+  icon: string,
   action(e: MouseEvent): void,
   text?: string,
   color?: 'alt' | 'text' | 'feature' | 'main',
@@ -39,7 +39,9 @@ export class CircleMenu extends LitElement {
               @mouseover=${() => this._label = text || null}
               @mouseout=${() => this._label = null}
               style='--color: var(--color-${color || 'alt'}); opacity: ${active === false ? 0.5 : 1}'
-            >${icon}</s-circle-button>
+            >
+              <s-icon type=${icon}></s-icon>
+            </s-circle-button>
           </span>
         </div>`
     );

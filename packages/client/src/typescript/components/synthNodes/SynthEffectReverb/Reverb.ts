@@ -1,9 +1,9 @@
 import { ESynthiaProjectSynthNodeReverb } from '@synthia/api';
 import { SynthiaReverb } from '../../../audioNodes/Reverb';
-import { iconEffectReverb } from '../../../images/icons/effectReverb';
 import { SElement } from '../../../types';
 import { BaseEffectClass, baseEffectMix } from '../SynthBaseEffect/BaseEffect';
 import { ReverbSidebar } from './ReverbSidebar';
+
 
 
 export * from './ReverbSidebar';
@@ -22,7 +22,7 @@ export class Reverb extends BaseEffectClass<ReverbSidebar, ESynthiaProjectSynthN
   multipleConnections = false;
 
   protected _sidebarType = SElement.reverbSidebar;
-  protected _icon = iconEffectReverb;
+  protected _icon = 'effectReverb';
 }
 
 

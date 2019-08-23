@@ -1,6 +1,6 @@
 import { html } from 'lit-html';
 
-export const iconEffectPan = html`
+export const effectPan = html`
 <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 40 40">
   <g fill="none" fill-rule="evenodd" stroke="var(--color)" stroke-width="4">
     <path d="M36 20.049H3.506" opacity=".4"/>

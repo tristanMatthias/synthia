@@ -2,7 +2,6 @@ import { customElement, html, LitElement, property } from 'lit-element';
 import { proxa } from 'proxa';
 
 import { API_URL } from '../../../config';
-import { iconFacebook } from '../../../images/icons/facebook';
 import { logoMark } from '../../../images/icons/logo';
 import { project } from '../../../lib/Project/Project';
 import { AppState, state } from '../../../state/state';
@@ -48,7 +47,7 @@ export class Header extends LitElement {
           ? this._user
           : html`<s-button color="text" class="login">
             <a href="${API_URL}/oauth/facebook">
-              ${iconFacebook}
+              <s-icon type="facebook"></s-icon>
               <span>Login</span>
             </a>
           </s-button>`

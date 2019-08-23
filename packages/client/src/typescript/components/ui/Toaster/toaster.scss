@@ -26,11 +26,8 @@
       margin-right: -1rem;
       opacity: 0.6;
       transition: all 0.2s;
-
-      &, svg {
-        width: 4rem;
-        height: 4rem;
-      }
+      width: 4rem;
+      height: 4rem;
 
       &:hover {
         opacity: 1;
@@ -40,7 +37,7 @@
     span {
       flex-grow: 1;
 
-      svg {
+      s-icon {
         --color: var(--color-text);
         display: inline-block;
         vertical-align: text-bottom;

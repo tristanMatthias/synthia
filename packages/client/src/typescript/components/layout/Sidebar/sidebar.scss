@@ -64,9 +64,8 @@
     span {
       flex-grow: 0;
       display: inline-block;
-      svg {
-        height: 4rem;
-        width: 4rem;
+
+      s-icon {
         --color: var(--color-main);
         cursor: pointer;
         transition: all 0.2s;

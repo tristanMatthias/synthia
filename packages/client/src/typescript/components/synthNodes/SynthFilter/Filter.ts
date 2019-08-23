@@ -1,17 +1,6 @@
 import { ESynthiaProjectSynthNodeFilter } from '@synthia/api';
 import { html, query } from 'lit-element';
-
-import { iconConnect } from '../../../images/icons/connect';
-import { iconFilter } from '../../../images/icons/filter';
-import { iconFilterAllPass } from '../../../images/icons/filterAllPass';
-import { iconFilterBandPass } from '../../../images/icons/filterBandPass';
-import { iconFilterHighPass } from '../../../images/icons/filterHighPass';
-import { iconFilterHighShelf } from '../../../images/icons/filterHighShelf';
-import { iconFilterLowPass } from '../../../images/icons/filterLowPass';
-import { iconFilterLowShelf } from '../../../images/icons/filterLowShelf';
-import { iconFilterNotch } from '../../../images/icons/filterNotch';
-import { iconFilterPeaking } from '../../../images/icons/filterPeaking';
-import { iconSettings } from '../../../images/icons/settings';
+import { filter as filterIcon } from '../../../images/icons';
 import { ConnectableEvents, ConnectableMixin } from '../../../lib/mixins/Connectable/Connectable';
 import { DeletableMixin } from '../../../lib/mixins/Deletable/Deletable';
 import { DraggableMixin } from '../../../lib/mixins/Draggable/Draggable';
@@ -25,25 +14,15 @@ import { SElement } from '../../../types';
 import { SidebarEvents } from '../../layout/Sidebar/Sidebar';
 import { SynthPageEvents } from '../../pages/project/synth/synth.page';
 import { CircleMenuButton } from '../../ui/CircleMenu/CircleMenu';
+import { BaseEffectClass } from '../SynthBaseEffect/BaseEffect';
 import { BaseNode } from '../SynthBaseNode/BaseNode';
-import styles from './filter.styles';
 import { FilterSidebar } from './FilterSidebar/FilterSidebar';
 
 
-const icons = {
-  allpass: iconFilterAllPass,
-  bandpass: iconFilterBandPass,
-  highpass: iconFilterHighPass,
-  highshelf: iconFilterHighShelf,
-  lowpass: iconFilterLowPass,
-  lowshelf: iconFilterLowShelf,
-  notch: iconFilterNotch,
-  peaking: iconFilterPeaking,
-}
 export class Filter extends BaseNode<ESynthiaProjectSynthNodeFilter, BiquadFilterNode> {
 
   static get styles() {
-    return [styles]
+    return [BaseEffectClass.styles]
   }
 
   protected _updateValues() {
@@ -66,16 +45,16 @@ export class Filter extends BaseNode<ESynthiaProjectSynthNodeFilter, BiquadFilte
     const t = this.synthNode!.properties.type;
 
     return [
-      { text: 'All Pass', icon: icons.allpass, action: action('allpass'), active: t == 'allpass' },
-      { text: 'Band Pass', icon: icons.bandpass, action: action('bandpass'), active: t == 'bandpass' },
-      { text: 'High Pass', icon: icons.highpass, action: action('highpass'), active: t == 'highpass' },
-      { text: 'High Shelf', icon: icons.highshelf, action: action('highshelf'), active: t == 'highshelf' },
-      { text: 'Low Pass', icon: icons.lowpass, action: action('lowpass'), active: t == 'lowpass' },
-      { text: 'Low Shelf', icon: icons.lowshelf, action: action('lowshelf'), active: t == 'lowshelf' },
-      { text: 'Notch', icon: icons.notch, action: action('notch'), active: t == 'notch' },
-      { text: 'Peaking', icon: icons.peaking, action: action('peaking'), active: t == 'peaking' },
-      { text: 'Connect', icon: iconConnect, action: () => this._startConnect(), color: 'text' },
-      { text: 'Settings', icon: iconSettings, action: () => this.toggleSidebar(), color: 'text' }
+      { text: 'All Pass', icon: 'filterAllpass', action: action('allpass'), active: t == 'allpass' },
+      { text: 'Band Pass', icon: 'filterBandpass', action: action('bandpass'), active: t == 'bandpass' },
+      { text: 'High Pass', icon: 'filterHighpass', action: action('highpass'), active: t == 'highpass' },
+      { text: 'High Shelf', icon: 'filterHighshelf', action: action('highshelf'), active: t == 'highshelf' },
+      { text: 'Low Pass', icon: 'filterLowpass', action: action('lowpass'), active: t == 'lowpass' },
+      { text: 'Low Shelf', icon: 'filterLowshelf', action: action('lowshelf'), active: t == 'lowshelf' },
+      { text: 'Notch', icon: 'filterNotch', action: action('notch'), active: t == 'notch' },
+      { text: 'Peaking', icon: 'filterPeaking', action: action('peaking'), active: t == 'peaking' },
+      { text: 'Connect', icon: 'connect', action: () => this._startConnect(), color: 'text' },
+      { text: 'Settings', icon: 'settings', action: () => this.toggleSidebar(), color: 'text' }
     ];
   }
 
@@ -93,12 +72,12 @@ export class Filter extends BaseNode<ESynthiaProjectSynthNodeFilter, BiquadFilte
 
 
   render() {
-    // @ts-ignore
-    const icon = icons[this.synthNode!.properties.type];
+    const t = this.synthNode!.properties.type;
+    const icon = t.slice(0, 1).toUpperCase() + t.slice(1);
     return html`
       <canvas width="${remToPx(12)}px" height="${remToPx(12)}px"></canvas>
-      <div class="background"> ${iconFilter} </div>
-      <div class="icon">${icon}</div>
+      <div class="background"> ${filterIcon} </div>
+      <s-icon type = "filter${icon}" > </s-icon>
     `;
   }
 

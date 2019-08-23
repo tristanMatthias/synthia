@@ -1,6 +1,6 @@
 import { html } from 'lit-html';
 
-export const iconWarning = html`
+export const warning = html`
 <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 40 40">
   <g fill="none" fill-rule="evenodd">
     <g transform="matrix(1 0 0 -1 16.966 30.287)">

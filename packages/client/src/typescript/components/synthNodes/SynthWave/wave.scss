@@ -13,18 +13,14 @@
     --color: var(--color-main);
   }
 
-  .icon {
+  s-icon {
     position: absolute;
     left: 50%;
     top: 50%;
     height: 4rem;
     width: 4rem;
     transform: translate(-50%, -50%);
-
-    svg * {
-      fill: none;
-      stroke: var(--color-text);
-    }
+    --color: var(--color-text);
   }
 
   s-waveform {

@@ -2,11 +2,6 @@ import { ESynthiaProjectSynthNodeWave } from '@synthia/api';
 import { html, query } from 'lit-element';
 
 import { SynthiaWave } from '../../../audioNodes/Wave';
-import { iconConnect } from '../../../images/icons/connect';
-import { iconWave } from '../../../images/icons/wave';
-import { iconWaveSawtooth } from '../../../images/icons/waveSawtooth';
-import { iconWaveSine } from '../../../images/icons/waveSine';
-import { iconWaveSquare } from '../../../images/icons/waveSquare';
 import { ConnectableEvents, ConnectableMixin } from '../../../lib/mixins/Connectable/Connectable';
 import { DeletableMixin } from '../../../lib/mixins/Deletable/Deletable';
 import { DraggableMixin } from '../../../lib/mixins/Draggable/Draggable';
@@ -19,13 +14,7 @@ import { CircleMenuButton } from '../../ui/CircleMenu/CircleMenu';
 import { BaseNode } from '../SynthBaseNode/BaseNode';
 import styles from './wave.styles';
 import { WaveSidebar } from './WaveSidebar/WaveSidebar';
-
-
-const icons = {
-  sine: iconWaveSine,
-  sawtooth: iconWaveSawtooth,
-  square: iconWaveSquare,
-}
+import { wave } from '../../../images/icons';
 
 export class Wave extends BaseNode<ESynthiaProjectSynthNodeWave, SynthiaWave> {
 
@@ -47,11 +36,11 @@ export class Wave extends BaseNode<ESynthiaProjectSynthNodeWave, SynthiaWave> {
     if (!this.synthNode) return [];
     const action = (type: OscillatorType) => () => this.synthNode!.properties.type = type;
     return [
-      { text: 'Square wave', icon: icons.square, action: action('square'), active: this.synthNode!.properties.type === 'square' },
-      { text: 'Sine wave', icon: icons.sine, action: action('sine'), active: this.synthNode!.properties.type === 'sine' },
-      { text: 'Sawtooth wave', icon: icons.sawtooth, action: action('sawtooth'), active: this.synthNode!.properties.type === 'sawtooth' },
+      { text: 'Square wave', icon: 'waveSquare', action: action('square'), active: this.synthNode!.properties.type === 'square' },
+      { text: 'Sine wave', icon: 'waveSine', action: action('sine'), active: this.synthNode!.properties.type === 'sine' },
+      { text: 'Sawtooth wave', icon: 'waveSawtooth', action: action('sawtooth'), active: this.synthNode!.properties.type === 'sawtooth' },
       // @ts-ignore From Connectable
-      { text: 'Connect', icon: iconConnect, action: () => this._startConnect(), color: 'text' },
+      { text: 'Connect', icon: 'connect', action: () => this._startConnect(), color: 'text' },
     ]
   }
 
@@ -84,11 +73,11 @@ export class Wave extends BaseNode<ESynthiaProjectSynthNodeWave, SynthiaWave> {
 
   render() {
     if (!this.synthNode) return html``;
-    // @ts-ignore
-    const icon = icons[this.synthNode.properties.type];
+    const t = this.synthNode.properties.type;
+    const icon = t.slice(0, 1).toUpperCase() + t.slice(1);
     return html`
-      <div class="background"> ${iconWave} </div>
-      <div class="icon">${icon}</div>
+      <div class="background"> ${wave} </div>
+      <s-icon type="wave${icon}"></s-icon>
     `;
   }
 

@@ -1,8 +1,7 @@
-import { html, TemplateResult } from 'lit-element';
+import { html } from 'lit-element';
 
-import { iconConnect } from '../../../images/icons/connect';
-import { iconEffect } from '../../../images/icons/effect';
-import { iconSettings } from '../../../images/icons/settings';
+import CompositeAudioNode from '../../../audioNodes/BaseNode';
+import { effect } from '../../../images/icons/effect';
 import { ConnectableMixin } from '../../../lib/mixins/Connectable/Connectable';
 import { DeletableMixin } from '../../../lib/mixins/Deletable/Deletable';
 import { DraggableMixin } from '../../../lib/mixins/Draggable/Draggable';
@@ -15,7 +14,6 @@ import { Sidebar, SidebarEvents } from '../../layout/Sidebar/Sidebar';
 import { CircleMenuButton } from '../../ui/CircleMenu/CircleMenu';
 import { BaseNode } from '../SynthBaseNode/BaseNode';
 import styles from './base-effect.styles';
-import CompositeAudioNode from '../../../audioNodes/BaseNode';
 
 
 export interface NodeSidebar extends Sidebar {
@@ -33,7 +31,7 @@ export class BaseEffectClass<
     return [styles]
   }
 
-  protected _icon: TemplateResult = html``;
+  protected _icon: string;
   protected _sidebarType: string = 's-sidebar';
   protected _canvas: boolean = false;
 
@@ -43,8 +41,8 @@ export class BaseEffectClass<
 
   get buttons(): CircleMenuButton[] {
     return [
-      { text: 'Connect', icon: iconConnect, action: () => this._startConnect(), color: 'text' },
-      { text: 'Settings', icon: iconSettings, action: () => this.toggleSidebar(), color: 'text' }
+      { text: 'Connect', icon: 'connect', action: () => this._startConnect(), color: 'text' },
+      { text: 'Settings', icon: 'settings', action: () => this.toggleSidebar(), color: 'text' }
     ];
   }
 
@@ -52,8 +50,8 @@ export class BaseEffectClass<
   render() {
     return html`
       ${this._canvas ? html`<canvas></canvas>`: null}
-      <div class="background">${iconEffect}</div>
-      <div class="icon">${this._icon}</div>
+      <div class="background">${effect}</div>
+      <s-icon type="${this._icon}"></s-icon>
     `;
   }
 

@@ -25,14 +25,17 @@
   }
 
   s-circle-button {
-    width: 3rem;
-    height: 3rem;
     line-height: 3rem;
     background: var(--color);
 
-    svg, svg * {
+    &, s-icon {
+      width: 3rem;
+      height: 3rem;
+      vertical-align: top;
+    }
+
+    s-icon {
       --color: var(--color-bg);
-      // stroke: var(--color-bg);
     }
   }
 

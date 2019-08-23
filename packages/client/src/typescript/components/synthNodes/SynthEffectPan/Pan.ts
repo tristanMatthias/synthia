@@ -1,11 +1,10 @@
 import { ESynthiaProjectSynthNodePan } from '@synthia/api';
-
-import { iconEffectPan } from '../../../images/icons/effectPan';
 import { remToPx } from '../../../lib/pxToRem';
 import { SElement } from '../../../types';
 import { SynthPageEvents } from '../../pages/project/synth/synth.page';
 import { BaseEffectClass, baseEffectMix } from '../SynthBaseEffect/BaseEffect';
 import { PanSidebar } from './PanSidebar';
+
 
 export * from './PanSidebar';
 
@@ -21,7 +20,7 @@ export class Pan extends BaseEffectClass<PanSidebar, ESynthiaProjectSynthNodePan
 
 
   protected _sidebarType = SElement.panSidebar;
-  protected _icon = iconEffectPan;
+  protected _icon = 'effectPan';
   protected _canvas = true;
 
 

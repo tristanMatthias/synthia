@@ -1,6 +1,6 @@
 import { html } from 'lit-html';
 
-export const iconFilter = html`
+export const filter = html`
 <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 120 120">
   <g fill="none" fill-rule="evenodd">
     <path stroke="var(--color)" stroke-linecap="square" d="M21.432 70.637C26.09 87.565 41.594 100 60.002 100c22.092 0 40-17.909 40-40s-17.908-40-40-40c-12.022 0-22.805 5.304-30.138 13.699l1.895 6.44A34.366 34.366 0 0 0 25.48 60c0 1.81.139 3.588.407 5.323l-4.454 5.314z"/>

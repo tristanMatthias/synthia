@@ -13,6 +13,7 @@ import './pages/project/synth/synth.page';
 import './layout/Header/Header';
 import './layout/Sidebar/Sidebar';
 import './layout/SideMenu/SideMenu';
+import './layout/ProjectFooter/ProjectFooter';
 
 // -------------------------------------------------------------------------- UI
 import './ui/Loading/Loading';
@@ -32,6 +33,7 @@ import './ui/Input/Input';
 import './ui/Card/Card';
 import './ui/FromNow/FromNow';
 import './ui/Text/Text';
+import './ui/Icon/Icon';
 
 // ----------------------------------------------------------------------- Synth
 import './synthNodes/SynthEffectDelay/Delay';

@@ -1,6 +1,6 @@
 import { LitElement, html, property, customElement, TemplateResult } from "lit-element";
 import styles from './sidebar.styles';
-import { iconClose } from "../../../images/icons/close";
+
 import { SElement } from "../../../types";
 
 export enum SidebarEvents {
@@ -28,7 +28,7 @@ export class Sidebar extends LitElement {
       <header>
         <h2> ${this.heading || html`<slot name="heading"></slot>`} </h2>
         <span @click=${this.close.bind(this)}>
-          ${iconClose}
+          <s-icon type="close"></s-icon>
         </span>
       </header>
       <main>
