@@ -8,7 +8,7 @@ export class PageProjectHome extends LitElement {
   static styles = [styles];
 
   render() {
-    return html`<synthia-project-list></synthia-project-list>`;
+    return html`<s-project-list></s-project-list>`;
   }
 
 }

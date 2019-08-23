@@ -40,7 +40,7 @@ export class SocialHeader extends LitElement {
         line-height: 3rem;
         /* padding-top: 0.2rem; */
       }
-      synthia-button {
+      s-button {
         vertical-align: top;
       }
     `
@@ -55,7 +55,7 @@ export class SocialHeader extends LitElement {
         ${file.creator.firstName} ${file.creator.lastName}
       </span>
       <div class="buttons">
-        <synthia-button small color="text">Follow</synthia-button>
+        <s-button small color="text">Follow</s-button>
       </div>
       <h1>${file.name}</h1>
     `;

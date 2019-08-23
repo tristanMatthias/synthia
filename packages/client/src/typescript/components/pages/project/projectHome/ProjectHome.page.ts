@@ -33,12 +33,12 @@ export class PageProjectHome extends LitElement {
           title=${s.name}
           href=${`/project/${project.file!.id}/synth/${s.id}`}
           style="animation-delay: ${Math.log(i + 1) / 5}s"
-        ><synthia-card>
+        ><s-card>
           ${s.name}
-          <synthia-from-now .time=${s.createdAt}></synthia-from-now>
-        </synthia-card></a>`)}
+          <s-from-now .time=${s.createdAt}></s-from-now>
+        </s-card></a>`)}
       </div>
-      <synthia-piano-roll .notes=${this.notes}></synthia-piano-roll>
+      <s-piano-roll .notes=${this.notes}></s-piano-roll>
     `
   }
 

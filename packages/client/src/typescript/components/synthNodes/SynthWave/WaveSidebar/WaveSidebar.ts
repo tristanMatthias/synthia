@@ -29,82 +29,82 @@ export class WaveSidebar extends Sidebar {
       </div>
       <div class="form-col">
         <label> Delay </label>
-        <synthia-dial
+        <s-dial
           min="0"
           max="5"
           value=${sn.delay}
           @change=${this._updateValue('delay')}
-        /></synthia-dial>
+        /></s-dial>
       </div>
 
       <div class="form-col">
         <label> Attack </label>
-        <synthia-dial
+        <s-dial
           min="0"
           max="10"
           value=${sn.attack}
           @change=${this._updateValue('attack')}
-        /></synthia-dial>
+        /></s-dial>
       </div>
 
       <div class="form-col">
         <label> Attack Level </label>
-        <synthia-dial
+        <s-dial
           min="0"
           max="1"
           value=${sn.attackLevel}
           @change=${this._updateValue('attackLevel')}
-        /></synthia-dial>
+        /></s-dial>
       </div>
 
       <div class="form-col">
         <label> Decay </label>
-        <synthia-dial
+        <s-dial
           min="0"
           max="20"
           value=${sn.decay}
           @change=${this._updateValue('decay')}
-        /></synthia-dial>
+        /></s-dial>
       </div>
 
       <div class="form-col">
         <label> Decay Level </label>
-        <synthia-dial
+        <s-dial
           min="0"
           max="1"
           value=${sn.decayLevel}
           @change=${this._updateValue('decayLevel')}
-        /></synthia-dial>
+        /></s-dial>
       </div>
 
       <div class="form-col">
         <label> Release </label>
-        <synthia-dial
+        <s-dial
           min="0"
           max="20"
           value=${sn.release}
           @change=${this._updateValue('release')}
-        /></synthia-dial>
+        /></s-dial>
       </div>
 
       <div class="form-col">
         <label> Pitch </label>
-        <synthia-dial
+        <s-dial
           min="-24"
           max="24"
           value=${sn.pitch}
           @change=${this._updateValue('pitch')}
-        /></synthia-dial>
+        /></s-dial>
       </div>
 
       <div class="form-col">
         <label> Gain </label>
-        <synthia-dial
+        <s-dial
           min="0"
           max="1"
           value=${sn.gain}
           @change=${this._updateValue('gain')}
-        /></synthia-dial>
+        /></s-dial>
       </div>
     </form>`;
   }

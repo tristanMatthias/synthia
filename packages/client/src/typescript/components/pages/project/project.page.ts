@@ -7,12 +7,12 @@ import { Route, Router } from '../../layout/Router/Router';
 import { project } from '../../../lib/Project/Project';
 
 
-const templateSynth = `<synthia-page-synth>
-  <synthia-waveform class="main"></synthia-waveform>
-  <synthia-keyboard></synthia-keyboard>
-  <synthia-toaster></synthia-toaster>
-  <synthia-side-menu></synthia-side-menu>
-</synthia-page-synth>`;
+const templateSynth = `<s-page-synth>
+  <s-waveform class="main"></s-waveform>
+  <s-keyboard></s-keyboard>
+  <s-toaster></s-toaster>
+  <s-side-menu></s-side-menu>
+</s-page-synth>`;
 
 
 const ROUTES: Route[] = [
@@ -74,13 +74,13 @@ export class PageProject extends Router {
 
   render() {
     if (this.loading) return html`<div class="loading">
-      <synthia-loading></synthia-loading>
+      <s-loading></s-loading>
       Loading…
     </div>`;
 
     return html`
       <slot></slot>
-      <synthia-project-footer></synthia-project-footer>
+      <s-project-footer></s-project-footer>
     `;
   }
 

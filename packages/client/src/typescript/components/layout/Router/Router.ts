@@ -81,7 +81,7 @@ export class Router extends LitElement {
       let ele;
       if ((<RouteHTML>route).html) {
         ele = document.createElement('div');
-        ele.classList.add('synthia-page');
+        ele.classList.add('s-page');
         ele.innerHTML = (<RouteHTML>route).html;
 
       } else {

@@ -49,7 +49,7 @@ export class Input extends LitElement {
         @input="${this._handleInput}"
       />
 
-      ${loading && html`<synthia-loading></synthia-loading>` }
+      ${loading && html`<s-loading></s-loading>` }
     `;
   }
 

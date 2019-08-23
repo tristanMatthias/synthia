@@ -16,7 +16,7 @@
     grid-gap: calc(var(--margin) * 2);
   }
 
-  synthia-from-now {
+  s-from-now {
     display: block;
     font-size: 1.2rem;
     color: var(--color-main);
@@ -28,14 +28,14 @@
     opacity: 0;
     animation: slide-up ease-out 0.7s forwards;
 
-    &, synthia-card, * {
+    &, s-card, * {
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
       transition: all 0.07s;
     }
 
-    &:hover synthia-card {
+    &:hover s-card {
       background: var(--color-hover);
       color: var(--color-alt);
     }

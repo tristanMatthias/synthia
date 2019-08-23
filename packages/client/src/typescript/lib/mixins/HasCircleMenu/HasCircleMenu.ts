@@ -39,9 +39,9 @@ export const HasCircleMenuMixin = (superclass: new () => LitElement) =>
       const root = super.render();
       return html`
         ${root}
-        <synthia-circle-menu
+        <s-circle-menu
           open=${this._menuOpen && !this._synth.isDragging && !this._synth.isConnecting}
           .buttons=${this.buttons}
-        ></synthia-circle-menu>`;
+        ></s-circle-menu>`;
     }
   }

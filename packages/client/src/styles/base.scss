@@ -90,25 +90,25 @@ body {
   line-height: 3.6rem;
 }
 
-synthia-canvas {
+s-canvas {
   background:var(--color-bg) url('../images/background.svg') center;
   background-size: 5rem;
 }
 
-synthia-root {
+s-root {
   position: absolute;
   top: 50%;
   left: 50%;
 }
 
 
-synthia-waveform {
+s-waveform {
   position: fixed;
   left: calc(var(--margin) * 12);
   bottom: calc(var(--margin) / 4);
 }
 
-synthia-keyboard {
+s-keyboard {
   position: fixed;
   left: calc(var(--margin) * 12);
   bottom: calc(var(--margin) * 8);
@@ -116,7 +116,7 @@ synthia-keyboard {
   height: 3.5rem;
 }
 
-synthia-toaster {
+s-toaster {
   position: fixed;
   right: calc(var(--margin) * 2.5);
   bottom: calc(var(--margin) * 4);
@@ -124,11 +124,11 @@ synthia-toaster {
 }
 
 
-synthia-side-menu,
-synthia-canvas,
-synthia-root,
-synthia-waveform,
-synthia-keyboard {
+s-side-menu,
+s-canvas,
+s-root,
+s-waveform,
+s-keyboard {
   opacity: 0;
   animation: fade-in 0.5s ease-out forwards;
 }

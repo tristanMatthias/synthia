@@ -1,80 +1,80 @@
 export enum SElement {
   // ---------------------------------------------------------------------- Main
-  app = 'synthia-app',
-  router = 'synthia-router',
-  appRouter = 'synthia-app-router',
+  app = 's-app',
+  router = 's-router',
+  appRouter = 's-app-router',
 
 
   // --------------------------------------------------------------------- Pages
-  page = 'synthia-page',
-  homePage = 'synthia-page-home',
-  projectPage = 'synthia-page-project',
-  projectHomePage = 'synthia-page-project-home',
-  synthPage = 'synthia-page-synth',
-  oauthPage = 'synthia-page-oauth',
+  page = 's-page',
+  homePage = 's-page-home',
+  projectPage = 's-page-project',
+  projectHomePage = 's-page-project-home',
+  synthPage = 's-page-synth',
+  oauthPage = 's-page-oauth',
 
   // -------------------------------------------------------------------- Layout
-  sideMenu = 'synthia-side-menu',
-  sidebar = 'synthia-sidebar',
-  header = 'synthia-header',
+  sideMenu = 's-side-menu',
+  sidebar = 's-sidebar',
+  header = 's-header',
 
 
   // ------------------------------------------------------------------------ UI
-  loading = 'synthia-loading',
-  button = 'synthia-button',
-  circleMenu = 'synthia-circle-menu',
-  circleButton = 'synthia-circle-button',
-  slider = 'synthia-slider',
-  expoSlider = 'synthia-expo-slider',
-  toaster = 'synthia-toaster',
-  dial = 'synthia-dial',
-  fileBar = 'synthia-file-bar',
-  contextMenu = 'synthia-context-menu',
-  modalContainer = 'synthia-modal-container',
-  modal = 'synthia-modal',
-  form = 'synthia-form',
-  input = 'synthia-input',
-  card = 'synthia-card',
-  fromNow = 'synthia-from-now',
+  loading = 's-loading',
+  button = 's-button',
+  circleMenu = 's-circle-menu',
+  circleButton = 's-circle-button',
+  slider = 's-slider',
+  expoSlider = 's-expo-slider',
+  toaster = 's-toaster',
+  dial = 's-dial',
+  fileBar = 's-file-bar',
+  contextMenu = 's-context-menu',
+  modalContainer = 's-modal-container',
+  modal = 's-modal',
+  form = 's-form',
+  input = 's-input',
+  card = 's-card',
+  fromNow = 's-from-now',
   text = 's-text',
 
 
 
   // --------------------------------------------------------------------- Synth
-  root = 'synthia-root',
-  canvas = 'synthia-canvas',
+  root = 's-root',
+  canvas = 's-canvas',
 
-  wave = 'synthia-wave',
-  waveSidebar = 'synthia-wave-sidebar',
+  wave = 's-wave',
+  waveSidebar = 's-wave-sidebar',
 
-  filter = 'synthia-filter',
-  filterSidebar = 'synthia-filter-sidebar',
+  filter = 's-filter',
+  filterSidebar = 's-filter-sidebar',
 
-  delay = 'synthia-delay',
-  delaySidebar = 'synthia-delay-sidebar',
+  delay = 's-delay',
+  delaySidebar = 's-delay-sidebar',
 
-  reverb = 'synthia-reverb',
-  reverbSidebar = 'synthia-reverb-sidebar',
+  reverb = 's-reverb',
+  reverbSidebar = 's-reverb-sidebar',
 
-  pan = 'synthia-pan',
-  panSidebar = 'synthia-pan-sidebar',
+  pan = 's-pan',
+  panSidebar = 's-pan-sidebar',
 
-  oscillator = 'synthia-oscillator',
+  oscillator = 's-oscillator',
 
 
   // ----------------------------------------------------------------------- Viz
-  frequencyResponse = 'synthia-frequency-response',
-  waveform = 'synthia-waveform',
-  keyboard = 'synthia-keyboard',
-  pianoRoll = 'synthia-piano-roll',
-  pianoRollNote = 'synthia-piano-roll-note',
-  clockLine = 'synthia-clock-line',
+  frequencyResponse = 's-frequency-response',
+  waveform = 's-waveform',
+  keyboard = 's-keyboard',
+  pianoRoll = 's-piano-roll',
+  pianoRollNote = 's-piano-roll-note',
+  clockLine = 's-clock-line',
 
   // -------------------------------------------------------------------- Modals
-  modalCreateProject = 'synthia-modal-create-project',
-  modalOpenProject = 'synthia-modal-open-project',
+  modalCreateProject = 's-modal-create-project',
+  modalOpenProject = 's-modal-open-project',
 
 
   // -------------------------------------------------------------------- Common
-  projectList = 'synthia-project-list'
+  projectList = 's-project-list'
 }

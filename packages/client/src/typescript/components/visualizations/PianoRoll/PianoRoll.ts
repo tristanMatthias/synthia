@@ -51,7 +51,7 @@ export class PianoRoll extends LitElement {
     return html`
       ${keys}
       <slot></slot>
-      <synthia-clock-line></synthia-clock-line>
+      <s-clock-line></s-clock-line>
     `;
   }
 

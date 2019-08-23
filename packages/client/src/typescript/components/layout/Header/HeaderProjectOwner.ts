@@ -23,7 +23,7 @@ export class ProjectHeader extends LitElement {
         animation: slide-up 0.1s forwards;
       }
 
-      synthia-file-bar {
+      s-file-bar {
         flex-basis: 100%;
         opacity: 0;
         animation: slide-up 0.1s 0.07s forwards;
@@ -70,7 +70,7 @@ export class ProjectHeader extends LitElement {
     const file = project.file!;
     return html`
       <project-name .value=${file.name}></project-name>
-      <synthia-file-bar .options=${this._fileBarOptions}></synthia-file-bar>
+      <s-file-bar .options=${this._fileBarOptions}></s-file-bar>
     `;
   }
 }

@@ -19,13 +19,13 @@ export class PanSidebar extends Sidebar implements NodeSidebar {
     return html`<form>
       <div class="form-row">
         <label>Pan</label>
-        <synthia-slider
+        <s-slider
           type="range"
           min="-1"
           max="1"
           value=${props.pan}
           @change=${this._updateValue('pan')}
-        /></synthia-slider>
+        /></s-slider>
         <span class="value">${props.pan}</span>
       </div>
     </form>`;

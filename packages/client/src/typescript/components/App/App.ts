@@ -12,7 +12,7 @@ export class App extends LitElement {
   static get styles() {
     return [css`
       :host { display: block; transition: filter 0.3s; }
-      ::slotted(synthia-app-router) {
+      ::slotted(s-app-router) {
         position: fixed;
         top: var(--header-height);
         bottom: 0;

@@ -19,10 +19,10 @@ export class ProjectList extends LitElement {
           title=${pj.name}
           href=${`/project/${pj.id}`}
           style="animation-delay: ${Math.log(i + 1) / 5}s"
-        ><synthia-card>
+        ><s-card>
           ${pj.name}
-          <synthia-from-now .time=${pj.createdAt}></synthia-from-now>
-        </synthia-card></a>`
+          <s-from-now .time=${pj.createdAt}></s-from-now>
+        </s-card></a>`
       )
     );
   }
@@ -32,7 +32,7 @@ export class ProjectList extends LitElement {
       <s-text type="h4">My projects</s-text>
 
       ${until(this.projects, html`<div class="loading">
-        <synthia-loading></synthia-loading>
+        <s-loading></s-loading>
         <span>Loading projects…</span>
       </div>`)}`;
   }

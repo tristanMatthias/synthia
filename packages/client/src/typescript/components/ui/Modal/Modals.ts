@@ -57,12 +57,12 @@ export class Modal extends LitElement {
   protected _renderFooter() {
     if (!this.buttons || !this.buttons.length) return null;
     return html`<footer>
-      ${this.buttons.reverse().map(b => html`<synthia-button
+      ${this.buttons.reverse().map(b => html`<s-button
           .hollow=${b.hollow}
           @click=${b.action}
           .color=${b.color}
           .loading=${b.loading}
-        > ${b.text} </synthia-button>`)
+        > ${b.text} </s-button>`)
       }
     </footer>`;
   }

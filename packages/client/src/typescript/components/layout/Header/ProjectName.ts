@@ -8,7 +8,7 @@ export class ProjectName extends LitElement {
     css`
       :host,
       :host span,
-      :host synthia-input {
+      :host s-input {
         display: block;
         line-height: 3rem;
         height: 3rem;
@@ -20,7 +20,7 @@ export class ProjectName extends LitElement {
         --input-font-size: 1.4rem;
       }
 
-      synthia-input {
+      s-input {
         margin-top: 0.3rem;
       }
 
@@ -52,7 +52,7 @@ export class ProjectName extends LitElement {
   @property()
   editing = false;
 
-  @query('synthia-input')
+  @query('s-input')
   private _input: Input;
 
   connectedCallback() {
@@ -62,7 +62,7 @@ export class ProjectName extends LitElement {
 
   render() {
     if (this.editing) {
-      return html`<synthia-input .value=${this.value}></synthia-input>`;
+      return html`<s-input .value=${this.value}></s-input>`;
     }
     return html`<span>${this.value}</span>`;
   }

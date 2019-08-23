@@ -89,7 +89,7 @@
   * {
     box-sizing: border-box;
   }
-  synthia-frequency-response {
+  s-frequency-response {
     margin-left: calc(-1 * var(--margin));
   }
 
@@ -110,7 +110,7 @@
         flex-basis: 100%;
       }
 
-      synthia-slider, synthia-expo-slider {
+      s-slider, s-expo-slider {
         flex-grow: 1;
       }
 
@@ -139,7 +139,7 @@
         display: block;
       }
 
-      synthia-dial {
+      s-dial {
         margin-top: 1rem;
       }
     }

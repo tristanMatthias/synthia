@@ -30,7 +30,7 @@ export class OpenProjectModal extends Modal {
     return html`
       ${this._renderHeader()}
       <main>
-        <synthia-project-list></synthia-project-list>
+        <s-project-list></s-project-list>
       </main>
       <aside>
         <s-text type="h4">Learn</s-text>

@@ -34,7 +34,7 @@ export class BaseEffectClass<
   }
 
   protected _icon: TemplateResult = html``;
-  protected _sidebarType: string = 'synthia-sidebar';
+  protected _sidebarType: string = 's-sidebar';
   protected _canvas: boolean = false;
 
   private _sidebar: SidebarType | null = null;

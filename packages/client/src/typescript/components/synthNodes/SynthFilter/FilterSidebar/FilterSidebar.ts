@@ -17,12 +17,12 @@ export class FilterSidebar extends Sidebar {
     const sn = this.filter.synthNode!.properties;
 
     return html`
-      <synthia-frequency-response
+      <s-frequency-response
         .filter=${this.filter.audioNode}
         width="318"
         height="200"
         decibels
-      ></synthia-frequency-response>
+      ></s-frequency-response>
 
       <form>
         <div class="form-row">
@@ -41,38 +41,38 @@ export class FilterSidebar extends Sidebar {
 
         <div class="form-row">
           <label>Frequency</label>
-          <synthia-expo-slider
+          <s-expo-slider
             type="range"
             min="0"
             max="24000"
             value=${sn.frequency}
             @change=${this._updateValue('frequency')}
-          /></synthia-expo-slider>
+          /></s-expo-slider>
           <span class="value">${Math.floor(sn.frequency)}hz</span>
         </div>
 
         <div class="form-row">
           <label>Quality (Q)</label>
-          <synthia-slider
+          <s-slider
             type="range"
             min="0"
             max="20"
             value=${sn.q}
             @change=${this._updateValue('q')}
-          /></synthia-slider>
+          /></s-slider>
           <span class="value">${Math.floor(sn.q)}db</span>
         </div>
 
 
         <div class="form-row">
           <label>Gain</label>
-          <synthia-slider
+          <s-slider
             type="range"
             min="0"
             max="5"
             value=${sn.gain}
             @change=${this._updateValue('gain')}
-          /></synthia-slider>
+          /></s-slider>
           <span class="value">${Math.floor(sn.gain)}</span>
         </div>
       </form>`;

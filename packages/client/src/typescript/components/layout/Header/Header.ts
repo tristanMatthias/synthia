@@ -46,12 +46,12 @@ export class Header extends LitElement {
       ${(!this.user.loading && this.user.checked) ?
         this.user.data
           ? this._user
-          : html`<synthia-button color="text" class="login">
+          : html`<s-button color="text" class="login">
             <a href="${API_URL}/oauth/facebook">
               ${iconFacebook}
               <span>Login</span>
             </a>
-          </synthia-button>`
+          </s-button>`
         : null
       }
     `;
@@ -68,9 +68,9 @@ export class Header extends LitElement {
         <img src="${this.user.data.socialPic}">
         <span>${this.user.data.firstName}
       </div>
-      <synthia-context-menu .show=${this._showUserContext}>
+      <s-context-menu .show=${this._showUserContext}>
         <div @click=${this.app.logout}>Logout</div>
-      </synthia-context-menu>
+      </s-context-menu>
     </div>`;
   }
 }

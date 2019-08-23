@@ -45,10 +45,10 @@ export class CustomProjectModal extends Modal {
     return html`
       ${this._renderHeader()}
       <main>
-        <synthia-form>
+        <s-form>
           <label>Project name</label>
-          <synthia-input name="name" placeholder="My new project"></synthia-input>
-        </synthia-form>
+          <s-input name="name" placeholder="My new project"></s-input>
+        </s-form>
       </main>
       ${this._renderFooter()}
     `;

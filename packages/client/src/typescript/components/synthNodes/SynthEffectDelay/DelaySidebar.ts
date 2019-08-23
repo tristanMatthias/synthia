@@ -21,24 +21,24 @@ export class DelaySidebar extends Sidebar implements NodeSidebar {
     return html`<form>
       <div class="form-row">
         <label>Delay Time</label>
-        <synthia-slider
+        <s-slider
           type="range"
           min="0"
           max="10"
           value=${props.delayTime}
           @change=${this._updateValue('delayTime')}
-        /></synthia-slider>
+        /></s-slider>
         <span class="value">${props.delayTime}s</span>
       </div>
       <div class="form-row">
         <label>Feedback</label>
-        <synthia-slider
+        <s-slider
           type="range"
           min="0"
           max="1"
           value=${props.feedback}
           @change=${this._updateValue('feedback')}
-        /></synthia-slider>
+        /></s-slider>
         <span class="value">${props.feedback}s</span>
       </div>
     </form>`;

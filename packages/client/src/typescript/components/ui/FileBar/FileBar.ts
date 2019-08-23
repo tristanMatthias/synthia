@@ -23,25 +23,25 @@ export class FileBar extends LitElement {
 
   render() {
     const buttons = Object.keys(this.options).map(k =>
-      html`<synthia-button
+      html`<s-button
         hollow="hollow"
         color='main'
         class="${this._activeTab === k && this._active ? 'active' : null}"
         @mouseenter=${() => this._activeTab = k}
         @click=${() => this._active = !this._active}
-      >${k}</synthia-button>`
+      >${k}</s-button>`
     );
 
     let menu;
     if (this._active && this._activeTab) {
-      menu = html`<synthia-context-menu
+      menu = html`<s-context-menu
         .items=${this.options[this._activeTab]}
         .show=${true}
         @closed=${() => {
           this._active = false;
           this._activeTab = null
         }}
-      ></synthia-context-menu>`;
+      ></s-context-menu>`;
     }
     return html`${buttons}${menu}`;
   }

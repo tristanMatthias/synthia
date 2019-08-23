@@ -34,12 +34,12 @@ export class CircleMenu extends LitElement {
       html`
         <div style="transform: translateY(-50%) rotate(${i * this.interval}deg)">
           <span style="transform: rotate(${i * -1 * this.interval}deg); transition-delay: ${Math.log(i + 1) / 0.02}ms">
-            <synthia-circle-button
+            <s-circle-button
               @click=${action}
               @mouseover=${() => this._label = text || null}
               @mouseout=${() => this._label = null}
               style='--color: var(--color-${color || 'alt'}); opacity: ${active === false ? 0.5 : 1}'
-            >${icon}</synthia-circle-button>
+            >${icon}</s-circle-button>
           </span>
         </div>`
     );

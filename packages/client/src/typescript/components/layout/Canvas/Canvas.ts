@@ -41,7 +41,7 @@ export class Canvas extends LitElement {
   }
 
   clear() {
-    const nodes = Array.from(this.querySelectorAll('*:not(synthia-root)'));
+    const nodes = Array.from(this.querySelectorAll('*:not(s-root)'));
     nodes.forEach(n => n.remove());
   }
 

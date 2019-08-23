@@ -25,7 +25,7 @@ export class Button extends LitElement {
   render() {
     return html`
       <span><slot></slot></span>
-      ${this.loading ? html`<synthia-loading></synthia-loading>` : null}
+      ${this.loading ? html`<s-loading></s-loading>` : null}
     `;
   }
 

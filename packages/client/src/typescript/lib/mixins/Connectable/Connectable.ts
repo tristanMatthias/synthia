@@ -50,20 +50,20 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
       // If there are multiple connections, don't create any waveforms initially
       if (this.multipleConnections) {
         waveforms = this._connectedTo.map(() =>
-          html`<synthia-waveform removable></synthia-waveform>`
+          html`<s-waveform removable></s-waveform>`
         );
       } else {
         // Otherwise, if there is only one connection allowed, there will always
         // only be one waveform, so always create it
         const hideBeforeConnected = this._connectedTo.length ? '' : 'display: none';
-        waveforms = html`<synthia-waveform removable style=${hideBeforeConnected}></synthia-waveform>`;
+        waveforms = html`<s-waveform removable style=${hideBeforeConnected}></s-waveform>`;
       }
 
       let connecting: TemplateResult | null = null;
 
 
       if (this._connecting && this._mousePos) {
-        connecting = html`<synthia-waveform class="connecting"></synthia-waveform>`
+        connecting = html`<s-waveform class="connecting"></s-waveform>`
       }
 
 
@@ -142,7 +142,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
 
     private _updateConnect(e: MouseEvent) {
       this._mousePos = { x: e.clientX, y: e.clientY }
-      if (!this.shadowRoot!.querySelector('synthia-waveform.connecting')) {
+      if (!this.shadowRoot!.querySelector('s-waveform.connecting')) {
         this.requestUpdate();
       }
       this._updateWaveforms();
