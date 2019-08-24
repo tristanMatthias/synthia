@@ -1,8 +1,8 @@
 :host {
   --tile-size: 7rem;
-  position: fixed;;
+  position: absolute;
   left: var(--margin);
-  top: calc(var(--margin) * 7);
+  top: var(--margin);
   bottom: calc(var(--margin) * 1);
   width: var(--tile-size);
   border-right: 0.1rem solid var(--color-line);

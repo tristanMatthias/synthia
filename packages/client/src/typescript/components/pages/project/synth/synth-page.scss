@@ -7,10 +7,10 @@
     color: var(--color-main);
   }
   .corners {
-    position: fixed;
-    right:  var(--margin);
-    left:  var(--margin);
-    top: calc( var(--margin) * 11);
+    position: absolute;
+    right: var(--margin);
+    left: var(--margin);
+    top: calc( var(--margin) * 5);
     bottom: calc( var(--margin) * 5);
     pointer-events: none;
     opacity: 0;

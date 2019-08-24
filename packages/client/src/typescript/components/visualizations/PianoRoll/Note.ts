@@ -1,9 +1,10 @@
-import { LitElement, css, customElement, html } from "lit-element";
+import { LitElement, css, customElement, html, property } from "lit-element";
 import { SElement } from "../../../types";
 import { Position } from "../../../lib/mixins/Draggable/Draggable";
 import { remToPx } from "../../../lib/pxToRem";
 import { MidiNote } from "../../../lib/MidiTrack/MIDINote";
 import { stringToNoteAndOctave } from "../../../lib/Instruments/keyToFrequency";
+import { PianoRoll } from "./PianoRoll";
 
 @customElement(SElement.pianoRollNote)
 export class PianoRollNote extends LitElement {
@@ -33,10 +34,17 @@ export class PianoRollNote extends LitElement {
       :host:after {
         right: 0;
       }
+      :host([selected]) {
+        background: var(--color-accent);
+      }
     `]
   }
 
   midiNote: MidiNote;
+
+
+  @property({reflect: true, type: Boolean})
+  selected = false;
 
 
   private _start : number;
@@ -66,6 +74,9 @@ export class PianoRollNote extends LitElement {
   private _mouseStart?: Position;
   private _dragType: 'drag' | 'resizeLeft' | 'resizeRight' | null = null;
   private _dragStartPosition: { start: number, duration: number } | null = null;
+  private get _pr(): PianoRoll {
+    return this.parentElement as PianoRoll;
+  }
 
   constructor() {
     super();
@@ -76,6 +87,11 @@ export class PianoRollNote extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
+    this.addEventListener('mousedown', (e) => {
+      e.stopPropagation();
+      this._pr.selectNote(this, e.shiftKey);
+    });
+
     this.addEventListener('dblclick', (e) => {
       e.stopPropagation();
       this.remove();
@@ -106,6 +122,7 @@ export class PianoRollNote extends LitElement {
 
 
   private _handleDrag(e: MouseEvent) {
+    e.stopPropagation();
     const style = getComputedStyle(this);
     const noteWidth = remToPx(parseInt(style.getPropertyValue('--note-width')));
     const noteHeight = remToPx(parseInt(style.getPropertyValue('--note-height')));
@@ -126,6 +143,7 @@ export class PianoRollNote extends LitElement {
       case 'drag':
         this.start = this._dragStartPosition!.start + gridDiffX;
         this.style.top = `${gridDiffY}px`;
+        this._updatePitch(gridDiffY);
         break;
 
       case 'resizeRight':
@@ -149,6 +167,12 @@ export class PianoRollNote extends LitElement {
     this._dragType = null;
     this._dragStartPosition = null;
     window.removeEventListener('mousemove', this._handleDrag);
+  }
+
+  private _updatePitch(y: number = parseInt(this.style.top!)) {
+    const n = this._pr.getNoteFromY(y);
+    this.midiNote.note = n.note;
+    this.midiNote.octave = n.octave;
   }
 }
 

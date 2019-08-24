@@ -7,6 +7,7 @@ import { remToPx } from '../../../lib/pxToRem';
 import { Clock } from '../../../lib/Clock';
 import debounce = require('lodash.debounce');
 import { MidiNote } from '../../../lib/MidiTrack/MIDINote';
+import { PianoRollNote } from './Note';
 
 export * from './Note';
 
@@ -18,9 +19,13 @@ export class PianoRoll extends LitElement {
 
   notes: MidiNote[];
 
+  private _selectedNotes: PianoRollNote[] = [];
+
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener('dblclick', this._addNote.bind(this));
+    this.addEventListener('mousedown', this._seek.bind(this));
+
     const updateTime = debounce(() => {
       (this.shadowRoot!.querySelector('span.time')! as HTMLSpanElement).style.left = `calc(${Clock.currentBarExact} * var(--note-width) * 4)`;
       this.requestUpdate();
@@ -83,6 +88,7 @@ export class PianoRoll extends LitElement {
     this.appendChild(note);
   }
 
+
   getNoteFromY(y: number) {
     const styles = getComputedStyle(this);
     const noteHeight = remToPx(parseInt(styles.getPropertyValue('--note-height')));
@@ -97,4 +103,34 @@ export class PianoRoll extends LitElement {
     };
   }
 
+
+  selectNote(n: PianoRollNote, multiple = false) {
+    if (!multiple) {
+      this._selectedNotes.forEach(n => n.selected = false);
+      this._selectedNotes = [n];
+      n.selected = true;
+    } else {
+      const index = this._selectedNotes.indexOf(n);
+      if (index >= 0) {
+        n.selected = false;
+        this._selectedNotes.splice(index, 1);
+      } else {
+        this._selectedNotes.push(n);
+        n.selected = true;
+      }
+    }
+  }
+
+  deselectAllNotes() {
+    this._selectedNotes.forEach(n => n.selected = false);
+    this._selectedNotes = [];
+  }
+
+  _seek(e: MouseEvent) {
+    const styles = getComputedStyle(this);
+    const keyWidth = remToPx(parseInt(styles.getPropertyValue('--key-width')));
+    const noteWidth = remToPx(parseInt(styles.getPropertyValue('--note-width')));
+    Clock.seekBeat((e.x - keyWidth) / noteWidth);
+    this.deselectAllNotes();
+  }
 }

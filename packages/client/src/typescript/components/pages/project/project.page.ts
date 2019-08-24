@@ -36,7 +36,6 @@ export class PageProject extends Router {
     css`
       :host {
         display: block;
-        margin-top: 8rem;
         --footer-height: var(--header-height);
       }
       .loading {
@@ -52,7 +51,7 @@ export class PageProject extends Router {
         bottom: var(--footer-height);
         left: 0;
         width: 100%;
-        overflow-y: auto;
+        overflow-y: hidden;
       }
     `
   ];

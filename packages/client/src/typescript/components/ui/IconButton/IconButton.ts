@@ -1,7 +1,7 @@
 import { customElement, html, LitElement, property } from 'lit-element';
 
 import { SElement } from '../../../types';
-import styles from './button.styles';
+import styles from './icon-button.styles';
 
 @customElement(SElement.button)
 export class Button extends LitElement {
@@ -22,11 +22,7 @@ export class Button extends LitElement {
   @property({reflect: true, type: String})
   color = 'alt';
 
-  @property({reflect: true, type: String})
-  icon = 'alt';
-
   render() {
-    if (this.icon) return html`<s-icon type=${this.icon}></s-icon>`;
     return html`
       <span><slot></slot></span>
       ${this.loading ? html`<s-loading></s-loading>` : null}

@@ -14,6 +14,7 @@
 
 :root,
 :root.purple {
+  --color-black: #1a1a36;
   --color-bg: #1E1E3F;
   --color-bg-off: #224;
   --color-dark: #2D2B55;
@@ -103,13 +104,13 @@ s-root {
 
 
 s-waveform {
-  position: fixed;
+  position: absolute;
   left: calc(var(--margin) * 12);
   bottom: calc(var(--margin) / 4);
 }
 
 s-keyboard {
-  position: fixed;
+  position: absolute;
   left: calc(var(--margin) * 12);
   bottom: calc(var(--margin) * 8);
   width: 40rem;

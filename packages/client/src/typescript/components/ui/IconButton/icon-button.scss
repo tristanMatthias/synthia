@@ -84,16 +84,3 @@
   --button-height: 2rem;
   --button-font-size: 1.3rem;
 }
-
-:host([icon]) {
-  border-radius: 50%;
-  height: 4rem;
-  width: 4rem;
-  padding: 0;
-  text-align: center;
-
-  s-icon {
-    --color: var(--button-text);
-    width: 80%;
-  }
-}

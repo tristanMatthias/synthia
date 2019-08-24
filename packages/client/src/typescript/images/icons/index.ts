@@ -23,9 +23,11 @@ export * from './oscillatorOld';
 export * from './pause';
 export * from './play';
 export * from './settings';
+export * from './stop';
 export * from './warning';
 export * from './wave';
 export * from './waveSawtooth';
 export * from './waveSine';
 export * from './waveSmall';
 export * from './waveSquare';
+
