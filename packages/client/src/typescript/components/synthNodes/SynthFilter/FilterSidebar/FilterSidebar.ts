@@ -57,10 +57,10 @@ export class FilterSidebar extends Sidebar {
             type="range"
             min="0"
             max="20"
-            value=${sn.q}
-            @change=${this._updateValue('q')}
+            value=${sn.Q}
+            @change=${this._updateValue('Q')}
           /></s-slider>
-          <span class="value">${Math.floor(sn.q)}db</span>
+          <span class="value">${Math.floor(sn.Q)}db</span>
         </div>
 
 

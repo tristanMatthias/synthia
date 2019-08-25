@@ -1,13 +1,13 @@
 import { ESynthiaProjectSynthNodeDelay } from '@synthia/api';
+import { FeedbackDelay } from 'tone';
 
-import { SynthiaDelay } from '../../../audioNodes/Delay';
 import { SElement } from '../../../types';
 import { BaseEffectClass, baseEffectMix } from '../SynthBaseEffect/BaseEffect';
 import { DelaySidebar } from './DelaySidebar';
 
 export * from './DelaySidebar';
 
-export class Delay extends BaseEffectClass<DelaySidebar, ESynthiaProjectSynthNodeDelay, SynthiaDelay> {
+export class Delay extends BaseEffectClass<DelaySidebar, ESynthiaProjectSynthNodeDelay, FeedbackDelay> {
 
   multipleConnections = false;
 
@@ -18,7 +18,7 @@ export class Delay extends BaseEffectClass<DelaySidebar, ESynthiaProjectSynthNod
     const m = this.synthNode!;
     this.audioNode.delayTime.value = m.properties.delayTime;
     this.audioNode.feedback.value = m.properties.feedback;
-    this.audioNode.dryWet = m.properties.dryWet;
+    // this.audioNode.dryWet = m.properties.dryWet;
     this.requestUpdate();
   }
 }

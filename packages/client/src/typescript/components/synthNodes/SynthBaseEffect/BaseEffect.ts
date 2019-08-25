@@ -1,7 +1,7 @@
 import { html } from 'lit-element';
 
-import CompositeAudioNode from '../../../audioNodes/BaseNode';
 import { effect } from '../../../images/icons/effect';
+import { ToneNode } from '../../../lib/Instruments/Synth/createToneNode';
 import { ConnectableMixin } from '../../../lib/mixins/Connectable/Connectable';
 import { DeletableMixin } from '../../../lib/mixins/Deletable/Deletable';
 import { DraggableMixin } from '../../../lib/mixins/Draggable/Draggable';
@@ -24,8 +24,8 @@ export interface NodeSidebar extends Sidebar {
 export class BaseEffectClass<
   SidebarType extends NodeSidebar,
   SN extends object,
-  AN extends AudioNode | CompositeAudioNode
-> extends BaseNode<SN, AN> {
+  TN extends ToneNode
+> extends BaseNode<SN, TN> {
 
   static get styles() {
     return [styles]

@@ -1,7 +1,8 @@
 import { ESynthiaProjectSynthNodeWave } from '@synthia/api';
 import { html, query } from 'lit-element';
+import { BasicOscillatorType, PolySynth } from 'tone';
 
-import { SynthiaWave } from '../../../audioNodes/Wave';
+import { wave } from '../../../images/icons';
 import { ConnectableEvents, ConnectableMixin } from '../../../lib/mixins/Connectable/Connectable';
 import { DeletableMixin } from '../../../lib/mixins/Deletable/Deletable';
 import { DraggableMixin } from '../../../lib/mixins/Draggable/Draggable';
@@ -14,9 +15,8 @@ import { CircleMenuButton } from '../../ui/CircleMenu/CircleMenu';
 import { BaseNode } from '../SynthBaseNode/BaseNode';
 import styles from './wave.styles';
 import { WaveSidebar } from './WaveSidebar/WaveSidebar';
-import { wave } from '../../../images/icons';
 
-export class Wave extends BaseNode<ESynthiaProjectSynthNodeWave, SynthiaWave> {
+export class Wave extends BaseNode<ESynthiaProjectSynthNodeWave, PolySynth> {
 
   static get styles() {
     return [styles]
@@ -28,13 +28,13 @@ export class Wave extends BaseNode<ESynthiaProjectSynthNodeWave, SynthiaWave> {
 
 
   multipleConnections = true;
-  audioNode: SynthiaWave;
+  audioNode: PolySynth;
 
   private _sidebar: WaveSidebar | null = null;
 
   get buttons(): CircleMenuButton[] {
     if (!this.synthNode) return [];
-    const action = (type: OscillatorType) => () => this.synthNode!.properties.type = type;
+    const action = (type: BasicOscillatorType) => () => this.synthNode!.properties.type = type;
     return [
       { text: 'Square wave', icon: 'waveSquare', action: action('square'), active: this.synthNode!.properties.type === 'square' },
       { text: 'Sine wave', icon: 'waveSine', action: action('sine'), active: this.synthNode!.properties.type === 'sine' },
@@ -51,15 +51,17 @@ export class Wave extends BaseNode<ESynthiaProjectSynthNodeWave, SynthiaWave> {
 
   protected _updateValues() {
     const m = this.synthNode!;
-    this.audioNode.type = m.properties.type;
-    this.audioNode.delay = m.properties.delay;
-    this.audioNode.attack = m.properties.attack;
-    this.audioNode.attackLevel = m.properties.attackLevel;
-    this.audioNode.decay = m.properties.decay;
-    this.audioNode.decayLevel = m.properties.decayLevel;
-    this.audioNode.release = m.properties.release;
-    this.audioNode.pitch = m.properties.pitch;
-    this.audioNode.gain = m.properties.gain;
+    this.audioNode.set({
+      oscillator: {
+        type: m.properties.type,
+      },
+      envelope: {
+        attack: m.properties.attack,
+        decay: m.properties.decay,
+        release: m.properties.release,
+      }
+    })
+    // this.audioNode.pitch = m.properties.pitch;
     this.requestUpdate();
   }
 
@@ -68,7 +70,6 @@ export class Wave extends BaseNode<ESynthiaProjectSynthNodeWave, SynthiaWave> {
     this.addEventListener(ConnectableEvents.connectingRotate, (e: CustomEventInit) => {
       this.background!.style.transform = `rotate(${e.detail.angle + 90}deg)`
     });
-    this.audioNode = this._ctx.createSynthiaWave();
   }
 
   render() {

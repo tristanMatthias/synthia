@@ -2,17 +2,14 @@ import { html, LitElement, query, property } from 'lit-element';
 
 import { SElement } from '../../../types';
 import styles from './frequency-response.styles';
-import { ctx } from '../../../lib/AudioContext';
-
+import { Master, Filter } from 'tone';
 
 export class FrequencyResponse extends LitElement {
   static get styles() {
     return [styles]
   }
 
-  private _ctx = ctx;
-
-  filter?: BiquadFilterNode;
+  filter?: Filter;
 
 
   @property({ reflect: true })
@@ -51,7 +48,7 @@ export class FrequencyResponse extends LitElement {
   }
   set frequency(v: number) {
     this._frequency = v;
-    if (this.filter) this.filter.frequency.setValueAtTime(v, this._ctx.currentTime);
+    if (this.filter) this.filter.frequency.value = v;
     this.requestUpdate();
   }
 
@@ -101,9 +98,10 @@ export class FrequencyResponse extends LitElement {
     ctx.fillRect(0, 0, this.width, this.height);
 
     const frequencyHz = new Float32Array(width);
-    const magResponse = new Float32Array(width);
-    const phaseResponse = new Float32Array(width);
-    const nyquist = 0.5 * this._ctx.sampleRate;
+    let magResponse = new Float32Array(width);
+
+    // @ts-ignore
+    const nyquist = 0.5 * Master.context.rawContext.sampleRate;
 
 
     // Draw frequency scale.
@@ -170,7 +168,8 @@ export class FrequencyResponse extends LitElement {
     }
 
     // Draw response.
-    this.filter.getFrequencyResponse(frequencyHz, magResponse, phaseResponse);
+    // @ts-ignore
+    magResponse = this.filter.getFrequencyResponse(width);
     ctx.strokeStyle = highlightColor;
     ctx.lineWidth = 2;
     ctx.beginPath();

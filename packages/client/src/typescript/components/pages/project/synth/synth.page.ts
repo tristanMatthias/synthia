@@ -1,6 +1,6 @@
 import { customElement, html, LitElement, property } from 'lit-element';
 
-import { Synth } from '../../../../lib/Instruments/Synth/Synth';
+import { NodeSynth } from '../../../../lib/Instruments/Synth/NodeSynth';
 import { Selectable } from '../../../../lib/mixins/Selectable/Selectable';
 import { project } from '../../../../lib/Project/Project';
 import { remToPx } from '../../../../lib/pxToRem';
@@ -10,6 +10,8 @@ import { Canvas } from '../../../layout/Canvas/Canvas';
 import { Toaster } from '../../../ui/Toaster/Toaster';
 import { connectComponentNode, createComponentNode } from './createComponentNode';
 import styles from './synth-page.styles';
+import { Master } from 'tone';
+import { Waveform } from '../../../visualizations/Waveform/Waveform';
 
 
 
@@ -39,7 +41,7 @@ export class PageSynth extends LitElement {
 
 
   synthId?: string;
-  synth: Synth;
+  synth: NodeSynth;
 
 
   private _isConnecting: boolean = false;
@@ -60,10 +62,11 @@ export class PageSynth extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     project.on('loadedNewProject', () => {
-      this.synth = project.instruments[this.synthId!] as Synth;
+      this.synth = project.instruments[this.synthId!] as NodeSynth;
       this._generateNodesFromFile();
     });
-    this.synth = project.instruments[this.synthId!] as Synth;
+
+    this.synth = project.instruments[this.synthId!] as NodeSynth;
   }
 
   render() {
@@ -142,10 +145,15 @@ export class PageSynth extends LitElement {
       this._toaster.info('Welcome to Synthia! Find your sound by dragging a node onto the canvas');
       Storage.set(StorageKey.notifiedIntro, true)
     }
+
+    Master.chain(
+      (document.querySelector(`${SElement.waveform}.main`!) as Waveform).analyser!
+    );
   }
 
   private _generateNodesFromFile() {
     if (!this.synth) return false;
+
 
     this._clearing = true;
     this._canvas!.clear();
@@ -156,6 +164,7 @@ export class PageSynth extends LitElement {
       this._canvas!.appendChild(ele);
       return ele;
     });
+
 
     (eles).forEach(connectComponentNode);
     this.isConnecting = false;

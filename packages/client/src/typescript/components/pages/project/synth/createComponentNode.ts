@@ -1,11 +1,11 @@
 import { SynthNodeType, TSynthiaProjectSynthNode } from '@synthia/api';
 
-import CompositeAudioNode from '../../../../audioNodes/BaseNode';
+import { ToneNode } from '../../../../lib/Instruments/Synth/createToneNode';
+import { Connectable } from '../../../../lib/mixins/Connectable/Connectable';
 import { InitialPosition } from '../../../../lib/mixins/Draggable/Draggable';
+import { Receivable } from '../../../../lib/mixins/Receivable/Receivable';
 import { SElement } from '../../../../types';
 import { BaseNode } from '../../../synthNodes/SynthBaseNode/BaseNode';
-import { Connectable } from '../../../../lib/mixins/Connectable/Connectable';
-import { Receivable } from '../../../../lib/mixins/Receivable/Receivable';
 
 
 export const FileNodeTypeToElement = {
@@ -29,7 +29,7 @@ export const ElementToFileNodeType: Partial<{[key in SElement]: SynthNodeType}> 
 
 export const createComponentNode = (
   synthNode: TSynthiaProjectSynthNode,
-  audioNode: AudioNode | CompositeAudioNode,
+  audioNode: ToneNode,
   initial = false
 ) => {
   const nodeType = FileNodeTypeToElement[synthNode.type]

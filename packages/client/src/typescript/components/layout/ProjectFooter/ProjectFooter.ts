@@ -42,8 +42,6 @@ export class Page extends LitElement {
   }
 
   private _update() {
-    console.log('here');
-
     this.requestUpdate();
     if (this.isConnected && Clock.playing) window.requestAnimationFrame(this._update)
   }

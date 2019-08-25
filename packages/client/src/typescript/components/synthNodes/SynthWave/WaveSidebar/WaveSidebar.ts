@@ -27,15 +27,6 @@ export class WaveSidebar extends Sidebar {
           <option value="sawtooth">Saw Tooth</option>
         </select>
       </div>
-      <div class="form-col">
-        <label> Delay </label>
-        <s-dial
-          min="0"
-          max="5"
-          value=${sn.delay}
-          @change=${this._updateValue('delay')}
-        /></s-dial>
-      </div>
 
       <div class="form-col">
         <label> Attack </label>
@@ -48,32 +39,12 @@ export class WaveSidebar extends Sidebar {
       </div>
 
       <div class="form-col">
-        <label> Attack Level </label>
-        <s-dial
-          min="0"
-          max="1"
-          value=${sn.attackLevel}
-          @change=${this._updateValue('attackLevel')}
-        /></s-dial>
-      </div>
-
-      <div class="form-col">
         <label> Decay </label>
         <s-dial
           min="0"
           max="20"
           value=${sn.decay}
           @change=${this._updateValue('decay')}
-        /></s-dial>
-      </div>
-
-      <div class="form-col">
-        <label> Decay Level </label>
-        <s-dial
-          min="0"
-          max="1"
-          value=${sn.decayLevel}
-          @change=${this._updateValue('decayLevel')}
         /></s-dial>
       </div>
 
@@ -94,16 +65,6 @@ export class WaveSidebar extends Sidebar {
           max="24"
           value=${sn.pitch}
           @change=${this._updateValue('pitch')}
-        /></s-dial>
-      </div>
-
-      <div class="form-col">
-        <label> Gain </label>
-        <s-dial
-          min="0"
-          max="1"
-          value=${sn.gain}
-          @change=${this._updateValue('gain')}
         /></s-dial>
       </div>
     </form>`;

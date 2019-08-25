@@ -1,12 +1,13 @@
 import { html, LitElement, TemplateResult } from 'lit-element';
 
+import { SynthPageEvents } from '../../../components/pages/project/synth/synth.page';
 import { Waveform } from '../../../components/visualizations/Waveform/Waveform';
 import { SElement } from '../../../types';
+import { ToneNode } from '../../Instruments/Synth/createToneNode';
+import { project } from '../../Project/Project';
 import { pxToRem, remToPx } from '../../pxToRem';
 import { DraggableEvents, Position } from '../Draggable/Draggable';
 import { Receivable, ReceivableEvents } from '../Receivable/Receivable';
-import { SynthPageEvents } from '../../../components/pages/project/synth/synth.page';
-import { project } from '../../Project/Project';
 
 
 export enum ConnectableEvents {
@@ -25,7 +26,7 @@ export const ConnectableMixin = (superclass: new () => LitElement) =>
   class Connectable extends superclass implements Connectable {
 
     multipleConnections?: boolean;
-    audioNode: AudioNode;
+    audioNode: ToneNode;
 
     private _synth = document.querySelector(SElement.synthPage)!;
     private _toaster = document.querySelector(SElement.toaster)!;

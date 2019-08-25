@@ -1,10 +1,9 @@
 import { ESynthiaProjectSynthNodeReverb } from '@synthia/api';
-import { SynthiaReverb } from '../../../audioNodes/Reverb';
+
 import { SElement } from '../../../types';
 import { BaseEffectClass, baseEffectMix } from '../SynthBaseEffect/BaseEffect';
 import { ReverbSidebar } from './ReverbSidebar';
-
-
+import { SynthiaReverb } from '../../../lib/effects/Reverb';
 
 export * from './ReverbSidebar';
 
@@ -15,7 +14,6 @@ export class Reverb extends BaseEffectClass<ReverbSidebar, ESynthiaProjectSynthN
     this.audioNode.roomSize = m.properties.roomSize;
     this.audioNode.decayTime = m.properties.decayTime;
     this.audioNode.fadeInTime = m.properties.fadeInTime;
-    this.audioNode.dryWet = m.properties.dryWet;
     this.requestUpdate();
   }
 

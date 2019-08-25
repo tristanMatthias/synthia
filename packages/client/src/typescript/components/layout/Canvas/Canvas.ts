@@ -45,7 +45,7 @@ export class Canvas extends LitElement {
     nodes.forEach(n => n.remove());
   }
 
-  private _handleDrop(e: DragEvent) {
+  private async _handleDrop(e: DragEvent) {
     if (!project.file || !this._synth.synthId) return false;
 
     let { x, y, width, height } = this.getBoundingClientRect() as DOMRect;
@@ -54,7 +54,7 @@ export class Canvas extends LitElement {
     const yPerc = (Math.abs(y) + e.clientY - 60) / height * 100;
     const type = e.dataTransfer!.getData('type')! as keyof typeof ElementToFileNodeType;
 
-    const {synthNode, audioNode} = this._synth.synth.createNode(
+    const {synthNode, audioNode} = await this._synth.synth.createNode(
       xPerc, yPerc,
       ElementToFileNodeType[type]!
     );

@@ -8,20 +8,17 @@ export const defaultSynthNodeProperties = (
       return {
         type: "sine",
         attack: 0.2,
-        attackLevel: 1,
         decay: 1,
-        decayLevel: 1,
-        delay: 0,
         release: 0.2,
         pitch: 0,
-        gain: 1
+        sustain: 1
       }
 
     case "filter":
       return {
         type: 'lowpass',
         frequency: 320,
-        q: 8,
+        Q: 8,
         gain: 0,
       }
 

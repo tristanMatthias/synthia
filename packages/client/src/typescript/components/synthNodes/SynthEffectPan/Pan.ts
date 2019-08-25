@@ -8,7 +8,7 @@ import { PanSidebar } from './PanSidebar';
 
 export * from './PanSidebar';
 
-export class Pan extends BaseEffectClass<PanSidebar, ESynthiaProjectSynthNodePan, StereoPannerNode> {
+export class Pan extends BaseEffectClass<PanSidebar, ESynthiaProjectSynthNodePan, Tone.Panner> {
 
   multipleConnections = false;
 

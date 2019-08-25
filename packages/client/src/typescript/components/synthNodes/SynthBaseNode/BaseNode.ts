@@ -1,17 +1,14 @@
 import { LitElement } from 'lit-element';
-
-import CompositeAudioNode from '../../../audioNodes/BaseNode';
-import { ctx } from '../../../lib/AudioContext';
-import { SElement } from '../../../types';
 import { proxa } from 'proxa';
+import { ToneNode } from '../../../lib/Instruments/Synth/createToneNode';
+import { SElement } from '../../../types';
 
-export class BaseNode<SN extends object, AN extends AudioNode | CompositeAudioNode> extends LitElement {
+export class BaseNode<SN extends object, TN extends ToneNode> extends LitElement {
 
   protected _synth = document.querySelector(SElement.synthPage)!;
-  protected readonly _ctx = ctx;
   protected _toaster = document.querySelector(SElement.toaster)!;
 
-  audioNode: AN;
+  audioNode: TN;
 
   protected _synthNode?: SN;
   get synthNode() {

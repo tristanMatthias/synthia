@@ -6,7 +6,6 @@ import { SelectableMixin } from '../../../lib/mixins/Selectable/Selectable';
 import { SElement } from '../../../types';
 import { BaseNode } from '../SynthBaseNode/BaseNode';
 import styles from './root.styles';
-import { Waveform } from '../../visualizations/Waveform/Waveform';
 
 
 export class Root extends BaseNode<any, any> {
@@ -28,13 +27,6 @@ export class Root extends BaseNode<any, any> {
           <path stroke="var(--color-feature)" d="M12.49.662C5.922.662.598 5.986.598 12.554M12.49 24.446c6.568 0 11.892-5.325 11.892-11.892"/>
         </g>
       </svg>`;
-  }
-
-  firstUpdated(props: Map<string, keyof Root>) {
-    super.firstUpdated(props) ;
-    this._synth.synth.output.connect(
-      (document.querySelector(`${SElement.waveform}.main`!) as Waveform).analyser!
-    );
   }
 }
 

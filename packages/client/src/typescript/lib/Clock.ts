@@ -1,5 +1,10 @@
-import { ctx } from "./AudioContext";
-import { EventObject } from "./EventObject/EventObject";
+import { State, Transport } from 'tone';
+import { EventObject } from './EventObject/EventObject';
+import Tone from 'tone';
+// console.log(Tone.Transport);
+// // @ts-ignore
+// console.log(Tone.Transport, new Tone.Transport());
+
 
 export interface ClockEvents {
   play: void;
@@ -9,21 +14,26 @@ export interface ClockEvents {
 }
 
 export const Clock = new class extends EventObject<ClockEvents> {
-  private _playing: boolean = false;
+  // @ts-ignore
+  transport: Transport = Tone.Transport;
+
   public get playing(): boolean {
-    return this._playing;
+    return this.transport.state === State.Started;
   }
   public set playing(v: boolean) {
-    if (v === this._playing) return;
-    this._playing = v;
+    if (this.playing === v) return;
     if (v) this.play();
     else this.pause();
   }
 
-  tempo: number = 140;
+  public get tempo(): number {
+    return this.transport.bpm.value;
+  }
+  public set tempo(v: number) {
+    this.transport.bpm.value = v;
+  }
 
-  private _startedAtCtx: number;
-  private _stoppedAt: number = 0;
+
   private _spaceDown = false;
 
   constructor() {
@@ -35,8 +45,7 @@ export const Clock = new class extends EventObject<ClockEvents> {
   }
 
   seek(time: number) {
-    this._stoppedAt = time;
-    this._startedAtCtx = ctx.currentTime;
+    this.transport.seconds = time;
     this.emit('seek', time);
   }
 
@@ -45,20 +54,18 @@ export const Clock = new class extends EventObject<ClockEvents> {
   }
 
   play() {
-    this._playing = true;
-    this._startedAtCtx = ctx.currentTime;
+    this.transport.start();
     this.emit('play', undefined);
   }
 
   pause() {
-    this._stoppedAt = this.currentTime;
-    this._playing = false;
+    // @ts-ignore
+    this.transport.pause();
     this.emit('pause', undefined);
   }
 
   stop() {
-    this._playing = false;
-    this.seek(0);
+    this.transport.stop();
     this.emit('stop', undefined);
   }
 
@@ -68,13 +75,10 @@ export const Clock = new class extends EventObject<ClockEvents> {
   }
 
   get currentTime() {
-    if (!this._startedAtCtx) return 0;
-    if (!this._playing) return this._stoppedAt;
-    return (ctx.currentTime - this._startedAtCtx) + this._stoppedAt;
+    return this.transport.seconds;
   }
 
   get currentBeat() {
-    if (!this._startedAtCtx) return 0;
     return (this.currentTime / 60) * this.tempo;
   }
 

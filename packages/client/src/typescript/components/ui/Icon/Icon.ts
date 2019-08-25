@@ -2,8 +2,6 @@ import { LitElement, property, html, css, customElement } from "lit-element";
 import * as icons from '../../../images/icons';
 import { SElement } from "../../../types";
 
-console.log(icons);
-
 @customElement(SElement.icon)
 export class Icon extends LitElement {
   static styles = [

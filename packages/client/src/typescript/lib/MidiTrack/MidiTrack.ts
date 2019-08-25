@@ -1,6 +1,6 @@
 import { Clock } from '../Clock';
-import { Instrument } from '../Instruments/Instrument';
 import { MidiNote } from './MIDINote';
+import { Instrument } from '../Instruments/Instrument';
 
 
 export class MidiTrack {
@@ -13,22 +13,19 @@ export class MidiTrack {
 
   private _current: MidiNote[] = [];
 
-  // private _output = ctx.createGain();
-
 
   play(note: MidiNote) {
     if (this._current.includes(note)) return false;
     this._current.push(note);
     const n = `${note.note}${note.octave}`;
-    this.instrument.play(n);
+    this.instrument.triggerAttack([n]);
     return n;
-    // iNotes.forEach(n => n.connect(this._output));
   }
 
   triggerRelease(note: MidiNote) {
     if (!this._current.includes(note)) return false;
     const n = `${note.note}${note.octave}`;
-    this.instrument.triggerRelease(n);
+    this.instrument.triggerRelease([n]);
     this._current.splice(this._current.indexOf(note), 1)
     return true;
   }

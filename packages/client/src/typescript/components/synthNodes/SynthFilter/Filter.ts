@@ -19,7 +19,7 @@ import { BaseNode } from '../SynthBaseNode/BaseNode';
 import { FilterSidebar } from './FilterSidebar/FilterSidebar';
 
 
-export class Filter extends BaseNode<ESynthiaProjectSynthNodeFilter, BiquadFilterNode> {
+export class Filter extends BaseNode<ESynthiaProjectSynthNodeFilter, Tone.Filter> {
 
   static get styles() {
     return [BaseEffectClass.styles]
@@ -28,7 +28,7 @@ export class Filter extends BaseNode<ESynthiaProjectSynthNodeFilter, BiquadFilte
   protected _updateValues() {
     const m = this._synthNode!;
     this.audioNode.type = m.properties.type;
-    this.audioNode.Q.value = m.properties.q;
+    this.audioNode.Q.value = m.properties.Q;
     this.audioNode.frequency.value = m.properties.frequency;
     this.audioNode.gain.value = m.properties.gain;
     this.requestUpdate();

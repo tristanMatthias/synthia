@@ -66,6 +66,12 @@ export class Keyboard extends LitElement {
     this.addEventListener('mousedown', this._handleMouseDown);
   }
 
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    window.removeEventListener('keypress', this._handleKeyPress);
+    window.removeEventListener('keyup', this._handleKeyUp);
+  }
+
 
   private _handleKeyPress(e: KeyboardEvent) {
     const n = keyToNote(e.key, this.octave);
@@ -104,7 +110,7 @@ export class Keyboard extends LitElement {
   private _play(n: string) {
     if (n && !this._pressed.get(n)) {
       this._pressed.set(n, true);
-      this._synth.synth.play(n);
+      this._synth.synth.triggerAttack([n]);
       let [note, octave] = stringToNoteAndOctave(n)!;
       if (note == 'A' || note == 'A#') octave += 1;
       this._toggleKey(note, octave, true);
@@ -112,7 +118,7 @@ export class Keyboard extends LitElement {
   }
   private _stop(n: string) {
     this._pressed.delete(n);
-    this._synth.synth.triggerRelease(n);
+    this._synth.synth.triggerRelease([n]);
     let [note, octave] = stringToNoteAndOctave(n)!;
     if (note == 'A' || note == 'A#') octave += 1;
     this._toggleKey(note, octave, false);

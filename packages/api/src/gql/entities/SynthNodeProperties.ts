@@ -1,6 +1,7 @@
 import { createUnionType, Field, ObjectType } from 'type-graphql';
 
 import { SynthNodeTypeEnum } from './SynthNodeEntity';
+import { BasicOscillatorType } from 'tone';
 
 
 export type SynthiaProjectSynthNodeProperties =
@@ -21,23 +22,25 @@ export class ESynthiaProjectSynthNodeOscillatorProperties {
 @ObjectType()
 export class ESynthiaProjectSynthNodeWaveProperties {
   @Field()
-  type: OscillatorType
-  @Field()
-  delay: number
+  type: BasicOscillatorType
+  // @Field()
+  // delay: number
   @Field()
   attack: number
-  @Field()
-  attackLevel: number
+  // @Field()
+  // attackLevel: number
   @Field()
   decay: number
   @Field()
-  decayLevel: number
+  sustain: number
+  // @Field()
+  // decayLevel: number
   @Field()
   release: number
   @Field()
   pitch: number
-  @Field()
-  gain: number
+  // @Field()
+  // gain: number
 }
 
 @ObjectType()
@@ -69,7 +72,7 @@ export class ESynthiaProjectSynthNodeFilterProperties {
   @Field()
   frequency: number
   @Field()
-  q: number
+  Q: number
   @Field()
   gain: number
 }

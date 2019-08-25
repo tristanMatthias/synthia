@@ -1,38 +1,39 @@
 import { ESynth, SynthNodeType, TSynthiaProjectSynthNode } from '@synthia/api';
 import { proxa } from 'proxa';
 import shortid from 'shortid';
-
-import { SynthiaWave } from '../../../audioNodes';
-import CompositeAudioNode from '../../../audioNodes/BaseNode';
-import { ctx } from '../../AudioContext';
+import Tone, { Encoding, PolySynth } from 'tone';
 import { fileService } from '../../File/FileService';
-import { Instrument } from '../Instrument';
-import { noteToFrequency, stringToNoteAndOctave } from '../keyToFrequency';
-import { createAudioNode } from './createAudioNode';
+import { createToneNode, ToneNode } from './createToneNode';
 import { defaultSynthNodeProperties } from './defaultSynthNodeProperties';
+import { Instrument } from '../Instrument';
 
 
-export class Synth implements Instrument {
+// import {tone} from 'tone';
+
+export class NodeSynth extends Tone.PolySynth implements Instrument {
+
+  output: Tone.Volume;
   synth: ESynth;
-  nodes: { [id: string]: [TSynthiaProjectSynthNode, AudioNode | CompositeAudioNode] } = {}
-  output = ctx.createGain();
+  nodes: { [id: string]: [TSynthiaProjectSynthNode, ToneNode] } = {}
+
 
   constructor(synth: ESynth) {
+    super();
     this.synth = proxa(synth);
 
     // Construct the initial nodes
     this.synth.nodes.forEach(n => {
-      this.nodes[n.id] = [n, createAudioNode(n)]
+      this.nodes[n.id] = [n, createToneNode(n)]
     });
-
-    this.output.connect(ctx.destination);
     this.setupConnections();
+
+    this.output.toMaster();
   }
 
-  private get _waves() {
+  private get _synths() {
     return Object.values(this.nodes)
       .filter(([sn]) => sn.type === 'wave') as [
-        TSynthiaProjectSynthNode, SynthiaWave
+      TSynthiaProjectSynthNode, PolySynth
       ][]
   }
 
@@ -66,11 +67,12 @@ export class Synth implements Instrument {
     let to = this.nodes[toId];
     if (!to) throw new Error(`Cannot find node with id ${toId}`);
 
-    from[1].connect(to[1] as AudioNode);
+    from[1].connect(to[1]);
     if (update) {
       from[0].connectedTo.push(toId);
       if (save) fileService.saveSynth(this.synth);
     }
+    return true;
   }
 
 
@@ -87,14 +89,16 @@ export class Synth implements Instrument {
     let to = this.nodes[toId];
     if (!to) throw new Error(`Cannot find node with id ${toId}`);
 
-    from[1].disconnect(to[1] as AudioNode);
+    from[1].disconnect(to[1]);
     from[0].connectedTo = from[0].connectedTo.filter(n => n !== toId);
 
     if (save) fileService.saveSynth(this.synth);
+    return true;
   }
 
 
-  createNode(x: number, y: number, type: SynthNodeType, props?: any) {
+  async createNode(x: number, y: number, type: SynthNodeType
+    , props?: any) {
     const properties = props || defaultSynthNodeProperties(type);
     const synthNode: TSynthiaProjectSynthNode = {
       id: shortid(),
@@ -104,13 +108,13 @@ export class Synth implements Instrument {
       receives: [],
       connectedTo: [],
     }
-    const audioNode = createAudioNode(synthNode);
+    const audioNode = await createToneNode(synthNode);
 
     this.synth.nodes.push(synthNode);
     this.nodes[synthNode.id] = [synthNode, audioNode];
 
     fileService.saveSynth(this.synth);
-    return {synthNode: synthNode, audioNode };
+    return { synthNode: synthNode, audioNode };
   }
 
   removeNode(id: string) {
@@ -123,7 +127,7 @@ export class Synth implements Instrument {
       .forEach(([n]) => this.disconnectNode(n.id, id, false));
 
     // Kill the audio
-    node[1].disconnect();
+    node[1].dispose();
 
     this.synth.nodes = this.synth.nodes.filter(n => n.id !== id);
 
@@ -133,17 +137,18 @@ export class Synth implements Instrument {
     fileService.saveSynth(this.synth.toJSON())
   }
 
-  play(note: string) {
-    return this._waves.map(([, w]) => {
-      const f = noteToFrequency(...(stringToNoteAndOctave(note)!));
-      return w.play(f);
-    });
+
+  triggerAttack(notes: Encoding.Frequency[], time: Encoding.Time = '+0.01', velocity?: number) {
+    this._synths.forEach(([,s]) => s.triggerAttack(notes, time, velocity));
+    return this;
   }
 
-  triggerRelease(note: string) {
-    this._waves.forEach(([, w]) => {
-      const f = noteToFrequency(...(stringToNoteAndOctave(note)!));
-      w.triggerRelease(f);
-    })
+
+  /**
+   * Trigger the release portion of the envelope
+   */
+  triggerRelease(notes: Encoding.Frequency[], time: Encoding.Time = '+0.01') {
+    this._synths.forEach(([,s]) => s.triggerRelease(notes, time));
+    return this;
   }
 }

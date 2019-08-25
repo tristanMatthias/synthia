@@ -1,5 +1,3 @@
-import { OfflineAudioCtx } from "./AudioContext";
-
 export interface GenerateImpulseResponseOptions {
   decayTime: number,
   fadeInTime: number,
@@ -68,7 +66,7 @@ const applyDecay = (
 
   const channelData = getAllChannelData(input);
   // @ts-ignore
-  const context: OfflineAudioContext = new OfflineAudioCtx(input.numberOfChannels, channelData[0].length, input.sampleRate);
+  const context: OfflineAudioContext = new OfflineAudioContext(input.numberOfChannels, channelData[0].length, input.sampleRate);
   const player = context.createBufferSource();
   player.buffer = input;
   const filter = context.createBiquadFilter();

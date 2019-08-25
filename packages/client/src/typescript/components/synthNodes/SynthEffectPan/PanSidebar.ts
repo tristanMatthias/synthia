@@ -17,16 +17,14 @@ export class PanSidebar extends Sidebar implements NodeSidebar {
     const props = this.input.synthNode!.properties;
 
     return html`<form>
-      <div class="form-row">
-        <label>Pan</label>
-        <s-slider
-          type="range"
+      <div class="form-col">
+        <label> Pan </label>
+        <s-dial
           min="-1"
           max="1"
           value=${props.pan}
           @change=${this._updateValue('pan')}
-        /></s-slider>
-        <span class="value">${props.pan}</span>
+        /></s-dial>
       </div>
     </form>`;
   }

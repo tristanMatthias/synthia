@@ -1,12 +1,13 @@
 import { html, LitElement, property, query } from 'lit-element';
+import { Analyser } from 'tone';
 
+import { ToneNode } from '../../../lib/Instruments/Synth/createToneNode';
 import { Connectable } from '../../../lib/mixins/Connectable/Connectable';
 import { Receivable } from '../../../lib/mixins/Receivable/Receivable';
 import { remToPx } from '../../../lib/pxToRem';
 import { SElement } from '../../../types';
+import { PageSynth, SynthPageEvents } from '../../pages/project/synth/synth.page';
 import styles from './waveform.styles';
-import { SynthPageEvents, PageSynth } from '../../pages/project/synth/synth.page';
-import { ctx } from '../../../lib/AudioContext';
 
 
 export class Waveform extends LitElement {
@@ -15,9 +16,8 @@ export class Waveform extends LitElement {
   }
 
   private _synth: PageSynth;
-  private _ctx = ctx;
 
-  analyser = this._ctx.createAnalyser();
+  analyser = new Analyser('waveform', 2048);
   connectedTo?: Receivable;
   connectedFrom?: Connectable;
 
@@ -25,8 +25,8 @@ export class Waveform extends LitElement {
   removable: boolean = false;
   private _removing: boolean = false;
 
-  private _bufferLength: number;
-  private _dataArray: Uint8Array;
+  private _bufferLength: number = 1024;
+  private _dataArray: Float32Array;
   private _canvasCtx?: CanvasRenderingContext2D;
   private _toaster = document.querySelector(SElement.toaster)!;
   private _lastNotified = Date.now();
@@ -42,21 +42,23 @@ export class Waveform extends LitElement {
     if (!len) return false;
 
 
-    return this._dataArray[0] == 128 &&
-      this._dataArray[len - 1] == 128;
+
+    return (
+      this._dataArray[0] <= 0.01 &&
+      this._dataArray[0] >= -0.01
+    ) && (
+      this._dataArray[len -1] <= 0.01 &&
+      this._dataArray[len -1] >= -0.01
+    );
   }
 
   constructor() {
     super();
-
-    this.analyser.fftSize = 2048;
-    this.analyser.smoothingTimeConstant = 0.3;
-    this._bufferLength = this.analyser.frequencyBinCount;
-    this._dataArray = new Uint8Array(this._bufferLength);
+    this.analyser.smoothing = 0.3;
+    this._dataArray = new Float32Array(this._bufferLength);
 
     this._draw = this._draw.bind(this);
     this.disconnect = this.disconnect.bind(this);
-
   }
 
   @query('canvas')
@@ -84,7 +86,7 @@ export class Waveform extends LitElement {
   }
 
 
-  connect(node: AudioNode) {
+  connect(node: ToneNode) {
     this.analyser.connect(node);
   }
 
@@ -124,7 +126,7 @@ export class Waveform extends LitElement {
     const height = canvas.height;
 
     ctx.clearRect(0, 0, width, height);
-    this.analyser.getByteTimeDomainData(this._dataArray);
+    this._dataArray = this.analyser.getValue();
 
     ctx.lineWidth = 2;
 
@@ -144,8 +146,8 @@ export class Waveform extends LitElement {
 
     for (let i = 0; i < this._bufferLength; i++) {
 
-      const v = this._dataArray[i] / 128.0;
-      const y = (v * (height - 2) / 2);
+      const v = this._dataArray[i] / 2;
+      const y = (v * (height - 2) /2) + height / 2;
 
       if (i === 0) ctx.moveTo(x, y);
       else ctx.lineTo(x, y);

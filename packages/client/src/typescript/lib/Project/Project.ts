@@ -5,7 +5,7 @@ import { proxa } from 'proxa';
 import { EventObject } from '../EventObject/EventObject';
 import { fileService } from '../File/FileService';
 import { Instrument } from '../Instruments/Instrument';
-import { Synth } from '../Instruments/Synth/Synth';
+import { NodeSynth } from '../Instruments/Synth/NodeSynth';
 
 export enum ProjectDataObjectType {
   meta = 'meta',
@@ -39,7 +39,7 @@ export const project = new class Project extends EventObject<ProjectEvents> {
     this.file = proxa(file, () => this.save());
 
     this.file.resources.synths.forEach(s => {
-      this.instruments[s.id] = new Synth(s);
+      this.instruments[s.id] = new NodeSynth(s);
     });
 
     this.emit('loadedNewProject', file);

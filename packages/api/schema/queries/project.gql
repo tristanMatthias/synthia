@@ -40,14 +40,11 @@ query project($projectId: String!){
                         properties{
                             ... on ESynthiaProjectSynthNodeWaveProperties {
                                 type
-                                delay
                                 attack
-                                attackLevel
                                 decay
-                                decayLevel
+                                sustain
                                 release
                                 pitch
-                                gain
                             }
                         }
                     }
@@ -99,7 +96,7 @@ query project($projectId: String!){
                             ... on ESynthiaProjectSynthNodeFilterProperties {
                                 type
                                 frequency
-                                q
+                                Q
                                 gain
                             }
                         }
