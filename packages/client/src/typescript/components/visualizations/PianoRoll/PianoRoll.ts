@@ -8,6 +8,7 @@ import { Clock } from '../../../lib/Clock';
 import debounce = require('lodash.debounce');
 import { MidiNote } from '../../../lib/MidiTrack/MIDINote';
 import { PianoRollNote } from './Note';
+import { proxa } from 'proxa';
 
 export * from './Note';
 
@@ -17,7 +18,7 @@ export class PianoRoll extends LitElement {
     return [styles]
   }
 
-  notes: MidiNote[];
+  notes: MidiNote[] = proxa([]);
 
   private _selectedNotes: PianoRollNote[] = [];
 
@@ -119,6 +120,13 @@ export class PianoRoll extends LitElement {
         n.selected = true;
       }
     }
+  }
+
+  removeNotes(notes: MidiNote[]) {
+    notes.forEach(n => {
+      const i = notes.indexOf(n);
+      this.notes.splice(i, 1);
+    });
   }
 
   deselectAllNotes() {

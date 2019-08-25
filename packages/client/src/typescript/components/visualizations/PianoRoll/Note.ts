@@ -51,14 +51,14 @@ export class PianoRollNote extends LitElement {
   public get start() { return this._start; }
   public set start(v) {
     this._start = v;
-    this.midiNote.start = v;
+    this.midiNote.s = v;
   }
 
   private _duration : number;
   public get duration() { return this._duration; }
   public set duration(v) {
     this._duration = v;
-    this.midiNote.duration = v;
+    this.midiNote.d = v;
   }
 
   private _note : string;
@@ -66,8 +66,7 @@ export class PianoRollNote extends LitElement {
   public set note(v) {
     this._note = v;
     const [note, octave] = stringToNoteAndOctave(v)!;
-    this.midiNote.note = note;
-    this.midiNote.octave = octave;
+    this.midiNote.n = `${note}${octave}`;
   }
 
 
@@ -80,7 +79,7 @@ export class PianoRollNote extends LitElement {
 
   constructor() {
     super();
-    this.midiNote = new MidiNote(0, 0);
+    this.midiNote = {s: 0, d: 0, n: 'A4', v: 1};
     this._handleDrag = this._handleDrag.bind(this);
     this._stopDrag = this._stopDrag.bind(this);
   }
@@ -118,6 +117,11 @@ export class PianoRollNote extends LitElement {
 
     window.addEventListener('mousemove', this._handleDrag);
     window.addEventListener('mouseup', this._stopDrag);
+  }
+
+  remove() {
+    this._pr.removeNotes([this.midiNote]);
+    super.remove();
   }
 
 
@@ -171,8 +175,7 @@ export class PianoRollNote extends LitElement {
 
   private _updatePitch(y: number = parseInt(this.style.top!)) {
     const n = this._pr.getNoteFromY(y);
-    this.midiNote.note = n.note;
-    this.midiNote.octave = n.octave;
+    this.midiNote.n = `${n.note}${n.octave}`;
   }
 }
 

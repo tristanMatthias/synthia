@@ -17,14 +17,14 @@ export class MidiTrack {
   play(note: MidiNote) {
     if (this._current.includes(note)) return false;
     this._current.push(note);
-    const n = `${note.note}${note.octave}`;
+    const n = note.n;
     this.instrument.triggerAttack([n]);
     return n;
   }
 
   triggerRelease(note: MidiNote) {
     if (!this._current.includes(note)) return false;
-    const n = `${note.note}${note.octave}`;
+    const n = note.n;
     this.instrument.triggerRelease([n]);
     this._current.splice(this._current.indexOf(note), 1)
     return true;
@@ -36,8 +36,8 @@ export class MidiTrack {
     const fidelity = 0.05;
 
     this.notes.forEach(n => {
-      const end = Math.abs(n.start + n.duration) - t;
-      if (Math.abs(n.start - t) < fidelity) this.play(n);
+      const end = Math.abs(n.s + n.d) - t;
+      if (Math.abs(n.s - t) < fidelity) this.play(n);
       else if (end < fidelity) this.triggerRelease(n);
     });
 
