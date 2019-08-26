@@ -1,11 +1,14 @@
 import { Arg, Authorized, Ctx, FieldResolver, Mutation, Query, Resolver, Root } from 'type-graphql';
+
 import { Context } from '../../lib/context';
+import { ErrorAuthNoAccess, ErrorResourceNotPublic } from '../../lib/errors';
 import { Project } from '../../models/Project';
+import { MidiClipService } from '../../services/MidiClipService';
 import { ProjectService } from '../../services/ProjectService';
 import { SynthService } from '../../services/SynthService';
+import { EMidiTrack } from '../entities/MidiTrackEntity';
 import { ECreateProject, EProject, EProjectResources, EUpdateProject } from '../entities/ProjectEntity';
 import { EUser } from '../entities/UserEntity';
-import { ErrorResourceNotPublic, ErrorAuthNoAccess } from '../../lib/errors';
 
 
 @Resolver(EProject)
@@ -73,8 +76,16 @@ export class ProjectResolver {
   @FieldResolver(() => EProjectResources)
   async resources(
     @Root() project: Project
+  ): Promise<EProjectResources> {
+    const synths = await SynthService.findByProject(project.id);
+    const midiClips = await MidiClipService.findByProject(project.id);
+    return { synths, midiClips }
+  }
+
+  @FieldResolver(() => EMidiTrack)
+  async midiTracks(
+    @Root() project: Project
   ) {
-    const synths = await SynthService.findByProject(project.id)
-    return { synths }
+    return await project.$get('midiTracks');
   }
 }

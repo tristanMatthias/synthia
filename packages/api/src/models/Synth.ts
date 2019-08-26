@@ -2,7 +2,7 @@ import { JSON } from 'sequelize';
 import { BelongsToMany, Column, Default, Table } from 'sequelize-typescript';
 
 import { TSynthiaProjectSynthNode } from '../gql/entities/SynthNodeEntity';
-import { WithMetadata } from './BaseModel';
+import { WithMetadata } from './WithMetadata';
 import { Project } from './Project';
 import { ProjectSynth } from './ProjectSynth';
 

@@ -1,10 +1,10 @@
 import { EMetadata } from '../gql/entities/MetadataEntity';
 import { ECreateProject, EUpdateProject } from '../gql/entities/ProjectEntity';
-import { handleSequelizeError, ErrorResourceNotPublic } from '../lib/errors';
+import { ErrorResourceNotPublic, handleSequelizeError } from '../lib/errors';
 import { Project } from '../models/Project';
 import { BaseService } from './BaseService';
-import { UserService } from './UserService';
 import { SynthService } from './SynthService';
+import { UserService } from './UserService';
 
 export interface UpdateProject extends ECreateProject {
   id: string;
@@ -74,4 +74,5 @@ export const ProjectService = new class extends BaseService<
       throw await handleSequelizeError(e);
     }
   }
+
 }(Project)

@@ -13,7 +13,7 @@ const options: SequelizeOptions = {
   dialect: 'postgres',
   logging: false,
   modelPaths: [
-    path.resolve(__dirname, '../models/**/!(BaseModel)*'),
+    path.resolve(__dirname, '../models/**/!(BaseModel|WithMetadata)*'),
   ],
   define: {
     paranoid: true
