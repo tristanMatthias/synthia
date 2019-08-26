@@ -1,0 +1,123 @@
+query project($projectId: String!) {
+  project(projectId: $projectId) {
+    name
+    public
+    creatorId
+    createdAt
+    id
+    resources {
+      synths {
+        name
+        public
+        creatorId
+        createdAt
+        id
+        nodes {
+          ...on ESynthiaProjectSynthNodeOscillator {
+            id
+            type
+            connectedTo
+            receives
+            position {
+              x
+              y
+            }
+            properties {
+              ...on ESynthiaProjectSynthNodeOscillatorProperties {
+                type
+              }
+            }
+          }
+          ...on ESynthiaProjectSynthNodeWave {
+            id
+            type
+            connectedTo
+            receives
+            position {
+              x
+              y
+            }
+            properties {
+              ...on ESynthiaProjectSynthNodeWaveProperties {
+                type
+                attack
+                decay
+                sustain
+                release
+                pitch
+              }
+            }
+          }
+          ...on ESynthiaProjectSynthNodeReverb {
+            id
+            type
+            connectedTo
+            receives
+            position {
+              x
+              y
+            }
+            properties {
+              ...on ESynthiaProjectSynthNodeReverbProperties {
+                roomSize
+                decayTime
+                fadeInTime
+                dryWet
+              }
+            }
+          }
+          ...on ESynthiaProjectSynthNodeDelay {
+            id
+            type
+            connectedTo
+            receives
+            position {
+              x
+              y
+            }
+            properties {
+              ...on ESynthiaProjectSynthNodeDelayProperties {
+                delayTime
+                feedback
+                dryWet
+              }
+            }
+          }
+          ...on ESynthiaProjectSynthNodeFilter {
+            id
+            type
+            connectedTo
+            receives
+            position {
+              x
+              y
+            }
+            properties {
+              ...on ESynthiaProjectSynthNodeFilterProperties {
+                type
+                frequency
+                Q
+                gain
+              }
+            }
+          }
+          ...on ESynthiaProjectSynthNodePan {
+            id
+            type
+            connectedTo
+            receives
+            position {
+              x
+              y
+            }
+            properties {
+              ...on ESynthiaProjectSynthNodePanProperties {
+                pan
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

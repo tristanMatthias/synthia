@@ -1,0 +1,14 @@
+mutation createProject($project: ECreateProject!) {
+  createProject(project: $project) {
+    name
+    public
+    creatorId
+    createdAt
+    id
+    resources {
+      synths {
+        id
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+mutation updateProject($project: EUpdateProject!) {
+  updateProject(project: $project) {
+    id
+  }
+}

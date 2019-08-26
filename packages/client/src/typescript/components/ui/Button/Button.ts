@@ -23,7 +23,7 @@ export class Button extends LitElement {
   color = 'alt';
 
   @property({reflect: true, type: String})
-  icon = false;
+  icon: string | null = null;
 
   render() {
     if (this.icon) return html`<s-icon type=${this.icon}></s-icon>`;

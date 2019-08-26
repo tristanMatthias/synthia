@@ -1,0 +1,11 @@
+mutation createSynth($synth: ECreateSynth!) {
+  createSynth(synth: $synth) {
+    name
+    public
+    createdAt
+    id
+    nodes {
+      id
+    }
+  }
+}

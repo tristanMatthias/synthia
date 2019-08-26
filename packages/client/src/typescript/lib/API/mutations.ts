@@ -1,7 +1,7 @@
-import createProject from '@synthia/api/schema/mutations/createProject.gql';
-import createSynth from '@synthia/api/schema/mutations/createSynth.gql';
-import updateSynth from '@synthia/api/schema/mutations/updateSynth.gql';
-import updateProject from '@synthia/api/schema/mutations/updateProject.gql';
+import createProject from './mutations/createProject.gql';
+import createSynth from './mutations/createSynth.gql';
+import updateSynth from './mutations/updateSynth.gql';
+import updateProject from './mutations/updateProject.gql';
 
 export const mutations = {
   createProject,

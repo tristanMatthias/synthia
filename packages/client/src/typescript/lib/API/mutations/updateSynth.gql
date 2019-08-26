@@ -1,0 +1,5 @@
+mutation updateSynth($synth: EUpdateSynth!){
+  updateSynth(synth: $synth){
+    id
+  }
+}
