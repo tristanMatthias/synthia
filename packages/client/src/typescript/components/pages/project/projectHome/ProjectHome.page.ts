@@ -9,6 +9,7 @@ import styles from './project-home.styles';
 
 export * from './TrackList/TrackList';
 export * from './Track/Track';
+export * from './TrackClipEditor/TrackClipEditor';
 
 @customElement(SElement.projectHomePage)
 export class PageProjectHome extends LitElement {

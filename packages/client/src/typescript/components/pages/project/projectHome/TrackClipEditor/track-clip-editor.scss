@@ -1,0 +1,48 @@
+:host {
+  --note-width: 1rem;
+  --bg-white: #{rgba(#A599E9, 0.01)};
+  --bg-b: #{rgba(#A599E9, 0.02)};
+  --divider: #{rgba(#A599E9, 0.05)};
+  --bg-size: calc(var(--note-width) * 8);
+
+  position: relative;
+  display: block;
+  height: 100%;
+
+  background-color: var(--color-black);
+  background-image: linear-gradient(to right,
+      /* A */
+      transparent calc((var(--bg-size) * 1/8) - 1px),
+      var(--divider) calc((var(--bg-size) * 1/8)),
+      transparent calc((var(--bg-size) * 1/8) + 1px),
+
+      transparent calc((var(--bg-size) * 2/8) - 1px),
+      var(--divider) calc((var(--bg-size) * 2/8)),
+      transparent calc((var(--bg-size) * 2/8) + 1px),
+
+      transparent calc((var(--bg-size) * 3/8) - 1px),
+      var(--divider) calc((var(--bg-size) * 3/8)),
+      transparent calc((var(--bg-size) * 3/8) + 1px),
+
+      transparent calc((var(--bg-size) * 4/8) - 1px),
+      var(--color-dark) calc((var(--bg-size) * 4/8)),
+      var(--bg-b) calc((var(--bg-size) * 4/8) + 1px),
+
+      /* B */
+      var(--bg-b) calc((var(--bg-size) * 5/8) - 1px),
+      var(--divider) calc((var(--bg-size) * 5/8)),
+      var(--bg-b) calc((var(--bg-size) * 5/8) + 1px),
+
+      var(--bg-b) calc((var(--bg-size) * 6/8) - 1px),
+      var(--divider) calc((var(--bg-size) * 6/8)),
+      var(--bg-b) calc((var(--bg-size) * 6/8) + 1px),
+
+      var(--bg-b) calc((var(--bg-size) * 7/8) - 1px),
+      var(--divider) calc((var(--bg-size) * 7/8)),
+      var(--bg-b) calc((var(--bg-size) * 7/8) + 1px),
+
+      var(--bg-b) calc((var(--bg-size) * 8/8) - 1px),
+      var(--color-dark) calc((var(--bg-size) * 8/8))
+    );
+    background-size: calc(var(--bg-size));
+}

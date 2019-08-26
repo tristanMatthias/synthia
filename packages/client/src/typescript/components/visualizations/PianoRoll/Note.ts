@@ -19,7 +19,7 @@ export class PianoRollNote extends LitElement {
         border-left: 0.1rem solid var(--color-bg);
         border: 0.1rem solid var(--color-bg);
         box-sizing: border-box;
-        cursor: move;
+        cursor: grab;
       }
       :host:before, :host:after {
         content: '';
@@ -27,11 +27,14 @@ export class PianoRollNote extends LitElement {
         width: 0.5rem;
         height: 100%;
         background: red;
-        cursor: col-resize;
         background: var(--color-bg);
         opacity: 0.3;
       }
+      :host:before {
+        cursor: w-resize;
+      }
       :host:after {
+        cursor: e-resize;
         right: 0;
       }
       :host([selected]) {

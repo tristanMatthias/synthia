@@ -53,6 +53,8 @@ export class Track extends LitElement {
           ></s-button>
         </div>
         <s-text class="name">${this.track.name}</s-text>
-      </div>`;
+      </div>
+      <s-track-clip-editor></s-track-clip-editor>
+    `;
   }
 }

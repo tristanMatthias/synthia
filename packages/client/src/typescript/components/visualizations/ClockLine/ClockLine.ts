@@ -20,6 +20,7 @@ export class ClockLine extends LitElement {
     super.connectedCallback();
 
     const updateTime = debounce(() => {
+      // TODO: Different timing
       this.style.left = `calc(${Clock.currentBarExact} * var(--note-width) * 4)`;
       this.requestUpdate();
       updateTime();
