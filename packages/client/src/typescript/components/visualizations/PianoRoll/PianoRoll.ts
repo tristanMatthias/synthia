@@ -6,9 +6,9 @@ import styles from './piano-roll.styles';
 import { remToPx } from '../../../lib/pxToRem';
 import { Clock } from '../../../lib/Clock';
 import debounce = require('lodash.debounce');
-import { MidiNote } from '../../../lib/MidiTrack/MIDINote';
 import { PianoRollNote } from './Note';
 import { proxa } from 'proxa';
+import { EMidiClipNote } from '@synthia/api/dist/gql/entities/MidiClipEntity';
 
 export * from './Note';
 
@@ -18,7 +18,7 @@ export class PianoRoll extends LitElement {
     return [styles]
   }
 
-  notes: MidiNote[] = proxa([]);
+  notes: EMidiClipNote[] = proxa([]);
 
   private _selectedNotes: PianoRollNote[] = [];
 
@@ -122,7 +122,7 @@ export class PianoRoll extends LitElement {
     }
   }
 
-  removeNotes(notes: MidiNote[]) {
+  removeNotes(notes: EMidiClipNote[]) {
     notes.forEach(n => {
       const i = notes.indexOf(n);
       this.notes.splice(i, 1);

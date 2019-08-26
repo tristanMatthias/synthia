@@ -95,5 +95,12 @@
   s-icon {
     --color: var(--button-text);
     width: 80%;
+    height: 80%;
   }
+}
+
+:host([icon][small]) {
+  height: 3rem;
+  line-height: 3rem;
+  width: 3rem;
 }

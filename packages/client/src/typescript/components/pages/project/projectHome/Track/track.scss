@@ -1,0 +1,69 @@
+:host {
+  --rows: 3;
+  display: grid;
+  grid-template-columns: 25rem 1fr;
+
+  background: var(--color-bg-off);
+  border-radius: 0.4rem;
+  border: 0.1rem solid var(--color-line);
+
+  &, * {
+    box-sizing: border-box;
+  }
+
+  .controls {
+    display: grid;
+    grid-template-columns: repeat(3, 4rem) 1fr;
+    grid-template-rows: repeat(var(--rows), 4rem);
+    border-right: 0.1rem solid var(--color-line);
+
+    .button {
+      border-right: 0.1rem solid var(--color-line);
+    }
+    s-button[icon] {
+      border-radius: 0;
+      vertical-align: top;
+      height: 4rem;
+      width: 4rem;
+      padding: 0.5rem;
+      padding-top: 0.25rem;
+      padding-left: 0.25rem;
+      --stroke-width: 0.3rem;
+
+      &.collapse {
+        transform: rotate(90deg);
+      }
+
+      &[icon="record"][color="error"] {
+        background: var(--color-error);
+        --button-text: white;
+      }
+    }
+    .button, s-text {
+      border-bottom: 0.1rem solid var(--color-line);
+      height: 4rem;
+      line-height: 4rem;
+    }
+
+    s-text {
+      padding: 0 1rem;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      font-size: 1.4rem;
+    }
+  }
+}
+
+
+:host([collapsed]) {
+  --rows: 1;
+
+  s-button[icon].collapse {
+    transform: none;
+  }
+
+  .button, s-text {
+    border-bottom-color: transparent;
+  }
+}

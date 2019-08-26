@@ -119,5 +119,15 @@ query project($projectId: String!) {
         }
       }
     }
+
+    midiTracks {
+      id
+      name
+      instrumentId
+      midiClips {
+        start
+        clipId
+      }
+    }
   }
 }

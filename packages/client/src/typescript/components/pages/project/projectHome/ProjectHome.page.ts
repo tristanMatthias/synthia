@@ -7,6 +7,9 @@ import { project } from '../../../../lib/Project/Project';
 import { SElement } from '../../../../types';
 import styles from './project-home.styles';
 
+export * from './TrackList/TrackList';
+export * from './Track/Track';
+
 @customElement(SElement.projectHomePage)
 export class PageProjectHome extends LitElement {
   notes = [];
@@ -27,6 +30,7 @@ export class PageProjectHome extends LitElement {
     if (!project.file) return html``;
 
     return html`
+      <s-track-list></s-track-list>
       <s-text type="h4">Synths in this project</s-text>
       <div class="synths">
         ${project.file!.resources.synths.map((s, i) => html`<a

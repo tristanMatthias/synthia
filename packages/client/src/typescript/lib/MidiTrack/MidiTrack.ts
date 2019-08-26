@@ -1,20 +1,20 @@
 import { Clock } from '../Clock';
-import { MidiNote } from './MIDINote';
 import { Instrument } from '../Instruments/Instrument';
+import { EMidiClipNote } from '@synthia/api/dist/gql/entities/MidiClipEntity';
 
 
 export class MidiTrack {
   constructor(
-    public notes: MidiNote[],
+    public notes: EMidiClipNote[],
     public instrument: Instrument
   ) {
     this._update();
   }
 
-  private _current: MidiNote[] = [];
+  private _current: EMidiClipNote[] = [];
 
 
-  play(note: MidiNote) {
+  play(note: EMidiClipNote) {
     if (this._current.includes(note)) return false;
     this._current.push(note);
     const n = note.n;
@@ -22,7 +22,7 @@ export class MidiTrack {
     return n;
   }
 
-  triggerRelease(note: MidiNote) {
+  triggerRelease(note: EMidiClipNote) {
     if (!this._current.includes(note)) return false;
     const n = note.n;
     this.instrument.triggerRelease([n]);

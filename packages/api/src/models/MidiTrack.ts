@@ -13,6 +13,10 @@ export class MidiTrack extends BaseModel<MidiTrack> {
   @Column
   projectId: string;
 
+  @Default('MIDI Track')
+  @Column
+  name: string;
+
   @Default([])
   @Column({ type: JSONB })
   midiClips: EMidiTrackClip[];

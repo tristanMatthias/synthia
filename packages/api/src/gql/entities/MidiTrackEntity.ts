@@ -8,6 +8,9 @@ export class EMidiTrack {
   @Field()
   projectId: string;
 
+  @Field()
+  name: string;
+
   @Field(() => [EMidiTrackClip])
   midiClips: EMidiTrackClip[]
 

@@ -2,9 +2,9 @@ import { LitElement, css, customElement, html, property } from "lit-element";
 import { SElement } from "../../../types";
 import { Position } from "../../../lib/mixins/Draggable/Draggable";
 import { remToPx } from "../../../lib/pxToRem";
-import { MidiNote } from "../../../lib/MidiTrack/MIDINote";
 import { stringToNoteAndOctave } from "../../../lib/Instruments/keyToFrequency";
 import { PianoRoll } from "./PianoRoll";
+import { EMidiClipNote } from "@synthia/api/dist/gql/entities/MidiClipEntity";
 
 @customElement(SElement.pianoRollNote)
 export class PianoRollNote extends LitElement {
@@ -40,7 +40,7 @@ export class PianoRollNote extends LitElement {
     `]
   }
 
-  midiNote: MidiNote;
+  midiNote: EMidiClipNote;
 
 
   @property({reflect: true, type: Boolean})
