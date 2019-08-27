@@ -1,0 +1,75 @@
+:host {
+
+  background: var(--color-bg-off);
+  border-right: 0.1rem solid var(--color-line);
+  user-select: none;
+
+  display: grid;
+  grid-template-columns: 12rem 1fr;
+
+
+  aside {
+    padding: calc(var(--margin) / 2);
+    background-color: var(--color-dark);
+
+    header {
+      display: flex;
+      align-items: center;
+      height: 3rem;
+      line-height: 3rem;
+      * {
+        vertical-align: middle;
+      }
+      s-button {
+        line-height: 2.6rem;
+      }
+    }
+
+    nav {
+      --nav-color: var(--color-white);
+      span * {
+        display: inline-block;
+        vertical-align: middle;
+      }
+      s-text {
+        font-size: 1.4rem;
+        color: var(--nav-color);
+      }
+      s-icon {
+        --color: var(--nav-color);
+        height: 2rem;
+        line-height: 2rem;
+        width: 2rem;
+        margin-right: 0.5rem;
+      }
+
+      span.active {
+        --nav-color: var(--color-alt);
+      }
+    }
+  }
+
+  .results {
+    padding-top: 3.5rem;
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        height: 4rem;
+        line-height: 4rem;
+        padding: 0 1rem;
+        font-size: 1.3rem;
+        color: var(--color-white);
+        border-bottom: 0.1rem solid var(--color-line-soft);
+
+        a {
+          text-decoration: none;
+          color: var(--color-white);
+        }
+      }
+    }
+  }
+
+}

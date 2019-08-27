@@ -1,0 +1,35 @@
+:host {
+  display: flex;
+
+  &, * {
+    box-sizing: border-box;
+  }
+
+  .empty {
+    display: flex;
+    border-radius: 0.4rem;
+    border: 0.1rem dashed var(--color-line);
+    width: 10rem;
+    align-items: center;
+    text-align: center;
+    margin: var(--margin);
+    color: var(--color-line);
+    font-size: 1.4rem;
+    line-height: 2rem;
+  }
+
+  div {
+    header {
+      span , a {
+        display: block;
+        height: 4rem;
+        line-height: 4rem;
+        font-size: 1.3rem;
+        padding: 0 1rem;
+        color: var(--color-white);
+        text-decoration: none;
+      }
+      background: var(--color-info);
+    }
+  }
+}

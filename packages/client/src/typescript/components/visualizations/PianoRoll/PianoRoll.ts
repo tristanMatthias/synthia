@@ -3,12 +3,9 @@ import { customElement, html, LitElement, TemplateResult } from 'lit-element';
 import { realNotesCShifted } from '../../../lib/Instruments/keyToFrequency';
 import { SElement } from '../../../types';
 import styles from './piano-roll.styles';
-import { remToPx } from '../../../lib/pxToRem';
-import { Clock } from '../../../lib/Clock';
-import debounce = require('lodash.debounce');
-import { PianoRollNote } from './Note';
-import { proxa } from 'proxa';
 import { EMidiClipNote } from '@synthia/api/dist/gql/entities/MidiClipEntity';
+import { proxa } from 'proxa';
+import { PianoRollNote } from './Note';
 
 export * from './Note';
 
@@ -20,22 +17,6 @@ export class PianoRoll extends LitElement {
 
   notes: EMidiClipNote[] = proxa([]);
 
-  private _selectedNotes: PianoRollNote[] = [];
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.addEventListener('dblclick', this._addNote.bind(this));
-    this.addEventListener('mousedown', this._seek.bind(this));
-
-    const updateTime = debounce(() => {
-      (this.shadowRoot!.querySelector('span.time')! as HTMLSpanElement).style.left = `calc(${Clock.currentBarExact} * var(--note-width) * 4)`;
-      this.requestUpdate();
-      updateTime();
-    }, 0, {
-      maxWait: 500
-    });
-    requestAnimationFrame(updateTime)
-  }
 
   render() {
     const maxOctaves = 7;
@@ -55,90 +36,24 @@ export class PianoRoll extends LitElement {
     };
 
     return html`
-      ${keys}
-      <slot></slot>
-      <s-clock-line></s-clock-line>
+      <div class="keys">
+        ${keys}
+      </div>
+      <s-clip-editor
+        rows=${true}
+        .clipElement=${SElement.pianoRollNote}
+        @add=${(e: any) => this.notes.push(e.detail.midiNote)}
+        @remove=${(e: any) => this.removeNotes(e.detail)}
+      ></s-clip-editor>
     `;
   }
 
 
-  private _addNote(e: MouseEvent) {
-    const { top, left } = this.getBoundingClientRect()
 
-    const styles = getComputedStyle(this);
-    const snapWidth = remToPx(parseInt(styles.getPropertyValue('--note-width')));
-    const snapHeight = remToPx(parseInt(styles.getPropertyValue('--note-height')));
-
-    const diffX = e.x - left - remToPx(8);
-    const diffY = e.y - top;
-
-    const snapX = Math.floor(diffX / snapWidth) * snapWidth;
-    const snapY = Math.floor(diffY / snapHeight) * snapHeight;
-
-    const note = document.createElement(SElement.pianoRollNote);
-    note.start = snapX / snapWidth;
-    note.duration = 1;
-    const n = this.getNoteFromY(snapY);
-    note.note = n.note + n.octave;
-    note.style.left = `${snapX + remToPx(8)}px`;
-    note.style.top = `${snapY}px`;
-
-    this.getNoteFromY(snapY);
-    this.notes.push(note.midiNote);
-
-    this.appendChild(note);
-  }
-
-
-  getNoteFromY(y: number) {
-    const styles = getComputedStyle(this);
-    const noteHeight = remToPx(parseInt(styles.getPropertyValue('--note-height')));
-    const row = Math.floor(y / noteHeight);
-
-    let shifted = row - 1;
-    if (shifted == -1) shifted = 11;
-
-    return {
-      note: realNotesCShifted.slice().reverse()[shifted % 12],
-      octave: 6 - Math.floor((row - 4) / 12)
-    };
-  }
-
-
-  selectNote(n: PianoRollNote, multiple = false) {
-    if (!multiple) {
-      this._selectedNotes.forEach(n => n.selected = false);
-      this._selectedNotes = [n];
-      n.selected = true;
-    } else {
-      const index = this._selectedNotes.indexOf(n);
-      if (index >= 0) {
-        n.selected = false;
-        this._selectedNotes.splice(index, 1);
-      } else {
-        this._selectedNotes.push(n);
-        n.selected = true;
-      }
-    }
-  }
-
-  removeNotes(notes: EMidiClipNote[]) {
+  removeNotes(notes: PianoRollNote[]) {
     notes.forEach(n => {
-      const i = notes.indexOf(n);
+      const i = this.notes.indexOf(n.midiNote);
       this.notes.splice(i, 1);
     });
-  }
-
-  deselectAllNotes() {
-    this._selectedNotes.forEach(n => n.selected = false);
-    this._selectedNotes = [];
-  }
-
-  _seek(e: MouseEvent) {
-    const styles = getComputedStyle(this);
-    const keyWidth = remToPx(parseInt(styles.getPropertyValue('--key-width')));
-    const noteWidth = remToPx(parseInt(styles.getPropertyValue('--note-width')));
-    Clock.seekBeat((e.x - keyWidth) / noteWidth);
-    this.deselectAllNotes();
   }
 }

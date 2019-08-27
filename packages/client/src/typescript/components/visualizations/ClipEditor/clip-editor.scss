@@ -1,15 +1,19 @@
 :host {
-  --note-width: 1rem;
+  display: block;
+  position: relative;
+  overflow: hidden;
+
+  --clip-width: 2rem;
+  --clip-height: 2rem;
+
+  --divider: #{rgba(#A599E9, 0.05)};
+  --divider-strong: #{rgba(#A599E9, 0.2)};
+
   --bg-white: #{rgba(#A599E9, 0.01)};
   --bg-b: #{rgba(#A599E9, 0.02)};
-  --divider: #{rgba(#A599E9, 0.05)};
-  --bg-size: calc(var(--note-width) * 8);
 
-  position: relative;
-  display: block;
-  height: 100%;
-
-  background-color: var(--color-black);
+  --bg-size: calc(var(--clip-width) * 8);
+  // background-color: var(--color-black);
   background-image: linear-gradient(to right,
       /* A */
       transparent calc((var(--bg-size) * 1/8) - 1px),
@@ -42,7 +46,25 @@
       var(--bg-b) calc((var(--bg-size) * 7/8) + 1px),
 
       var(--bg-b) calc((var(--bg-size) * 8/8) - 1px),
-      var(--color-dark) calc((var(--bg-size) * 8/8))
-    );
-    background-size: calc(var(--bg-size));
+      var(--color-dark) calc((var(--bg-size) * 8/8)));
+  background-size: calc(var(--bg-size));
+  background-position: 8rem;
+
+
+  span.range {
+    // border: 0.1rem solid var(--color-text);
+    border-width: 0 0.1rem;
+
+    &, &:before {
+      position: absolute;
+      top: 0;
+      height: 100%;
+    }
+    &:before {
+      content: '';
+      width: 100%;
+      left: 0;
+      background: var(--color-hover);
+    }
+  }
 }

@@ -118,6 +118,17 @@ query project($projectId: String!) {
           }
         }
       }
+
+      midiClips {
+        id
+        name
+        notes {
+          s
+          d
+          n
+          v
+        }
+      }
     }
 
     midiTracks {

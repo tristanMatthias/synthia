@@ -6,6 +6,8 @@ import { EventObject } from '../EventObject/EventObject';
 import { fileService } from '../File/FileService';
 import { Instrument } from '../Instruments/Instrument';
 import { NodeSynth } from '../Instruments/Synth/NodeSynth';
+import { MidiTrack } from '../MidiTrack/MIDITrack';
+import { MidiClip } from '../MidiTrack/MidiClip';
 
 export enum ProjectDataObjectType {
   meta = 'meta',
@@ -21,9 +23,13 @@ export interface ProjectEvents {
 }
 
 export const project = new class Project extends EventObject<ProjectEvents> {
+
   file: EProject | null = null;
   save: () => Promise<any> | false;
+
   instruments: {[id: string]: Instrument} = {};
+  midiClips: {[id: string]: MidiClip} = {};
+  midiTracks: {[id: string]: MidiTrack} = {}
 
   constructor() {
     super();
@@ -42,6 +48,22 @@ export const project = new class Project extends EventObject<ProjectEvents> {
       this.instruments[s.id] = new NodeSynth(s);
     });
 
+    this.file.resources.midiClips.forEach(c => {
+      this.midiClips[c.id] = new MidiClip(c);
+    });
+
+    this.file.midiTracks.forEach(t => {
+      let i
+      if (t.instrumentId) i = this.instruments[t.instrumentId];
+
+      const mt = new MidiTrack(t, i);
+      t.midiClips.forEach(c => {
+        mt.createMidiClip(c.start, this.midiClips[c.clipId]);
+      });
+      this.midiTracks[t.id] = mt;
+    });
+
+
     this.emit('loadedNewProject', file);
   }
 
@@ -54,7 +76,7 @@ export const project = new class Project extends EventObject<ProjectEvents> {
   private _save() {
     if (!this.file) return false;
     // @ts-ignore
-    (Object.values(this.instruments) as Synth[]).forEach(i => fileService.saveSynth(i.synth.toJSON()));
+    (Object.values(this.instruments) as Synth[]).forEach(i => fileService.saveSynth(i.instrumentObject.toJSON()));
     return fileService.save(this.file);
   }
 }()

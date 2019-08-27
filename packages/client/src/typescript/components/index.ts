@@ -50,6 +50,7 @@ import './visualizations/Keyboard/Keyboard';
 import './visualizations/PianoRoll/PianoRoll';
 import './visualizations/Waveform/Waveform';
 import './visualizations/ClockLine/ClockLine';
+import './visualizations/ClipEditor/ClipEditor';
 
 
 // ---------------------------------------------------------------------- Modals

@@ -15,7 +15,7 @@ export class EMidiTrack {
   midiClips: EMidiTrackClip[]
 
   @Field({nullable: true})
-  instrumentId: string;
+  instrumentId?: string;
 }
 
 @InputType('EMidiTrackClipInput')

@@ -1,63 +1,48 @@
 :host {
-  --note-height: 2rem;
-  --note-width: 2rem;
+  --clip-height: 2rem;
+  --clip-width: 2rem;
   --key-width: 8rem;
   --bg-white: #{rgba(#A599E9, 0.01)};
   --bg-b: #{rgba(#A599E9, 0.02)};
-  position: relative;
   display: grid;
+  grid-template-columns: var(--key-width) 1fr;
+  position: relative;
   user-select: none;
   overflow-y: auto;
+
+  height: 20rem;
+
 
   &, * {
     box-sizing: border-box;
   }
 
-  div {
-    --divider: #{rgba(#A599E9, 0.05)};
-    --divider-strong: #{rgba(#A599E9, 0.2)};
+  s-clip-editor {
+    height: 100%;
+  }
 
-    --bg-size: calc(var(--note-width) * 8);
+  --divider: #{rgba(#A599E9, 0.05)};
+
+  .keys div {
+    position: relative;
+    --bg-size: calc(var(--clip-width) * 8);
     display: grid;
-    height: var(--note-height);
-    line-height: var(--note-height);
+    height: var(--clip-height);
+    line-height: var(--clip-height);
     border-bottom: 0.1rem solid var(--divider);
-    background-image: linear-gradient(to right,
-      /* A */
-      transparent calc((var(--bg-size) * 1/8) - 1px),
-      var(--divider) calc((var(--bg-size) * 1/8)),
-      transparent calc((var(--bg-size) * 1/8) + 1px),
 
-      transparent calc((var(--bg-size) * 2/8) - 1px),
-      var(--divider) calc((var(--bg-size) * 2/8)),
-      transparent calc((var(--bg-size) * 2/8) + 1px),
+    &:after {
+      content: '';
+      position: absolute;
+      width: 10000%;
+      height: var(--clip-height);
+      border-top: 0.1rem solid var(--divider);
+      z-index: -1;
+    }
 
-      transparent calc((var(--bg-size) * 3/8) - 1px),
-      var(--divider) calc((var(--bg-size) * 3/8)),
-      transparent calc((var(--bg-size) * 3/8) + 1px),
-
-      transparent calc((var(--bg-size) * 4/8) - 1px),
-      var(--color-dark) calc((var(--bg-size) * 4/8)),
-      var(--bg-b) calc((var(--bg-size) * 4/8) + 1px),
-
-      /* B */
-      var(--bg-b) calc((var(--bg-size) * 5/8) - 1px),
-      var(--divider) calc((var(--bg-size) * 5/8)),
-      var(--bg-b) calc((var(--bg-size) * 5/8) + 1px),
-
-      var(--bg-b) calc((var(--bg-size) * 6/8) - 1px),
-      var(--divider) calc((var(--bg-size) * 6/8)),
-      var(--bg-b) calc((var(--bg-size) * 6/8) + 1px),
-
-      var(--bg-b) calc((var(--bg-size) * 7/8) - 1px),
-      var(--divider) calc((var(--bg-size) * 7/8)),
-      var(--bg-b) calc((var(--bg-size) * 7/8) + 1px),
-
-      var(--bg-b) calc((var(--bg-size) * 8/8) - 1px),
-      var(--color-dark) calc((var(--bg-size) * 8/8))
-    );
-    background-size: calc(var(--bg-size));
-    background-position: 8rem;
+    &.white:after {
+      background: var(--color-bg-off);
+    }
 
     span {
       width: var(--key-width);

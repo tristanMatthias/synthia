@@ -1,0 +1,14 @@
+:host {
+  height: 100%;
+  div {
+    height: calc(100% - var(--clip-height));
+    background: var(--color-alt);
+    opacity: 0.5;
+  }
+}
+
+:host([selected]) {
+  div {
+    background-color: var(--color-text);
+  }
+}

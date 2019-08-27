@@ -12,17 +12,19 @@ import { Instrument } from '../Instrument';
 
 export class NodeSynth extends Tone.PolySynth implements Instrument {
 
+  id: string;
+  instrumentObject: ESynth;
   output: Tone.Volume;
-  synth: ESynth;
   nodes: { [id: string]: [TSynthiaProjectSynthNode, ToneNode] } = {}
 
 
-  constructor(synth: ESynth) {
+  constructor(instrumentObject: ESynth) {
     super();
-    this.synth = proxa(synth);
+    this.id = instrumentObject.id;
+    this.instrumentObject = proxa(instrumentObject);
 
     // Construct the initial nodes
-    this.synth.nodes.forEach(n => {
+    this.instrumentObject.nodes.forEach(n => {
       this.nodes[n.id] = [n, createToneNode(n)]
     });
     this.setupConnections();
@@ -58,7 +60,7 @@ export class NodeSynth extends Tone.PolySynth implements Instrument {
     if (toId === 'root') {
       if (update) {
         from[0].connectedTo.push(toId);
-        if (save) fileService.saveSynth(this.synth);
+        if (save) fileService.saveSynth(this.instrumentObject);
       }
 
       return from[1].connect(this.output);
@@ -70,7 +72,7 @@ export class NodeSynth extends Tone.PolySynth implements Instrument {
     from[1].connect(to[1]);
     if (update) {
       from[0].connectedTo.push(toId);
-      if (save) fileService.saveSynth(this.synth);
+      if (save) fileService.saveSynth(this.instrumentObject);
     }
     return true;
   }
@@ -92,7 +94,7 @@ export class NodeSynth extends Tone.PolySynth implements Instrument {
     from[1].disconnect(to[1]);
     from[0].connectedTo = from[0].connectedTo.filter(n => n !== toId);
 
-    if (save) fileService.saveSynth(this.synth);
+    if (save) fileService.saveSynth(this.instrumentObject);
     return true;
   }
 
@@ -110,10 +112,10 @@ export class NodeSynth extends Tone.PolySynth implements Instrument {
     }
     const audioNode = await createToneNode(synthNode);
 
-    this.synth.nodes.push(synthNode);
+    this.instrumentObject.nodes.push(synthNode);
     this.nodes[synthNode.id] = [synthNode, audioNode];
 
-    fileService.saveSynth(this.synth);
+    fileService.saveSynth(this.instrumentObject);
     return { synthNode: synthNode, audioNode };
   }
 
@@ -129,12 +131,12 @@ export class NodeSynth extends Tone.PolySynth implements Instrument {
     // Kill the audio
     node[1].dispose();
 
-    this.synth.nodes = this.synth.nodes.filter(n => n.id !== id);
+    this.instrumentObject.nodes = this.instrumentObject.nodes.filter(n => n.id !== id);
 
     delete this.nodes[id];
 
     // @ts-ignore
-    fileService.saveSynth(this.synth.toJSON())
+    fileService.saveSynth(this.instrumentObject.toJSON())
   }
 
 

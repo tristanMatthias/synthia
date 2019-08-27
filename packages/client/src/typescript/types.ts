@@ -71,6 +71,8 @@ export enum SElement {
   pianoRoll = 's-piano-roll',
   pianoRollNote = 's-piano-roll-note',
   clockLine = 's-clock-line',
+  clipEditor = 's-clip-editor',
+  clipEditorClip = 's-clip-editor-clip',
 
   // -------------------------------------------------------------------- Modals
   modalCreateProject = 's-modal-create-project',

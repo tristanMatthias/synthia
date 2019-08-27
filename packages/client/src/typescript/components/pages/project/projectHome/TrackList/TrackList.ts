@@ -7,8 +7,9 @@ export class TrackList extends LitElement {
   static styles = [styles];
 
   render() {
-    return html`${project.file!.midiTracks.map(t => html`<s-track
-      .track=${t}
+
+    return html`${Object.values(project.midiTracks).map(t => html`<s-track
+      .midiTrack=${t}
     ></s-track>`)}`;
   }
 }

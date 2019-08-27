@@ -1,5 +1,10 @@
 :host {
-  padding: calc(var(--margin) * 2);
+  display: grid;
+  grid-template-columns: 30rem 1fr;
+
+  main {
+    padding: calc(var(--margin) * 2);
+  }
 
   s-text[type=h4] {
     margin-bottom: 2rem;

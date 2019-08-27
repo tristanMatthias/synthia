@@ -6,6 +6,8 @@
   background: var(--color-bg-off);
   border-radius: 0.4rem;
   border: 0.1rem solid var(--color-line);
+  user-select: none;
+  overflow: hidden;
 
   &, * {
     box-sizing: border-box;
@@ -18,8 +20,9 @@
     border-right: 0.1rem solid var(--color-line);
 
     .button {
-      border-right: 0.1rem solid var(--color-line);
+      border-right: 0.1rem solid var(--color-line-soft);
     }
+
     s-button[icon] {
       border-radius: 0;
       vertical-align: top;
@@ -40,7 +43,7 @@
       }
     }
     .button, s-text {
-      border-bottom: 0.1rem solid var(--color-line);
+      border-bottom: 0.1rem solid var(--color-line-soft);
       height: 4rem;
       line-height: 4rem;
     }
@@ -52,6 +55,10 @@
       overflow: hidden;
       font-size: 1.4rem;
     }
+  }
+
+  s-clip-editor {
+    background-color: var(--color-black);
   }
 }
 
@@ -65,5 +72,9 @@
 
   .button, s-text {
     border-bottom-color: transparent;
+  }
+
+  .controls {
+    height: 4rem;
   }
 }
