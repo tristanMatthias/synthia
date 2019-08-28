@@ -1,4 +1,4 @@
-import { LitElement, html, css, customElement } from "lit-element";
+import { LitElement, html, css, customElement, property } from "lit-element";
 import debounce = require("lodash.debounce");
 import { Clock } from "../../../lib/Clock";
 import { SElement } from "../../../types";
@@ -12,18 +12,37 @@ export class ClockLine extends LitElement {
       left: 0;
       height: 100%;
       width: 1px;
-      background: var(--color-text);
+      background: var(--color-text-alt);
     }`
   ]
+
+  @property({reflect: true, type: Number})
+  offset: number = 0;
+
+  @property({reflect: true, type: Number})
+  duration: number;
 
   connectedCallback() {
     super.connectedCallback();
 
     const updateTime = debounce(() => {
+      let inRange = true;
+      const current = Clock.currentBeat;
+
+      if (
+        (current < this.offset) ||
+        (this.duration !== undefined && (current > (this.offset + this.duration)))
+      ) inRange = false;
+
       // TODO: Different timing
-      this.style.left = `calc(${Clock.currentBarExact} * var(--clip-width) * 4)`;
+      if (inRange) {
+        this.style.left = `calc(${current - this.offset} * var(--clip-width))`;
+        this.style.display = 'block';
+      } else this.style.display = 'none';
+
       this.requestUpdate();
       updateTime();
+
     }, 0, {
       maxWait: 500
     });

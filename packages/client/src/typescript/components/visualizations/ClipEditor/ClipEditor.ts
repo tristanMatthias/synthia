@@ -1,5 +1,6 @@
 import { customElement, html, LitElement, property } from 'lit-element';
 import debounce = require('lodash.debounce');
+import { ifDefined } from 'lit-html/directives/if-defined';
 
 import { Clock } from '../../../lib/Clock';
 import { remToPx } from '../../../lib/pxToRem';
@@ -31,6 +32,12 @@ export class ClipEditor extends LitElement {
 
   @property({reflect: true})
   rows: boolean = false;
+
+  @property({reflect: true, type: Number})
+  start: number = 0;
+
+  @property({reflect: true, type: Number})
+  duration: number;
 
   initialized = false;
 
@@ -76,8 +83,15 @@ export class ClipEditor extends LitElement {
 
     return html`
       ${range}
+      ${this.duration
+        ? html`<div class="duration" style="left: calc(${this.duration} * var(--clip-width))"></div>`
+        : null
+      }
       <slot></slot>
-      <s-clock-line></s-clock-line>
+      <s-clock-line
+        offset=${ifDefined(this.start)}
+        duration=${ifDefined(this.duration)}
+      ></s-clock-line>
     `;
   }
 
@@ -166,7 +180,9 @@ export class ClipEditor extends LitElement {
   private _seek(e: MouseEvent) {
     const {left} = this.getBoundingClientRect();
     const clipWidth = this._clipWidth;
-    const beat = Math.round((e.x - left) / clipWidth);
+    const beat = Math.round((e.x - left) / clipWidth) + this.start;
+    console.log(beat, this.start);
+
     Clock.seekBeat(beat);
     this.deselectAllClips();
 

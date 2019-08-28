@@ -146,7 +146,11 @@ export class Track extends LitElement {
   private _openPianoRoll(e: CustomEvent<TrackClip[]>) {
     const [clip] = e.detail;
     this.dispatchEvent(new CustomEvent(TrackEvents.openPianoRoll, {
-      detail: clip.midiClip,
+      detail: {
+        midiClip: clip.midiClip,
+        start: clip.start,
+        duration: clip.duration
+      },
       bubbles: true,
       composed: true
     }));

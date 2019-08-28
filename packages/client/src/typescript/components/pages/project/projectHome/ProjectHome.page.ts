@@ -15,7 +15,7 @@ export class PageProjectHome extends LitElement {
   static styles = [styles];
 
   @property()
-  private _activeMidiClip: MidiClip | null;
+  private _activeMidiClip: {midiClip: MidiClip, start: number, duration: number} | null;
 
   constructor() {
     super();
@@ -25,6 +25,8 @@ export class PageProjectHome extends LitElement {
   render() {
     if (!project.file) return html``;
 
+    const active = this._activeMidiClip;
+
     return html`
       <s-browser></s-browser>
       <main>
@@ -32,9 +34,14 @@ export class PageProjectHome extends LitElement {
           @openPianoRoll=${this._handleOpenPianoRoll}
           @closePianoRoll=${() => this._activeMidiClip = null}}
         ></s-track-list>
-        ${this._activeMidiClip
+
+        ${active
           ? html`<div class="bottom-panel">
-            <s-piano-roll .midiClip=${this._activeMidiClip}></s-piano-roll>
+            <s-piano-roll
+              .midiClip=${active.midiClip}
+              .start=${active.start}
+              .duration=${active.duration}
+            ></s-piano-roll>
           </div>`
           : null}
 

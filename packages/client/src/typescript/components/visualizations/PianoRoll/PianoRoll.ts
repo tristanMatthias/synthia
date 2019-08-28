@@ -18,6 +18,12 @@ export class PianoRoll extends LitElement {
   @property()
   midiClip: MidiClip;
 
+  @property()
+  start: number;
+
+  @property()
+  duration: number;
+
   @query(SElement.clipEditor)
   editor: ClipEditor;
 
@@ -45,6 +51,8 @@ export class PianoRoll extends LitElement {
       </div>
       <s-clip-editor
         rows=${true}
+        start=${this.start}
+        duration=${this.duration}
         .clipElement=${SElement.pianoRollNote}
         @initialized=${this._setupEditor}
         @add=${(e: any) => this.midiClip.notes.push(e.detail.midiNote)}
@@ -56,8 +64,6 @@ export class PianoRoll extends LitElement {
 
   // Plot the notes
   private _setupEditor() {
-    console.log('setting up editor');
-
     const editor = this.editor;
 
     this.midiClip.notes.forEach(n => {
