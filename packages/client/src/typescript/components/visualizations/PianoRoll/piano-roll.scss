@@ -10,7 +10,7 @@
   user-select: none;
   overflow-y: auto;
 
-  height: 20rem;
+  height: 100%;
 
 
   &, * {
@@ -19,6 +19,8 @@
 
   s-clip-editor {
     height: 100%;
+    --clip-color: var(--color-main);
+    --clip-selected: var(--color-alt);
   }
 
   --divider: #{rgba(#A599E9, 0.05)};

@@ -62,9 +62,6 @@ export class MidiTrack {
       clipId: mcO.id,
       start,
       duration: duration || mcO.duration
-    }, () => {
-      console.log('updating');
-
     });
     this.midiClips.set(midiClip, trackClipObject);
 
@@ -74,6 +71,13 @@ export class MidiTrack {
 
   addMidiClip(mc: MidiClip, tc: EMidiTrackClip) {
     this.midiClips.set(mc, tc);
+  }
+
+  async removeMidiClip(mc: MidiClip) {
+    this.midiClips.delete(mc);
+    this.midiTrack.midiClips = this.midiTrack.midiClips.filter(mtc =>
+      mtc.clipId !== mc.midiClipObject.id
+    );
   }
 
 

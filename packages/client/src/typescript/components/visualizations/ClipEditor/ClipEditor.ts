@@ -32,6 +32,8 @@ export class ClipEditor extends LitElement {
   @property({reflect: true})
   rows: boolean = false;
 
+  initialized = false;
+
   private _selectedClips: ClipEditorClip[] = [];
   private _mouseStartX: number | null = null;
   private _selectRange: [number, number] | null = null;
@@ -83,6 +85,7 @@ export class ClipEditor extends LitElement {
     this.dispatchEvent(new CustomEvent(ClipEditorEvents.initialized, {
       detail: this
     }));
+    this.initialized = true;
   }
 
 
@@ -97,9 +100,6 @@ export class ClipEditor extends LitElement {
 
     const start = Math.floor(diffX / snapWidth);
     const row = this.rows ? Math.floor(diffY / snapHeight) : 0;
-
-    console.log(start, row);
-
 
     const clip = this.createClip(start, row);
 

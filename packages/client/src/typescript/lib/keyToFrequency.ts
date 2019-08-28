@@ -80,3 +80,20 @@ export const stringToNoteAndOctave = (note: string): [string, number] | null => 
   if (!result) return null;
   return [result[1], parseInt(result[2])]
 }
+
+
+const revC = realNotesCShifted.slice().reverse();
+revC.unshift(revC.pop()!)
+const rev = realNotes.slice().reverse();
+
+
+export const noteToRow = (n: string) => {
+  const [note, octave] = stringToNoteAndOctave(n)!;
+  let row = revC.indexOf(note);
+
+  if (octave < 7) {
+    row = rev.indexOf(note) + (12 * (6 - octave)) + 4;
+  }
+
+  return row;
+}

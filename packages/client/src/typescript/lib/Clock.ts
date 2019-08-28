@@ -1,9 +1,6 @@
 import { State, Transport } from 'tone';
 import { EventObject } from './EventObject/EventObject';
 import Tone from 'tone';
-// console.log(Tone.Transport);
-// // @ts-ignore
-// console.log(Tone.Transport, new Tone.Transport());
 
 
 export interface ClockEvents {

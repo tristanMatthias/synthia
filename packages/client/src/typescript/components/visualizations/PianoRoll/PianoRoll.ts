@@ -1,11 +1,11 @@
-import { customElement, html, LitElement, TemplateResult, property, query } from 'lit-element';
+import { customElement, html, LitElement, property, query, TemplateResult } from 'lit-element';
 
-import { realNotesCShifted, stringToNoteAndOctave, realNotes } from '../../../lib/keyToFrequency';
+import { noteToRow, realNotesCShifted } from '../../../lib/keyToFrequency';
 import { MidiClip } from '../../../lib/MidiTrack/MidiClip';
 import { SElement } from '../../../types';
-import { PianoRollNote } from './PianoRollNote';
-import styles from './piano-roll.styles';
 import { ClipEditor } from '../ClipEditor/ClipEditor';
+import styles from './piano-roll.styles';
+import { PianoRollNote } from './PianoRollNote';
 
 export * from './PianoRollNote';
 
@@ -56,19 +56,12 @@ export class PianoRoll extends LitElement {
 
   // Plot the notes
   private _setupEditor() {
+    console.log('setting up editor');
+
     const editor = this.editor;
-    const revC = realNotesCShifted.slice().reverse();
-    revC.unshift(revC.pop()!)
-    const rev = realNotes.slice().reverse();
 
     this.midiClip.notes.forEach(n => {
-      const [note, octave] = stringToNoteAndOctave(n.n)!;
-      let row = revC.indexOf(note);
-
-      if (octave < 7) {
-        row = rev.indexOf(note) + (12 * (6 - octave)) + 4;
-      }
-
+      const row = noteToRow(n.n);
       const clip = editor.createClip(n.s, row, n.d, true) as PianoRollNote;
 
       clip.midiNote = n;
@@ -78,7 +71,7 @@ export class PianoRoll extends LitElement {
 
   updated(props: Map<keyof this, any>) {
     super.updated(props);
-    if (props.has('midiClip')) {
+    if (props.has('midiClip') && this.editor.initialized) {
       this.editor.clear();
       this._setupEditor();
     }

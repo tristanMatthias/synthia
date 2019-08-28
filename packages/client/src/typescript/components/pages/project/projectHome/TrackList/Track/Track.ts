@@ -20,16 +20,16 @@ export class Track extends LitElement {
 
   midiTrack: MidiTrack;
 
-  @property({reflect: true, type: Boolean})
+  @property({ reflect: true, type: Boolean })
   collapsed: boolean = false;
 
-  @property({reflect: true, type: Boolean})
+  @property({ reflect: true, type: Boolean })
   recording: boolean = false;
 
-  @property({reflect: true, type: Boolean})
+  @property({ reflect: true, type: Boolean })
   muted: boolean = false;
 
-  @property({reflect: true})
+  @property({ reflect: true })
   view: 'instrument' | 'midi' = 'midi';
 
   connectedCallback() {
@@ -104,7 +104,8 @@ export class Track extends LitElement {
           @add=${this._handleAddMidiClip}
           @initialized=${this._setupEditor}
           @select=${this._openPianoRoll}
-          @blur=${() => this.dispatchEvent(new CustomEvent(TrackEvents.closePianoRoll, {bubbles: true, composed: true}))}
+          @blur=${() => this.dispatchEvent(new CustomEvent(TrackEvents.closePianoRoll, { bubbles: true, composed: true }))}
+          @remove=${this._handleEditorRemove}
         ></s-clip-editor>`
 
         : html`<s-track-instrument .track=${this.midiTrack}></s-track-instrument>`
@@ -124,7 +125,7 @@ export class Track extends LitElement {
   private async _handleAddMidiClip(e: CustomEvent<TrackClip>) {
     const c = e.detail;
     c.midiTrack = this.midiTrack;
-    const {midiClip, trackClipObject} = await this.midiTrack.createMidiClip(c.start);
+    const { midiClip, trackClipObject } = await this.midiTrack.createMidiClip(c.start);
     c.midiClip = midiClip;
     c.trackClipObject = trackClipObject;
   }
@@ -144,12 +145,14 @@ export class Track extends LitElement {
 
   private _openPianoRoll(e: CustomEvent<TrackClip[]>) {
     const [clip] = e.detail;
-    console.log(clip);
-
     this.dispatchEvent(new CustomEvent(TrackEvents.openPianoRoll, {
       detail: clip.midiClip,
       bubbles: true,
       composed: true
     }));
+  }
+
+  private _handleEditorRemove(e: CustomEvent<TrackClip[]>) {
+    e.detail.forEach(n => this.midiTrack.removeMidiClip(n.midiClip));
   }
 }

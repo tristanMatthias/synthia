@@ -1,10 +1,12 @@
 :host {
   position: absolute;
   width: var(--clip-width);
+  --color: var(--clip-color, var(--color-text));
+  --color-selected: var(--clip-selected, var(--color-text-alt));
 
   header {
     height: var(--clip-height);
-    background: var(--color-alt);
+    background: var(--color);
     border-left: 0.1rem solid var(--color-bg);
     border: 0.1rem solid var(--color-bg);
     box-sizing: border-box;
@@ -42,5 +44,5 @@
 }
 
 :host([selected]) header {
-  background: var(--color-accent);
+  background: var(--color-selected);
 }

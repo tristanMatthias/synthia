@@ -9,6 +9,7 @@ import { SynthService } from '../../services/SynthService';
 import { EMidiTrack } from '../entities/MidiTrackEntity';
 import { ECreateProject, EProject, EProjectResources, EUpdateProject } from '../entities/ProjectEntity';
 import { EUser } from '../entities/UserEntity';
+import { MidiTrack } from '../../models/MidiTrack';
 
 
 @Resolver(EProject)
@@ -86,6 +87,9 @@ export class ProjectResolver {
   async midiTracks(
     @Root() project: Project
   ) {
-    return await project.$get('midiTracks');
+    return await MidiTrack.findAll({
+      where: { projectId: project.id},
+      order: ['createdAt']
+    })
   }
 }

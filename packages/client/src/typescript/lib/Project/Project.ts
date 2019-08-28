@@ -96,8 +96,6 @@ export const project = new class Project extends EventObject<ProjectEvents> {
   }
 
   private _saveMidiTrack(mt: EMidiTrack) {
-    console.log('saving track');
-
     // @ts-ignore
     API.updateMidiTrack(mt.toJSON())
   }

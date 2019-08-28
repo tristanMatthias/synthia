@@ -30,11 +30,7 @@ export class PageProjectHome extends LitElement {
       <main>
         <s-track-list
           @openPianoRoll=${this._handleOpenPianoRoll}
-          @closePianoRoll=${() => {
-            console.log('ohh');
-
-            this._activeMidiClip = null
-          }}
+          @closePianoRoll=${() => this._activeMidiClip = null}}
         ></s-track-list>
         ${this._activeMidiClip
           ? html`<div class="bottom-panel">
