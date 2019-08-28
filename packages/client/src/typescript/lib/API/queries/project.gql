@@ -138,6 +138,7 @@ query project($projectId: String!) {
       midiClips {
         start
         clipId
+        duration
       }
     }
   }

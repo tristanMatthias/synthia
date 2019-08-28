@@ -4,8 +4,8 @@
   grid-template-columns: 25rem 1fr;
 
   background: var(--color-bg-off);
-  border-radius: 0.4rem;
   border: 0.1rem solid var(--color-line);
+  border-top-width: 0;
   user-select: none;
   overflow: hidden;
 
@@ -77,4 +77,16 @@
   .controls {
     height: 4rem;
   }
+}
+
+
+:host(:first-of-type) {
+  border-top-width: 0.1rem;
+  border-top-left-radius: 0.4rem;
+  border-top-right-radius: 0.4rem;
+}
+
+:host(:last-of-type) {
+  border-bottom-left-radius: 0.4rem;
+  border-bottom-right-radius: 0.4rem;
 }

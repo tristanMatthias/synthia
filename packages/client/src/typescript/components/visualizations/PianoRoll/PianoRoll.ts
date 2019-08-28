@@ -1,13 +1,13 @@
-import { customElement, html, LitElement, TemplateResult } from 'lit-element';
+import { customElement, html, LitElement, TemplateResult, property, query } from 'lit-element';
 
-import { realNotesCShifted } from '../../../lib/Instruments/keyToFrequency';
+import { realNotesCShifted, stringToNoteAndOctave, realNotes } from '../../../lib/keyToFrequency';
+import { MidiClip } from '../../../lib/MidiTrack/MidiClip';
 import { SElement } from '../../../types';
+import { PianoRollNote } from './PianoRollNote';
 import styles from './piano-roll.styles';
-import { EMidiClipNote } from '@synthia/api/dist/gql/entities/MidiClipEntity';
-import { proxa } from 'proxa';
-import { PianoRollNote } from './Note';
+import { ClipEditor } from '../ClipEditor/ClipEditor';
 
-export * from './Note';
+export * from './PianoRollNote';
 
 @customElement(SElement.pianoRoll)
 export class PianoRoll extends LitElement {
@@ -15,7 +15,11 @@ export class PianoRoll extends LitElement {
     return [styles]
   }
 
-  notes: EMidiClipNote[] = proxa([]);
+  @property()
+  midiClip: MidiClip;
+
+  @query(SElement.clipEditor)
+  editor: ClipEditor;
 
 
   render() {
@@ -42,18 +46,49 @@ export class PianoRoll extends LitElement {
       <s-clip-editor
         rows=${true}
         .clipElement=${SElement.pianoRollNote}
-        @add=${(e: any) => this.notes.push(e.detail.midiNote)}
+        @initialized=${this._setupEditor}
+        @add=${(e: any) => this.midiClip.notes.push(e.detail.midiNote)}
         @remove=${(e: any) => this.removeNotes(e.detail)}
       ></s-clip-editor>
     `;
   }
 
 
+  // Plot the notes
+  private _setupEditor() {
+    const editor = this.editor;
+    const revC = realNotesCShifted.slice().reverse();
+    revC.unshift(revC.pop()!)
+    const rev = realNotes.slice().reverse();
+
+    this.midiClip.notes.forEach(n => {
+      const [note, octave] = stringToNoteAndOctave(n.n)!;
+      let row = revC.indexOf(note);
+
+      if (octave < 7) {
+        row = rev.indexOf(note) + (12 * (6 - octave)) + 4;
+      }
+
+      const clip = editor.createClip(n.s, row, n.d, true) as PianoRollNote;
+
+      clip.midiNote = n;
+      editor.appendChild(clip);
+    })
+  }
+
+  updated(props: Map<keyof this, any>) {
+    super.updated(props);
+    if (props.has('midiClip')) {
+      this.editor.clear();
+      this._setupEditor();
+    }
+  }
+
 
   removeNotes(notes: PianoRollNote[]) {
     notes.forEach(n => {
-      const i = this.notes.indexOf(n.midiNote);
-      this.notes.splice(i, 1);
+      const i = this.midiClip.notes.indexOf(n.midiNote);
+      this.midiClip.notes.splice(i, 1);
     });
   }
 }

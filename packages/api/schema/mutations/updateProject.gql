@@ -5,6 +5,14 @@ mutation updateProject($project: EUpdateProject!){
         creatorId
         createdAt
         id
+        creator{
+            id
+            firstName
+            lastName
+            email
+            socialId
+            socialPic
+        }
         resources{
             synths{
                 name
@@ -79,16 +87,54 @@ mutation updateProject($project: EUpdateProject!){
                         socialId
                         socialPic
                     }
+                    resources{
+                        midiClips{
+                            id
+                            name
+                            public
+                            creatorId
+                            createdAt
+                            notes{
+                                s
+                                d
+                                v
+                                n
+                            }
+                            creator{
+                                id
+                                firstName
+                                lastName
+                                email
+                                socialId
+                                socialPic
+                            }
+                            projects{
+                                name
+                                public
+                                creatorId
+                                createdAt
+                                id
+                                midiTracks{
+                                    id
+                                    projectId
+                                    name
+                                    midiClips{
+                                        clipId
+                                        start
+                                    }
+                                    instrumentId
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
-        creator{
+        midiTracks{
             id
-            firstName
-            lastName
-            email
-            socialId
-            socialPic
+            projectId
+            name
+            instrumentId
         }
     }
 }

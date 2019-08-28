@@ -1,0 +1,12 @@
+mutation createMidiTrack($track: ECreateMidiTrack!){
+    createMidiTrack(track: $track){
+        id
+        projectId
+        name
+        midiClips{
+            clipId
+            start
+        }
+        instrumentId
+    }
+}

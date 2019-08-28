@@ -23,8 +23,7 @@ export const MidiTrackService = new class extends BaseService<
     const pj = (await ProjectService.findById(track.projectId))!;
 
     try {
-      await pj!.$create('midiTrack', {});
-      return pj;
+      return await pj!.$create('midiTrack', {}) as MidiTrack;
     } catch (e) {
       throw await handleSequelizeError(e);
     }

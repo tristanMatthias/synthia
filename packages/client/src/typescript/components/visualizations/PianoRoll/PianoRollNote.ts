@@ -1,10 +1,10 @@
 import { EMidiClipNote } from '@synthia/api/dist/gql/entities/MidiClipEntity';
 import { customElement } from 'lit-element';
 
+import { realNotesCShifted, stringToNoteAndOctave } from '../../../lib/keyToFrequency';
+import { remToPx } from '../../../lib/pxToRem';
 import { SElement } from '../../../types';
 import { ClipEditorClip, ClipEditorClipEvents } from '../ClipEditor/Clip/Clip';
-import { remToPx } from '../../../lib/pxToRem';
-import { realNotesCShifted, stringToNoteAndOctave } from '../../../lib/Instruments/keyToFrequency';
 
 @customElement(SElement.pianoRollNote)
 export class PianoRollNote extends ClipEditorClip {
@@ -15,8 +15,6 @@ export class PianoRollNote extends ClipEditorClip {
   public get start() { return this._start; }
   public set start(v: number) {
     this._start = v;
-    console.log('setting s', v);
-
     this.midiNote.s = v;
   }
 

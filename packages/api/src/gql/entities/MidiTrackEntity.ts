@@ -26,6 +26,9 @@ export class EMidiTrackClip {
 
   @Field()
   start: number;
+
+  @Field()
+  duration: number;
 }
 
 @InputType()
@@ -47,4 +50,7 @@ export class EUpdateMidiTrack {
 
   @Field({ nullable: true })
   instrumentId: string;
+
+  @Field({ nullable: true })
+  name: string;
 }

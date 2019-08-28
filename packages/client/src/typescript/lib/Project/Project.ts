@@ -6,8 +6,11 @@ import { EventObject } from '../EventObject/EventObject';
 import { fileService } from '../File/FileService';
 import { Instrument } from '../Instruments/Instrument';
 import { NodeSynth } from '../Instruments/Synth/NodeSynth';
-import { MidiTrack } from '../MidiTrack/MIDITrack';
 import { MidiClip } from '../MidiTrack/MidiClip';
+import { MidiTrack } from '../MidiTrack/MIDITrack';
+import { EMidiClip } from '@synthia/api/dist/gql/entities/MidiClipEntity';
+import { API } from '../API/API';
+import { EMidiTrack } from '@synthia/api/dist/gql/entities/MidiTrackEntity';
 
 export enum ProjectDataObjectType {
   meta = 'meta',
@@ -41,30 +44,37 @@ export const project = new class Project extends EventObject<ProjectEvents> {
     fileService.on('loaded', this.loadNewFile.bind(this));
   }
 
-  loadNewFile(file: EProject) {
+  async loadNewFile(file: EProject) {
     this.file = proxa(file, () => this.save());
 
     this.file.resources.synths.forEach(s => {
       this.instruments[s.id] = new NodeSynth(s);
     });
 
-    this.file.resources.midiClips.forEach(c => {
-      this.midiClips[c.id] = new MidiClip(c);
+    this.file.resources.midiClips.forEach(mc => {
+      // Register saving for all changes to midi clip
+      proxa(mc, this._saveMidiClip);
+      this.midiClips[mc.id] = new MidiClip(mc)
     });
 
-    this.file.midiTracks.forEach(t => {
-      let i
-      if (t.instrumentId) i = this.instruments[t.instrumentId];
-
-      const mt = new MidiTrack(t, i);
-      t.midiClips.forEach(c => {
-        mt.createMidiClip(c.start, this.midiClips[c.clipId]);
-      });
-      this.midiTracks[t.id] = mt;
-    });
-
+    this.file.midiTracks.forEach(this.registerMidiTrack.bind(this));
 
     this.emit('loadedNewProject', file);
+  }
+
+
+  registerMidiTrack(mtc: EMidiTrack) {
+    let i
+    if (mtc.instrumentId) i = this.instruments[mtc.instrumentId];
+
+    // Register saving for all changes to midi track
+    proxa(mtc, this._saveMidiTrack);
+
+    const mt = new MidiTrack(mtc, i);
+    mtc.midiClips.forEach(c => {
+      mt.addMidiClip(this.midiClips[c.clipId], c);
+    });
+    this.midiTracks[mtc.id] = mt;
   }
 
   close() {
@@ -78,5 +88,17 @@ export const project = new class Project extends EventObject<ProjectEvents> {
     // @ts-ignore
     (Object.values(this.instruments) as Synth[]).forEach(i => fileService.saveSynth(i.instrumentObject.toJSON()));
     return fileService.save(this.file);
+  }
+
+  private _saveMidiClip(mc: EMidiClip) {
+    // @ts-ignore
+    API.updateMidiClip(mc.toJSON())
+  }
+
+  private _saveMidiTrack(mt: EMidiTrack) {
+    console.log('saving track');
+
+    // @ts-ignore
+    API.updateMidiTrack(mt.toJSON())
   }
 }()

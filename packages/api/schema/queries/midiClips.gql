@@ -1,54 +1,15 @@
-query synths{
-    synths{
+query midiClips{
+    midiClips{
+        id
         name
         public
         creatorId
         createdAt
-        id
-        nodes{
-            ... on ESynthiaProjectSynthNodeOscillator {
-                id
-                type
-                connectedTo
-                receives
-                properties{
-                    type
-                }
-                position{
-                    x
-                    y
-                }
-            }
-            ... on ESynthiaProjectSynthNodeWave {
-                id
-                type
-                connectedTo
-                receives
-            }
-            ... on ESynthiaProjectSynthNodeReverb {
-                id
-                type
-                connectedTo
-                receives
-            }
-            ... on ESynthiaProjectSynthNodeDelay {
-                id
-                type
-                connectedTo
-                receives
-            }
-            ... on ESynthiaProjectSynthNodeFilter {
-                id
-                type
-                connectedTo
-                receives
-            }
-            ... on ESynthiaProjectSynthNodePan {
-                id
-                type
-                connectedTo
-                receives
-            }
+        notes{
+            s
+            d
+            v
+            n
         }
         creator{
             id
@@ -85,6 +46,13 @@ query synths{
                             type
                             connectedTo
                             receives
+                            properties{
+                                type
+                            }
+                            position{
+                                x
+                                y
+                            }
                         }
                         ... on ESynthiaProjectSynthNodeWave {
                             id
@@ -117,19 +85,6 @@ query synths{
                             receives
                         }
                     }
-                }
-                midiClips{
-                    id
-                    name
-                    public
-                    creatorId
-                    createdAt
-                    notes{
-                        s
-                        d
-                        v
-                        n
-                    }
                     creator{
                         id
                         firstName
@@ -155,6 +110,13 @@ query synths{
                             instrumentId
                         }
                     }
+                }
+                midiClips{
+                    id
+                    name
+                    public
+                    creatorId
+                    createdAt
                 }
             }
         }

@@ -1,11 +1,18 @@
 import { customElement, html, LitElement, property } from 'lit-element';
 
 import { MidiTrack } from '../../../../../../lib/MidiTrack/MIDITrack';
-import styles from './track.styles';
 import { project } from '../../../../../../lib/Project/Project';
+import { ClipEditor } from '../../../../../visualizations/ClipEditor/ClipEditor';
+import styles from './track.styles';
+import { TrackClip } from './TrackClip/TrackClip';
 
 export * from './TrackClip/TrackClip';
 export * from './TrackInstrument/TrackInstrument';
+
+export enum TrackEvents {
+  openPianoRoll = 'openPianoRoll',
+  closePianoRoll = 'closePianoRoll'
+}
 
 @customElement('s-track')
 export class Track extends LitElement {
@@ -89,8 +96,17 @@ export class Track extends LitElement {
           ></s-button>
         </div>
       </div>
+
       ${this.view === 'midi'
-        ? html`<s-clip-editor .clipElement=${"s-track-clip"}></s-clip-editor>`
+
+        ? html`<s-clip-editor
+          .clipElement=${"s-track-clip"}
+          @add=${this._handleAddMidiClip}
+          @initialized=${this._setupEditor}
+          @select=${this._openPianoRoll}
+          @blur=${() => this.dispatchEvent(new CustomEvent(TrackEvents.closePianoRoll, {bubbles: true, composed: true}))}
+        ></s-clip-editor>`
+
         : html`<s-track-instrument .track=${this.midiTrack}></s-track-instrument>`
       }
     `;
@@ -103,5 +119,37 @@ export class Track extends LitElement {
 
     this.midiTrack.instrument = project.instruments[instrumentId]!;
     this.requestUpdate();
+  }
+
+  private async _handleAddMidiClip(e: CustomEvent<TrackClip>) {
+    const c = e.detail;
+    c.midiTrack = this.midiTrack;
+    const {midiClip, trackClipObject} = await this.midiTrack.createMidiClip(c.start);
+    c.midiClip = midiClip;
+    c.trackClipObject = trackClipObject;
+  }
+
+  private _setupEditor(e: CustomEvent<ClipEditor>) {
+    const editor = e.detail;
+    Array.from(this.midiTrack.midiClips.entries()).forEach(([mc, tmc]) => {
+      // TODO: MC Duration
+      const clip = editor.createClip(tmc.start, 0, tmc.duration, true) as TrackClip;
+
+      clip.midiTrack = this.midiTrack;
+      clip.midiClip = mc;
+      clip.trackClipObject = tmc;
+      editor.appendChild(clip);
+    })
+  }
+
+  private _openPianoRoll(e: CustomEvent<TrackClip[]>) {
+    const [clip] = e.detail;
+    console.log(clip);
+
+    this.dispatchEvent(new CustomEvent(TrackEvents.openPianoRoll, {
+      detail: clip.midiClip,
+      bubbles: true,
+      composed: true
+    }));
   }
 }

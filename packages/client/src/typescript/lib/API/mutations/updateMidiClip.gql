@@ -1,0 +1,15 @@
+mutation updateMidiClip($midiClip: EUpdateMidiClip!) {
+  updateMidiClip(midiClip: $midiClip) {
+    id
+    duration
+    name
+    public
+    creatorId
+    notes {
+      s
+      d
+      v
+      n
+    }
+  }
+}

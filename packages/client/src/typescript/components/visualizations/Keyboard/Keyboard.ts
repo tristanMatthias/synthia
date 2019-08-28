@@ -1,6 +1,6 @@
 import { customElement, html, LitElement, TemplateResult } from 'lit-element';
 
-import { keyToNote, realNotesCShifted, stringToNoteAndOctave } from '../../../lib/Instruments/keyToFrequency';
+import { keyToNote, realNotesCShifted, stringToNoteAndOctave } from '../../../lib/keyToFrequency';
 import { SElement } from '../../../types';
 import { PageSynth } from '../../pages/project/synth/synth.page';
 import styles from './keyboard.styles';

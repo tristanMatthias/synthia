@@ -5,6 +5,14 @@ query projects{
         creatorId
         createdAt
         id
+        creator{
+            id
+            firstName
+            lastName
+            email
+            socialId
+            socialPic
+        }
         resources{
             synths{
                 name
@@ -71,14 +79,44 @@ query projects{
                     creatorId
                     createdAt
                     id
-                    creator{
+                    midiTracks{
                         id
-                        firstName
-                        lastName
-                        email
-                        socialId
-                        socialPic
+                        projectId
+                        name
+                        midiClips{
+                            clipId
+                            start
+                        }
+                        instrumentId
                     }
+                }
+            }
+            midiClips{
+                id
+                name
+                public
+                creatorId
+                createdAt
+                notes{
+                    s
+                    d
+                    v
+                    n
+                }
+                creator{
+                    id
+                    firstName
+                    lastName
+                    email
+                    socialId
+                    socialPic
+                }
+                projects{
+                    name
+                    public
+                    creatorId
+                    createdAt
+                    id
                 }
             }
         }

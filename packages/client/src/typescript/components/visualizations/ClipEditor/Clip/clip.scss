@@ -10,16 +10,27 @@
     box-sizing: border-box;
     cursor: grab;
 
+    font-size: 1.2rem;
+    color: var(--color-black);
+    line-height: calc(var(--clip-height) * 0.9);
+    padding: 0 1rem;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
     &:before, &:after {
       content: '';
       position: absolute;
       width: 0.5rem;
-      height: 100%;
+      top: 0;
+      height: var(--clip-height);
       background: var(--color-bg);
       opacity: 0.3;
     }
 
     &:before {
+      left: 0;
       cursor: w-resize;
     }
 

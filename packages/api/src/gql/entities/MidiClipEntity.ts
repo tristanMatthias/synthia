@@ -5,6 +5,9 @@ export class EMidiClip {
   @Field()
   id: string;
 
+  @Field()
+  duration: number;
+
   @Field({nullable: true})
   name: string;
 
@@ -18,7 +21,7 @@ export class EMidiClip {
   createdAt: Date;
 
   @Field(() => [EMidiClipNote])
-  notes: EMidiClipNote[]
+  notes: EMidiClipNote[];
 }
 
 @InputType('EMidiClipNoteInput')
@@ -42,12 +45,18 @@ export class EMidiClipNote {
 export class ECreateMidiClip {
   @Field()
   projectId: string;
+
+  @Field({nullable: true})
+  duration: number;
 }
 
 @InputType()
 export class EUpdateMidiClip {
   @Field()
   id: string;
+
+  @Field({ nullable: true })
+  duration: number;
 
   @Field({ nullable: true })
   name: string;

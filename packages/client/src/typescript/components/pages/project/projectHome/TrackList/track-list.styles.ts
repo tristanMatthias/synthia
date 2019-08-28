@@ -1,3 +1,3 @@
 import { css } from 'lit-element';
-export default css`:host{display:grid}
+export default css`:host .tracks{display:grid}
 `;

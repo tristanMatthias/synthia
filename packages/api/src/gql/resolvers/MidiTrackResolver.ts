@@ -1,10 +1,8 @@
 import { Arg, Authorized, Mutation, Resolver } from 'type-graphql';
 
 import { MidiTrack } from '../../models/MidiTrack';
-import { Project } from '../../models/Project';
 import { MidiTrackService } from '../../services/MidiTrackService';
 import { ECreateMidiTrack, EMidiTrack, EUpdateMidiTrack } from '../entities/MidiTrackEntity';
-import { EProject } from '../entities/ProjectEntity';
 
 
 
@@ -12,18 +10,18 @@ import { EProject } from '../entities/ProjectEntity';
 export class MidiTrackResolver {
 
   @Authorized()
-  @Mutation(() => EProject)
+  @Mutation(() => EMidiTrack)
   async createMidiTrack(
-    @Arg('track') track: ECreateMidiTrack
-  ): Promise<Project> {
-    return MidiTrackService.createMidiTrack(track);
+    @Arg('midiTrack') midiTrack: ECreateMidiTrack
+  ): Promise<MidiTrack> {
+    return MidiTrackService.createMidiTrack(midiTrack);
   }
 
   @Authorized()
   @Mutation(() => EMidiTrack)
   async updateMidiTrack(
-    @Arg('track') track: EUpdateMidiTrack
+    @Arg('midiTrack') midiTrack: EUpdateMidiTrack
   ): Promise<MidiTrack> {
-    return MidiTrackService.updateMidiTrack(track);
+    return MidiTrackService.updateMidiTrack(midiTrack);
   }
 }

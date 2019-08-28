@@ -1,12 +1,15 @@
 import { EMidiClipNote } from '@synthia/api/dist/gql/entities/MidiClipEntity';
-import { EMidiTrack } from '@synthia/api/dist/gql/entities/MidiTrackEntity';
+import { EMidiTrack, EMidiTrackClip } from '@synthia/api/dist/gql/entities/MidiTrackEntity';
 
+import { API } from '../API/API';
 import { Instrument } from '../Instruments/Instrument';
+import { project } from '../Project/Project';
 import { MidiClip } from './MidiClip';
+import { proxa } from 'proxa';
 
 
 export class MidiTrack {
-  midiClips: Map<MidiClip, number> = new Map();
+  midiClips: Map<MidiClip, EMidiTrackClip> = new Map();
 
 
   private _instrument?: Instrument;
@@ -50,8 +53,27 @@ export class MidiTrack {
   }
 
 
-  createMidiClip(start: number, mc: MidiClip) {
-    this.midiClips.set(mc, start);
+  async createMidiClip(start: number, duration?: number) {
+    const mcO = await API.createMidiClip(project.file!.id);
+    const midiClip = new MidiClip(mcO);
+    project.midiClips[mcO.id] = midiClip;
+
+    const trackClipObject = proxa({
+      clipId: mcO.id,
+      start,
+      duration: duration || mcO.duration
+    }, () => {
+      console.log('updating');
+
+    });
+    this.midiClips.set(midiClip, trackClipObject);
+
+    this.midiTrack.midiClips.push(trackClipObject);
+    return { midiClip, trackClipObject};
+  }
+
+  addMidiClip(mc: MidiClip, tc: EMidiTrackClip) {
+    this.midiClips.set(mc, tc);
   }
 
 

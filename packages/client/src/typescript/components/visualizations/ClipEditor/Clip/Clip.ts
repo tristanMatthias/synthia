@@ -27,12 +27,14 @@ export class ClipEditorClip extends LitElement {
   public get start() { return this._start; }
   public set start(v) {
     this._start = v;
+    this._updatePosition();
   }
 
   protected _duration: number;
   public get duration() { return this._duration; }
   public set duration(v) {
     this._duration = v;
+    this._updatePosition();
   }
 
 
@@ -137,7 +139,7 @@ export class ClipEditorClip extends LitElement {
   }
 
 
-  private _updatePosition() {
+  protected _updatePosition() {
     const style = getComputedStyle(this);
     const clipWidth = remToPx(parseInt(style.getPropertyValue('--clip-width')));
 

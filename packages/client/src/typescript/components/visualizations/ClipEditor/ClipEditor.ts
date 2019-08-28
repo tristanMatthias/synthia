@@ -12,7 +12,9 @@ export * from './Clip/Clip';
 export enum ClipEditorEvents {
   add = 'add',
   remove = 'remove',
-  select = 'select'
+  select = 'select',
+  blur = 'blur',
+  initialized = 'initialized'
 }
 
 @customElement(SElement.clipEditor)
@@ -37,10 +39,14 @@ export class ClipEditor extends LitElement {
     const styles = getComputedStyle(this);
     return remToPx(parseInt(styles.getPropertyValue('--clip-width')));
   }
+  private get _clipHeight() {
+    const styles = getComputedStyle(this);
+    return remToPx(parseInt(styles.getPropertyValue('--clip-height')));
+  }
 
   connectedCallback() {
     super.connectedCallback();
-    this.addEventListener('dblclick', this._addClip.bind(this));
+    this.addEventListener('dblclick', this._handleDblClick.bind(this));
     this.addEventListener('mousedown', this._seek.bind(this));
     this.addEventListener('mouseup', this._handleMouseUp.bind(this));
 
@@ -73,32 +79,50 @@ export class ClipEditor extends LitElement {
     `;
   }
 
+  firstUpdated() {
+    this.dispatchEvent(new CustomEvent(ClipEditorEvents.initialized, {
+      detail: this
+    }));
+  }
 
-  private _addClip(e: MouseEvent) {
+
+  private _handleDblClick(e: MouseEvent) {
     const { top, left } = this.getBoundingClientRect()
 
-    const styles = getComputedStyle(this);
     const snapWidth = this._clipWidth;
-    const snapHeight = remToPx(parseInt(styles.getPropertyValue('--clip-height')));
+    const snapHeight = this._clipHeight;
 
     const diffX = e.x - left;
     const diffY = e.y - top;
 
-    const snapX = Math.floor(diffX / snapWidth) * snapWidth;
-    const snapY = this.rows ? Math.floor(diffY / snapHeight) * snapHeight : 0;
+    const start = Math.floor(diffX / snapWidth);
+    const row = this.rows ? Math.floor(diffY / snapHeight) : 0;
 
-    const clip = document.createElement(this.clipElement) as ClipEditorClip;
-    clip.rows = this.rows;
+    console.log(start, row);
 
-    clip.start = snapX / snapWidth;
-    clip.duration = 1;
-    clip.style.left = `${snapX}px`;
-    clip.style.top = `${snapY}px`;
-    this.appendChild(clip);
+
+    const clip = this.createClip(start, row);
 
     this.dispatchEvent(new CustomEvent('add', {
       detail: clip
     }))
+  }
+
+  createClip(
+    start: number,
+    row: number = 0,
+    duration: number = 1,
+    defer = false
+  ) {
+    const clip = document.createElement(this.clipElement) as ClipEditorClip;
+    clip.rows = this.rows;
+    clip.start = start;
+    clip.duration = duration;
+    clip.style.left = `${start * this._clipWidth}px`;
+    clip.style.width = `${duration * this._clipWidth}px`;
+    clip.style.top = `${row * this._clipHeight}px`;
+    if (!defer) this.appendChild(clip);
+    return clip;
   }
 
 
@@ -126,12 +150,17 @@ export class ClipEditor extends LitElement {
   deselectAllClips() {
     this._selectedClips.forEach(n => n.selected = false);
     this._selectedClips = [];
+    this.dispatchEvent(new CustomEvent(ClipEditorEvents.blur));
   }
 
   removeClips(e: ClipEditorClip[]) {
     this.dispatchEvent(new CustomEvent(ClipEditorEvents.remove, {
       detail: e
     }))
+  }
+
+  clear() {
+    this.innerHTML = '';
   }
 
   private _seek(e: MouseEvent) {
@@ -153,8 +182,6 @@ export class ClipEditor extends LitElement {
       this._selectRange = [Clock.currentBeat, Clock.currentBeat];
     }
     this._selectRange![1] = range + this._selectRange![0];
-    console.log(this._selectRange);
-
     this.requestUpdate();
   }
 

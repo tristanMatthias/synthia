@@ -1,0 +1,16 @@
+mutation createMidiClip($midiClip: ECreateMidiClip!) {
+  createMidiClip(midiClip: $midiClip) {
+    id
+    duration
+    name
+    public
+    creatorId
+    createdAt
+    notes {
+      s
+      d
+      v
+      n
+    }
+  }
+}

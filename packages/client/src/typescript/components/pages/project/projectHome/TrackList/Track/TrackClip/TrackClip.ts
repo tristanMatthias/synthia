@@ -1,7 +1,7 @@
-import { EMidiClipNote } from '@synthia/api/dist/gql/entities/MidiClipEntity';
-import { customElement, html, property } from 'lit-element';
-import { proxa } from 'proxa';
+import { EMidiTrackClip } from '@synthia/api/dist/gql/entities/MidiTrackEntity';
+import { customElement, html } from 'lit-element';
 
+import { MidiClip } from '../../../../../../../lib/MidiTrack/MidiClip';
 import { MidiTrack } from '../../../../../../../lib/MidiTrack/MIDITrack';
 import { ClipEditorClip } from '../../../../../../visualizations/ClipEditor/Clip/Clip';
 import styles from './track-clip.styles';
@@ -13,23 +13,31 @@ export class TrackClip extends ClipEditorClip {
     styles
   ];
 
-  notes: EMidiClipNote[] = proxa([]);
-  track: MidiTrack;
+  midiTrack: MidiTrack;
+  midiClip: MidiClip;
+  trackClipObject: EMidiTrackClip;
 
-  @property({reflect: true, type: Boolean})
-  collapsed: boolean = false;
+  protected _start: number;
+  public get start() { return this._start; }
+  public set start(v: number) {
+    this._start = v;
+    if (this.trackClipObject) this.trackClipObject.start = v;
+    this._updatePosition();
+  }
 
-  connectedCallback() {
-    super.connectedCallback();
-    // const mc = new MidiClip({
-
-    // })
-    // this.track.createMidiClip()
+  protected _duration: number;
+  public get duration() { return this._duration; }
+  public set duration(v: number) {
+    this._duration = v;
+    if (this.trackClipObject) this.trackClipObject.duration = v;
+    this._updatePosition();
   }
 
   render() {
+    console.log('rendered');
+
     return html`
-      <header></header>
+      <header>${this.midiClip.midiClipObject.name}</header>
       <div>Yo</div>
     `;
   }

@@ -5,14 +5,17 @@ import {
   EProject,
   ESynth,
   ETokenResult,
-  EUpdateSynth,
   EUpdateProject,
+  EUpdateSynth,
   EUser,
 } from '@synthia/api';
+import { EMidiClip, EUpdateMidiClip } from '@synthia/api/dist/gql/entities/MidiClipEntity';
 
 import { API_URL } from '../../config';
 import { mutations } from './mutations';
 import { queries } from './queries';
+import { EMidiTrack, ECreateMidiTrack, EUpdateMidiTrack } from '@synthia/api/dist/gql/entities/MidiTrackEntity';
+
 
 
 export const API = new class {
@@ -40,7 +43,7 @@ export const API = new class {
     return this._request<EProject[]>('query', 'projects')
   }
   async loadProject(projectId: string) {
-    return this._request<EProject>('query', 'project', {projectId})
+    return this._request<EProject>('query', 'project', { projectId })
   }
   async createProject(project: ECreateProject) {
     return this._request<EProject>('mutation', 'createProject', { project })
@@ -55,6 +58,22 @@ export const API = new class {
     return this._request<ESynth>('mutation', 'updateSynth', { synth })
   }
 
+
+  // ---------------------------------------------------------------- Midi clips
+  async createMidiClip(projectId: string) {
+    return this._request<EMidiClip>('mutation', 'createMidiClip', { midiClip: { projectId } })
+  }
+  async updateMidiClip(midiClip: EUpdateMidiClip) {
+    return this._request<EMidiClip>('mutation', 'updateMidiClip', { midiClip })
+  }
+
+  // --------------------------------------------------------------- Midi tracks
+  async createMidiTrack(midiTrack: ECreateMidiTrack) {
+    return this._request<EMidiTrack>('mutation', 'createMidiTrack', { midiTrack })
+  }
+  async updateMidiTrack(midiTrack: EUpdateMidiTrack) {
+    return this._request<EMidiTrack>('mutation', 'updateMidiTrack', { midiTrack })
+  }
 
 
   // ----------------------------------------------------------- Private methods

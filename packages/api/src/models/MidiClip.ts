@@ -11,8 +11,14 @@ import { User } from './User';
 @Table
 export class MidiClip extends BaseModel<MidiClip> {
 
+  @Default('Midi Clip')
   @Column
   name: string;
+
+  @AllowNull(false)
+  @Default(1)
+  @Column
+  duration: number;
 
   @AllowNull(false)
   @Default(true)

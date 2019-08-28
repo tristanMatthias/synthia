@@ -5,8 +5,8 @@ export class MidiClip {
   notes: EMidiClipNote[];
 
   constructor(
-    public midiClip: EMidiClip
+    public midiClipObject: EMidiClip
   ) {
-    this.notes = midiClip.notes;
+    this.notes = midiClipObject.notes;
   }
 }
