@@ -35,7 +35,7 @@ export class NodeSynth extends Tone.PolySynth implements Instrument {
   private get _synths() {
     return Object.values(this.nodes)
       .filter(([sn]) => sn.type === 'wave') as [
-      TSynthiaProjectSynthNode, PolySynth
+        TSynthiaProjectSynthNode, PolySynth
       ][]
   }
 

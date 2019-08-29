@@ -9,6 +9,12 @@ mutation createProject($project: ECreateProject!) {
       synths {
         id
       }
+      midiClips {
+        id
+      }
+    }
+    midiTracks {
+      id
     }
   }
 }

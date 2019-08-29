@@ -51,16 +51,22 @@ export const fileService = new class FileService extends EventObject<FileService
       name,
       public: true
     });
-    const synth = await API.createSynth({
-      name: 'My Synth',
-      projectId: pj.id,
-      public: true,
-      nodes: []
-    });
-    pj.resources.synths.push(synth);
+    await this.newSynth('My Synth', pj);
     this.file = pj;
 
     return pj;
+  }
+
+  async newSynth(name = 'My synth', project = this.file) {
+    if (!project) return false;
+    const synth = await API.createSynth({
+      name,
+      projectId: project.id,
+      public: true,
+      nodes: []
+    });
+    project.resources.synths.push(synth);
+    return synth;
   }
 
   async openFile() {

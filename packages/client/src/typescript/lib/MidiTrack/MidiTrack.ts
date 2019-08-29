@@ -5,11 +5,11 @@ import { API } from '../API/API';
 import { Instrument } from '../Instruments/Instrument';
 import { project } from '../Project/Project';
 import { MidiClip } from './MidiClip';
-import { proxa } from 'proxa';
+import { MidiTrackClip } from './MidiTrackClip';
 
 
 export class MidiTrack {
-  midiClips: Map<MidiClip, EMidiTrackClip> = new Map();
+  midiTrackClips: MidiTrackClip[] = [];
 
 
   private _instrument?: Instrument;
@@ -34,7 +34,7 @@ export class MidiTrack {
   private _current: EMidiClipNote[] = [];
 
 
-  play(note: EMidiClipNote) {
+  triggerAttack(note: EMidiClipNote) {
     if (!this.instrument) return false;
     if (this._current.includes(note)) return false;
     this._current.push(note);
@@ -58,23 +58,27 @@ export class MidiTrack {
     const midiClip = new MidiClip(mcO);
     project.midiClips[mcO.id] = midiClip;
 
-    const trackClipObject = proxa({
+    const trackClipObject: EMidiTrackClip = {
       clipId: mcO.id,
       start,
       duration: duration || mcO.duration
-    });
-    this.midiClips.set(midiClip, trackClipObject);
+    };
 
+    const mtc = new MidiTrackClip(
+      this, midiClip, trackClipObject
+    )
+    this.midiTrackClips.push(mtc);
     this.midiTrack.midiClips.push(trackClipObject);
-    return { midiClip, trackClipObject};
+
+    return mtc;
   }
 
   addMidiClip(mc: MidiClip, tc: EMidiTrackClip) {
-    this.midiClips.set(mc, tc);
+    this.midiTrackClips.push(new MidiTrackClip(this, mc, tc));
   }
 
   async removeMidiClip(mc: MidiClip) {
-    this.midiClips.delete(mc);
+    this.midiTrackClips = this.midiTrackClips.filter(mtc => mtc.midiClip !== mc);
     this.midiTrack.midiClips = this.midiTrack.midiClips.filter(mtc =>
       mtc.clipId !== mc.midiClipObject.id
     );

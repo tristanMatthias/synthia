@@ -181,8 +181,6 @@ export class ClipEditor extends LitElement {
     const {left} = this.getBoundingClientRect();
     const clipWidth = this._clipWidth;
     const beat = Math.round((e.x - left) / clipWidth) + this.start;
-    console.log(beat, this.start);
-
     Clock.seekBeat(beat);
     this.deselectAllClips();
 

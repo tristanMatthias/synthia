@@ -5,7 +5,42 @@ mutation createSynth($synth: ECreateSynth!) {
     createdAt
     id
     nodes {
-      id
+      ...on ESynthiaProjectSynthNodeOscillator {
+        id
+      }
+      ...on ESynthiaProjectSynthNodeWave {
+        id
+      }
+      ...on ESynthiaProjectSynthNodeReverb {
+        id
+      }
+      ...on ESynthiaProjectSynthNodeDelay {
+        id
+      }
+      ...on ESynthiaProjectSynthNodeFilter {
+        id
+      }
+      ...on ESynthiaProjectSynthNodePan {
+        id
+      }
+      ...on ESynthiaProjectSynthNodeOscillator {
+        id
+      }
+      ...on ESynthiaProjectSynthNodeWave {
+        id
+      }
+      ...on ESynthiaProjectSynthNodeReverb {
+        id
+      }
+      ...on ESynthiaProjectSynthNodeDelay {
+        id
+      }
+      ...on ESynthiaProjectSynthNodeFilter {
+        id
+      }
+      ...on ESynthiaProjectSynthNodePan {
+        id
+      }
     }
   }
 }

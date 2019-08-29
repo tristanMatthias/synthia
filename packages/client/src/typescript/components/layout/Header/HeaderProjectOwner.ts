@@ -41,6 +41,10 @@ export class ProjectHeader extends LitElement {
   private _fileBarOptions: FileBarOptions = {
     'File': [
       {
+        action: () => this.app.modal.open(SElement.modalCreateSynth),
+        text: 'New Synth'
+      },
+      {
         action: () => this.app.modal.open(SElement.modalOpenProject),
         text: 'Open project'
       },

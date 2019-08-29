@@ -125,20 +125,25 @@ export class Track extends LitElement {
   private async _handleAddMidiClip(e: CustomEvent<TrackClip>) {
     const c = e.detail;
     c.midiTrack = this.midiTrack;
-    const { midiClip, trackClipObject } = await this.midiTrack.createMidiClip(c.start);
-    c.midiClip = midiClip;
-    c.trackClipObject = trackClipObject;
+    const mtc = await this.midiTrack.createMidiClip(c.start);
+    c.midiClip = mtc.midiClip;
+    c.trackClipObject = mtc.midiTrackClip;
   }
 
   private _setupEditor(e: CustomEvent<ClipEditor>) {
     const editor = e.detail;
-    Array.from(this.midiTrack.midiClips.entries()).forEach(([mc, tmc]) => {
+    this.midiTrack.midiTrackClips.forEach(tmc => {
       // TODO: MC Duration
-      const clip = editor.createClip(tmc.start, 0, tmc.duration, true) as TrackClip;
+      const clip = editor.createClip(
+        tmc.midiTrackClip.start,
+        0,
+        tmc.midiTrackClip.duration,
+        true
+      ) as TrackClip;
 
       clip.midiTrack = this.midiTrack;
-      clip.midiClip = mc;
-      clip.trackClipObject = tmc;
+      clip.midiClip = tmc.midiClip;
+      clip.trackClipObject = tmc.midiTrackClip;
       editor.appendChild(clip);
     })
   }

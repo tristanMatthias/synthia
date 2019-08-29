@@ -54,6 +54,7 @@ import './visualizations/ClipEditor/ClipEditor';
 
 
 // ---------------------------------------------------------------------- Modals
+import './modals/CreateSynthModal/CreateSynthModal';
 import './modals/CreateProjectModal/CreateProjectModal';
 import './modals/OpenProjectModal/OpenProjectModal';
 

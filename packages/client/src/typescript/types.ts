@@ -75,6 +75,7 @@ export enum SElement {
   clipEditorClip = 's-clip-editor-clip',
 
   // -------------------------------------------------------------------- Modals
+  modalCreateSynth = 's-modal-create-synth',
   modalCreateProject = 's-modal-create-project',
   modalOpenProject = 's-modal-open-project',
 
