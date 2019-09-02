@@ -49,8 +49,6 @@ export class NodeSynth extends Tone.PolySynth implements Instrument {
   }
 
   connect(unit: ProcessingNode, outputNum?: number, inputNum?: number) {
-    console.log('connecting');
-
     this.output.connect(unit, outputNum, inputNum);
     return this;
   }

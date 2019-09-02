@@ -63,7 +63,7 @@ export class PianoRoll extends LitElement {
         duration=${this.midiTrackClip.midiTrackClip.duration}
         .clipElement=${SElement.pianoRollNote}
         @initialized=${this._setupEditor}
-        @add=${(e: any) => this.mc!.notes.push(e.detail.midiNote)}
+        @add=${(e: any) => this.mc!.addNote(e.detail.midiNote)}
         @remove=${(e: any) => this.removeNotes(e.detail)}
       ></s-clip-editor>
     `;

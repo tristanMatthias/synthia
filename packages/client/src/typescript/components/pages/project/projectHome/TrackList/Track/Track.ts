@@ -16,7 +16,7 @@ export enum TrackEvents {
   closePianoRoll = 'closePianoRoll'
 }
 
-@customElement('s-track')
+@customElement(SElement.track)
 export class Track extends LitElement {
   static styles = [styles];
 
@@ -192,5 +192,11 @@ export class Track extends LitElement {
 
   private _handleGainChange(e: CustomEvent<number>) {
     this.gain = e.detail;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    [SElement.track]: Track;
   }
 }

@@ -10,7 +10,8 @@ import { MidiClip } from '../MidiTrack/MidiClip';
 import { MidiTrack } from '../MidiTrack/MIDITrack';
 import { EMidiClip } from '@synthia/api/dist/gql/entities/MidiClipEntity';
 import { API } from '../API/API';
-import { EMidiTrack } from '@synthia/api/dist/gql/entities/MidiTrackEntity';
+import { EMidiTrack, EMidiTrackClip } from '@synthia/api/dist/gql/entities/MidiTrackEntity';
+import { MidiTrackClip } from '../MidiTrack/MidiTrackClip';
 
 export enum ProjectDataObjectType {
   meta = 'meta',
@@ -30,9 +31,9 @@ export const project = new class Project extends EventObject<ProjectEvents> {
   file: EProject | null = null;
   save: () => Promise<any> | false;
 
-  instruments: {[id: string]: Instrument} = {};
-  midiClips: {[id: string]: MidiClip} = {};
-  midiTracks: {[id: string]: MidiTrack} = {}
+  instruments: { [id: string]: Instrument } = {};
+  midiClips: { [id: string]: MidiClip } = {};
+  midiTracks: { [id: string]: MidiTrack } = {}
 
   constructor() {
     super();
@@ -51,12 +52,8 @@ export const project = new class Project extends EventObject<ProjectEvents> {
       this.instruments[s.id] = new NodeSynth(s);
     });
 
-    this.file.resources.midiClips.forEach(mc => {
-      // Register saving for all changes to midi clip
-      proxa(mc, this._saveMidiClip);
-      this.midiClips[mc.id] = new MidiClip(mc)
-    });
-
+    // Register saving for all changes to midi clip
+    this.file.resources.midiClips.forEach(this.registerMidiClip.bind(this));
     this.file.midiTracks.forEach(this.registerMidiTrack.bind(this));
 
     this.emit('loadedNewProject', file);
@@ -77,6 +74,37 @@ export const project = new class Project extends EventObject<ProjectEvents> {
     this.midiTracks[mtc.id] = mt;
   }
 
+  registerMidiClip(mcObj: EMidiClip) {
+    return this.midiClips[mcObj.id] = new MidiClip(
+      proxa(mcObj, this._saveMidiClip)
+    );
+  }
+
+  async registerMidiTrackClip(
+    mt: MidiTrack,
+    start: number,
+    duration?: number,
+    mc?: MidiClip,
+  ) {
+    let midiClip = mc;
+
+    if (!midiClip) {
+      const mcO = await API.createMidiClip(project.file!.id);
+      midiClip = project.registerMidiClip(mcO);
+    }
+
+    const trackClipObject: EMidiTrackClip = proxa({
+      clipId: midiClip.midiClipObject.id,
+      start,
+      duration: duration || midiClip.midiClipObject.duration
+    }, () => this._saveMidiTrack(mt.midiTrack));
+
+    const mtc = new MidiTrackClip(mt, midiClip, trackClipObject);
+    mt.midiTrackClips.push(mtc);
+    mt.midiTrack.midiClips.push(trackClipObject);
+    return mtc;
+  }
+
   close() {
     fileService.close();
     this.file = null;
@@ -92,7 +120,8 @@ export const project = new class Project extends EventObject<ProjectEvents> {
 
   private _saveMidiClip(mc: EMidiClip) {
     // @ts-ignore
-    API.updateMidiClip(mc.toJSON())
+    const {creatorId, createdAt, ..._mc} = mc.toJSON();
+    API.updateMidiClip(_mc);
   }
 
   private _saveMidiTrack(mt: EMidiTrack) {

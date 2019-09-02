@@ -9,4 +9,8 @@ export class MidiClip {
   ) {
     this.notes = midiClipObject.notes;
   }
+
+  addNote(note: EMidiClipNote) {
+    this.midiClipObject.notes.push(note);
+  }
 }

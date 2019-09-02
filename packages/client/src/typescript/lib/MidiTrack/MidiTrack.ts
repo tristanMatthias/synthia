@@ -2,7 +2,6 @@ import { EMidiClipNote } from '@synthia/api/dist/gql/entities/MidiClipEntity';
 import { EMidiTrack, EMidiTrackClip } from '@synthia/api/dist/gql/entities/MidiTrackEntity';
 import { Gain } from 'tone';
 
-import { API } from '../API/API';
 import { Instrument } from '../Instruments/Instrument';
 import { project } from '../Project/Project';
 import { MidiClip } from './MidiClip';
@@ -23,8 +22,6 @@ export class MidiTrack {
     if (v) this.midiTrack.instrumentId = v.id;
     else this.midiTrack.instrumentId = undefined;
     if ((!this._instrument && v) || (v && this._instrument && v.id !== this._instrument.id)) {
-      console.log(v, this._instrument);
-
       this._instrument = v;
       if (this._instrument) this._instrument.connect(this.input);
     }
@@ -62,25 +59,8 @@ export class MidiTrack {
     return true;
   }
 
-
   async createMidiClip(start: number, duration?: number) {
-    const mcO = await API.createMidiClip(project.file!.id);
-    const midiClip = new MidiClip(mcO);
-    project.midiClips[mcO.id] = midiClip;
-
-    const trackClipObject: EMidiTrackClip = {
-      clipId: mcO.id,
-      start,
-      duration: duration || mcO.duration
-    };
-
-    const mtc = new MidiTrackClip(
-      this, midiClip, trackClipObject
-    )
-    this.midiTrackClips.push(mtc);
-    this.midiTrack.midiClips.push(trackClipObject);
-
-    return mtc;
+    return project.registerMidiTrackClip(this, start, duration);
   }
 
   addMidiClip(mc: MidiClip, tc: EMidiTrackClip) {
