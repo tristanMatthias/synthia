@@ -69,15 +69,6 @@ export class Track extends LitElement {
           @click=${() => this.collapsed = !this.collapsed}
           title=${this.collapsed ? 'Open' : 'Collapse'}
         >
-          <!-- <s-button
-            icon="collapsed"
-            hollow
-            small
-            class="collapse"
-            color="main"
-
-
-          ></s-button> -->
           <s-icon type="collapsed" class="collapse"></s-icon>
           <s-text>${this.midiTrack.midiTrack.name}</s-text>
         </div>
@@ -168,9 +159,6 @@ export class Track extends LitElement {
   private async _handleAddMidiClip(e: CustomEvent<TrackClip>) {
     const c = e.detail;
     c.midiTrackClip = await this.midiTrack.createMidiClip(c.start);
-    // c.midiTrack = this.midiTrack;
-    // c.midiClip = mtc.midiClip;
-    // c.trackClipObject = mtc.midiTrackClip;
   }
 
   private _setupEditor(e: CustomEvent<ClipEditor>) {

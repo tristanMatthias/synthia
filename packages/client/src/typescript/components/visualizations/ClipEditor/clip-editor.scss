@@ -77,4 +77,13 @@
     opacity: 0.5;
     border-left: 0.1rem solid var(--color-line);
   }
+
+  .empty {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--color-main);
+    font-size: 1.6rem;
+  }
 }

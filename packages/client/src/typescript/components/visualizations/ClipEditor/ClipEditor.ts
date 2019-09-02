@@ -24,7 +24,7 @@ export class ClipEditor extends LitElement {
   }
 
   get clips(): ClipEditorClip[] {
-    return Array.from(this.querySelectorAll(SElement.clipEditorClip));
+    return Array.from(this.childNodes) as ClipEditorClip[];
   }
 
   clipElement = SElement.clipEditorClip;
@@ -37,6 +37,9 @@ export class ClipEditor extends LitElement {
 
   @property({reflect: true, type: Number})
   duration: number;
+
+  @property({type: String})
+  emptyText: string = 'Double click to add a clip';
 
   initialized = false;
 
@@ -81,6 +84,10 @@ export class ClipEditor extends LitElement {
         offset=${ifDefined(this.start)}
         duration=${ifDefined(this.duration)}
       ></s-clock-line>
+      ${!this.clips.length
+        ? html`<span class="empty">${this.emptyText}</span>`
+        : null
+      }
     `;
   }
 
@@ -89,6 +96,12 @@ export class ClipEditor extends LitElement {
       detail: this
     }));
     this.initialized = true;
+  }
+
+  appendChild<T extends Node>(newChild: T) {
+    super.appendChild(newChild);
+    this.requestUpdate();
+    return newChild;
   }
 
 
