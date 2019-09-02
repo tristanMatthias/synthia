@@ -1,11 +1,12 @@
 import { customElement, html, LitElement, property, query, TemplateResult } from 'lit-element';
 
 import { noteToRow, realNotesCShifted } from '../../../lib/keyToFrequency';
-import { MidiClip } from '../../../lib/MidiTrack/MidiClip';
+import { MidiTrackClip } from '../../../lib/MidiTrack/MidiTrackClip';
 import { SElement } from '../../../types';
 import { ClipEditor } from '../ClipEditor/ClipEditor';
 import styles from './piano-roll.styles';
 import { PianoRollNote } from './PianoRollNote';
+import { proxa, off } from 'proxa';
 
 export * from './PianoRollNote';
 
@@ -16,16 +17,21 @@ export class PianoRoll extends LitElement {
   }
 
   @property()
-  midiClip: MidiClip;
-
-  @property()
-  start: number;
-
-  @property()
-  duration: number;
+  midiTrackClip: MidiTrackClip | null = null;
 
   @query(SElement.clipEditor)
   editor: ClipEditor;
+
+  private get mc() {
+    if (!this.midiTrackClip) return null;
+    return this.midiTrackClip.midiClip;
+  }
+
+
+  constructor() {
+    super();
+    this._update = this._update.bind(this);
+  }
 
 
   render() {
@@ -45,17 +51,19 @@ export class PianoRoll extends LitElement {
       </div>`);
     };
 
+    if (!this.midiTrackClip) return html``;
+
     return html`
       <div class="keys">
         ${keys}
       </div>
       <s-clip-editor
         rows=${true}
-        start=${this.start}
-        duration=${this.duration}
+        start=${this.midiTrackClip.midiTrackClip.start}
+        duration=${this.midiTrackClip.midiTrackClip.duration}
         .clipElement=${SElement.pianoRollNote}
         @initialized=${this._setupEditor}
-        @add=${(e: any) => this.midiClip.notes.push(e.detail.midiNote)}
+        @add=${(e: any) => this.mc!.notes.push(e.detail.midiNote)}
         @remove=${(e: any) => this.removeNotes(e.detail)}
       ></s-clip-editor>
     `;
@@ -64,20 +72,34 @@ export class PianoRoll extends LitElement {
 
   // Plot the notes
   private _setupEditor() {
+    if (!this.mc) return false;
+
+    proxa(this.midiTrackClip!.midiTrackClip, this._update);
+
+
     const editor = this.editor;
 
-    this.midiClip.notes.forEach(n => {
+    this.mc.notes.forEach(n => {
       const row = noteToRow(n.n);
       const clip = editor.createClip(n.s, row, n.d, true) as PianoRollNote;
-
       clip.midiNote = n;
       editor.appendChild(clip);
-    })
+    });
+
+    return true;
+  }
+
+  // Cleanup proxa watching
+  update(props: Map<keyof this, any>) {
+    super.update(props);
+    if (props.has('midiTrackClip') && this.editor.initialized) {
+      this._dispose(props.get('midiTrackClip'));
+    }
   }
 
   updated(props: Map<keyof this, any>) {
     super.updated(props);
-    if (props.has('midiClip') && this.editor.initialized) {
+    if (props.has('midiTrackClip') && this.editor.initialized) {
       this.editor.clear();
       this._setupEditor();
     }
@@ -85,9 +107,27 @@ export class PianoRoll extends LitElement {
 
 
   removeNotes(notes: PianoRollNote[]) {
+    if (!this.mc) return false;
+
     notes.forEach(n => {
-      const i = this.midiClip.notes.indexOf(n.midiNote);
-      this.midiClip.notes.splice(i, 1);
+      const i = this.mc!.notes.indexOf(n.midiNote);
+      this.mc!.notes.splice(i, 1);
     });
+
+    return true;
+  }
+
+  disconnectedCallback() {
+    this._dispose();
+    super.disconnectedCallback();
+  }
+
+  private _update() {
+    this.requestUpdate();
+  }
+
+  private _dispose(mtc = this.midiTrackClip) {
+    if (!mtc) return;
+    off(mtc.midiTrackClip, this._update);
   }
 }

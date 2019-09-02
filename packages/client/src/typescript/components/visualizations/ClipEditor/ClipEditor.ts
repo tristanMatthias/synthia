@@ -1,5 +1,4 @@
 import { customElement, html, LitElement, property } from 'lit-element';
-import debounce = require('lodash.debounce');
 import { ifDefined } from 'lit-html/directives/if-defined';
 
 import { Clock } from '../../../lib/Clock';
@@ -58,16 +57,6 @@ export class ClipEditor extends LitElement {
     this.addEventListener('dblclick', this._handleDblClick.bind(this));
     this.addEventListener('mousedown', this._seek.bind(this));
     this.addEventListener('mouseup', this._handleMouseUp.bind(this));
-
-    const updateTime = debounce(() => {
-      // TODO: Time signature
-      (this.shadowRoot!.querySelector('span.time')! as HTMLSpanElement).style.left = `calc(${Clock.currentBarExact} * var(--clip-width) * 4)`;
-      this.requestUpdate();
-      updateTime();
-    }, 0, {
-      maxWait: 500
-    });
-    requestAnimationFrame(updateTime)
   }
 
   render() {

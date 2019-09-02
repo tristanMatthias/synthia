@@ -1,7 +1,7 @@
 import { ESynth, SynthNodeType, TSynthiaProjectSynthNode } from '@synthia/api';
 import { proxa } from 'proxa';
 import shortid from 'shortid';
-import Tone, { Encoding, PolySynth } from 'tone';
+import Tone, { Encoding, PolySynth, Limiter, ProcessingNode } from 'tone';
 import { fileService } from '../../File/FileService';
 import { createToneNode, ToneNode } from './createToneNode';
 import { defaultSynthNodeProperties } from './defaultSynthNodeProperties';
@@ -17,6 +17,8 @@ export class NodeSynth extends Tone.PolySynth implements Instrument {
   output: Tone.Volume;
   nodes: { [id: string]: [TSynthiaProjectSynthNode, ToneNode] } = {}
 
+  private _limiter = new Limiter(-50);
+
 
   constructor(instrumentObject: ESynth) {
     super();
@@ -28,8 +30,7 @@ export class NodeSynth extends Tone.PolySynth implements Instrument {
       this.nodes[n.id] = [n, createToneNode(n)]
     });
     this.setupConnections();
-
-    this.output.toMaster();
+    this._limiter.connect(this.output);
   }
 
   private get _synths() {
@@ -45,6 +46,13 @@ export class NodeSynth extends Tone.PolySynth implements Instrument {
         this.connectNode(sn.id, id, false)
       )
     })
+  }
+
+  connect(unit: ProcessingNode, outputNum?: number, inputNum?: number) {
+    console.log('connecting');
+
+    this.output.connect(unit, outputNum, inputNum);
+    return this;
   }
 
   connectNode(
@@ -63,7 +71,7 @@ export class NodeSynth extends Tone.PolySynth implements Instrument {
         if (save) fileService.saveSynth(this.instrumentObject);
       }
 
-      return from[1].connect(this.output);
+      return from[1].connect(this._limiter);
     }
 
     let to = this.nodes[toId];
@@ -85,7 +93,7 @@ export class NodeSynth extends Tone.PolySynth implements Instrument {
     // Disconnect from the synth itself
     if (toId === 'root') {
       from[0].connectedTo = from[0].connectedTo.filter(n => n !== toId);
-      return from[1].disconnect(this.output);
+      return from[1].disconnect(this._limiter);
     }
 
     let to = this.nodes[toId];

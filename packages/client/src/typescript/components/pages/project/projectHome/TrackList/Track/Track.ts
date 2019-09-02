@@ -1,10 +1,12 @@
-import { customElement, html, LitElement, property } from 'lit-element';
+import { customElement, html, LitElement, property, query } from 'lit-element';
 
 import { MidiTrack } from '../../../../../../lib/MidiTrack/MIDITrack';
 import { project } from '../../../../../../lib/Project/Project';
 import { ClipEditor } from '../../../../../visualizations/ClipEditor/ClipEditor';
 import styles from './track.styles';
 import { TrackClip } from './TrackClip/TrackClip';
+import { SElement } from '../../../../../../types';
+import { GainMeter } from '../../../../../visualizations/GainMeter/GainMeter';
 
 export * from './TrackClip/TrackClip';
 export * from './TrackInstrument/TrackInstrument';
@@ -32,6 +34,21 @@ export class Track extends LitElement {
   @property({ reflect: true })
   view: 'instrument' | 'midi' = 'midi';
 
+  @query(SElement.gainMeter)
+  gainMeter: GainMeter;
+
+
+  private _gain : number = 1;
+  public get gain() : number {
+    return this._gain;
+  }
+  public set gain(v : number) {
+    this.midiTrack.input.gain.value = v;
+    this._gain = v;
+    this.requestUpdate();
+  }
+
+
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener('drop', this._handleDrop);
@@ -42,18 +59,29 @@ export class Track extends LitElement {
     if (!this.midiTrack) return;
 
     return html`
+      <s-gain-meter
+        @change=${this._handleGainChange}
+        .value=${this.gain}
+      ></s-gain-meter>
       <div class="controls">
-        <div class="button">
-          <s-button
+
+        <div class="name"
+          @click=${() => this.collapsed = !this.collapsed}
+          title=${this.collapsed ? 'Open' : 'Collapse'}
+        >
+          <!-- <s-button
             icon="collapsed"
             hollow
             small
             class="collapse"
             color="main"
-            @click=${() => this.collapsed = !this.collapsed}
-            title=${this.collapsed ? 'Open' : 'Collapse'}
-          ></s-button>
+
+
+          ></s-button> -->
+          <s-icon type="collapsed" class="collapse"></s-icon>
+          <s-text>${this.midiTrack.midiTrack.name}</s-text>
         </div>
+
         <div class="button">
           <s-button
             icon="record"
@@ -74,7 +102,6 @@ export class Track extends LitElement {
             title=${this.muted ? 'Unmute' : 'Mute'}
           ></s-button>
         </div>
-        <s-text class="name">${this.midiTrack.midiTrack.name}</s-text>
         <div class="button">
           <s-button
             icon="synth"
@@ -95,6 +122,8 @@ export class Track extends LitElement {
             title="View MIDI clips"
           ></s-button>
         </div>
+
+        <div class="space"></div>
       </div>
 
       ${this.view === 'midi'
@@ -113,6 +142,20 @@ export class Track extends LitElement {
     `;
   }
 
+  firstUpdated(props: Map<string, keyof Track>) {
+    super.firstUpdated(props);
+    // @ts-ignore
+    this.midiTrack.input.connect(this.gainMeter.meterNode);
+  }
+
+  updated(props: Map<string, keyof Track>) {
+    super.updated(props);
+    if (props.has('muted')) {
+      this.midiTrack.input.gain.value = this.muted ? 0 : 1;
+    }
+  }
+
+
   private _handleDrop(e: DragEvent) {
     if (!e.dataTransfer) return;
     const instrumentId = e.dataTransfer.getData('instrument');
@@ -124,26 +167,24 @@ export class Track extends LitElement {
 
   private async _handleAddMidiClip(e: CustomEvent<TrackClip>) {
     const c = e.detail;
-    c.midiTrack = this.midiTrack;
-    const mtc = await this.midiTrack.createMidiClip(c.start);
-    c.midiClip = mtc.midiClip;
-    c.trackClipObject = mtc.midiTrackClip;
+    c.midiTrackClip = await this.midiTrack.createMidiClip(c.start);
+    // c.midiTrack = this.midiTrack;
+    // c.midiClip = mtc.midiClip;
+    // c.trackClipObject = mtc.midiTrackClip;
   }
 
   private _setupEditor(e: CustomEvent<ClipEditor>) {
     const editor = e.detail;
-    this.midiTrack.midiTrackClips.forEach(tmc => {
+    this.midiTrack.midiTrackClips.forEach(mtc => {
       // TODO: MC Duration
       const clip = editor.createClip(
-        tmc.midiTrackClip.start,
+        mtc.midiTrackClip.start,
         0,
-        tmc.midiTrackClip.duration,
+        mtc.midiTrackClip.duration,
         true
       ) as TrackClip;
 
-      clip.midiTrack = this.midiTrack;
-      clip.midiClip = tmc.midiClip;
-      clip.trackClipObject = tmc.midiTrackClip;
+      clip.midiTrackClip = mtc;
       editor.appendChild(clip);
     })
   }
@@ -151,17 +192,17 @@ export class Track extends LitElement {
   private _openPianoRoll(e: CustomEvent<TrackClip[]>) {
     const [clip] = e.detail;
     this.dispatchEvent(new CustomEvent(TrackEvents.openPianoRoll, {
-      detail: {
-        midiClip: clip.midiClip,
-        start: clip.start,
-        duration: clip.duration
-      },
+      detail: clip.midiTrackClip,
       bubbles: true,
       composed: true
     }));
   }
 
   private _handleEditorRemove(e: CustomEvent<TrackClip[]>) {
-    e.detail.forEach(n => this.midiTrack.removeMidiClip(n.midiClip));
+    e.detail.forEach(n => this.midiTrack.removeMidiClip(n.mc!));
+  }
+
+  private _handleGainChange(e: CustomEvent<number>) {
+    this.gain = e.detail;
   }
 }

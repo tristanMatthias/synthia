@@ -1,7 +1,7 @@
 :host {
   --rows: 3;
   display: grid;
-  grid-template-columns: 25rem 1fr;
+  grid-template-columns: 2rem 25rem 1fr;
 
   background: var(--color-bg-off);
   border: 0.1rem solid var(--color-line);
@@ -13,14 +13,20 @@
     box-sizing: border-box;
   }
 
+  s-gain-meter {
+    padding: 0.5rem 0;
+    height: 100%;
+    border-right: 0.1rem solid var(--color-line-soft);
+  }
+
   .controls {
     display: grid;
-    grid-template-columns: repeat(3, 4rem) 1fr;
+    grid-template-columns: 1fr repeat(2, 4rem);
     grid-template-rows: repeat(var(--rows), 4rem);
-    border-right: 0.1rem solid var(--color-line);
+    border-right: 0.5rem solid var(--color-line);
 
-    .button {
-      border-right: 0.1rem solid var(--color-line-soft);
+    .button:not(.collapse) {
+      border-left: 0.1rem solid var(--color-line-soft);
     }
 
     s-button[icon] {
@@ -33,27 +39,40 @@
       padding-left: 0.25rem;
       --stroke-width: 0.3rem;
 
-      &.collapse {
-        transform: rotate(90deg);
-      }
-
       &[icon="record"][color="error"] {
         background: var(--color-error);
         --button-text: white;
       }
+      &[icon="record"] {
+        --button-text: var(--color-error);
+      }
     }
-    .button, s-text {
+    .button, .name {
       border-bottom: 0.1rem solid var(--color-line-soft);
       height: 4rem;
       line-height: 4rem;
     }
 
-    s-text {
-      padding: 0 1rem;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      font-size: 1.4rem;
+    .name {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+
+      s-icon {
+        width: 3rem;
+        transform: rotate(90deg);
+      }
+      s-text {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        font-size: 1.4rem;
+      }
+    }
+
+    .space {
+      grid-row: 2 / span 2;
+      grid-column: 1 / span 1;
     }
   }
 
@@ -66,7 +85,7 @@
 :host([collapsed]) {
   --rows: 1;
 
-  s-button[icon].collapse {
+  s-icon.collapse {
     transform: none;
   }
 
@@ -74,7 +93,7 @@
     border-bottom-color: transparent;
   }
 
-  .controls {
+  s-gain-meter, .controls {
     height: 4rem;
   }
 }

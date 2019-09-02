@@ -15,13 +15,11 @@ export class MidiTrackClip {
     public midiTrackClip: EMidiTrackClip
   ) {
     proxa(this.midiClip.midiClipObject, this._update.bind(this));
-    proxa(this.midiTrackClip, this._update.bind(this));
+    proxa(this.midiTrackClip, () => this._update());
     this._update();
   }
 
   private _update() {
-    console.log('UPDATE');
-
     this._transportEvents.forEach(i => Transport.clear(i));
     // The attack
     this.midiClip.notes.forEach(n => {

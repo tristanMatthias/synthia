@@ -65,6 +65,7 @@ export enum SElement {
 
 
   // ----------------------------------------------------------------------- Viz
+  gainMeter = 's-gain-meter',
   frequencyResponse = 's-frequency-response',
   waveform = 's-waveform',
   keyboard = 's-keyboard',

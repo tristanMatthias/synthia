@@ -19,6 +19,12 @@ export class Slider extends LitElement {
   @property({type: Number})
   value?: number;
 
+  @property({type: Boolean, reflect: true})
+  vertical: boolean = false;
+
+  @property({type: Boolean, reflect: true})
+  handle: boolean = false;
+
   @property()
   protected _showValue: number = (this.value || this.min) / this.max;
 
@@ -32,8 +38,9 @@ export class Slider extends LitElement {
 
   render() {
     const v = this.value === undefined ? this.min : this.value;
-    const left = `${(v - this.min) / (this.max - this.min) * 100}%`;
-    return html`<span class="slide" style="left: ${left}"></span>`;
+    const pos = `${(v - this.min) / (this.max - this.min) * 100}%`;
+    const prop = this.vertical ? 'bottom' : 'left';
+    return html`<span class="slide" style="${prop}: ${pos}"></span>`;
   }
 
   connectedCallback() {
@@ -51,8 +58,11 @@ export class Slider extends LitElement {
 
   protected _update(e: MouseEvent) {
     const box = this.getBoundingClientRect();
-    const relative = e.clientX - box.left;
-    let value = (relative / box.width);
+
+    let value = this.vertical
+      ? (box.bottom - e.clientY) / box.height
+      : (e.clientX - box.left) / box.width;
+
     if (value > 1) value = 1;
     if (value < 0) value = 0;
     this.value = this.min + ((this.max - this.min) * value);
@@ -62,8 +72,10 @@ export class Slider extends LitElement {
     super.updated(props);
     if (props.has('value')) {
       this.dispatchEvent(new CustomEvent('change', {
-        detail: this.value
-      }))
+        detail: this.value,
+        composed: true,
+        bubbles: true
+      }));
     }
   }
 }

@@ -37,6 +37,7 @@
     "lit-html": "^1.1.1",
     "sass-loader": "^7.1.0",
     "strip-comments": "^1.0.2",
+    "tinygradient": "^1.0.0",
     "tone": "^13.4.9",
     "ts-loader": "^6.0.4",
     "ts-node": "^8.3.0",

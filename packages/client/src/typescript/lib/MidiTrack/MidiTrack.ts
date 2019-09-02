@@ -1,5 +1,6 @@
 import { EMidiClipNote } from '@synthia/api/dist/gql/entities/MidiClipEntity';
 import { EMidiTrack, EMidiTrackClip } from '@synthia/api/dist/gql/entities/MidiTrackEntity';
+import { Gain } from 'tone';
 
 import { API } from '../API/API';
 import { Instrument } from '../Instruments/Instrument';
@@ -11,6 +12,8 @@ import { MidiTrackClip } from './MidiTrackClip';
 export class MidiTrack {
   midiTrackClips: MidiTrackClip[] = [];
 
+  input = new Gain();
+
 
   private _instrument?: Instrument;
   public get instrument() {
@@ -19,7 +22,12 @@ export class MidiTrack {
   public set instrument(v) {
     if (v) this.midiTrack.instrumentId = v.id;
     else this.midiTrack.instrumentId = undefined;
-    this._instrument = v;
+    if ((!this._instrument && v) || (v && this._instrument && v.id !== this._instrument.id)) {
+      console.log(v, this._instrument);
+
+      this._instrument = v;
+      if (this._instrument) this._instrument.connect(this.input);
+    }
   }
 
 
@@ -28,6 +36,8 @@ export class MidiTrack {
     instrument?: Instrument
   ) {
     this.instrument = instrument;
+    // @ts-ignore
+    this.input.toMaster();
     this._update();
   }
 

@@ -1,14 +1,12 @@
-import { EMidiTrackClip } from '@synthia/api/dist/gql/entities/MidiTrackEntity';
-import { customElement, html, query, property } from 'lit-element';
+import { EMidiClipNote } from '@synthia/api/dist/gql/entities/MidiClipEntity';
+import { customElement, html, property, query } from 'lit-element';
+import { proxa } from 'proxa';
 
-import { MidiClip } from '../../../../../../../lib/MidiTrack/MidiClip';
-import { MidiTrack } from '../../../../../../../lib/MidiTrack/MIDITrack';
+import { noteToRow } from '../../../../../../../lib/keyToFrequency';
+import { MidiTrackClip } from '../../../../../../../lib/MidiTrack/MidiTrackClip';
+import { remToPx } from '../../../../../../../lib/pxToRem';
 import { ClipEditorClip } from '../../../../../../visualizations/ClipEditor/Clip/Clip';
 import styles from './track-clip.styles';
-import { proxa } from 'proxa';
-import { EMidiClipNote } from '@synthia/api/dist/gql/entities/MidiClipEntity';
-import { noteToRow } from '../../../../../../../lib/keyToFrequency';
-import { remToPx } from '../../../../../../../lib/pxToRem';
 
 @customElement('s-track-clip')
 export class TrackClip extends ClipEditorClip {
@@ -17,16 +15,29 @@ export class TrackClip extends ClipEditorClip {
     styles
   ];
 
-  midiTrack: MidiTrack;
   @property()
-  midiClip: MidiClip;
-  trackClipObject: EMidiTrackClip;
+  midiTrackClip: MidiTrackClip;
+
+  get mc() {
+    if (!this.midiTrackClip) return null;
+    return this.midiTrackClip.midiClip;
+  }
+
+  get mt() {
+    if (!this.midiTrackClip) return null;
+    return this.midiTrackClip.midiTrack;
+  }
+
+  get mtc() {
+    if (!this.midiTrackClip) return null;
+    return this.midiTrackClip.midiTrackClip;
+  }
 
   protected _start: number;
   public get start() { return this._start; }
   public set start(v: number) {
     this._start = v;
-    if (this.trackClipObject) this.trackClipObject.start = v;
+    if (this.mtc) this.mtc.start = v;
     this._updatePosition();
   }
 
@@ -34,7 +45,7 @@ export class TrackClip extends ClipEditorClip {
   public get duration() { return this._duration; }
   public set duration(v: number) {
     this._duration = v;
-    if (this.trackClipObject) this.trackClipObject.duration = v;
+    if (this.mtc) this.mtc.duration = v;
     this._updatePosition();
     if (this.isConnected) this.draw();
   }
@@ -59,8 +70,8 @@ export class TrackClip extends ClipEditorClip {
     this._updateMap();
     this.draw();
 
-    if (props.has('midiClip')) {
-      proxa(this.midiClip.notes, () => {
+    if (props.has('midiTrackClip')) {
+      proxa(this.mc!.notes, () => {
         this._updateMap();
         this.draw()
       });
@@ -69,16 +80,18 @@ export class TrackClip extends ClipEditorClip {
 
   render() {
     return html`
-      <header>${this.midiClip.midiClipObject.name}</header>
+      <header>${this.mc ? this.mc.midiClipObject.name : ''}</header>
       <canvas></canvas>
     `;
   }
 
   private _updateMap() {
+    if (!this.mc) return false;
     this._noteRows.clear();
-    this.midiClip.notes.forEach(n => {
+    this.mc.notes.forEach(n => {
       this._noteRows.set(n, noteToRow(n.n));
     });
+    return true;
   }
 
   private draw() {

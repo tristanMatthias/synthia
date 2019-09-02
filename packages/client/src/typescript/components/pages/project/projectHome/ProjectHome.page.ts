@@ -1,9 +1,9 @@
 import { customElement, html, LitElement, property } from 'lit-element';
 
+import { MidiTrackClip } from '../../../../lib/MidiTrack/MidiTrackClip';
 import { project } from '../../../../lib/Project/Project';
 import { SElement } from '../../../../types';
 import styles from './project-home.styles';
-import { MidiClip } from '../../../../lib/MidiTrack/MidiClip';
 
 export * from './Browser/Browser';
 export * from './TrackList/TrackList';
@@ -15,7 +15,7 @@ export class PageProjectHome extends LitElement {
   static styles = [styles];
 
   @property()
-  private _activeMidiClip: {midiClip: MidiClip, start: number, duration: number} | null;
+  private _activeMidiClip: MidiTrackClip | null;
 
   constructor() {
     super();
@@ -38,9 +38,7 @@ export class PageProjectHome extends LitElement {
         ${active
           ? html`<div class="bottom-panel">
             <s-piano-roll
-              .midiClip=${active.midiClip}
-              .start=${active.start}
-              .duration=${active.duration}
+              .midiTrackClip=${active}
             ></s-piano-roll>
           </div>`
           : null}
