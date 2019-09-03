@@ -78,6 +78,10 @@
 
   s-clip-editor {
     background-color: var(--color-black);
+    transition: all 0.1s;
+    &:focus {
+      background-color: var(--color-bg);
+    }
   }
 }
 

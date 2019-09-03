@@ -1,8 +1,8 @@
 import { customElement, html, LitElement } from 'lit-element';
 import { proxa } from 'proxa';
 
-import { MidiTrack } from '../../../../../../../lib/MidiTrack/MIDITrack';
 import styles from './track-instrument.styles';
+import { MidiTrack } from '../../../../../../../lib/MidiTrack/MIDITrack';
 import { project } from '../../../../../../../lib/Project/Project';
 
 

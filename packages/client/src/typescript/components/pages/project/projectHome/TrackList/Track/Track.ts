@@ -124,7 +124,7 @@ export class Track extends LitElement {
           @add=${this._handleAddMidiClip}
           @initialized=${this._setupEditor}
           @select=${this._openPianoRoll}
-          @blur=${() => this.dispatchEvent(new CustomEvent(TrackEvents.closePianoRoll, { bubbles: true, composed: true }))}
+          @deselect=${() => this.dispatchEvent(new CustomEvent(TrackEvents.closePianoRoll, { bubbles: true, composed: true }))}
           @remove=${this._handleEditorRemove}
         ></s-clip-editor>`
 

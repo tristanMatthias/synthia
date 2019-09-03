@@ -1,6 +1,7 @@
 import { customElement, html, LitElement, property } from 'lit-element';
 import { ifDefined } from 'lit-html/directives/if-defined';
 
+import { activeElement } from '../../../lib/activeElement';
 import { Clock } from '../../../lib/Clock';
 import { remToPx } from '../../../lib/pxToRem';
 import { SElement } from '../../../types';
@@ -13,7 +14,7 @@ export enum ClipEditorEvents {
   add = 'add',
   remove = 'remove',
   select = 'select',
-  blur = 'blur',
+  deselect = 'deselect',
   initialized = 'initialized'
 }
 
@@ -22,6 +23,8 @@ export class ClipEditor extends LitElement {
   static get styles() {
     return [styles]
   }
+
+  tabIndex = 0;
 
   get clips(): ClipEditorClip[] {
     return Array.from(this.childNodes) as ClipEditorClip[];
@@ -58,8 +61,9 @@ export class ClipEditor extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener('dblclick', this._handleDblClick.bind(this));
-    this.addEventListener('mousedown', this._seek.bind(this));
+    this.addEventListener('mousedown', this._handleMouseDown.bind(this));
     this.addEventListener('mouseup', this._handleMouseUp.bind(this));
+    this.addEventListener('keydown', this._handleKeyPress.bind(this));
   }
 
   render() {
@@ -166,7 +170,10 @@ export class ClipEditor extends LitElement {
   deselectAllClips() {
     this._selectedClips.forEach(n => n.selected = false);
     this._selectedClips = [];
-    this.dispatchEvent(new CustomEvent(ClipEditorEvents.blur));
+    if (activeElement() === this) {
+      this.dispatchEvent(new CustomEvent(ClipEditorEvents.deselect));
+    }
+
   }
 
   removeClips(e: ClipEditorClip[]) {
@@ -179,17 +186,40 @@ export class ClipEditor extends LitElement {
     this.innerHTML = '';
   }
 
-  private _seek(e: MouseEvent) {
+  private _seek(
+    beat?: number,
+    increment?: number,
+    bar = false
+  ) {
+    let b = beat;
+    if (increment) {
+      b = Clock.currentBeat + increment;
+
+      // TODO: Time signature
+      if (bar) {
+        console.log(b + 1, Clock.currentBar, increment);
+
+        if ((b + 1) % 4 === 0 || increment > 0) b = (Clock.currentBar + increment) * 4;
+        else b = Clock.currentBar * 4;
+      }
+    }
+    if (b === undefined) return;
+
+    Clock.seekBeat(b);
+    this.deselectAllClips();
+    this._selectRange = null;
+    this.requestUpdate();
+  }
+
+  private _handleMouseDown(e: MouseEvent) {
     const {left} = this.getBoundingClientRect();
     const clipWidth = this._clipWidth;
     const beat = Math.round((e.x - left) / clipWidth) + this.start;
-    Clock.seekBeat(beat);
-    this.deselectAllClips();
 
     this.addEventListener('mousemove', this._handleMouseMove);
     this._mouseStartX = e.x;
-    this._selectRange = null;
-    this.requestUpdate();
+
+    this._seek(beat);
   }
 
   private _handleMouseMove(e: MouseEvent) {
@@ -203,6 +233,18 @@ export class ClipEditor extends LitElement {
 
   private _handleMouseUp(_e: MouseEvent) {
     this.removeEventListener('mousemove', this._handleMouseMove);
+  }
+
+
+  private _handleKeyPress(e: KeyboardEvent) {
+    switch (e.code) {
+      case 'ArrowLeft':
+        this._seek(undefined, - 1, e.altKey);
+        break;
+      case 'ArrowRight':
+        this._seek(undefined, + 1, e.altKey);
+        break;
+    }
   }
 
 }
