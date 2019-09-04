@@ -31,12 +31,14 @@ export class Page extends LitElement {
         color="main"
         icon="${Clock.playing ? 'pause' : 'play'}"
         @click=${() => Clock.toggle()}
+        tooltip=${Clock.playing ? 'Pause' : 'Play'}
       ></s-button>
       <s-button
         hollow
         color="main"
         icon="stop"
         @click=${() => Clock.stop()}
+        tooltip="Stop"
       ></s-button>
     `;
   }

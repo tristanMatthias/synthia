@@ -67,7 +67,7 @@ export class Track extends LitElement {
 
         <div class="name"
           @click=${() => this.collapsed = !this.collapsed}
-          title=${this.collapsed ? 'Open' : 'Collapse'}
+          tooltip=${this.collapsed ? 'Open' : 'Collapse'}
         >
           <s-icon type="collapsed" class="collapse"></s-icon>
           <s-text>${this.midiTrack.midiTrack.name}</s-text>
@@ -75,12 +75,13 @@ export class Track extends LitElement {
 
         <div class="button">
           <s-button
+            id="record"
             icon="record"
             hollow
             small
             color=${this.recording ? 'error' : 'main'}
             @click=${() => this.recording = !this.recording}
-            title="Record"
+            tooltip="Record"
           ></s-button>
         </div>
         <div class="button">
@@ -90,7 +91,7 @@ export class Track extends LitElement {
             small
             color=${this.muted ? 'main' : 'alt'}
             @click=${() => this.muted = !this.muted}
-            title=${this.muted ? 'Unmute' : 'Mute'}
+            tooltip=${this.muted ? 'Unmute' : 'Mute'}
           ></s-button>
         </div>
         <div class="button">
@@ -100,7 +101,7 @@ export class Track extends LitElement {
             small
             color=${this.view != 'instrument' ? 'line' : 'alt'}
             @click=${() => this.view = 'instrument'}
-            title="View instrument"
+            tooltip="View instrument"
           ></s-button>
         </div>
         <div class="button">
@@ -110,7 +111,7 @@ export class Track extends LitElement {
             small
             color=${this.view != 'midi' ? 'line' : 'alt'}
             @click=${() => this.view = 'midi'}
-            title="View MIDI clips"
+            tooltip="View MIDI clips"
           ></s-button>
         </div>
 

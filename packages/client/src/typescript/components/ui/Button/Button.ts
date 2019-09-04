@@ -2,6 +2,7 @@ import { customElement, html, LitElement, property } from 'lit-element';
 
 import { SElement } from '../../../types';
 import styles from './button.styles';
+import { TooltipPosition } from '../Tooltip/Tooltip';
 
 @customElement(SElement.button)
 export class Button extends LitElement {
@@ -25,11 +26,27 @@ export class Button extends LitElement {
   @property({reflect: true, type: String})
   icon: string | null = null;
 
+  @property()
+  tooltip: string | null = null;
+
+  @property()
+  tooltipPosition: TooltipPosition | null = 'top';
+
   render() {
-    if (this.icon) return html`<s-icon type=${this.icon}></s-icon>`;
-    return html`
+    let content;
+    if (this.icon) content = html`<s-icon type=${this.icon}></s-icon>`;
+    else content = html`
       <span><slot></slot></span>
-      ${this.loading ? html`<s-loading></s-loading>` : null}
+      ${this.loading ? html`<s-loading></s-loading>` : null}`;
+
+    return html`
+      ${content}
+      ${this.tooltip
+        ? html`<s-tooltip .for=${this} position=${this.tooltipPosition}>${
+          this.tooltip
+        }</s-tooltip>`
+        : null
+      }
     `;
   }
 

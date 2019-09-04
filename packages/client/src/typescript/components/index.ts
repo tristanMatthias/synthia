@@ -34,6 +34,7 @@ import './ui/Card/Card';
 import './ui/FromNow/FromNow';
 import './ui/Text/Text';
 import './ui/Icon/Icon';
+import './ui/Tooltip/Tooltip';
 
 // ----------------------------------------------------------------------- Synth
 import './synthNodes/SynthEffectDelay/Delay';

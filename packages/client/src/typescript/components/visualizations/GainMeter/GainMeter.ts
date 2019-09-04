@@ -16,8 +16,6 @@ const meterGradient = gradient([
 export class GainMeter extends LitElement {
   static styles = [styles];
 
-  title = 'Volume'
-
   @property({ type: Number, reflect: true })
   dbRange: number = 48;
 
@@ -69,6 +67,7 @@ export class GainMeter extends LitElement {
       <canvas class="left"></canvas>
       <canvas class="right"></canvas>
       <s-slider vertical handle min=${0} max=${1} .value=${this.value}></s-slider>
+      <s-tooltip .for=${this} position="left">Volume</s-tooltip>
     `;
   }
 

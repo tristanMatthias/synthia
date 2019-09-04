@@ -1,0 +1,107 @@
+:host {
+  --arrow-size: 1rem;
+  --br: 0.4rem;
+  --bg-color: var(--color-black);
+  position: fixed;
+  display: block;
+  border-radius: var(--br);
+  background-color: var(--bg-color);
+  box-shadow: 0 0.5rem 2rem var(--color-black);
+  padding: var(--tooltip-padding, 0 1rem);
+
+  visibility: hidden;
+  opacity: 0;
+  font-size: 1.4rem;
+  color: var(--color-white);
+
+  z-index: 999;
+
+  &:before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: var(--arrow-size) solid transparent;
+    border-right: var(--arrow-size) solid transparent;
+    border-top: var(--arrow-size) solid var(--bg-color);
+    box-shadow: var(--tooltip-shadow, var(--shadow-main-soft));
+  }
+}
+
+:host-context([position='top']) {
+  transform: translate(-50%, -100%);
+}
+:host-context([position='left']) {
+  transform: translate(-100%, -50%);
+}
+
+:host-context([position^='top']):before {
+  top: 100%;
+}
+:host-context([position^='bottom']):before {
+  bottom: 100%;
+  transform: rotate(180deg);
+}
+:host-context([position$='-top']):before {
+  bottom: var(--br);
+}
+:host-context([position$='-bottom']):before {
+  top: var(--br);
+}
+
+:host-context([position^='right']):before {
+  right: calc(100% - var(--arrow-size) / 2);
+  transform: rotate(90deg);
+}
+:host-context([position^='left']):before {
+  left: calc(100% - var(--arrow-size) / 2);
+  transform: rotate(270deg);
+}
+:host-context([position$='-right']):before {
+  left: var(--br);
+}
+:host-context([position$='-left']):before {
+  right: var(--br);
+}
+
+:host-context([position='bottom']):before,
+:host-context([position='top']):before {
+  left: 50%;
+  margin-left: -1rem;
+}
+
+:host-context([position='right']):before,
+:host-context([position='left']):before {
+  top: 50%;
+  margin-top: -0.5rem;
+}
+
+:host-context([showing]) {
+  animation: tooltip-fade var(--transition-time) forwards;
+  opacity: 1;
+  visibility: visible;
+}
+
+@keyframes tooltip-fade {
+  from {
+    visibility: visible;
+    opacity: 0;
+  }
+  to {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+@keyframes tooltip-up {
+  from {
+    visibility: visible;
+    opacity: 0;
+    margin-top: 2px;
+  }
+  to {
+    visibility: visible;
+    opacity: 1;
+    margin-top: 0;
+  }
+}

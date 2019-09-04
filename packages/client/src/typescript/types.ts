@@ -39,6 +39,7 @@ export enum SElement {
   fromNow = 's-from-now',
   text = 's-text',
   icon = 's-icon',
+  tooltip = 's-tooltip',
 
 
 
