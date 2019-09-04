@@ -1,12 +1,12 @@
-import { Encoding } from "tone";
-import { ESynth } from "@synthia/api";
+import { ESynth } from '@synthia/api';
+import { Encoding } from 'tone';
 
 export interface Instrument extends Tone.Instrument {
   id: string;
   instrumentObject: ESynth;
   /**
-     * Trigger the attack of the note optionally with a given velocity
-     */
+   * Trigger the attack of the note optionally with a given velocity
+   */
   triggerAttack(notes: Encoding.Frequency[], time?: Encoding.Time, velocity?: number): this;
 
   /**

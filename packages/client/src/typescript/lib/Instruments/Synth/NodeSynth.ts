@@ -6,6 +6,7 @@ import { fileService } from '../../File/FileService';
 import { createToneNode, ToneNode } from './createToneNode';
 import { defaultSynthNodeProperties } from './defaultSynthNodeProperties';
 import { Instrument } from '../Instrument';
+import { Clock } from '../../Clock';
 
 
 // import {tone} from 'tone';
@@ -31,6 +32,10 @@ export class NodeSynth extends Tone.PolySynth implements Instrument {
     });
     this.setupConnections();
     this._limiter.connect(this.output);
+
+
+    Clock.on('seek', this.releaseAll.bind(this));
+
   }
 
   private get _synths() {
@@ -157,6 +162,14 @@ export class NodeSynth extends Tone.PolySynth implements Instrument {
    */
   triggerRelease(notes: Encoding.Frequency[], time: Encoding.Time = '+0.01') {
     this._synths.forEach(([,s]) => s.triggerRelease(notes, time));
+    return this;
+  }
+
+
+  releaseAll() {
+    console.log('releasing all');
+
+    this._synths.forEach(([, s]) => s.releaseAll())
     return this;
   }
 }
