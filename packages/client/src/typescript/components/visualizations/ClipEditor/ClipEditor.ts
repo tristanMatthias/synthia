@@ -47,7 +47,7 @@ export class ClipEditor extends LitElement {
   initialized = false;
 
   private _selectedClips: ClipEditorClip[] = [];
-  private _mouseStartX: number | null = null;
+  private _mouseStart: [number, number] | null = null;
   private _selectRange: [number, number] | null = null;
   private get _clipWidth() {
     const styles = getComputedStyle(this);
@@ -197,8 +197,6 @@ export class ClipEditor extends LitElement {
 
       // TODO: Time signature
       if (bar) {
-        console.log(b + 1, Clock.currentBar, increment);
-
         if ((b + 1) % 4 === 0 || increment > 0) b = (Clock.currentBar + increment) * 4;
         else b = Clock.currentBar * 4;
       }
@@ -208,27 +206,33 @@ export class ClipEditor extends LitElement {
     Clock.seekBeat(b);
     this.deselectAllClips();
     this._selectRange = null;
-    this.requestUpdate();
+    this._resetRange();
   }
+
 
   private _handleMouseDown(e: MouseEvent) {
     const {left} = this.getBoundingClientRect();
     const clipWidth = this._clipWidth;
     const beat = Math.round((e.x - left) / clipWidth) + this.start;
 
+    this._mouseStart = [e.x, beat - this.start];
     this.addEventListener('mousemove', this._handleMouseMove);
-    this._mouseStartX = e.x;
 
-    this._seek(beat);
+    if (e.shiftKey) {
+      this._updateRange(beat);
+    } else {
+      this._seek(beat);
+    }
   }
 
   private _handleMouseMove(e: MouseEvent) {
-    const range = Math.round((e.x - this._mouseStartX!) / this._clipWidth);
-    if (!this._selectRange) {
-      this._selectRange = [Clock.currentBeat, Clock.currentBeat];
-    }
-    this._selectRange![1] = range + this._selectRange![0];
-    this.requestUpdate();
+    if (!e.shiftKey) return;
+    this._updateRange(
+      // The initial beat position where clicked
+      this._mouseStart![1] +
+      // The difference in beats
+      Math.round((e.x - this._mouseStart![0]!) / this._clipWidth)
+    );
   }
 
   private _handleMouseUp(_e: MouseEvent) {
@@ -239,12 +243,41 @@ export class ClipEditor extends LitElement {
   private _handleKeyPress(e: KeyboardEvent) {
     switch (e.code) {
       case 'ArrowLeft':
-        this._seek(undefined, - 1, e.altKey);
+        if (e.shiftKey) {
+          this._updateRange(-1, false);
+        } else this._seek(undefined, - 1, e.altKey);
         break;
       case 'ArrowRight':
-        this._seek(undefined, + 1, e.altKey);
+        if (e.shiftKey) {
+          this._updateRange(1, false);
+        } else this._seek(undefined, + 1, e.altKey);
         break;
     }
+  }
+
+
+  private _resetRange() {
+    const b = Clock.currentBeat - this.start;
+    this._selectRange = [b, b];
+    this.requestUpdate();
+  }
+
+
+  private _updateRange(size: number, absolute = true) {
+    let isNew = false;
+    if (!this._selectRange) {
+      this._resetRange();
+      isNew = true;
+    }
+    // Update the range
+    if (absolute) this._selectRange![1] = size;
+    else this._selectRange![1] += size;
+
+    if (this._selectRange![0] === this._selectRange![1] && !isNew) {
+      this._selectRange = null;
+    }
+
+    this.requestUpdate();
   }
 
 }

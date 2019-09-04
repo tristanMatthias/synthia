@@ -76,7 +76,10 @@ export const Clock = new class extends EventObject<ClockEvents> {
   }
 
   get currentBeat() {
-    return Math.round((this.currentTime / 60) * this.tempo);
+    return Math.round(this.currentBeatExact);
+  }
+  get currentBeatExact() {
+    return (this.currentTime / 60) * this.tempo;
   }
 
   get currentBarBeat() {

@@ -27,7 +27,7 @@ export class ClockLine extends LitElement {
 
     const updateTime = debounce(() => {
       let inRange = true;
-      const current = Clock.currentBeat;
+      const current = Clock.currentBeatExact;
 
       if (
         (current < this.offset) ||
