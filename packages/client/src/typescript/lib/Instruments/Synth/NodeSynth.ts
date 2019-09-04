@@ -35,7 +35,7 @@ export class NodeSynth extends Tone.PolySynth implements Instrument {
 
 
     Clock.on('seek', this.releaseAll.bind(this));
-
+    Clock.on('pause', this.releaseAll.bind(this));
   }
 
   private get _synths() {
@@ -167,8 +167,6 @@ export class NodeSynth extends Tone.PolySynth implements Instrument {
 
 
   releaseAll() {
-    console.log('releasing all');
-
     this._synths.forEach(([, s]) => s.releaseAll())
     return this;
   }
