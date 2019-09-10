@@ -19,6 +19,7 @@ export class Icon extends LitElement {
       :host svg {
         width: 100%;
         height: 100%;
+        vertical-align: top;
       }
       :host svg * {
         stroke-width: var(--stroke-width, 0.4rem);

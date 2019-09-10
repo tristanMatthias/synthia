@@ -1,6 +1,8 @@
+export * from './add';
 export * from './close';
 export * from './collapsed';
 export * from './connect';
+export * from './edit';
 export * from './effect';
 export * from './effectDelay';
 export * from './effectPan';
@@ -21,6 +23,7 @@ export * from './index';
 export * from './info';
 export * from './logo';
 export * from './midiClip';
+export * from './move';
 export * from './noSound';
 export * from './oscillatorOld';
 export * from './pause';

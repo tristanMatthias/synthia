@@ -8,6 +8,7 @@
   background-color: var(--bg-color);
   box-shadow: 0 0.5rem 2rem var(--color-black);
   padding: var(--tooltip-padding, 0 1rem);
+  pointer-events: none;
 
   visibility: hidden;
   opacity: 0;

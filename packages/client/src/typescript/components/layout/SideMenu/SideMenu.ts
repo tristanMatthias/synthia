@@ -66,14 +66,14 @@ export class SideMenu extends LitElement {
       </div>`)}
 
       ${this.nodes.map((n, i) => html`<div class="drag">
-            <div
-              draggable="true"
-              @click=${this._instruct}
-              @dragstart=${this._handleDragStart(n.type)}
-              style="animation-delay: ${i * 80}ms"
-            ><s-icon type=${n.icon}></s-icon>
-            <span>${n.text}</span>
-          </div>`
+        <div
+          draggable="true"
+          @click=${this._instruct}
+          @dragstart=${this._handleDragStart(n.type)}
+          style="animation-delay: ${i * 80}ms"
+        ><s-icon type=${n.icon}></s-icon>
+        <span>${n.text}</span>
+      </div>`
     )}
     </div>`;
   }

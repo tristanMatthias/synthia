@@ -1,6 +1,6 @@
 :host {
-
-  background: var(--color-bg-off);
+  --bg: var(--color-bg-off);
+  background: var(--bg);
   border-right: 0.1rem solid var(--color-line);
   user-select: none;
 
@@ -57,16 +57,53 @@
       margin: 0;
 
       li {
+        display: block;
         height: 4rem;
         line-height: 4rem;
         padding: 0 1rem;
         font-size: 1.3rem;
+        text-decoration: none;
         color: var(--color-white);
+        transition: all 0.1s;
+        cursor: grab;
+        background: var(--bg);
+        position: relative;
         border-bottom: 0.1rem solid var(--color-line-soft);
 
-        a {
-          text-decoration: none;
-          color: var(--color-white);
+        &:hover {
+          color: var(--color-alt);
+          --bg: var(--color-hover);
+          .icons {
+            right: 0;
+            opacity: 1;
+          }
+        }
+
+        .icons {
+          position: absolute;
+          display: flex;
+          right: -2rem;
+          top: 0;
+          height: 100%;
+          align-items: center;
+          z-index: 2;
+          background-image:
+          linear-gradient(to right, transparent, var(--bg) 20%),
+            linear-gradient(to right, transparent, #224 20%);
+          padding-left: 2rem;
+          transition: all 0.2s;
+          opacity: 0;
+
+          s-icon {
+            width: 2rem;
+            height: 2rem;
+            margin-right: 1rem;
+            cursor: pointer;
+
+            &:hover {
+              --color: var(--color-alt);
+            }
+          }
         }
       }
     }

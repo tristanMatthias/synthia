@@ -2,11 +2,12 @@ import { customElement, html, LitElement, property, query } from 'lit-element';
 
 import { MidiTrack } from '../../../../../../lib/MidiTrack/MIDITrack';
 import { project } from '../../../../../../lib/Project/Project';
+import { SElement } from '../../../../../../types';
 import { ClipEditor } from '../../../../../visualizations/ClipEditor/ClipEditor';
+import { GainMeter } from '../../../../../visualizations/GainMeter/GainMeter';
+import { Browser, BrowserEvents } from '../../Browser/Browser';
 import styles from './track.styles';
 import { TrackClip } from './TrackClip/TrackClip';
-import { SElement } from '../../../../../../types';
-import { GainMeter } from '../../../../../visualizations/GainMeter/GainMeter';
 
 export * from './TrackClip/TrackClip';
 export * from './TrackInstrument/TrackInstrument';
@@ -37,28 +38,53 @@ export class Track extends LitElement {
   @query(SElement.gainMeter)
   gainMeter: GainMeter;
 
+  _toaster = document.querySelector(SElement.toaster)!;
 
-  private _gain : number = 1;
-  public get gain() : number {
+
+  private _gain: number = 1;
+  public get gain(): number {
     return this._gain;
   }
-  public set gain(v : number) {
+  public set gain(v: number) {
     this.midiTrack.input.gain.value = v;
     this._gain = v;
     this.requestUpdate();
   }
 
+  browser: Browser;
+
+  @property()
+  private _highlight = false;
+
+  @property({reflect: true, type: Boolean})
+  // @ts-ignore
+  private highlightHover = false;
+
+  constructor() {
+    super();
+    this._addHighlight = this._addHighlight.bind(this);
+    this._removeHighlight = this._removeHighlight.bind(this);
+  }
 
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener('drop', this._handleDrop);
-    this.addEventListener('dragover', (e) => e.preventDefault());
+    this.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      this.highlightHover = true;
+    });
+    this.addEventListener('dragleave', () => { this.highlightHover = false; });
+    this.browser = document.querySelector(SElement.projectHomePage)!.shadowRoot!.querySelector('s-browser') as Browser;
+    this.browser.addEventListener(BrowserEvents.draggingSynth, this._addHighlight);
+    window.addEventListener('drop', this._removeHighlight);
+    window.addEventListener('dragend', this._removeHighlight);
   }
 
   render() {
     if (!this.midiTrack) return;
 
     return html`
+      ${this._highlight ? html`<span class="highlight"></span>` : null}
       <s-gain-meter
         @change=${this._handleGainChange}
         .value=${this.gain}
@@ -154,6 +180,7 @@ export class Track extends LitElement {
     if (!instrumentId) return;
 
     this.midiTrack.instrument = project.instruments[instrumentId]!;
+    this._toaster.info(`Synth added to ${this.midiTrack.midiTrack.name}`);
     this.requestUpdate();
   }
 
@@ -193,6 +220,12 @@ export class Track extends LitElement {
 
   private _handleGainChange(e: CustomEvent<number>) {
     this.gain = e.detail;
+  }
+
+  private _addHighlight() { this._highlight = true; }
+  private _removeHighlight() {
+    this._highlight = false;
+    this.highlightHover = false;
   }
 }
 
