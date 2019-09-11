@@ -22,6 +22,7 @@ export * from './filterSmall';
 export * from './index';
 export * from './info';
 export * from './logo';
+export * from './metronome';
 export * from './midiClip';
 export * from './move';
 export * from './noSound';

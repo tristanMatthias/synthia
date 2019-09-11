@@ -3,6 +3,7 @@ import { SElement } from "../../../types";
 import styles from './project-footer.styles';
 import { Clock } from "../../../lib/Clock";
 import debounce = require("lodash.debounce");
+import { Metronome } from "../../../lib/Metronome";
 
 @customElement(SElement.projectFooter)
 export class Page extends LitElement {
@@ -39,6 +40,16 @@ export class Page extends LitElement {
         icon="stop"
         @click=${() => Clock.stop()}
         tooltip="Stop"
+      ></s-button>
+      <s-button
+        hollow
+        color=${Metronome.on ? 'alt' : 'line'}
+        icon="metronome"
+        @click=${() => {
+          Metronome.on = !Metronome.on
+          this.requestUpdate();
+        }}
+        tooltip="Metronome"
       ></s-button>
     `;
   }

@@ -39,6 +39,10 @@ const config: Configuration = {
         limit: false,
         outputPath: 'fonts'
       }},
+      {test: /\.(wav|mp3)/, loader: 'url-loader', options: {
+        limit: false,
+        outputPath: 'sounds'
+      }},
       {test: /\.gql/, loader: 'raw-loader'}
     ]
   },
