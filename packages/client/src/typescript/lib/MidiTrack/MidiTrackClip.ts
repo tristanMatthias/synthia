@@ -8,6 +8,7 @@ import { beatsToTime } from "../beatsToTime";
 export class MidiTrackClip {
 
   private _transportEvents: number[] = [];
+  recording: boolean = false;
 
   constructor(
     public midiTrack: MidiTrack,
@@ -36,4 +37,13 @@ export class MidiTrackClip {
       ));
     });
   }
+
+  // finishRecording(mc: MidiClip, mtc: EMidiTrackClip) {
+  //   this.recording = false;
+  //   this.midiClip = mc;
+  //   this.midiTrackClip = mtc;
+  //   proxa(this.midiClip.midiClipObject, this._update.bind(this));
+  //   proxa(this.midiTrackClip, () => this._update());
+  //   this._update();
+  // }
 }

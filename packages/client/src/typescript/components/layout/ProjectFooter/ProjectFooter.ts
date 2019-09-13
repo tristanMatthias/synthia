@@ -4,6 +4,7 @@ import styles from './project-footer.styles';
 import { Clock } from "../../../lib/Clock";
 import debounce = require("lodash.debounce");
 import { Metronome } from "../../../lib/Metronome";
+import { Recorder } from "../../../lib/Recorder";
 
 @customElement(SElement.projectFooter)
 export class Page extends LitElement {
@@ -50,6 +51,16 @@ export class Page extends LitElement {
           this.requestUpdate();
         }}
         tooltip="Metronome"
+      ></s-button>
+      <s-button
+        hollow
+        color=${Recorder.recording ? 'error' : 'line'}
+        icon="record"
+        @click=${() => {
+          Recorder.recording = !Recorder.recording
+          this.requestUpdate();
+        }}
+        tooltip=${Recorder.recording ? 'Stop recording' : 'Record'}
       ></s-button>
     `;
   }

@@ -12,5 +12,6 @@ export class MidiClip {
 
   addNote(note: EMidiClipNote) {
     this.midiClipObject.notes.push(note);
+    return note;
   }
 }

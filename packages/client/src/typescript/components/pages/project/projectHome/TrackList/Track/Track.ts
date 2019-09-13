@@ -2,12 +2,15 @@ import { customElement, html, LitElement, property, query } from 'lit-element';
 
 import { MidiTrack } from '../../../../../../lib/MidiTrack/MIDITrack';
 import { project } from '../../../../../../lib/Project/Project';
+import { Recorder } from '../../../../../../lib/Recorder';
 import { SElement } from '../../../../../../types';
 import { ClipEditor } from '../../../../../visualizations/ClipEditor/ClipEditor';
 import { GainMeter } from '../../../../../visualizations/GainMeter/GainMeter';
 import { Browser, BrowserEvents } from '../../Browser/Browser';
 import styles from './track.styles';
 import { TrackClip } from './TrackClip/TrackClip';
+import { MidiClip } from '../../../../../../lib/MidiTrack/MidiClip';
+import { MidiTrackClip } from '../../../../../../lib/MidiTrack/MidiTrackClip';
 
 export * from './TrackClip/TrackClip';
 export * from './TrackInstrument/TrackInstrument';
@@ -20,8 +23,6 @@ export enum TrackEvents {
 @customElement(SElement.track)
 export class Track extends LitElement {
   static styles = [styles];
-
-  midiTrack: MidiTrack;
 
   @property({ reflect: true, type: Boolean })
   collapsed: boolean = false;
@@ -41,6 +42,18 @@ export class Track extends LitElement {
   _toaster = document.querySelector(SElement.toaster)!;
 
 
+
+  private _midiTrack: MidiTrack;
+  public get midiTrack() {
+    return this._midiTrack;
+  }
+  public set midiTrack(v) {
+    if (this._midiTrack) this._midiTrack.off('recordingMidi', this._addRecordingClip);
+    this._midiTrack = v;
+    if (this._midiTrack) this._midiTrack.on('recordingMidi', this._addRecordingClip);
+  }
+
+
   private _gain: number = 1;
   public get gain(): number {
     return this._gain;
@@ -56,14 +69,20 @@ export class Track extends LitElement {
   @property()
   private _highlight = false;
 
-  @property({reflect: true, type: Boolean})
+  @property({ reflect: true, type: Boolean })
   // @ts-ignore
   private highlightHover = false;
+
+
+  @query(SElement.clipEditor)
+  private _editor: ClipEditor;
 
   constructor() {
     super();
     this._addHighlight = this._addHighlight.bind(this);
     this._removeHighlight = this._removeHighlight.bind(this);
+    this._addRecordingClip = this._addRecordingClip.bind(this);
+    Recorder.on('recording', () => this.requestUpdate());
   }
 
   connectedCallback() {
@@ -147,6 +166,7 @@ export class Track extends LitElement {
       ${this.view === 'midi'
 
         ? html`<s-clip-editor
+          class="${Recorder.recording && this.recording ? 'recording' : ''}"
           .clipElement=${"s-track-clip"}
           @add=${this._handleAddMidiClip}
           @initialized=${this._setupEditor}
@@ -171,6 +191,10 @@ export class Track extends LitElement {
     if (props.has('muted')) {
       this.midiTrack.input.gain.value = this.muted ? 0 : 1;
     }
+    if (props.has('recording')) {
+      if (this.recording) this.midiTrack.arm();
+      else this.midiTrack.disarm();
+    }
   }
 
 
@@ -189,9 +213,10 @@ export class Track extends LitElement {
     c.midiTrackClip = await this.midiTrack.createMidiClip(c.start);
   }
 
-  private _setupEditor(e: CustomEvent<ClipEditor>) {
-    const editor = e.detail;
+  private _setupEditor() {
+    const editor = this._editor;
     this.midiTrack.midiTrackClips.forEach(mtc => {
+      if (mtc.recording) return;
       // TODO: MC Duration
       const clip = editor.createClip(
         mtc.midiTrackClip.start,
@@ -226,6 +251,25 @@ export class Track extends LitElement {
   private _removeHighlight() {
     this._highlight = false;
     this.highlightHover = false;
+  }
+
+  private _addRecordingClip({ midiTrackClip: mtc }: { midiClip: MidiClip, midiTrackClip: MidiTrackClip }) {
+    const e = this._editor;
+
+    const clip = e.createClip(
+      mtc.midiTrackClip.start,
+      0,
+      mtc.midiTrackClip.duration,
+      true
+    ) as TrackClip;
+    clip.midiTrackClip = mtc;
+    clip.recording = true;
+    e.appendChild(clip);
+
+    Recorder.once('stopRecording', () => {
+      e.clear();
+      this._setupEditor();
+    });
   }
 }
 

@@ -46,8 +46,14 @@ export class ECreateMidiClip {
   @Field()
   projectId: string;
 
+  @Field({ nullable: true })
+  name?: string;
+
   @Field({nullable: true})
-  duration: number;
+  duration?: number;
+
+  @Field(() => [EMidiClipNote], { nullable: true })
+  notes?: EMidiClipNote[];
 }
 
 @InputType()
@@ -56,14 +62,14 @@ export class EUpdateMidiClip {
   id: string;
 
   @Field({ nullable: true })
-  duration: number;
+  duration?: number;
 
   @Field({ nullable: true })
-  name: string;
+  name?: string;
 
   @Field({ nullable: true })
-  public: boolean;
+  public?: boolean;
 
   @Field(() => [EMidiClipNote], {nullable: true})
-  notes: EMidiClipNote[]
+  notes?: EMidiClipNote[]
 }

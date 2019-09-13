@@ -1,4 +1,4 @@
-import { JSONB } from 'sequelize';
+import { JSONB, FLOAT } from 'sequelize';
 import { AllowNull, BelongsTo, BelongsToMany, Column, Default, ForeignKey, Table } from 'sequelize-typescript';
 
 import { EMidiClipNote } from '../gql/entities/MidiClipEntity';
@@ -17,7 +17,7 @@ export class MidiClip extends BaseModel<MidiClip> {
 
   @AllowNull(false)
   @Default(1)
-  @Column
+  @Column({type: FLOAT})
   duration: number;
 
   @AllowNull(false)

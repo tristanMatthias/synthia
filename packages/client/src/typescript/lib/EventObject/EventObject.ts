@@ -4,6 +4,9 @@ export class EventObject<Events> {
 
   protected _subjects: Map<keyof Events, Subject<any>> = new Map();
   protected _subscriptions: Map<[keyof Events, (...args: any[]) => any], Subscription> = new Map();
+  protected _once: Partial<{
+    [event in keyof Events]: ((...args: any[]) => any)[]
+  }> = {}
 
   on<E extends keyof Events>(event: E, func: (e: Events[E]) => any) {
     let subject = this._subjects.get(event)
@@ -11,12 +14,19 @@ export class EventObject<Events> {
       subject = new Subject();
       this._subjects.set(event, subject);
     }
-
     this._subscriptions.set([event, func], subject.subscribe(func));
+
+    return () => this.off(event, func);
+  }
+
+  once<E extends keyof Events>(event: E, func: (e: Events[E]) => any) {
+    this.on(event, func);
+    if (!this._once[event]) this._once[event] = [];
+    this._once[event]!.push(func);
   }
 
 
-  off(event: keyof Events, func: () => any) {
+  off<E extends keyof Events>(event: E, func: (e: Events[E]) => any) {
     let subscription = this._subscriptions.get([event, func])
     if (!subscription) return false;
     subscription.unsubscribe();
@@ -28,6 +38,12 @@ export class EventObject<Events> {
     let subject = this._subjects.get(event)
     if (!subject) return false;
     subject.next(data);
+
+    if (this._once[event]) {
+      this._once[event]!.forEach(s => this.off(event, s));
+      this._once[event] = [];
+    }
+
     return true;
   }
 

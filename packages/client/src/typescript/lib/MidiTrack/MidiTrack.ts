@@ -6,10 +6,19 @@ import { Instrument } from '../Instruments/Instrument';
 import { project } from '../Project/Project';
 import { MidiClip } from './MidiClip';
 import { MidiTrackClip } from './MidiTrackClip';
+import { Recorder } from '../Recorder';
+import shortid = require('shortid');
+import { state } from '../../state/state';
+import { Clock } from '../Clock';
+import { EventObject } from '../EventObject/EventObject';
 
+export interface MidiTrackEvents {
+  recordingMidi: { midiClip: MidiClip, midiTrackClip: MidiTrackClip }
+}
 
-export class MidiTrack {
+export class MidiTrack extends EventObject<MidiTrackEvents> {
   midiTrackClips: MidiTrackClip[] = [];
+
 
   input = new Gain();
 
@@ -32,6 +41,7 @@ export class MidiTrack {
     public midiTrack: EMidiTrack,
     instrument?: Instrument
   ) {
+    super();
     this.instrument = instrument;
     // @ts-ignore
     this.input.toMaster();
@@ -39,6 +49,7 @@ export class MidiTrack {
   }
 
   private _current: EMidiClipNote[] = [];
+
 
 
   triggerAttack(note: EMidiClipNote) {
@@ -61,6 +72,44 @@ export class MidiTrack {
 
   async createMidiClip(start: number, duration?: number) {
     return project.registerMidiTrackClip(this, start, duration);
+  }
+
+
+  arm() { Recorder.armTrack(this); }
+  disarm() { Recorder.disarmTrack(this); }
+
+  recordMidiClip() {
+    const mc = new MidiClip({
+      id: shortid(),
+      createdAt: new Date(),
+      creatorId: state.user.data!.id,
+      duration: 0,
+      name: 'Recorded clip',
+      notes: [],
+      public: true
+    });
+    const tco: EMidiTrackClip = {
+      clipId: mc.midiClipObject.id,
+      duration: 0,
+      start: Clock.currentBeatExact
+    };
+    const mtc = new MidiTrackClip(this, mc, tco);
+    mtc.recording = true;
+
+    this.midiTrackClips.push(mtc);
+
+    const res = {midiClip: mc, midiTrackClip: mtc};
+    this.emit('recordingMidi', res);
+    // this.midiTrack.midiClips.push(tco);
+    Recorder.once('stopRecording', () => {
+      console.log('before', this.midiTrackClips.length);
+
+      const i = this.midiTrackClips.findIndex(_mtc => _mtc === mtc);
+      this.midiTrackClips.splice(i, 1);
+      console.log('after', this.midiTrackClips.length);
+    });
+
+    return res;
   }
 
   addMidiClip(mc: MidiClip, tc: EMidiTrackClip) {

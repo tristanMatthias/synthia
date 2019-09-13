@@ -23,12 +23,12 @@ export const MidiClipService = new class extends BaseService<
     })
   }
 
-  async createMidiClip(MidiClipInput: ECreateMidiClip, creatorId: string) {
-    const { projectId } = MidiClipInput;
+  async createMidiClip(midiClipInput: ECreateMidiClip, creatorId: string) {
+    const { projectId, duration, notes, name } = midiClipInput;
 
     let midiClip;
     try {
-      midiClip = await MidiClip.create({ creatorId: creatorId });
+      midiClip = await MidiClip.create({ creatorId: creatorId, duration, notes, name });
     } catch (e) {
       throw await handleSequelizeError(e);
     }

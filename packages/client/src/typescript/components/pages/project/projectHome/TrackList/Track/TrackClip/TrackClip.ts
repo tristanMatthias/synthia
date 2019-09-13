@@ -2,9 +2,11 @@ import { EMidiClipNote } from '@synthia/api/dist/gql/entities/MidiClipEntity';
 import { customElement, html, property, query } from 'lit-element';
 import { proxa } from 'proxa';
 
+import { Clock } from '../../../../../../../lib/Clock';
 import { noteToRow } from '../../../../../../../lib/keyToFrequency';
 import { MidiTrackClip } from '../../../../../../../lib/MidiTrack/MidiTrackClip';
 import { remToPx } from '../../../../../../../lib/pxToRem';
+import { Recorder } from '../../../../../../../lib/Recorder';
 import { ClipEditorClip } from '../../../../../../visualizations/ClipEditor/Clip/Clip';
 import styles from './track-clip.styles';
 
@@ -17,6 +19,20 @@ export class TrackClip extends ClipEditorClip {
 
   @property()
   midiTrackClip: MidiTrackClip;
+
+  private _recording: boolean = false;
+  public get recording() {
+    return this._recording;
+  }
+  public set recording(v) {
+    if (this._recording === v) return;
+    this._recording = v;
+    if (v) {
+      this._recordTick();
+      Recorder.on('stopRecording', () => this.remove());
+    }
+  }
+
 
   get mc() {
     if (!this.midiTrackClip) return null;
@@ -96,14 +112,14 @@ export class TrackClip extends ClipEditorClip {
 
   private draw() {
     const c = this._canvas;
-    const {width, height} = getComputedStyle(c);
+    const { width, height } = getComputedStyle(c);
     const w = c.width = parseInt(width!);
     const h = c.height = parseInt(height!);
 
     const ctx = c.getContext('2d')!;
 
     const notes = Array.from(this._noteRows.entries());
-    const rows =notes.map(([, row]) => row);
+    const rows = notes.map(([, row]) => row);
     if (!rows.length) return;
 
     let min: number;
@@ -118,6 +134,7 @@ export class TrackClip extends ClipEditorClip {
     const clipW = this._clipWidth;
 
     const rowNum = max - min;
+
     let rowHeight = h / (rowNum + 1);
     if (rowHeight > 20) rowHeight = 20;
     if (rowHeight < 2) rowHeight = 2;
@@ -136,5 +153,21 @@ export class TrackClip extends ClipEditorClip {
       ctx.fillRect(n.s * clipW, (normalized * (h - margin * 2)) + margin, n.d * clipW - 1, rowHeight - 1);
     });
 
+  }
+
+
+  private _recordTick() {
+    if (!Recorder.recording) return this.recording = false;
+    if (!this.recording) return;
+
+    const t = Clock.currentBeatExact;
+    const duration = t - this.start!;
+    this.duration = duration;
+    this._updateMap();
+    if (this._canvas) this.draw();
+
+
+    window.requestAnimationFrame(this._recordTick.bind(this));
+    return;
   }
 }

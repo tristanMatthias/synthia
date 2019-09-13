@@ -9,7 +9,7 @@ import {
   EUpdateSynth,
   EUser,
 } from '@synthia/api';
-import { EMidiClip, EUpdateMidiClip } from '@synthia/api/dist/gql/entities/MidiClipEntity';
+import { EMidiClip, EUpdateMidiClip, ECreateMidiClip } from '@synthia/api/dist/gql/entities/MidiClipEntity';
 
 import { API_URL } from '../../config';
 import { mutations } from './mutations';
@@ -60,8 +60,8 @@ export const API = new class {
 
 
   // ---------------------------------------------------------------- Midi clips
-  async createMidiClip(projectId: string) {
-    return this._request<EMidiClip>('mutation', 'createMidiClip', { midiClip: { projectId } })
+  async createMidiClip(mc: ECreateMidiClip) {
+    return this._request<EMidiClip>('mutation', 'createMidiClip', { midiClip: mc })
   }
   async updateMidiClip(midiClip: EUpdateMidiClip) {
     return this._request<EMidiClip>('mutation', 'updateMidiClip', { midiClip })

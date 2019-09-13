@@ -69,6 +69,7 @@ export const project = new class Project extends EventObject<ProjectEvents> {
 
     const mt = new MidiTrack(mtc, i);
     mtc.midiClips.forEach(c => {
+      if (!this.midiClips[c.clipId]) throw new Error(`Could not find midi clip ${c.clipId} for midi track ${mt.midiTrack.id}`)
       mt.addMidiClip(this.midiClips[c.clipId], c);
     });
     this.midiTracks[mtc.id] = mt;
@@ -89,7 +90,7 @@ export const project = new class Project extends EventObject<ProjectEvents> {
     let midiClip = mc;
 
     if (!midiClip) {
-      const mcO = await API.createMidiClip(project.file!.id);
+      const mcO = await API.createMidiClip({projectId: project.file!.id});
       midiClip = project.registerMidiClip(mcO);
     }
 
@@ -103,6 +104,23 @@ export const project = new class Project extends EventObject<ProjectEvents> {
     mt.midiTrackClips.push(mtc);
     mt.midiTrack.midiClips.push(trackClipObject);
     return mtc;
+  }
+
+  async saveRecordedMidiTrackClip(
+    mt: MidiTrack,
+    start: number,
+    mc: MidiClip,
+  ) {
+    const {duration, notes, name} = mc.midiClipObject;
+    const mcO = await API.createMidiClip({
+      projectId: project.file!.id,
+      duration,
+      notes,
+      name
+    });
+
+    const mcRegistered = this.registerMidiClip(mcO);
+    return this.registerMidiTrackClip(mt, start, duration, mcRegistered);
   }
 
   close() {

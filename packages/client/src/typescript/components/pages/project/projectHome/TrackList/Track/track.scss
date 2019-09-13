@@ -83,6 +83,21 @@
     &:focus {
       background-color: var(--color-bg);
     }
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      opacity: 0;
+      background-color: var(--color-error);
+      transition: all 0.1s;
+    }
+    &.recording:before {
+      opacity: 0.2;
+    }
   }
 
   .highlight {
