@@ -45,7 +45,7 @@ export class Modal extends LitElement {
     return html`<header>
       ${this.heading ? this.heading : html`<slot name="heading"></slot>`}
       ${this.closeable
-      ? html`<span @click=${this.close.bind(this)}>
+        ? html`<span @click=${this.close.bind(this)}>
           <s-icon type="close"></s-icon>
         </span>`
         : null

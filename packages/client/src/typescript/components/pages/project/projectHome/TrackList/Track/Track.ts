@@ -59,7 +59,7 @@ export class Track extends LitElement {
     return this._gain;
   }
   public set gain(v: number) {
-    this.midiTrack.input.gain.value = v;
+    this.midiTrack.input.volume.value = (v * 48) - 48;
     this._gain = v;
     this.requestUpdate();
   }
@@ -189,7 +189,7 @@ export class Track extends LitElement {
   updated(props: Map<string, keyof Track>) {
     super.updated(props);
     if (props.has('muted')) {
-      this.midiTrack.input.gain.value = this.muted ? 0 : 1;
+      this.midiTrack.input.mute = this.muted;
     }
     if (props.has('recording')) {
       if (this.recording) this.midiTrack.arm();

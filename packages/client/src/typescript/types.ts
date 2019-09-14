@@ -40,6 +40,7 @@ export enum SElement {
   text = 's-text',
   icon = 's-icon',
   tooltip = 's-tooltip',
+  progress = 's-progress',
 
 
 
@@ -81,6 +82,7 @@ export enum SElement {
   modalCreateSynth = 's-modal-create-synth',
   modalCreateProject = 's-modal-create-project',
   modalOpenProject = 's-modal-open-project',
+  modalExportProject = 's-modal-export-project',
 
 
   // -------------------------------------------------------------------- Common

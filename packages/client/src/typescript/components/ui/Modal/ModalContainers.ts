@@ -14,7 +14,7 @@ export class ModalContainer extends LitElement {
 
   static styles = [styles];
 
-  @property({attribute: true, type: Boolean, reflect: true})
+  @property({ attribute: true, type: Boolean, reflect: true })
   show: boolean = false;
 
   @property()

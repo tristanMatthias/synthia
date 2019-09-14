@@ -152,7 +152,7 @@ export class NodeSynth extends Tone.PolySynth implements Instrument {
 
 
   triggerAttack(notes: Encoding.Frequency[], time: Encoding.Time = '+0.01', velocity?: number) {
-    this._synths.forEach(([,s]) => s.triggerAttack(notes, time, velocity));
+    this._synths.forEach(([, s]) => s.triggerAttack(notes, time, velocity));
     return this;
   }
 
@@ -161,7 +161,7 @@ export class NodeSynth extends Tone.PolySynth implements Instrument {
    * Trigger the release portion of the envelope
    */
   triggerRelease(notes: Encoding.Frequency[], time: Encoding.Time = '+0.01') {
-    this._synths.forEach(([,s]) => s.triggerRelease(notes, time));
+    this._synths.forEach(([, s]) => s.triggerRelease(notes, time));
     return this;
   }
 

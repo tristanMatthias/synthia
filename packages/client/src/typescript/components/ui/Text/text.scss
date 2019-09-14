@@ -16,6 +16,12 @@
   line-height: 3.6rem;
 }
 
+:host([type=h3]) {
+  font-size: 1.8rem;
+  color: var(--color-white);
+  line-height: 3.6rem;
+}
+
 :host([type=h4]) {
   font-weight: normal;
   font-size: 1.4rem;

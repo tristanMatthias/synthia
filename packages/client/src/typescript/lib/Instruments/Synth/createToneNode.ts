@@ -27,10 +27,7 @@ export const createToneNode = (node: TSynthiaProjectSynthNode) => {
       return new FeedbackDelay(node.properties.delayTime, node.properties.feedback);
 
     case "reverb":
-      return new SynthiaReverb(node.properties)
-      // const r = new Reverb(node.properties.decayTime);
-      // r.generate();
-      // return r;
+      return new SynthiaReverb(node.properties);
 
     case 'filter':
       return new Filter(node.properties);

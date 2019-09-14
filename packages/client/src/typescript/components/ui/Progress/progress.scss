@@ -1,0 +1,34 @@
+:host {
+  position: relative;
+  display: flex;
+  border-radius: 0.4rem;
+  height: 0.8rem;
+  background: var(--color-black);
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  color: var(--color-black);
+  font-weight: 600;
+  transition: all 0.1s;
+
+  span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: var(--color-alt);
+      // repeating-linear-gradient(
+      //   -45deg,
+      //   rgba(#1a1a36, 0.5),
+      //   rgba(#1a1a36, 0.5) 1rem,
+      //   rgba(#1a1a36, 0.2) 1rem,
+      //   rgba(#1a1a36, 0.2) 2rem
+      // );
+    transition: all 0.1s;
+
+    &.done {
+      background: var(--color-text);
+    }
+  }
+}

@@ -16,24 +16,25 @@ import './layout/SideMenu/SideMenu';
 import './layout/ProjectFooter/ProjectFooter';
 
 // -------------------------------------------------------------------------- UI
-import './ui/Loading/Loading';
 import './ui/Button/Button';
+import './ui/Card/Card';
 import './ui/CircleButton/CircleButton';
 import './ui/CircleMenu/CircleMenu';
+import './ui/ContextMenu/ContextMenu';
 import './ui/Dial/Dial';
 import './ui/ExpoSlider/ExpoSlider';
-import './ui/Slider/Slider';
-import './ui/Toaster/Toaster';
 import './ui/FileBar/FileBar';
-import './ui/ContextMenu/ContextMenu';
+import './ui/Form/Form';
+import './ui/FromNow/FromNow';
+import './ui/Icon/Icon';
+import './ui/Input/Input';
+import './ui/Loading/Loading';
 import './ui/Modal/ModalContainers';
 import './ui/Modal/Modals';
-import './ui/Form/Form';
-import './ui/Input/Input';
-import './ui/Card/Card';
-import './ui/FromNow/FromNow';
+import './ui/Progress/Progress';
+import './ui/Slider/Slider';
 import './ui/Text/Text';
-import './ui/Icon/Icon';
+import './ui/Toaster/Toaster';
 import './ui/Tooltip/Tooltip';
 
 // ----------------------------------------------------------------------- Synth
@@ -59,6 +60,7 @@ import './visualizations/ClipEditor/ClipEditor';
 import './modals/CreateSynthModal/CreateSynthModal';
 import './modals/CreateProjectModal/CreateProjectModal';
 import './modals/OpenProjectModal/OpenProjectModal';
+import './modals/ExportProjectModal/ExportProjectModal';
 
 // ---------------------------------------------------------------------- Common
 import './common/ProjectList/ProjectList';

@@ -1,10 +1,11 @@
-import { customElement, html, LitElement } from "lit-element";
-import { SElement } from "../../../types";
+import { customElement, html, LitElement } from 'lit-element';
+import debounce = require('lodash.debounce');
+
+import { Clock } from '../../../lib/Clock';
+import { Metronome } from '../../../lib/Metronome';
+import { Recorder } from '../../../lib/Recorder';
+import { SElement } from '../../../types';
 import styles from './project-footer.styles';
-import { Clock } from "../../../lib/Clock";
-import debounce = require("lodash.debounce");
-import { Metronome } from "../../../lib/Metronome";
-import { Recorder } from "../../../lib/Recorder";
 
 @customElement(SElement.projectFooter)
 export class Page extends LitElement {
@@ -47,9 +48,9 @@ export class Page extends LitElement {
         color=${Metronome.on ? 'alt' : 'line'}
         icon="metronome"
         @click=${() => {
-          Metronome.on = !Metronome.on
-          this.requestUpdate();
-        }}
+        Metronome.on = !Metronome.on
+        this.requestUpdate();
+      }}
         tooltip="Metronome"
       ></s-button>
       <s-button
@@ -57,9 +58,9 @@ export class Page extends LitElement {
         color=${Recorder.recording ? 'error' : 'line'}
         icon="record"
         @click=${() => {
-          Recorder.recording = !Recorder.recording
-          this.requestUpdate();
-        }}
+        Recorder.recording = !Recorder.recording
+        this.requestUpdate();
+      }}
         tooltip=${Recorder.recording ? 'Stop recording' : 'Record'}
       ></s-button>
     `;

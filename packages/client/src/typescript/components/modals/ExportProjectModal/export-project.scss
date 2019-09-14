@@ -1,0 +1,15 @@
+:host {
+  min-width: 40rem;
+  s-text {
+    display: block;
+    margin: auto;
+    text-align: center;
+  }
+  .progress {
+    margin: 1rem;
+    text-align: center;
+
+    font-size: 1.4rem;
+    color: var(--color-main);
+  }
+}

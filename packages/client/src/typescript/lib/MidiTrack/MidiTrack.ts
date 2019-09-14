@@ -1,16 +1,17 @@
 import { EMidiClipNote } from '@synthia/api/dist/gql/entities/MidiClipEntity';
 import { EMidiTrack, EMidiTrackClip } from '@synthia/api/dist/gql/entities/MidiTrackEntity';
-import { Gain } from 'tone';
-
-import { Instrument } from '../Instruments/Instrument';
-import { project } from '../Project/Project';
-import { MidiClip } from './MidiClip';
-import { MidiTrackClip } from './MidiTrackClip';
-import { Recorder } from '../Recorder';
 import shortid = require('shortid');
+import { Volume } from 'tone';
+
 import { state } from '../../state/state';
 import { Clock } from '../Clock';
 import { EventObject } from '../EventObject/EventObject';
+import { Exporter } from '../Exporter';
+import { Instrument } from '../Instruments/Instrument';
+import { project } from '../Project/Project';
+import { Recorder } from '../Recorder';
+import { MidiClip } from './MidiClip';
+import { MidiTrackClip } from './MidiTrackClip';
 
 export interface MidiTrackEvents {
   recordingMidi: { midiClip: MidiClip, midiTrackClip: MidiTrackClip }
@@ -20,7 +21,7 @@ export class MidiTrack extends EventObject<MidiTrackEvents> {
   midiTrackClips: MidiTrackClip[] = [];
 
 
-  input = new Gain();
+  input = new Volume();
 
 
   private _instrument?: Instrument;
@@ -34,6 +35,8 @@ export class MidiTrack extends EventObject<MidiTrackEvents> {
       this._instrument = v;
       if (this._instrument) this._instrument.connect(this.input);
     }
+
+    this.input.connect(Exporter.dest);
   }
 
 
@@ -43,9 +46,7 @@ export class MidiTrack extends EventObject<MidiTrackEvents> {
   ) {
     super();
     this.instrument = instrument;
-    // @ts-ignore
     this.input.toMaster();
-    this._update();
   }
 
   private _current: EMidiClipNote[] = [];
@@ -98,7 +99,7 @@ export class MidiTrack extends EventObject<MidiTrackEvents> {
 
     this.midiTrackClips.push(mtc);
 
-    const res = {midiClip: mc, midiTrackClip: mtc};
+    const res = { midiClip: mc, midiTrackClip: mtc };
     this.emit('recordingMidi', res);
     // this.midiTrack.midiClips.push(tco);
     Recorder.once('stopRecording', () => {
@@ -122,22 +123,4 @@ export class MidiTrack extends EventObject<MidiTrackEvents> {
       mtc.clipId !== mc.midiClipObject.id
     );
   }
-
-
-  private _update() {
-    // const t = Clock.currentBeat;
-    // const fidelity = 0.05;
-
-    // this.midiClips.forEach(mc => {
-    //   mc.notes.forEach(n => {
-    //     const end = Math.abs(n.s + n.d) - t;
-    //     if (Math.abs(n.s - t) < fidelity) this.play(n);
-    //     else if (end < fidelity) this.triggerRelease(n);
-    //   });
-    // });
-
-    // requestAnimationFrame(this._update.bind(this));
-  }
-
-
 }
