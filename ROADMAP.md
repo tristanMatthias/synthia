@@ -1,0 +1,34 @@
+# MVP Roadmap
+- Audio clips
+  - Recording audio clips
+  - Editing clips/transposing
+- Synth:
+  - LFO
+  - Group settings
+  - Group settings in track
+- Clip editing
+  - Alt drag
+  - Clip overlapping
+  - Scaling
+- Tracks
+  - Track scroll syncing
+  - Deleting
+  - Changing color
+  - Rename
+- Exporting
+  - Mp3
+- Sharing
+  - Share midi clip
+    - Tag midi clip
+  - Share project
+- Guides
+  - Welcome guide
+  - Using synth editor
+  - Recording
+- Stripe
+  - Set credit card
+  - Validate payment
+  - Limit projects
+  - Limit exporting
+- WWW site
+- Inbuilt sound library

@@ -4,10 +4,11 @@
  *
  ******************************************************************************/
 import { CONFIG_BASE } from './base';
-import { API_CONFIG } from './types';
+import { API_CONFIG, Env } from './types';
 
 export const CONFIG_DEVELOPMENT: API_CONFIG = {
   ...CONFIG_BASE as API_CONFIG,
+  env: Env.development,
   corsAllowFrom: true,
   clientHost: 'http://localhost:8080',
   dbConnection: {

@@ -1,7 +1,7 @@
 import { config } from 'dotenv';
 import path from 'path';
 
-import { API_CONFIG } from './types';
+import { API_CONFIG, Env } from './types';
 
 
 /*******************************************************************************
@@ -15,6 +15,7 @@ config({
 });
 
 export const CONFIG_BASE: Partial<API_CONFIG> = {
+  env: process.env.NODE_ENV as Env || Env.production,
   port: parseInt(process.env.PORT!) || 4000,
   clientHost: 'https://synthia.app',
   dbConnection: {
@@ -35,5 +36,7 @@ export const CONFIG_BASE: Partial<API_CONFIG> = {
       appId: process.env.GOOGLE_APP_ID!,
       appSecret: process.env.GOOGLE_APP_SECRET!
     }
-  }
+  },
+
+  localUploadDir: process.env.UPLOAD_DIR || path.resolve(__dirname, '../../uploads'),
 };

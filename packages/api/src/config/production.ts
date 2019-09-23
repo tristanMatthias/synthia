@@ -1,5 +1,5 @@
 import { CONFIG_BASE } from './base';
-import { API_CONFIG } from './types';
+import { API_CONFIG, Env } from './types';
 
 /*******************************************************************************
  *
@@ -10,5 +10,6 @@ import { API_CONFIG } from './types';
 
 export const CONFIG_PRODUCTION: API_CONFIG = {
   ...CONFIG_BASE as API_CONFIG,
+  env: Env.production,
   corsAllowFrom: [/synthia\.app$/],
 };

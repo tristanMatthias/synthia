@@ -1,4 +1,5 @@
 export type API_CONFIG = {
+  env: Env;
   port: number,
   clientHost: string,
 
@@ -19,9 +20,22 @@ export type API_CONFIG = {
       appId: string;
       appSecret: string;
     }
+  },
+  s3: {
+    region: string;
+    key: string;
+    secret: string;
+    bucket: string;
   }
 
   accessTokenSecret: string,
 
   corsAllowFrom: boolean | string | RegExp | (string | RegExp)[]
+
+  localUploadDir: string;
 };
+
+export enum Env {
+  development = 'development',
+  production = 'production'
+}
