@@ -1,5 +1,6 @@
 import { customElement, html, LitElement, property, query } from 'lit-element';
 import { Master } from 'tone';
+import 'core-js/features/math/clamp';
 
 import { SElement } from '../../../types';
 import styles from './gain-meter.styles';
@@ -7,7 +8,7 @@ import gradient from 'tinygradient';
 
 const meterGradient = gradient([
   { color: '#080', pos: 0 },
-  { color: 'lime', pos: 0.55},
+  { color: 'lime', pos: 0.55 },
   { color: '#ff0', pos: 0.84 },
   { color: 'red', pos: 1 }
 ]);
@@ -93,8 +94,10 @@ export class GainMeter extends LitElement {
     ctxL.clearRect(0, 0, w, h);
     ctxR.clearRect(0, 0, w, h);
 
-    ctxL.fillStyle = meterGradient.hsvAt(this._maskSizes[0] / h).toRgbString();
-    ctxR.fillStyle = meterGradient.hsvAt(this._maskSizes[1] / h).toRgbString();
+    // @ts-ignore
+    ctxL.fillStyle = meterGradient.hsvAt(Math.clamp(this._maskSizes[0] / h, 0, 1)).toRgbString();
+    // @ts-ignore
+    ctxR.fillStyle = meterGradient.hsvAt(Math.clamp(this._maskSizes[1] / h, 0, 1)).toRgbString();
     ctxL.fillRect(0, h, w, -1 * this._maskSizes[0]);
     ctxR.fillRect(0, h, w, -1 * this._maskSizes[1]);
 

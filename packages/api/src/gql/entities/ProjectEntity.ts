@@ -1,10 +1,12 @@
 import { Field, InputType, ObjectType } from 'type-graphql';
 
+import { EAudioClip } from './AudioClipEntity';
+import { EAudioTrack } from './AudioTrackEntity';
 import { EMetadata } from './MetadataEntity';
-import { ESynth } from './SynthEntity';
-import { EUser } from './UserEntity';
 import { EMidiClip } from './MidiClipEntity';
 import { EMidiTrack } from './MidiTrackEntity';
+import { ESynth } from './SynthEntity';
+import { EUser } from './UserEntity';
 
 
 @ObjectType()
@@ -13,8 +15,11 @@ export class EProjectResources {
   @Field(() => [ESynth])
   synths: ESynth[];
 
-  @Field(()=> [EMidiClip])
+  @Field(() => [EMidiClip])
   midiClips: EMidiClip[]
+
+  @Field(() => [EAudioClip])
+  audioClips: EAudioClip[]
 }
 
 
@@ -31,6 +36,9 @@ export class EProject extends EMetadata {
 
   @Field(() => [EMidiTrack])
   midiTracks: EMidiTrack[]
+
+  @Field(() => [EAudioTrack])
+  audioTracks: EAudioTrack[]
 }
 
 
@@ -39,7 +47,7 @@ export class ECreateProject {
   @Field()
   name: string;
 
-  @Field({nullable: true})
+  @Field({ nullable: true })
   public?: boolean;
 }
 
@@ -48,9 +56,9 @@ export class EUpdateProject {
   @Field()
   id: string;
 
-  @Field({nullable: true})
+  @Field({ nullable: true })
   name: string;
 
-  @Field({nullable: true})
+  @Field({ nullable: true })
   public?: boolean;
 }

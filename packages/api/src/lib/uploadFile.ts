@@ -64,8 +64,5 @@ export const uploadFile = async (
     ).Location;
   }
 
-  console.log('got url', url);
-
-
   return url;
 };

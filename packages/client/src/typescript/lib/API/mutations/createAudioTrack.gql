@@ -1,0 +1,12 @@
+mutation createAudioTrack($audioTrack: ECreateAudioTrack!) {
+  createAudioTrack(audioTrack: $audioTrack) {
+    id
+    projectId
+    name
+    audioClips {
+      clipId
+      start
+      duration
+    }
+  }
+}

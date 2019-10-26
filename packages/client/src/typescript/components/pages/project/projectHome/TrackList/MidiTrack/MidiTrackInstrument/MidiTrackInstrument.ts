@@ -4,10 +4,11 @@ import { proxa } from 'proxa';
 import styles from './track-instrument.styles';
 import { MidiTrack } from '../../../../../../../lib/MidiTrack/MIDITrack';
 import { project } from '../../../../../../../lib/Project/Project';
+import { SElement } from '../../../../../../../types';
 
 
-@customElement('s-track-instrument')
-export class Track extends LitElement {
+@customElement(SElement.midiTrackInstrument)
+export class MidiTrackInstrument extends LitElement {
   static styles = [styles];
 
 
@@ -28,7 +29,7 @@ export class Track extends LitElement {
 
 
   render() {
-    const instrument  = this.instrument
+    const instrument = this.instrument
       ? html`<div class="item">
         <header>
           <a href="/project/${project.file!.id}/synth/${this.instrument.id}">

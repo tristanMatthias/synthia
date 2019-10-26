@@ -9,7 +9,7 @@ import { EventObject } from '../EventObject/EventObject';
 import { Exporter } from '../Exporter';
 import { Instrument } from '../Instruments/Instrument';
 import { project } from '../Project/Project';
-import { Recorder } from '../Recorder';
+import { RecordController } from '../RecordController';
 import { MidiClip } from './MidiClip';
 import { MidiTrackClip } from './MidiTrackClip';
 
@@ -76,8 +76,8 @@ export class MidiTrack extends EventObject<MidiTrackEvents> {
   }
 
 
-  arm() { Recorder.armTrack(this); }
-  disarm() { Recorder.disarmTrack(this); }
+  arm() { RecordController.armMidiTrack(this); }
+  disarm() { RecordController.disarmMidiTrack(this); }
 
   recordMidiClip() {
     const mc = new MidiClip({
@@ -101,13 +101,9 @@ export class MidiTrack extends EventObject<MidiTrackEvents> {
 
     const res = { midiClip: mc, midiTrackClip: mtc };
     this.emit('recordingMidi', res);
-    // this.midiTrack.midiClips.push(tco);
-    Recorder.once('stopRecording', () => {
-      console.log('before', this.midiTrackClips.length);
-
+    RecordController.once('stopRecording', () => {
       const i = this.midiTrackClips.findIndex(_mtc => _mtc === mtc);
       this.midiTrackClips.splice(i, 1);
-      console.log('after', this.midiTrackClips.length);
     });
 
     return res;

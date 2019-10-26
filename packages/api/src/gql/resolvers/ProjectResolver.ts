@@ -2,14 +2,17 @@ import { Arg, Authorized, Ctx, FieldResolver, Mutation, Query, Resolver, Root } 
 
 import { Context } from '../../lib/context';
 import { ErrorAuthNoAccess, ErrorResourceNotPublic } from '../../lib/errors';
+import { AudioTrack } from '../../models/AudioTrack';
+import { MidiTrack } from '../../models/MidiTrack';
 import { Project } from '../../models/Project';
+import { AudioClipService } from '../../services/AudioClipService';
 import { MidiClipService } from '../../services/MidiClipService';
 import { ProjectService } from '../../services/ProjectService';
 import { SynthService } from '../../services/SynthService';
+import { EAudioTrack } from '../entities/AudioTrackEntity';
 import { EMidiTrack } from '../entities/MidiTrackEntity';
 import { ECreateProject, EProject, EProjectResources, EUpdateProject } from '../entities/ProjectEntity';
 import { EUser } from '../entities/UserEntity';
-import { MidiTrack } from '../../models/MidiTrack';
 
 
 @Resolver(EProject)
@@ -34,7 +37,7 @@ export class ProjectResolver {
   @Authorized()
   @Query(() => [EProject])
   async projects(
-    @Ctx() {user}: Context
+    @Ctx() { user }: Context
   ) {
     return ProjectService.myProjects(user!.id);;
   }
@@ -43,7 +46,7 @@ export class ProjectResolver {
   @Mutation(() => EProject)
   async createProject(
     @Arg('project') project: ECreateProject,
-    @Ctx() {user}: Context
+    @Ctx() { user }: Context
   ): Promise<Project> {
     return ProjectService.createProject(project, user!.id);;
   }
@@ -57,9 +60,9 @@ export class ProjectResolver {
   }
 
   @Authorized()
-  @Query(() => EProject, {nullable: true})
+  @Query(() => EProject, { nullable: true })
   async mostRecentProject(
-    @Ctx() {user}: Context
+    @Ctx() { user }: Context
   ): Promise<Project | null> {
     return ProjectService.mostRecent(user!.id);;
   }
@@ -80,7 +83,8 @@ export class ProjectResolver {
   ): Promise<EProjectResources> {
     const synths = await SynthService.findByProject(project.id);
     const midiClips = await MidiClipService.findByProject(project.id);
-    return { synths, midiClips }
+    const audioClips = await AudioClipService.findByProject(project.id);
+    return { synths, midiClips, audioClips }
   }
 
   @FieldResolver(() => EMidiTrack)
@@ -88,7 +92,17 @@ export class ProjectResolver {
     @Root() project: Project
   ) {
     return await MidiTrack.findAll({
-      where: { projectId: project.id},
+      where: { projectId: project.id },
+      order: ['createdAt']
+    })
+  }
+
+  @FieldResolver(() => EAudioTrack)
+  async audioTracks(
+    @Root() project: Project
+  ) {
+    return await AudioTrack.findAll({
+      where: { projectId: project.id },
       order: ['createdAt']
     })
   }

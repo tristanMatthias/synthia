@@ -84,6 +84,8 @@ export const handleSequelizeError = async (e: SequelizeError) => {
     case ConnectionTimedOutError:
 
     default:
+      console.log(e);
+
       logger.error(e);
       return new ErrorGeneral();
   }

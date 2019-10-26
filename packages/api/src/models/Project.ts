@@ -1,4 +1,6 @@
 import { BelongsToMany, HasMany, Table } from 'sequelize-typescript';
+
+import { AudioTrack } from './AudioTrack';
 import { MidiTrack } from './MidiTrack';
 import { ProjectSynth } from './ProjectSynth';
 import { Synth } from './Synth';
@@ -13,6 +15,9 @@ export class Project extends WithMetadata<Project> {
   synths: Synth[]
 
   @HasMany(() => MidiTrack)
-  midiTracks: MidiTrack[]
+  midiTracks: MidiTrack[];
+
+  @HasMany(() => AudioTrack)
+  audioTracks: AudioTrack[];
 }
 

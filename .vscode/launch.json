@@ -1,0 +1,28 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "TS-Node API",
+      "type": "node",
+      "request": "launch",
+      "args": [
+        "${workspaceFolder}/packages/api/src/server/index.ts"
+      ],
+      "runtimeArgs": [
+        "--nolazy",
+        "-r",
+        "ts-node/register"
+      ],
+      "sourceMaps": true,
+      "cwd": "${workspaceRoot}/packages/api",
+      "protocol": "inspector",
+      "postDebugTask": "kill-api",
+      "env": {
+        "NODE_ENV": "development"
+      }
+    }
+  ]
+}

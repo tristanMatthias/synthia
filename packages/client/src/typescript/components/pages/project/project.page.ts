@@ -58,11 +58,11 @@ export class PageProject extends Router {
 
   routes = ROUTES;
 
-  private _projectId : string;
-  public get projectId() : string {
+  private _projectId: string;
+  public get projectId(): string {
     return this._projectId;
   }
-  public set projectId(v : string) {
+  public set projectId(v: string) {
     this._projectId = v;
     this._load();
   }

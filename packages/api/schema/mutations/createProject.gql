@@ -90,6 +90,7 @@ mutation createProject($project: ECreateProject!){
                     resources{
                         midiClips{
                             id
+                            duration
                             name
                             public
                             creatorId
@@ -121,9 +122,44 @@ mutation createProject($project: ECreateProject!){
                                     midiClips{
                                         clipId
                                         start
+                                        duration
                                     }
                                     instrumentId
                                 }
+                                audioTracks{
+                                    id
+                                    projectId
+                                    name
+                                    audioClips{
+                                        clipId
+                                        start
+                                        duration
+                                    }
+                                }
+                            }
+                        }
+                        audioClips{
+                            id
+                            duration
+                            name
+                            public
+                            creatorId
+                            createdAt
+                            url
+                            creator{
+                                id
+                                firstName
+                                lastName
+                                email
+                                socialId
+                                socialPic
+                            }
+                            projects{
+                                name
+                                public
+                                creatorId
+                                createdAt
+                                id
                             }
                         }
                     }
@@ -135,6 +171,11 @@ mutation createProject($project: ECreateProject!){
             projectId
             name
             instrumentId
+        }
+        audioTracks{
+            id
+            projectId
+            name
         }
     }
 }

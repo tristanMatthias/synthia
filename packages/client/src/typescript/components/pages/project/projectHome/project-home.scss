@@ -5,6 +5,7 @@
   main {
     position: relative;
     padding: calc(var(--margin) * 2);
+    overflow-y: auto;
   }
 
   s-text[type=h4] {

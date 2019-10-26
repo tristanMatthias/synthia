@@ -76,7 +76,6 @@ export const Exporter = new class extends EventObject<ExporterEvents> {
       a.click();
     }
     fr.readAsDataURL(blob);
-
     this.exporting = false;
     this._flush();
   }

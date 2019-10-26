@@ -75,6 +75,10 @@ export const Clock = new class extends EventObject<ClockEvents> {
     return this.transport.seconds;
   }
 
+  timeAtBeat(beat: number) {
+    return beat / this.tempo * 60;
+  }
+
   get currentBeat() {
     return Math.round(this.currentBeatExact);
   }

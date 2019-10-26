@@ -9,17 +9,21 @@ import {
   EUpdateSynth,
   EUser,
 } from '@synthia/api';
-import { EMidiClip, EUpdateMidiClip, ECreateMidiClip } from '@synthia/api/dist/gql/entities/MidiClipEntity';
+import { EAudioClip, ECreateAudioClip, EUpdateAudioClip } from '@synthia/api/dist/gql/entities/AudioClipEntity';
+import { EAudioTrack, ECreateAudioTrack, EUpdateAudioTrack } from '@synthia/api/dist/gql/entities/AudioTrackEntity';
+import { ECreateMidiClip, EMidiClip, EUpdateMidiClip } from '@synthia/api/dist/gql/entities/MidiClipEntity';
+import { ECreateMidiTrack, EMidiTrack, EUpdateMidiTrack } from '@synthia/api/dist/gql/entities/MidiTrackEntity';
 
-import { API_URL } from '../../config';
+import { client } from './apollo';
 import { mutations } from './mutations';
 import { queries } from './queries';
-import { EMidiTrack, ECreateMidiTrack, EUpdateMidiTrack } from '@synthia/api/dist/gql/entities/MidiTrackEntity';
+
+const omit = require('omit-deep-lodash');
 
 
 
 export const API = new class {
-  private _url = `${API_URL}/graphql`;
+  // private _url = `${API_URL}/graphql`;
   private _mutations = mutations;
   private _queries = queries;
   private _token: string | null = localStorage.getItem('token');
@@ -60,8 +64,8 @@ export const API = new class {
 
 
   // ---------------------------------------------------------------- Midi clips
-  async createMidiClip(mc: ECreateMidiClip) {
-    return this._request<EMidiClip>('mutation', 'createMidiClip', { midiClip: mc })
+  async createMidiClip(midiClip: ECreateMidiClip) {
+    return this._request<EMidiClip>('mutation', 'createMidiClip', { midiClip })
   }
   async updateMidiClip(midiClip: EUpdateMidiClip) {
     return this._request<EMidiClip>('mutation', 'updateMidiClip', { midiClip })
@@ -73,6 +77,22 @@ export const API = new class {
   }
   async updateMidiTrack(midiTrack: EUpdateMidiTrack) {
     return this._request<EMidiTrack>('mutation', 'updateMidiTrack', { midiTrack })
+  }
+
+  // ---------------------------------------------------------------- Audio clips
+  async createAudioClip(audioClip: ECreateAudioClip) {
+    return this._request<EAudioClip>('mutation', 'createAudioClip', { audioClip })
+  }
+  async updateAudioClip(audioClip: EUpdateAudioClip) {
+    return this._request<EAudioClip>('mutation', 'updateAudioClip', { audioClip })
+  }
+
+  // -------------------------------------------------------------- Audio tracks
+  async createAudioTrack(audioTrack: ECreateAudioTrack) {
+    return this._request<EAudioTrack>('mutation', 'createAudioTrack', { audioTrack })
+  }
+  async updateAudioTrack(audioTrack: EUpdateAudioTrack) {
+    return this._request<EAudioTrack>('mutation', 'updateAudioTrack', { audioTrack })
   }
 
 
@@ -90,42 +110,34 @@ export const API = new class {
     this._token = token;
   }
 
-  /**
-   * Wraps the API
-   * @param type Mutation or Query
-   * @param name Name of mutation/query
-   * @param variables Query name
-   */
-  private async _request<Return>(
+
+
+  private async _request<Return extends object = {}>(
     type: 'mutation' | 'query',
     name: (keyof typeof queries) | (keyof typeof mutations),
-    variables?: any,
-    headers?: object
-  ): Promise<Return> {
-    // Lookup the query
-    // @ts-ignore
-    const query = (type === 'mutation' ? this._mutations : this._queries)[name];
+    variables?: any
+  ) {
+    const vars = omit(variables, '__typename');
+    let res;
+    if (type === 'mutation') {
 
+      res = await client.mutate({
+        mutation: this._mutations[name as keyof typeof mutations],
+        variables: vars,
+        context: {
+          headers: this._headers
+        }
+      })
+    } else {
+      res = await client.query({
+        query: this._queries[name as keyof typeof queries],
+        variables: vars,
+        context: {
+          headers: this._headers
+        }
+      });
+    }
 
-    const result = await fetch(this._url, {
-      headers: {
-        ...this._headers,
-        ...headers
-      },
-      method: 'post',
-      // @ts-ignore
-      body: JSON.stringify({ query, variables })
-    }).then(r => r.json());
-
-    // Return if successful with no errors and includes data
-    if (!result.errors && result.data) return result.data[name];
-
-    // Throw error matching GraphQL request error format
-    const errName = result && result.errors[0] ? result.errors[0].message : 'Unknown error';
-    const e = new Error(errName);
-
-    // @ts-ignore
-    e.response = result;
-    throw e;
+    return res.data[name] as Return;
   }
 }

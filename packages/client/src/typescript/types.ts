@@ -76,7 +76,13 @@ export enum SElement {
   clockLine = 's-clock-line',
   clipEditor = 's-clip-editor',
   clipEditorClip = 's-clip-editor-clip',
-  track = 's-track',
+
+  midiTrack = 's-midi-track',
+  midiTrackClip = 's-midi-track-clip',
+  midiTrackInstrument = 's-midi-track-instrument',
+
+  audioTrack = 's-audio-track',
+  audioTrackClip = 's-audio-track-clip',
 
   // -------------------------------------------------------------------- Modals
   modalCreateSynth = 's-modal-create-synth',

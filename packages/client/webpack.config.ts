@@ -31,19 +31,23 @@ const config: Configuration = {
 
   module: {
     rules: [
-      {test: /\.ts/, loader: 'ts-loader'},
-      {test: /\.scss/, loader: CSS.extract(['css-loader', 'sass-loader'])},
-      {test: /\.html/, loader: 'html-loader'},
-      {test: /\.svg/, loader: 'url-loader'},
-      {test: /font\/.*\.(svg|eot|ttf|woff|woff2)/, loader: 'url-loader', options: {
-        limit: false,
-        outputPath: 'fonts'
-      }},
-      {test: /\.(wav|mp3)/, loader: 'url-loader', options: {
-        limit: false,
-        outputPath: 'sounds'
-      }},
-      {test: /\.gql/, loader: 'raw-loader'}
+      { test: /\.ts/, loader: 'ts-loader' },
+      { test: /\.scss/, loader: CSS.extract(['css-loader', 'sass-loader']) },
+      { test: /\.html/, loader: 'html-loader' },
+      { test: /\.svg/, loader: 'url-loader' },
+      {
+        test: /font\/.*\.(svg|eot|ttf|woff|woff2)/, loader: 'url-loader', options: {
+          limit: false,
+          outputPath: 'fonts'
+        }
+      },
+      {
+        test: /\.(wav|mp3)/, loader: 'url-loader', options: {
+          limit: false,
+          outputPath: 'sounds'
+        }
+      },
+      { test: /\.gql/, loader: 'graphql-tag/loader' }
     ]
   },
 
@@ -54,9 +58,9 @@ const config: Configuration = {
     CSS,
     new Favicon('./src/images/favicon.png'),
     new Copy([
-      {from: './src/images/social', to: 'social'},
-      {from: './src/images/', to: 'images'},
-      {from: './_redirects'}
+      { from: './src/images/social', to: 'social' },
+      { from: './src/images/', to: 'images' },
+      { from: './_redirects' }
     ]),
     new ReplacePlugin({
       values: {

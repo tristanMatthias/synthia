@@ -32,17 +32,20 @@ export class ClipEditor extends LitElement {
 
   clipElement = SElement.clipEditorClip;
 
-  @property({reflect: true})
+  @property({ reflect: true })
   rows: boolean = false;
 
-  @property({reflect: true, type: Number})
+  @property({ reflect: true, type: Number })
   start: number = 0;
 
-  @property({reflect: true, type: Number})
+  @property({ reflect: true, type: Number })
   duration: number;
 
-  @property({type: String})
+  @property({ type: String })
   emptyText: string = 'Double click to add a clip';
+
+  @property({ reflect: true })
+  dblClick: boolean = true;
 
   initialized = false;
 
@@ -60,7 +63,7 @@ export class ClipEditor extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    this.addEventListener('dblclick', this._handleDblClick.bind(this));
+    if (this.dblClick) this.addEventListener('dblclick', this._handleDblClick.bind(this));
     this.addEventListener('mousedown', this._handleMouseDown.bind(this));
     this.addEventListener('mouseup', this._handleMouseUp.bind(this));
     this.addEventListener('keydown', this._handleKeyPress.bind(this));
@@ -211,7 +214,7 @@ export class ClipEditor extends LitElement {
 
 
   private _handleMouseDown(e: MouseEvent) {
-    const {left} = this.getBoundingClientRect();
+    const { left } = this.getBoundingClientRect();
     const clipWidth = this._clipWidth;
     const beat = Math.round((e.x - left) / clipWidth) + this.start;
 

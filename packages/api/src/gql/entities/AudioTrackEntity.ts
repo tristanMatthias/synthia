@@ -13,9 +13,6 @@ export class EAudioTrack {
 
   @Field(() => [EAudioTrackClip])
   audioClips: EAudioTrackClip[]
-
-  @Field({ nullable: true })
-  instrumentId?: string;
 }
 
 @InputType('EAudioTrackClipInput')
@@ -47,9 +44,6 @@ export class EUpdateAudioTrack {
 
   @Field(() => [EAudioTrackClip], { nullable: true })
   audioClips: EAudioTrackClip[]
-
-  @Field({ nullable: true })
-  instrumentId: string;
 
   @Field({ nullable: true })
   name: string;

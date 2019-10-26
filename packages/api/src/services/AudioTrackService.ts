@@ -20,10 +20,11 @@ export const AudioTrackService = new class extends BaseService<
   > {
 
   async createAudioTrack(track: ECreateAudioTrack) {
-    const pj = (await ProjectService.findById(track.projectId))!;
+    const { projectId, name } = track;
+    const pj = (await ProjectService.findById(projectId))!;
 
     try {
-      return await pj!.$create('audioTrack', {}) as AudioTrack;
+      return await pj!.$create('audioTrack', { name }) as AudioTrack;
     } catch (e) {
       throw await handleSequelizeError(e);
     }

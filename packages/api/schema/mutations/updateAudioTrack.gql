@@ -1,0 +1,12 @@
+mutation updateAudioTrack($audioTrack: EUpdateAudioTrack!){
+    updateAudioTrack(audioTrack: $audioTrack){
+        id
+        projectId
+        name
+        audioClips{
+            clipId
+            start
+            duration
+        }
+    }
+}

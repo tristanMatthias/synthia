@@ -1,6 +1,7 @@
 mutation createMidiClip($midiClip: ECreateMidiClip!){
     createMidiClip(midiClip: $midiClip){
         id
+        duration
         name
         public
         creatorId
@@ -106,13 +107,25 @@ mutation createMidiClip($midiClip: ECreateMidiClip!){
                             midiClips{
                                 clipId
                                 start
+                                duration
                             }
                             instrumentId
+                        }
+                        audioTracks{
+                            id
+                            projectId
+                            name
+                            audioClips{
+                                clipId
+                                start
+                                duration
+                            }
                         }
                     }
                 }
                 midiClips{
                     id
+                    duration
                     name
                     public
                     creatorId
@@ -123,6 +136,30 @@ mutation createMidiClip($midiClip: ECreateMidiClip!){
                         v
                         n
                     }
+                    creator{
+                        id
+                        firstName
+                        lastName
+                        email
+                        socialId
+                        socialPic
+                    }
+                    projects{
+                        name
+                        public
+                        creatorId
+                        createdAt
+                        id
+                    }
+                }
+                audioClips{
+                    id
+                    duration
+                    name
+                    public
+                    creatorId
+                    createdAt
+                    url
                     creator{
                         id
                         firstName

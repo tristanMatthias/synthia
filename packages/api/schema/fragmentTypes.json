@@ -1,0 +1,1 @@
+{"__schema":{"types":[{"kind":"UNION","name":"SynthNode","possibleTypes":[{"name":"ESynthiaProjectSynthNodeOscillator"},{"name":"ESynthiaProjectSynthNodeWave"},{"name":"ESynthiaProjectSynthNodeReverb"},{"name":"ESynthiaProjectSynthNodeDelay"},{"name":"ESynthiaProjectSynthNodeFilter"},{"name":"ESynthiaProjectSynthNodePan"}]}]}}

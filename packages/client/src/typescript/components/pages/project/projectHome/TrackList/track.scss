@@ -4,8 +4,9 @@
   grid-template-columns: 2rem 25rem 1fr;
 
   background: var(--color-bg-off);
-  border: 0.1rem solid var(--color-line);
+  border: 0.5rem solid var(--color-line);
   border-top-width: 0;
+  // border-bottom-width: 0.5rem;
   user-select: none;
   overflow: hidden;
   position: relative;
@@ -146,13 +147,13 @@
 }
 
 
-:host(:first-of-type) {
-  border-top-width: 0.1rem;
+:host(:first-child) {
+  border-top-width: 0.5rem;
   border-top-left-radius: 0.4rem;
   border-top-right-radius: 0.4rem;
 }
 
-:host(:last-of-type) {
+:host(:last-child) {
   border-bottom-left-radius: 0.4rem;
   border-bottom-right-radius: 0.4rem;
 }
@@ -167,8 +168,4 @@
   .highlight {
     border: 0.2rem dashed var(--color-alt);
   }
-  // .center {
-  //   display: block;
-  //   // transform: scale(1.1);
-  // }
 }

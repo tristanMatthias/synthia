@@ -90,6 +90,7 @@ mutation updateProject($project: EUpdateProject!){
                     resources{
                         midiClips{
                             id
+                            duration
                             name
                             public
                             creatorId
@@ -121,9 +122,44 @@ mutation updateProject($project: EUpdateProject!){
                                     midiClips{
                                         clipId
                                         start
+                                        duration
                                     }
                                     instrumentId
                                 }
+                                audioTracks{
+                                    id
+                                    projectId
+                                    name
+                                    audioClips{
+                                        clipId
+                                        start
+                                        duration
+                                    }
+                                }
+                            }
+                        }
+                        audioClips{
+                            id
+                            duration
+                            name
+                            public
+                            creatorId
+                            createdAt
+                            url
+                            creator{
+                                id
+                                firstName
+                                lastName
+                                email
+                                socialId
+                                socialPic
+                            }
+                            projects{
+                                name
+                                public
+                                creatorId
+                                createdAt
+                                id
                             }
                         }
                     }
@@ -135,6 +171,11 @@ mutation updateProject($project: EUpdateProject!){
             projectId
             name
             instrumentId
+        }
+        audioTracks{
+            id
+            projectId
+            name
         }
     }
 }

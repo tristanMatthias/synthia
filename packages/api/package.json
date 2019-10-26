@@ -11,7 +11,7 @@
     "build": "tsc",
     "start": "node ./dist/server/index",
     "dev": "tsc -w & NODE_ENV=development nodemon ./dist/server/index",
-    "generate-schema": "rimraf schema; ts-node src/lib/generateSchemaFile.ts; gqlg --schemaFilePath dist/schema.gql --destDirPath ./schema --depthLimit 10; cp -r src/custom-queries/* schema"
+    "generate-schema": "rimraf schema; ts-node src/lib/generateSchemaFile.ts; gqlg --schemaFilePath dist/schema.gql --destDirPath ./schema --depthLimit 10; cp -r src/custom-queries/* schema; ts-node src/lib/schemaQuery.ts"
   },
   "dependencies": {
     "@types/graphql-type-json": "^0.3.0",
@@ -33,6 +33,7 @@
     "lerna": "^3.16.4",
     "md5": "^2.2.1",
     "murmurhash3js": "^3.0.1",
+    "node-fetch": "^2.6.0",
     "pg": "^7.12.0",
     "reflect-metadata": "^0.1.13",
     "request-promise-native": "^1.0.7",
@@ -53,6 +54,7 @@
     "@types/jsonwebtoken": "^8.3.2",
     "@types/md5": "^2.1.33",
     "@types/murmurhash3js": "^3.0.2",
+    "@types/node-fetch": "^2.5.2",
     "@types/request-promise-native": "^1.0.16",
     "@types/shortid": "^0.0.29",
     "@types/tone": "https://github.com/Tonejs/TypeScript.git",

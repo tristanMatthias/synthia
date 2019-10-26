@@ -1,0 +1,11 @@
+mutation createAudioClip($audioClip: ECreateAudioClip!) {
+  createAudioClip(audioClip: $audioClip) {
+    id
+    duration
+    name
+    public
+    creatorId
+    createdAt
+    url
+  }
+}

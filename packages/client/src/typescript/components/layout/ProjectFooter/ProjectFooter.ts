@@ -3,7 +3,7 @@ import debounce = require('lodash.debounce');
 
 import { Clock } from '../../../lib/Clock';
 import { Metronome } from '../../../lib/Metronome';
-import { Recorder } from '../../../lib/Recorder';
+import { RecordController } from '../../../lib/RecordController';
 import { SElement } from '../../../types';
 import styles from './project-footer.styles';
 
@@ -55,13 +55,13 @@ export class Page extends LitElement {
       ></s-button>
       <s-button
         hollow
-        color=${Recorder.recording ? 'error' : 'line'}
+        color=${RecordController.recording ? 'error' : 'line'}
         icon="record"
         @click=${() => {
-        Recorder.recording = !Recorder.recording
+        RecordController.recording = !RecordController.recording
         this.requestUpdate();
       }}
-        tooltip=${Recorder.recording ? 'Stop recording' : 'Record'}
+        tooltip=${RecordController.recording ? 'Stop recording' : 'Record'}
       ></s-button>
     `;
   }

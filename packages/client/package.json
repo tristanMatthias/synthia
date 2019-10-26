@@ -13,8 +13,10 @@
     "dev": "NODE_ENV=development webpack-dev-server -w & yarn build:sass --watch --mode=development"
   },
   "devDependencies": {
+    "@types/apollo-upload-client": "^8.1.3",
     "@types/color": "^3.0.0",
     "@types/copy-webpack-plugin": "^5.0.0",
+    "@types/core-js": "^2.5.2",
     "@types/dom-mediacapture-record": "^1.0.1",
     "@types/dot-object": "^1.7.0",
     "@types/extract-text-webpack-plugin": "^3.0.4",
@@ -27,6 +29,9 @@
     "@types/uuid": "^3.4.5",
     "@types/webpack": "^4.4.35",
     "@types/webpack-dev-server": "^3.1.7",
+    "apollo-cache-inmemory": "^1.6.3",
+    "apollo-client": "^2.6.4",
+    "apollo-upload-client": "^11.0.0",
     "copy-webpack-plugin": "^5.0.3",
     "css-loader": "^3.1.0",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
@@ -36,6 +41,7 @@
     "html-webpack-plugin": "^3.2.0",
     "lit-element": "^2.2.0",
     "lit-html": "^1.1.1",
+    "omit-deep-lodash": "^1.1.4",
     "sass-loader": "^7.1.0",
     "strip-comments": "^1.0.2",
     "tinygradient": "^1.0.0",
@@ -54,6 +60,7 @@
   "dependencies": {
     "@synthia/api": "^0.0.0",
     "color": "^3.1.2",
+    "core-js": "^3.2.1",
     "dot-object": "^1.9.0",
     "gql-generator": "^1.0.12",
     "graphql-request": "^1.8.2",

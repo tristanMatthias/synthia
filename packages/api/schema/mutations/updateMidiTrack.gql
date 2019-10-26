@@ -1,11 +1,12 @@
-mutation updateMidiTrack($track: EUpdateMidiTrack!){
-    updateMidiTrack(track: $track){
+mutation updateMidiTrack($midiTrack: EUpdateMidiTrack!){
+    updateMidiTrack(midiTrack: $midiTrack){
         id
         projectId
         name
         midiClips{
             clipId
             start
+            duration
         }
         instrumentId
     }

@@ -14,6 +14,7 @@ query project($projectId: String!) {
         id
         nodes {
           ...on ESynthiaProjectSynthNodeOscillator {
+            __typename
             id
             type
             connectedTo
@@ -24,11 +25,13 @@ query project($projectId: String!) {
             }
             properties {
               ...on ESynthiaProjectSynthNodeOscillatorProperties {
+                __typename
                 type
               }
             }
           }
           ...on ESynthiaProjectSynthNodeWave {
+            __typename
             id
             type
             connectedTo
@@ -39,6 +42,7 @@ query project($projectId: String!) {
             }
             properties {
               ...on ESynthiaProjectSynthNodeWaveProperties {
+                __typename
                 type
                 attack
                 decay
@@ -49,6 +53,7 @@ query project($projectId: String!) {
             }
           }
           ...on ESynthiaProjectSynthNodeReverb {
+            __typename
             id
             type
             connectedTo
@@ -59,6 +64,7 @@ query project($projectId: String!) {
             }
             properties {
               ...on ESynthiaProjectSynthNodeReverbProperties {
+                __typename
                 roomSize
                 decayTime
                 fadeInTime
@@ -67,6 +73,7 @@ query project($projectId: String!) {
             }
           }
           ...on ESynthiaProjectSynthNodeDelay {
+            __typename
             id
             type
             connectedTo
@@ -77,6 +84,7 @@ query project($projectId: String!) {
             }
             properties {
               ...on ESynthiaProjectSynthNodeDelayProperties {
+                __typename
                 delayTime
                 feedback
                 dryWet
@@ -84,6 +92,7 @@ query project($projectId: String!) {
             }
           }
           ...on ESynthiaProjectSynthNodeFilter {
+            __typename
             id
             type
             connectedTo
@@ -94,6 +103,7 @@ query project($projectId: String!) {
             }
             properties {
               ...on ESynthiaProjectSynthNodeFilterProperties {
+                __typename
                 type
                 frequency
                 Q
@@ -102,6 +112,7 @@ query project($projectId: String!) {
             }
           }
           ...on ESynthiaProjectSynthNodePan {
+            __typename
             id
             type
             connectedTo
@@ -112,6 +123,7 @@ query project($projectId: String!) {
             }
             properties {
               ...on ESynthiaProjectSynthNodePanProperties {
+                __typename
                 pan
               }
             }
@@ -120,6 +132,7 @@ query project($projectId: String!) {
       }
 
       midiClips {
+
         id
         name
         duration
@@ -130,13 +143,31 @@ query project($projectId: String!) {
           v
         }
       }
+      audioClips {
+
+        id
+        name
+        duration
+        url
+      }
     }
 
     midiTracks {
+
       id
       name
       instrumentId
       midiClips {
+        start
+        clipId
+        duration
+      }
+    }
+    audioTracks {
+
+      id
+      name
+      audioClips {
         start
         clipId
         duration

@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
+module.exports.audioClip = fs.readFileSync(path.join(__dirname, 'audioClip.gql'), 'utf8');
+module.exports.audioClips = fs.readFileSync(path.join(__dirname, 'audioClips.gql'), 'utf8');
 module.exports.midiClip = fs.readFileSync(path.join(__dirname, 'midiClip.gql'), 'utf8');
 module.exports.midiClips = fs.readFileSync(path.join(__dirname, 'midiClips.gql'), 'utf8');
 module.exports.oauthCallback = fs.readFileSync(path.join(__dirname, 'oauthCallback.gql'), 'utf8');

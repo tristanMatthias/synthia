@@ -7,7 +7,8 @@ import styles from './project-home.styles';
 
 export * from './Browser/Browser';
 export * from './TrackList/TrackList';
-export * from './TrackList/Track/Track';
+export * from './TrackList/MidiTrack/MidiTrack';
+export * from './TrackList/AudioTrack/AudioTrack';
 
 @customElement(SElement.projectHomePage)
 export class PageProjectHome extends LitElement {
@@ -36,12 +37,12 @@ export class PageProjectHome extends LitElement {
         ></s-track-list>
 
         ${active
-          ? html`<div class="bottom-panel">
+        ? html`<div class="bottom-panel">
             <s-piano-roll
               .midiTrackClip=${active}
             ></s-piano-roll>
           </div>`
-          : null}
+        : null}
 
       </main>
     `

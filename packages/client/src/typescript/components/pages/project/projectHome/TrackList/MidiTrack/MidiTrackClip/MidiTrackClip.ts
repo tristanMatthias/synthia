@@ -6,11 +6,12 @@ import { Clock } from '../../../../../../../lib/Clock';
 import { noteToRow } from '../../../../../../../lib/keyToFrequency';
 import { MidiTrackClip } from '../../../../../../../lib/MidiTrack/MidiTrackClip';
 import { remToPx } from '../../../../../../../lib/pxToRem';
-import { Recorder } from '../../../../../../../lib/Recorder';
+import { RecordController } from '../../../../../../../lib/RecordController';
+import { SElement } from '../../../../../../../types';
 import { ClipEditorClip } from '../../../../../../visualizations/ClipEditor/Clip/Clip';
-import styles from './track-clip.styles';
+import styles from './track-midi-clip.styles';
 
-@customElement('s-track-clip')
+@customElement(SElement.midiTrackClip)
 export class TrackClip extends ClipEditorClip {
   static styles = [
     ...ClipEditorClip.styles,
@@ -29,7 +30,7 @@ export class TrackClip extends ClipEditorClip {
     this._recording = v;
     if (v) {
       this._recordTick();
-      Recorder.on('stopRecording', () => this.remove());
+      RecordController.on('stopRecording', () => this.remove());
     }
   }
 
@@ -157,7 +158,7 @@ export class TrackClip extends ClipEditorClip {
 
 
   private _recordTick() {
-    if (!Recorder.recording) return this.recording = false;
+    if (!RecordController.recording) return this.recording = false;
     if (!this.recording) return;
 
     const t = Clock.currentBeatExact;

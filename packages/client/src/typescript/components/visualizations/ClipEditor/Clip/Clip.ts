@@ -50,21 +50,24 @@ export class ClipEditorClip extends LitElement {
 
   constructor() {
     super();
+    this._handleKeyDown = this._handleKeyDown.bind(this);
     this._handleDrag = this._handleDrag.bind(this);
     this._stopDrag = this._stopDrag.bind(this);
   }
 
   firstUpdated(props: Map<string, keyof ClipEditorClip>) {
     super.firstUpdated(props);
-    // this._header.addEventListener('mousedown', (e) => {
-    //   e.stopPropagation();
-    // });
+    this._header.tabIndex = 0;
 
-    this._header.addEventListener('dblclick', (e) => {
-      e.stopPropagation();
-      this._editor.removeClips([this]);
-      this.remove();
-    });
+    this._header.addEventListener('focus', () => {
+      this.selected = true;
+    })
+    this._header.addEventListener('blur', () => {
+      this.selected = false;
+    })
+    this.addEventListener('keydown', this._handleKeyDown)
+
+    this._header.addEventListener('dblclick', this._remove);
     this._header.addEventListener('mousedown', this._handleMouseDown.bind(this));
   }
 
@@ -152,6 +155,31 @@ export class ClipEditorClip extends LitElement {
     this._dragType = null;
     this._dragStartPosition = null;
     window.removeEventListener('mousemove', this._handleDrag);
+  }
+
+  private _remove(e?: Event) {
+    if (e) e.stopPropagation();
+    this._editor.removeClips([this]);
+    this.remove();
+  }
+
+  private _handleKeyDown(e: KeyboardEvent) {
+    e.stopPropagation();
+
+    switch (e.code) {
+      case 'Delete':
+      case 'Backspace':
+        this._remove();
+        break;
+
+      case 'ArrowLeft':
+        this.start -= 1
+        break;
+
+      case 'ArrowRight':
+        this.start += 1
+        break;
+    }
   }
 }
 
